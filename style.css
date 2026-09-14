@@ -1,0 +1,93 @@
+:root {
+  color-scheme: light dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: Canvas;
+  color: CanvasText;
+}
+
+.shell {
+  width: min(880px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 4rem 0;
+}
+
+header,
+section {
+  margin-bottom: 2.5rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+
+.lede {
+  max-width: 60ch;
+  font-size: 1.1rem;
+}
+
+.formula {
+  margin: 0.75rem 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid color-mix(in srgb, CanvasText 20%, transparent);
+  border-radius: 0.75rem;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(1.05rem, 3vw, 1.4rem);
+  overflow-x: auto;
+}
+
+.status {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-left: 0.25rem solid currentColor;
+}
+
+.status[data-state="error"] {
+  font-weight: 700;
+}
+
+.system-data {
+  margin: 0;
+}
+
+.system-data > div {
+  display: grid;
+  grid-template-columns: minmax(8rem, 12rem) 1fr;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid color-mix(in srgb, CanvasText 15%, transparent);
+}
+
+.system-data dt {
+  font-weight: 700;
+}
+
+.system-data dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
