@@ -6,11 +6,30 @@ const dataElement = document.querySelector("#system-data");
 const fields = {
   project: document.querySelector("#project-value"),
   version: document.querySelector("#version-value"),
+  schemaVersion: document.querySelector("#schema-version-value"),
   D: document.querySelector("#d-value"),
   lambda: document.querySelector("#lambda-value"),
   kappa: document.querySelector("#kappa-value"),
-  initialDepth: document.querySelector("#depth-value")
+  requestedDepth: document.querySelector("#depth-value"),
+  metricScale: document.querySelector("#metric-scale-value"),
+  sheetDegree: document.querySelector("#sheet-degree-value"),
+  definingFunctionStatus: document.querySelector("#w-status-value")
 };
+
+function displayScene(scene) {
+  const parameters = scene.mathematics.parameters;
+
+  fields.project.textContent = scene.project;
+  fields.version.textContent = scene.version;
+  fields.schemaVersion.textContent = String(scene.schemaVersion);
+  fields.D.textContent = String(parameters.D);
+  fields.lambda.textContent = String(parameters.lambda);
+  fields.kappa.textContent = String(parameters.kappa);
+  fields.requestedDepth.textContent = String(scene.request.requestedDepth);
+  fields.metricScale.textContent = String(scene.derived.metricScale);
+  fields.sheetDegree.textContent = String(scene.derived.sheetDegree);
+  fields.definingFunctionStatus.textContent = scene.mathematics.baseHypersurface.definingFunction.representation;
+}
 
 async function loadSystemConfiguration() {
   try {
@@ -20,19 +39,18 @@ async function loadSystemConfiguration() {
       throw new Error(`HTTP ${response.status} ${response.statusText}`.trim());
     }
 
-    const system = await response.json();
+    const rawScene = await response.json();
+    const scene = SceneSpec.validateAndNormalizeScene(rawScene);
 
-    for (const [key, element] of Object.entries(fields)) {
-      element.textContent = String(system[key] ?? "—");
-    }
-
+    displayScene(scene);
     dataElement.hidden = false;
     statusElement.dataset.state = "ready";
-    statusElement.textContent = "Loaded data/system.json successfully.";
+    statusElement.textContent = "Loaded and validated data/system.json successfully.";
   } catch (error) {
-    console.error("Failed to load system configuration:", error);
+    console.error("Failed to load or validate scene specification:", error);
+    dataElement.hidden = true;
     statusElement.dataset.state = "error";
-    statusElement.textContent = `Failed to load data/system.json: ${error.message}`;
+    statusElement.textContent = `Failed to load or validate data/system.json: ${error.message}`;
   }
 }
 

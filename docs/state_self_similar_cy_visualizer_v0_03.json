@@ -1,0 +1,69 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.03",
+  "status": "active",
+  "current_stage": "mathematical scene specification completed",
+  "milestone": "Thread 02 — Mathematical Scene Specification",
+  "repository": {
+    "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "visibility": "private",
+    "default_branch": "main",
+    "starting_commit": "3e7d5bb37db787257188552e9b182c927740d337",
+    "connector_read_access": true,
+    "connector_write_access": true
+  },
+  "scene_specification": {
+    "schema_version": 1,
+    "canonical_inputs": ["D", "lambda", "kappa"],
+    "request_parameters": ["requestedDepth"],
+    "pullback_map": {
+      "kind": "coordinate_power",
+      "coordinate_count": 4,
+      "exponent_parameter": "D"
+    },
+    "base_hypersurface": {
+      "kind": "level_set",
+      "defining_function_symbol": "W",
+      "representation": "unresolved",
+      "level_parameter": "lambda"
+    },
+    "derived_quantities": {
+      "metric_scale": "D^2",
+      "sheet_degree": "D^4",
+      "persisted_in_canonical_json": false
+    },
+    "rendering_state_in_schema": false
+  },
+  "validation": {
+    "canonical_json_valid": "passed",
+    "schema_required_fields": "passed",
+    "integer_and_range_constraints": "passed",
+    "malformed_examples_rejected": "passed",
+    "valid_example_accepted": "passed",
+    "derived_quantities_consistent": "passed",
+    "scene_spec_javascript_syntax": "passed",
+    "app_javascript_syntax": "passed",
+    "app_fetches_system_json": "passed",
+    "app_uses_scene_validator": "passed",
+    "thread_01_json_loading_preserved": "passed",
+    "renderer_dependencies_absent": "passed",
+    "local_static_http_index": "passed",
+    "local_static_http_system_json": "passed",
+    "browser_runtime_smoke_test": "not_tested"
+  },
+  "failed_validation": [],
+  "scope_exclusions": [
+    "base renderer",
+    "pullback visualization",
+    "recursive rendering",
+    "zoom semantics",
+    "D^4 sheet rendering",
+    "arithmetic overlays",
+    "Three.js",
+    "WebGL",
+    "GPU buffers",
+    "camera state",
+    "later UX"
+  ],
+  "next_milestone": "Thread 03 — Base Renderer"
+}

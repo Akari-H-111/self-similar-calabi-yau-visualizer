@@ -1,8 +1,28 @@
 {
+  "schemaVersion": 1,
   "project": "Self-Similar Calabi–Yau Visualizer",
-  "version": "v0.02",
-  "D": 2,
-  "lambda": 1,
-  "kappa": 1,
-  "initialDepth": 0
+  "version": "v0.03",
+  "mathematics": {
+    "parameters": {
+      "D": 2,
+      "lambda": 1,
+      "kappa": 1
+    },
+    "pullbackMap": {
+      "kind": "coordinate_power",
+      "coordinateCount": 4,
+      "exponentParameter": "D"
+    },
+    "baseHypersurface": {
+      "kind": "level_set",
+      "definingFunction": {
+        "symbol": "W",
+        "representation": "unresolved"
+      },
+      "levelParameter": "lambda"
+    }
+  },
+  "request": {
+    "requestedDepth": 0
+  }
 }
