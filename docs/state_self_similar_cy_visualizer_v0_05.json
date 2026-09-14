@@ -1,0 +1,99 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.05",
+  "status": "active",
+  "current_stage": "one-step pullback completed",
+  "milestone": "Thread 04 — One-Step Pullback",
+  "repository": {
+    "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "visibility": "private",
+    "default_branch": "main",
+    "starting_commit": "fabf16129a4a36ba6692a9cda5b7c64f33cdac47",
+    "expected_parent": "fabf16129a4a36ba6692a9cda5b7c64f33cdac47",
+    "connector_read_access": true,
+    "connector_write_access": true
+  },
+  "scene_contract": {
+    "schema_version": 1,
+    "canonical_inputs": ["D", "lambda", "kappa"],
+    "request_parameters": ["requestedDepth"],
+    "pullback_map": {
+      "kind": "coordinate_power",
+      "coordinate_count": 4,
+      "exponent_parameter": "D"
+    },
+    "base_hypersurface": {
+      "kind": "level_set",
+      "defining_function_symbol": "W",
+      "representation": "unresolved",
+      "level_parameter": "lambda"
+    },
+    "derived_quantities": {
+      "metric_scale": "D^2",
+      "sheet_degree": "D^4",
+      "persisted_in_canonical_json": false
+    },
+    "preserved_from_v0_03": true
+  },
+  "base_renderer": {
+    "module": "base-renderer.js",
+    "contract_preserved_from_v0_04": true,
+    "geometry_status": "unresolved_geometry",
+    "geometry_rendered": false,
+    "surface": "DOM"
+  },
+  "one_step_pullback": {
+    "module": "one-step-pullback.js",
+    "input": "validated normalized scene plus v0.04 base render model",
+    "depth": 1,
+    "relation": "inverse_image",
+    "geometry_status": "unresolved_pullback_geometry",
+    "geometry_rendered": false,
+    "map_degree_source": "scene.derived.sheetDegree",
+    "sheets_materialized": false,
+    "consumes_requested_depth": false,
+    "recursive_expansion": false
+  },
+  "validation": {
+    "v0_03_scene_verifier": "passed",
+    "v0_04_base_renderer_verifier": "passed",
+    "v0_05_one_step_verifier": "passed",
+    "canonical_json_valid": "passed",
+    "malformed_examples_rejected_before_render": "passed",
+    "thread_01_json_loading_preserved": "passed",
+    "base_renderer_starts_after_validation": "passed",
+    "one_step_starts_after_base_renderer": "passed",
+    "structured_pullback_declaration_reused": "passed",
+    "D_not_duplicated_as_new_source": "passed",
+    "D4_reused_as_derived_degree": "passed",
+    "D4_not_promoted_to_canonical_input": "passed",
+    "unresolved_W_preserved": "passed",
+    "one_step_depth_exactly_1": "passed",
+    "requestedDepth_cannot_materialize_depth_ge_2": "passed",
+    "recursive_expansion_absent": "passed",
+    "sheet_objects_absent": "passed",
+    "scene_spec_javascript_syntax": "passed",
+    "base_renderer_javascript_syntax": "passed",
+    "one_step_javascript_syntax": "passed",
+    "app_javascript_syntax": "passed",
+    "full_browser_runtime_smoke_test": "not_tested"
+  },
+  "failed_validation": [],
+  "scope_exclusions": [
+    "recursive rendering",
+    "lazy recursive expansion",
+    "arbitrary-depth materialization",
+    "zoom semantics",
+    "D^4 sheet visualization",
+    "arithmetic overlays",
+    "Three.js",
+    "WebGL",
+    "GPU buffers",
+    "camera navigation",
+    "performance work",
+    "fidelity audit",
+    "later UX",
+    "publication"
+  ],
+  "next_milestone": "Thread 05 — Recursive Lazy Expansion"
+}

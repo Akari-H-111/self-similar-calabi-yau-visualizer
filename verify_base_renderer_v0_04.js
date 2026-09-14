@@ -28,7 +28,9 @@ function validateThenRender(rawScene, target) {
 const target = createTarget();
 const model = validateThenRender(canonicalScene, target);
 
-assert.equal(canonicalScene.version, "v0.04");
+const versionMatch = /^v0\.(\d+)$/.exec(canonicalScene.version);
+assert.ok(versionMatch, "Canonical scene version must use v0.<minor> metadata.");
+assert.ok(Number(versionMatch[1]) >= 4, "Base renderer verifier requires version metadata at or after v0.04.");
 assert.equal(model.kind, "base_scene");
 assert.equal(model.status, UNRESOLVED_STATUS);
 assert.equal(model.geometryRendered, false);

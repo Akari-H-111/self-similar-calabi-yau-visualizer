@@ -7,14 +7,15 @@
   <link rel="stylesheet" href="style.css">
   <script src="scene-spec.js" defer></script>
   <script src="base-renderer.js" defer></script>
+  <script src="one-step-pullback.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
   <main class="shell">
     <header>
-      <p class="eyebrow">v0.04 · Base Renderer</p>
+      <p class="eyebrow">v0.05 · One-Step Pullback</p>
       <h1>Self-Similar Calabi–Yau Visualizer</h1>
-      <p class="lede">A validated base-scene renderer with an explicit unresolved-geometry state. No Calabi–Yau geometry is invented while W remains unresolved.</p>
+      <p class="lede">A validated structural one-step pullback over the unresolved base geometry. The map is known; the geometry is not invented.</p>
     </header>
 
     <section aria-labelledby="structure-title">
@@ -27,6 +28,11 @@
     <section aria-labelledby="renderer-title">
       <h2 id="renderer-title">Base renderer</h2>
       <div id="base-renderer" class="base-renderer" role="status" aria-live="polite" hidden></div>
+    </section>
+
+    <section aria-labelledby="pullback-title">
+      <h2 id="pullback-title">One-step pullback</h2>
+      <div id="one-step-pullback" class="one-step-pullback" role="status" aria-live="polite" hidden></div>
     </section>
 
     <section aria-labelledby="status-title">

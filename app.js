@@ -3,6 +3,7 @@
 const statusElement = document.querySelector("#system-status");
 const dataElement = document.querySelector("#system-data");
 const rendererElement = document.querySelector("#base-renderer");
+const pullbackElement = document.querySelector("#one-step-pullback");
 
 const fields = {
   project: document.querySelector("#project-value"),
@@ -38,6 +39,12 @@ function resetRenderedState() {
   rendererElement.textContent = "";
   delete rendererElement.dataset.state;
   delete rendererElement.dataset.geometryRendered;
+  pullbackElement.hidden = true;
+  pullbackElement.textContent = "";
+  delete pullbackElement.dataset.state;
+  delete pullbackElement.dataset.depth;
+  delete pullbackElement.dataset.geometryRendered;
+  delete pullbackElement.dataset.sheetsMaterialized;
 }
 
 async function loadSystemConfiguration() {
@@ -51,13 +58,14 @@ async function loadSystemConfiguration() {
     const rawScene = await response.json();
     const scene = SceneSpec.validateAndNormalizeScene(rawScene);
 
-    BaseRenderer.renderBaseScene(scene, rendererElement);
+    const baseModel = BaseRenderer.renderBaseScene(scene, rendererElement);
+    OneStepPullback.renderOneStepPullback(scene, baseModel, pullbackElement);
     displayScene(scene);
     dataElement.hidden = false;
     statusElement.dataset.state = "ready";
-    statusElement.textContent = "Loaded, validated, and initialized the base renderer successfully.";
+    statusElement.textContent = "Loaded, validated, and initialized the base plus one-step pullback renderer successfully.";
   } catch (error) {
-    console.error("Failed to load, validate, or render the base scene:", error);
+    console.error("Failed to load, validate, or render the one-step scene:", error);
     resetRenderedState();
     statusElement.dataset.state = "error";
     statusElement.textContent = `Failed to load, validate, or render data/system.json: ${error.message}`;
