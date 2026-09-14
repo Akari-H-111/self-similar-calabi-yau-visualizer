@@ -1,0 +1,8 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.02",
+  "D": 2,
+  "lambda": 1,
+  "kappa": 1,
+  "initialDepth": 0
+}
