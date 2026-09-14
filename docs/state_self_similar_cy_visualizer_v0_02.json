@@ -1,0 +1,53 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.02",
+  "status": "active",
+  "current_stage": "repository bootstrap completed",
+  "milestone": "Thread 01 — Repository Bootstrap",
+  "repository": {
+    "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "visibility": "private",
+    "default_branch": "main",
+    "initial_state": "empty repository",
+    "connector_read_access": true,
+    "connector_write_access": true
+  },
+  "mathematical_core": {
+    "X": "W^{-1}(lambda)",
+    "X_n": "(P_D^n)^{-1}(X)",
+    "P_D": "(z_1^D,...,z_4^D)"
+  },
+  "bootstrap": {
+    "stack": ["HTML", "CSS", "vanilla JavaScript"],
+    "data_source": "data/system.json",
+    "schema_status": "minimal bootstrap only; not closed",
+    "rendering_implemented": false,
+    "recursion_implemented": false
+  },
+  "validation": {
+    "required_root_files": "passed",
+    "system_json_valid": "passed",
+    "index_references_style_css": "passed",
+    "index_references_app_js": "passed",
+    "app_fetches_system_json": "passed",
+    "javascript_syntax": "passed",
+    "fetch_failure_handling": "passed",
+    "canonical_formulas_present": "passed",
+    "local_static_http_index": "passed",
+    "local_static_http_system_json": "passed",
+    "browser_runtime_smoke_test": "not_tested"
+  },
+  "scope_exclusions": [
+    "mathematical scene specification",
+    "Calabi–Yau hypersurface rendering",
+    "pullback visualization",
+    "recursive rendering",
+    "zoom semantics",
+    "D^4 sheets",
+    "cyclotomic overlays",
+    "Three.js",
+    "WebGL",
+    "later UX"
+  ],
+  "next_milestone": "Thread 02 — Mathematical Scene Specification"
+}
