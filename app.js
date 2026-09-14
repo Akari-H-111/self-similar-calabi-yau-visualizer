@@ -4,6 +4,7 @@ const statusElement = document.querySelector("#system-status");
 const dataElement = document.querySelector("#system-data");
 const rendererElement = document.querySelector("#base-renderer");
 const pullbackElement = document.querySelector("#one-step-pullback");
+const recursiveElement = document.querySelector("#recursive-lazy-expansion");
 
 const fields = {
   project: document.querySelector("#project-value"),
@@ -45,6 +46,14 @@ function resetRenderedState() {
   delete pullbackElement.dataset.depth;
   delete pullbackElement.dataset.geometryRendered;
   delete pullbackElement.dataset.sheetsMaterialized;
+  recursiveElement.hidden = true;
+  recursiveElement.textContent = "";
+  delete recursiveElement.dataset.state;
+  delete recursiveElement.dataset.requestedDepth;
+  delete recursiveElement.dataset.materializedDepth;
+  delete recursiveElement.dataset.expansionComplete;
+  delete recursiveElement.dataset.geometryRendered;
+  delete recursiveElement.dataset.sheetsMaterialized;
 }
 
 async function loadSystemConfiguration() {
@@ -59,13 +68,15 @@ async function loadSystemConfiguration() {
     const scene = SceneSpec.validateAndNormalizeScene(rawScene);
 
     const baseModel = BaseRenderer.renderBaseScene(scene, rendererElement);
-    OneStepPullback.renderOneStepPullback(scene, baseModel, pullbackElement);
+    const pullbackModel = OneStepPullback.renderOneStepPullback(scene, baseModel, pullbackElement);
+    const recursiveModel = RecursiveLazyExpansion.createRecursiveLazyExpansionModel(scene, baseModel, pullbackModel);
+    RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement);
     displayScene(scene);
     dataElement.hidden = false;
     statusElement.dataset.state = "ready";
-    statusElement.textContent = "Loaded, validated, and initialized the base plus one-step pullback renderer successfully.";
+    statusElement.textContent = "Loaded, validated, and initialized the base, one-step, and recursive lazy structural states successfully.";
   } catch (error) {
-    console.error("Failed to load, validate, or render the one-step scene:", error);
+    console.error("Failed to load, validate, or initialize the recursive lazy scene:", error);
     resetRenderedState();
     statusElement.dataset.state = "error";
     statusElement.textContent = `Failed to load, validate, or render data/system.json: ${error.message}`;

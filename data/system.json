@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "project": "Self-Similar Calabi–Yau Visualizer",
-  "version": "v0.05",
+  "version": "v0.06",
   "mathematics": {
     "parameters": {
       "D": 2,

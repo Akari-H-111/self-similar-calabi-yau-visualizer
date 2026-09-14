@@ -36,7 +36,9 @@ const baseTarget = createTarget();
 const pullbackTarget = createTarget();
 const { scene, pullbackModel } = validateThenRender(canonicalScene, baseTarget, pullbackTarget);
 
-assert.equal(canonicalScene.version, "v0.05");
+const versionMatch = /^v0\.(\d+)$/.exec(canonicalScene.version);
+assert.ok(versionMatch, "Canonical scene version must use v0.<minor> metadata.");
+assert.ok(Number(versionMatch[1]) >= 5, "One-step verifier requires version metadata at or after v0.05.");
 assert.equal(ONE_STEP_DEPTH, 1);
 assert.equal(pullbackModel.kind, "one_step_pullback");
 assert.equal(pullbackModel.depth, 1);
@@ -100,7 +102,7 @@ const pullbackCall = "OneStepPullback.renderOneStepPullback(scene, baseModel, pu
 assert.ok(appSource.includes('fetch("data/system.json"'), "Thread 01 JSON loading path must remain present.");
 assert.ok(appSource.indexOf(validationCall) >= 0, "app.js must validate raw scene input.");
 assert.ok(appSource.indexOf(baseRendererCall) > appSource.indexOf(validationCall), "Base renderer must run after validation.");
-assert.ok(appSource.indexOf(pullbackCall) > appSource.indexOf(baseRendererCall), "One-step pullback must run after the validated base renderer.");
+assert.ok(appSource.indexOf(pullbackCall) > appSource.indexOf(baseRendererCall), "One-step pullback must run after the validated Base Renderer.");
 
 const sceneSpecScript = '<script src="scene-spec.js" defer></script>';
 const baseRendererScript = '<script src="base-renderer.js" defer></script>';

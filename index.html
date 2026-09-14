@@ -8,14 +8,15 @@
   <script src="scene-spec.js" defer></script>
   <script src="base-renderer.js" defer></script>
   <script src="one-step-pullback.js" defer></script>
+  <script src="recursive-lazy-expansion.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
   <main class="shell">
     <header>
-      <p class="eyebrow">v0.05 · One-Step Pullback</p>
+      <p class="eyebrow">v0.06 · Recursive Lazy Expansion</p>
       <h1>Self-Similar Calabi–Yau Visualizer</h1>
-      <p class="lede">A validated structural one-step pullback over the unresolved base geometry. The map is known; the geometry is not invented.</p>
+      <p class="lede">A validated structural pullback tower with request-bounded lazy expansion. The map is known; unresolved geometry is never invented.</p>
     </header>
 
     <section aria-labelledby="structure-title">
@@ -33,6 +34,11 @@
     <section aria-labelledby="pullback-title">
       <h2 id="pullback-title">One-step pullback</h2>
       <div id="one-step-pullback" class="one-step-pullback" role="status" aria-live="polite" hidden></div>
+    </section>
+
+    <section aria-labelledby="recursive-title">
+      <h2 id="recursive-title">Recursive lazy expansion</h2>
+      <div id="recursive-lazy-expansion" class="recursive-lazy-expansion" role="status" aria-live="polite" hidden></div>
     </section>
 
     <section aria-labelledby="status-title">
