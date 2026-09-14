@@ -2,6 +2,7 @@
 
 const statusElement = document.querySelector("#system-status");
 const dataElement = document.querySelector("#system-data");
+const rendererElement = document.querySelector("#base-renderer");
 
 const fields = {
   project: document.querySelector("#project-value"),
@@ -31,6 +32,14 @@ function displayScene(scene) {
   fields.definingFunctionStatus.textContent = scene.mathematics.baseHypersurface.definingFunction.representation;
 }
 
+function resetRenderedState() {
+  dataElement.hidden = true;
+  rendererElement.hidden = true;
+  rendererElement.textContent = "";
+  delete rendererElement.dataset.state;
+  delete rendererElement.dataset.geometryRendered;
+}
+
 async function loadSystemConfiguration() {
   try {
     const response = await fetch("data/system.json", { cache: "no-store" });
@@ -42,15 +51,16 @@ async function loadSystemConfiguration() {
     const rawScene = await response.json();
     const scene = SceneSpec.validateAndNormalizeScene(rawScene);
 
+    BaseRenderer.renderBaseScene(scene, rendererElement);
     displayScene(scene);
     dataElement.hidden = false;
     statusElement.dataset.state = "ready";
-    statusElement.textContent = "Loaded and validated data/system.json successfully.";
+    statusElement.textContent = "Loaded, validated, and initialized the base renderer successfully.";
   } catch (error) {
-    console.error("Failed to load or validate scene specification:", error);
-    dataElement.hidden = true;
+    console.error("Failed to load, validate, or render the base scene:", error);
+    resetRenderedState();
     statusElement.dataset.state = "error";
-    statusElement.textContent = `Failed to load or validate data/system.json: ${error.message}`;
+    statusElement.textContent = `Failed to load, validate, or render data/system.json: ${error.message}`;
   }
 }
 

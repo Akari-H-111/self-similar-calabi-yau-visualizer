@@ -61,7 +61,8 @@ h1 {
   overflow-x: auto;
 }
 
-.status {
+.status,
+.base-renderer {
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
   border-left: 0.25rem solid currentColor;
@@ -69,6 +70,10 @@ h1 {
 
 .status[data-state="error"] {
   font-weight: 700;
+}
+
+.base-renderer[data-state="unresolved_geometry"] {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 .system-data {

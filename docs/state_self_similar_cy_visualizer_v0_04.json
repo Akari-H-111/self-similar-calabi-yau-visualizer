@@ -1,0 +1,85 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.04",
+  "status": "active",
+  "current_stage": "base renderer completed",
+  "milestone": "Thread 03 — Base Renderer",
+  "repository": {
+    "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "visibility": "private",
+    "default_branch": "main",
+    "starting_commit": "4a4229d287afbc95cf9a5cd5a99d6901cc1178ce",
+    "connector_read_access": true,
+    "connector_write_access": true
+  },
+  "scene_contract": {
+    "schema_version": 1,
+    "canonical_inputs": ["D", "lambda", "kappa"],
+    "request_parameters": ["requestedDepth"],
+    "pullback_map": {
+      "kind": "coordinate_power",
+      "coordinate_count": 4,
+      "exponent_parameter": "D"
+    },
+    "base_hypersurface": {
+      "kind": "level_set",
+      "defining_function_symbol": "W",
+      "representation": "unresolved",
+      "level_parameter": "lambda"
+    },
+    "derived_quantities": {
+      "metric_scale": "D^2",
+      "sheet_degree": "D^4",
+      "persisted_in_canonical_json": false
+    },
+    "preserved_from_v0_03": true
+  },
+  "base_renderer": {
+    "module": "base-renderer.js",
+    "input": "normalized scene from SceneSpec.validateAndNormalizeScene",
+    "validation_owned_by_renderer": false,
+    "surface": "DOM",
+    "geometry_status": "unresolved_geometry",
+    "geometry_rendered": false,
+    "reason": "W representation is unresolved",
+    "consumes_pullback_map": false,
+    "consumes_requested_depth": false,
+    "consumes_derived_quantities": false
+  },
+  "validation": {
+    "v0_03_scene_verifier": "passed",
+    "canonical_json_valid": "passed",
+    "malformed_examples_rejected": "passed",
+    "thread_01_json_loading_preserved": "passed",
+    "renderer_starts_after_validation": "passed",
+    "base_renderer_smoke_test": "passed",
+    "unresolved_W_preserved": "passed",
+    "invented_W_rejected_before_render": "passed",
+    "renderer_independent_of_D_and_requestedDepth": "passed",
+    "derived_quantities_not_promoted_to_inputs": "passed",
+    "base_renderer_javascript_syntax": "passed",
+    "app_javascript_syntax": "passed",
+    "local_static_http_index": "passed",
+    "local_static_http_system_json": "passed",
+    "local_static_http_renderer_module": "passed",
+    "full_browser_runtime_smoke_test": "not_tested"
+  },
+  "failed_validation": [],
+  "scope_exclusions": [
+    "one-step pullback",
+    "recursive rendering",
+    "lazy expansion",
+    "zoom semantics",
+    "D^4 sheet rendering",
+    "arithmetic overlays",
+    "Three.js",
+    "WebGL",
+    "GPU buffers",
+    "camera navigation",
+    "performance work",
+    "fidelity audit",
+    "later UX",
+    "publication"
+  ],
+  "next_milestone": "Thread 04 — One-Step Pullback"
+}

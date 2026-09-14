@@ -6,14 +6,15 @@
   <title>Self-Similar Calabi–Yau Visualizer</title>
   <link rel="stylesheet" href="style.css">
   <script src="scene-spec.js" defer></script>
+  <script src="base-renderer.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
   <main class="shell">
     <header>
-      <p class="eyebrow">v0.03 · Mathematical Scene Specification</p>
+      <p class="eyebrow">v0.04 · Base Renderer</p>
       <h1>Self-Similar Calabi–Yau Visualizer</h1>
-      <p class="lede">Validated mathematical scene data for the canonical self-similar system. Rendering is not implemented yet.</p>
+      <p class="lede">A validated base-scene renderer with an explicit unresolved-geometry state. No Calabi–Yau geometry is invented while W remains unresolved.</p>
     </header>
 
     <section aria-labelledby="structure-title">
@@ -21,6 +22,11 @@
       <div class="formula" aria-label="X equals W inverse of lambda">X = W<sup>−1</sup>(λ)</div>
       <div class="formula" aria-label="X sub n equals P D to the n inverse image of X">X<sub>n</sub> = (P<sub>D</sub><sup>n</sup>)<sup>−1</sup>(X)</div>
       <div class="formula" aria-label="P D coordinate power map">P<sub>D</sub>(z<sub>1</sub>,...,z<sub>4</sub>) = (z<sub>1</sub><sup>D</sup>,...,z<sub>4</sub><sup>D</sup>)</div>
+    </section>
+
+    <section aria-labelledby="renderer-title">
+      <h2 id="renderer-title">Base renderer</h2>
+      <div id="base-renderer" class="base-renderer" role="status" aria-live="polite" hidden></div>
     </section>
 
     <section aria-labelledby="status-title">
