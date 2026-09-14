@@ -25,7 +25,7 @@
     "recursion_implemented": false
   },
   "validation": {
-    "required_root_files": "passed",
+    "required_files_all_exist": "passed",
     "system_json_valid": "passed",
     "index_references_style_css": "passed",
     "index_references_app_js": "passed",
@@ -33,6 +33,7 @@
     "javascript_syntax": "passed",
     "fetch_failure_handling": "passed",
     "canonical_formulas_present": "passed",
+    "asset_dependencies_resolved": "passed",
     "local_static_http_index": "passed",
     "local_static_http_system_json": "passed",
     "browser_runtime_smoke_test": "not_tested"
