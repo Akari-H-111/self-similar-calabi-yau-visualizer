@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Self-Similar Calabi–Yau Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <p class="eyebrow">v0.02 · Repository Bootstrap</p>
+      <h1>Self-Similar Calabi–Yau Visualizer</h1>
+      <p class="lede">Minimal static scaffold for the canonical self-similar system.</p>
+    </header>
+
+    <section aria-labelledby="structure-title">
+      <h2 id="structure-title">Canonical structure</h2>
+      <div class="formula" aria-label="X equals W inverse of lambda">X = W<sup>−1</sup>(λ)</div>
+      <div class="formula" aria-label="X sub n equals P D to the n inverse image of X">X<sub>n</sub> = (P<sub>D</sub><sup>n</sup>)<sup>−1</sup>(X)</div>
+      <div class="formula" aria-label="P D coordinate power map">P<sub>D</sub>(z<sub>1</sub>,...,z<sub>4</sub>) = (z<sub>1</sub><sup>D</sup>,...,z<sub>4</sub><sup>D</sup>)</div>
+    </section>
+
+    <section aria-labelledby="status-title">
+      <h2 id="status-title">System configuration</h2>
+      <div id="system-status" class="status" role="status" aria-live="polite">Loading data/system.json…</div>
+      <dl id="system-data" class="system-data" hidden>
+        <div><dt>Project</dt><dd id="project-value"></dd></div>
+        <div><dt>Version</dt><dd id="version-value"></dd></div>
+        <div><dt>D</dt><dd id="d-value"></dd></div>
+        <div><dt>λ</dt><dd id="lambda-value"></dd></div>
+        <div><dt>κ</dt><dd id="kappa-value"></dd></div>
+        <div><dt>Initial depth</dt><dd id="depth-value"></dd></div>
+      </dl>
+    </section>
+  </main>
+</body>
+</html>
