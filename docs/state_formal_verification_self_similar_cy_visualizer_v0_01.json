@@ -1,0 +1,50 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "formalNamespace": "formal-v0.01",
+  "milestone": "F01 — Lean / Lake / mathlib Bootstrap",
+  "canonicalParent": "5b60214bb0f108ee111e3f1e78bbf2c9f10d5cce",
+  "status": "passed",
+  "canonicalState": "sealed",
+  "toolchain": {
+    "lean": "leanprover/lean4:v4.34.0",
+    "lake": "5.0.0-src+293d5d0",
+    "mathlib": "7801e8406155c31b340d28e2762f754d02b5e9b0",
+    "manifest": "formal/lake-manifest.json"
+  },
+  "gates": {
+    "toolchain_resolution": "passed",
+    "dependency_pin": "passed",
+    "lake_update": "passed",
+    "mathlib_cache_get": "passed",
+    "lake_build": "passed",
+    "basic_import_smoke": "passed",
+    "legacy_node_regression": "passed",
+    "js_syntax_check": "passed",
+    "browser_runtime": "not_tested",
+    "formal_project_theorems": "not_started"
+  },
+  "evidence": {
+    "lakeBuild": "Build completed successfully (8926 jobs).",
+    "mathlibManifestRev": "7801e8406155c31b340d28e2762f754d02b5e9b0",
+    "legacyVerifiers": [
+      "verify_scene_spec_v0_03.js",
+      "verify_base_renderer_v0_04.js",
+      "verify_one_step_pullback_v0_05.js",
+      "verify_recursive_lazy_expansion_v0_06.js"
+    ],
+    "syntaxChecked": [
+      "scene-spec.js",
+      "base-renderer.js",
+      "one-step-pullback.js",
+      "recursive-lazy-expansion.js",
+      "app.js"
+    ]
+  },
+  "scopeGuards": {
+    "runtimeModified": false,
+    "projectSpecificLeanTheoremsIntroduced": false,
+    "githubActionsIntroduced": false,
+    "formalLakeBuildArtifactsCommitted": false
+  },
+  "nextMilestone": "F02 — Coordinate Power Map"
+}
