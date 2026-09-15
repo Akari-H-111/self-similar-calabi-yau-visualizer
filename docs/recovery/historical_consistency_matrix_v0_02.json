@@ -1,0 +1,824 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "milestone": "R02 — Historical Consistency Audit",
+  "branch": "formal-doc-recovery-r02",
+  "baseMain": {
+    "commit": "234f7829cb6b5fb3af8c84234a84e73fa9397db9",
+    "commitMessage": "docs: seal R01 exact formal artifact recovery"
+  },
+  "status": "staged",
+  "canonicalState": "unsealed",
+  "auditPolicy": "classification-only; historical sources immutable",
+  "recoveryAuthority": "docs/recovery/formal_artifact_recovery_manifest_v0_01.json",
+  "executionWitness": {
+    "requestedF03CodespacesTranscript": "unavailable_in_current_thread",
+    "treatment": "secondary execution witness only; canonical source replacement forbidden",
+    "leanRerunInR02": false
+  },
+  "classificationDefinitions": {
+    "CONSISTENT": "Claims agree and are supported by canonical source, Git history, or available evidence.",
+    "STALE_NARRATIVE": "Earlier lifecycle narrative remains preserved although a later canonical state has advanced.",
+    "SUPERSEDED": "A claim was explicitly replaced by a later canonical state and no longer represents current state, without being historically false.",
+    "HISTORICAL_BUT_VALID": "A claim accurately describes a past moment and should remain historical.",
+    "ACTUAL_CONTRADICTION": "Claims about the same historical fact cannot both hold and cannot be reconciled by lifecycle, branch, time, or supersession.",
+    "UNVERIFIABLE": "Available sources in this R02 thread are insufficient for independent confirmation."
+  },
+  "counts": {
+    "CONSISTENT": 38,
+    "STALE_NARRATIVE": 2,
+    "SUPERSEDED": 0,
+    "HISTORICAL_BUT_VALID": 2,
+    "ACTUAL_CONTRADICTION": 0,
+    "UNVERIFIABLE": 3
+  },
+  "actualContradictions": [],
+  "findings": [
+    {
+      "milestone": "F01",
+      "dimension": "A",
+      "claim": "milestone identity",
+      "sources": [
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_01.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md",
+        "commit:04d66ee225426b03296c0cf61247de3d567b23d1"
+      ],
+      "observations": [
+        "All identify F01 as Lean / Lake / mathlib Bootstrap."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Identity is stable across plan, state, progress, and the bootstrap commit.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair. Preserve canonical historical sources unchanged."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "B",
+      "claim": "status",
+      "sources": [
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_01.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md"
+      ],
+      "observations": [
+        "Plan records the closure result as sealed; state records passed/sealed; progress records closed/passed."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Wording differs but all sources express successful F01 closure.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "C",
+      "claim": "canonical parent",
+      "sources": [
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_01.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md",
+        "commit:04d66ee225426b03296c0cf61247de3d567b23d1"
+      ],
+      "observations": [
+        "Canonical parent is 5b60214bb0f108ee111e3f1e78bbf2c9f10d5cce; Git records it as the sole parent of 04d66ee."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Document claim and commit ancestry match exactly.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "D",
+      "claim": "implementation commit",
+      "sources": [
+        "commit:04d66ee225426b03296c0cf61247de3d567b23d1",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md"
+      ],
+      "observations": [
+        "F01 is represented by one bootstrap commit rather than a separate implementation/seal pair."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "No source claims a distinct F01 implementation commit; Git history supports the one-commit bootstrap lifecycle.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "E",
+      "claim": "sealing state",
+      "sources": [
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_01.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md",
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md"
+      ],
+      "observations": [
+        "F01 is consistently described as passed/closed/sealed."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "No competing unsealed canonical narrative survives for F01.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "F",
+      "claim": "toolchain versions",
+      "sources": [
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_01.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md",
+        "formal/lean-toolchain",
+        "formal/lake-manifest.json"
+      ],
+      "observations": [
+        "Lean pin is leanprover/lean4:v4.34.0; historical narrative records Lake 5.0.0-src+293d5d0."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Pinned Lean source and historical version narrative agree; dependency files were not changed by F02/F03.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "G",
+      "claim": "mathlib revision",
+      "sources": [
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_01.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md",
+        "formal/lakefile.toml",
+        "formal/lake-manifest.json"
+      ],
+      "observations": [
+        "All record mathlib 7801e8406155c31b340d28e2762f754d02b5e9b0."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Exact dependency revision agrees across plan/state/progress and both dependency files.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "H",
+      "claim": "formal definitions",
+      "sources": [
+        "formal/SelfSimilarCY.lean@04d66ee225426b03296c0cf61247de3d567b23d1",
+        "formal/SelfSimilarCY/Basic.lean",
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md"
+      ],
+      "observations": [
+        "F01 root module imports only Basic; Basic imports Mathlib and contains only a smoke example."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "No project-specific P_D/X_n/W/geometry definition exists at F01.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "I",
+      "claim": "theorem statements",
+      "sources": [
+        "formal/SelfSimilarCY/Basic.lean",
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md"
+      ],
+      "observations": [
+        "Only environment smoke example 1 + 1 = 2 is present."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "F01 does not claim project mathematics and source contains no project theorem.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "J",
+      "claim": "theorem scope",
+      "sources": [
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md",
+        "formal/SelfSimilarCY/Basic.lean"
+      ],
+      "observations": [
+        "F01 scope is toolchain bootstrap only."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Actual source remains within bootstrap scope.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "K",
+      "claim": "explicit non-claims",
+      "sources": [
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md",
+        "formal/SelfSimilarCY.lean@04d66ee225426b03296c0cf61247de3d567b23d1",
+        "formal/SelfSimilarCY/Basic.lean"
+      ],
+      "observations": [
+        "No P_D, X_n, pullback, W, CY geometry, degree, metric, sheet, or project axiom is present."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Non-claims are verified by the historical import tree and Basic source.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "L",
+      "claim": "execution evidence",
+      "sources": [
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_01.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md"
+      ],
+      "observations": [
+        "Canonical docs report Codespaces execution, lake build 8926 jobs, smoke check, Node regressions, and syntax checks.",
+        "Independent execution transcript is unavailable in the current R02 thread; R02 did not rerun the toolchain."
+      ],
+      "classification": "UNVERIFIABLE",
+      "reason": "The narrative is internally consistent, but no independent execution witness is exact-retrievable in this thread.",
+      "repairRequired": false,
+      "recommendedHandling": "Preserve the historical claims. If an exact transcript becomes available, attach it only as secondary execution witness in a future audit addendum."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "M",
+      "claim": "changed-file claims",
+      "sources": [
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md",
+        "compare:5b60214bb0f108ee111e3f1e78bbf2c9f10d5cce..04d66ee225426b03296c0cf61247de3d567b23d1"
+      ],
+      "observations": [
+        "Git compare shows only .gitignore, F01 docs, and formal project files; no runtime/data file changed."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Repository effects match the progress narrative.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "N",
+      "claim": "next milestone",
+      "sources": [
+        "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_01.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_01.md"
+      ],
+      "observations": [
+        "F01 names F02 — Coordinate Power Map as the next milestone; F02 was subsequently completed."
+      ],
+      "classification": "HISTORICAL_BUT_VALID",
+      "reason": "This is a correct closure-time statement even though repository history has since advanced beyond F02.",
+      "repairRequired": false,
+      "recommendedHandling": "Preserve as historical sequencing metadata; do not rewrite the F01 source to name a later milestone."
+    },
+    {
+      "milestone": "F01",
+      "dimension": "O",
+      "claim": "branch / ancestry claims",
+      "sources": [
+        "branch:formal-f01-bootstrap",
+        "commit:04d66ee225426b03296c0cf61247de3d567b23d1",
+        "compare:5b60214bb0f108ee111e3f1e78bbf2c9f10d5cce..04d66ee225426b03296c0cf61247de3d567b23d1"
+      ],
+      "observations": [
+        "formal-f01-bootstrap points to 04d66ee; its sole parent/merge base is 5b60214."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Branch pointer and linear ancestry match historical claims.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "A",
+      "claim": "milestone identity",
+      "sources": [
+        "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md"
+      ],
+      "observations": [
+        "All identify F02 as Coordinate Power Map."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Milestone identity is stable across artifacts.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "B",
+      "claim": "status",
+      "sources": [
+        "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md",
+        "commit:e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283",
+        "commit:5904db171c96f130ea0c39b124c83751931a23ee"
+      ],
+      "observations": [
+        "The theorem document still says implementation staged / execution pending.",
+        "State and progress say passed / sealed.",
+        "Git shows the theorem document was created at the stage commit and not updated by the seal commit."
+      ],
+      "classification": "STALE_NARRATIVE",
+      "reason": "The theorem document preserves an authentic pre-seal status while later canonical state/progress record successful sealing.",
+      "repairRequired": false,
+      "recommendedHandling": "Preserve the original theorem document unchanged. R03 rematerialization should carry provenance noting that its status line is pre-seal and point to the F02 seal commit/state/progress."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "C",
+      "claim": "canonical parent",
+      "sources": [
+        "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md",
+        "commit:e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283"
+      ],
+      "observations": [
+        "Canonical parent is 04d66ee225426b03296c0cf61247de3d567b23d1 and is the sole parent of the implementation commit."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Document parent claim matches Git ancestry.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "D",
+      "claim": "implementation commit",
+      "sources": [
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md",
+        "commit:e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283"
+      ],
+      "observations": [
+        "Verified implementation commit is e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283 with message formal: stage F02 canonical coordinate power map."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Exact SHA and message exist and match state/progress.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "E",
+      "claim": "sealing state",
+      "sources": [
+        "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md",
+        "commit:5904db171c96f130ea0c39b124c83751931a23ee"
+      ],
+      "observations": [
+        "The theorem document's stopping point is unsealed; state/progress and seal commit record sealed.",
+        "Seal commit directly follows the staged implementation commit."
+      ],
+      "classification": "STALE_NARRATIVE",
+      "reason": "Normal staged → execution → seal lifecycle explains the mismatch; the pre-seal theorem narrative was not rewritten.",
+      "repairRequired": false,
+      "recommendedHandling": "Do not retrofit sealed wording into the historical theorem document. Preserve the lifecycle distinction in R03 metadata."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "F",
+      "claim": "toolchain versions",
+      "sources": [
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md",
+        "formal/lean-toolchain",
+        "formal/lake-manifest.json"
+      ],
+      "observations": [
+        "F02 records Lean 4.34.0 and Lake 5.0.0-src+293d5d0; dependency files are unchanged from F01."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Toolchain narrative is continuous with sealed F01 and no dependency file changes occur in F02.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "G",
+      "claim": "mathlib revision",
+      "sources": [
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md",
+        "formal/lakefile.toml",
+        "formal/lake-manifest.json"
+      ],
+      "observations": [
+        "F02 and dependency files record 7801e8406155c31b340d28e2762f754d02b5e9b0."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Pinned mathlib revision is exact and unchanged from F01.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "H",
+      "claim": "formal definitions",
+      "sources": [
+        "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md",
+        "formal/SelfSimilarCY/CoordinatePower.lean",
+        "formal/SelfSimilarCY.lean@5904db171c96f130ea0c39b124c83751931a23ee"
+      ],
+      "observations": [
+        "Point4 := Fin 4 → ℂ and coordinatePower D z := fun i => z i ^ D match exactly; F02 root imports Basic + CoordinatePower only."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Narrative and actual Lean source are identical in mathematical content and scope.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "I",
+      "claim": "theorem statements",
+      "sources": [
+        "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md",
+        "formal/SelfSimilarCY/CoordinatePower.lean"
+      ],
+      "observations": [
+        "The theorem names coordinatePower_apply and coordinatePower_unique are present with the described coordinate formula and extensional uniqueness statement."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Theorem names and descriptions are source-correct.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "J",
+      "claim": "theorem scope",
+      "sources": [
+        "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md",
+        "formal/SelfSimilarCY/CoordinatePower.lean"
+      ],
+      "observations": [
+        "coordinatePower is defined for all D : ℕ; runtime D >= 2 is not a Lean requirement."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Historical scope claim matches theorem signatures exactly.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "K",
+      "claim": "explicit non-claims",
+      "sources": [
+        "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md",
+        "formal/SelfSimilarCY/CoordinatePower.lean",
+        "formal/SelfSimilarCY.lean@5904db171c96f130ea0c39b124c83751931a23ee"
+      ],
+      "observations": [
+        "No iteration module, pullback tower, W, CY geometry, degree theorem, metric theorem, sheet theorem, renderer theorem, axiom, sorry, admit, or opaque placeholder is present in F02 project source."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Explicit non-claims are source-supported.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "L",
+      "claim": "execution evidence",
+      "sources": [
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md",
+        "commit:5904db171c96f130ea0c39b124c83751931a23ee"
+      ],
+      "observations": [
+        "Canonical state/progress record Codespaces lake build 8927 jobs, direct CoordinatePower compile, clean tree, and Node regressions.",
+        "No independent F02/F03 Codespaces transcript is exact-retrievable in the current thread; R02 did not rerun Lean."
+      ],
+      "classification": "UNVERIFIABLE",
+      "reason": "The seal narrative is internally coherent but lacks an independently retrieved execution witness in this audit.",
+      "repairRequired": false,
+      "recommendedHandling": "Preserve the canonical execution narrative; attach a transcript later only if exact provenance can be established."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "M",
+      "claim": "changed-file claims",
+      "sources": [
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md",
+        "compare:04d66ee225426b03296c0cf61247de3d567b23d1..e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283",
+        "compare:e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283..5904db171c96f130ea0c39b124c83751931a23ee"
+      ],
+      "observations": [
+        "Implementation changes exactly the documented six files; seal changes only F02 progress/state and formal README. No runtime/dependency/CI file changed."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Changed-file narrative matches both Git compares.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "N",
+      "claim": "next milestone",
+      "sources": [
+        "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md"
+      ],
+      "observations": [
+        "F02 names F03 — Iteration Theorem as next; F03 was subsequently completed."
+      ],
+      "classification": "HISTORICAL_BUT_VALID",
+      "reason": "Correct at F02 closure, though later history has advanced beyond it.",
+      "repairRequired": false,
+      "recommendedHandling": "Preserve the original sequencing statement."
+    },
+    {
+      "milestone": "F02",
+      "dimension": "O",
+      "claim": "branch / ancestry claims",
+      "sources": [
+        "branch:formal-f02-coordinate-power",
+        "commit:e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283",
+        "commit:5904db171c96f130ea0c39b124c83751931a23ee"
+      ],
+      "observations": [
+        "formal-f02-coordinate-power points to 5904db17; seal's sole parent is e3904e06; e390's sole parent is 04d66ee."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Working branch and direct linear lifecycle ancestry are source-backed.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "A",
+      "claim": "milestone identity",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md"
+      ],
+      "observations": [
+        "All identify F03 as Iteration Theorem."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Milestone identity is stable across artifacts.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "B",
+      "claim": "status",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md",
+        "commit:b85c295540996612633bf7d702098ba9634882fe"
+      ],
+      "observations": [
+        "Theorem document, state, and progress all record passed / sealed after the F03 seal commit."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "F03 seal updated all three historical status artifacts coherently.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "C",
+      "claim": "canonical parent",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md",
+        "commit:f314d20d128cf27f46bb9f603364a6b8bf0b2ee0"
+      ],
+      "observations": [
+        "Canonical parent is 5904db171c96f130ea0c39b124c83751931a23ee and is the sole parent of the F03 implementation commit."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Document claim and actual Git parent agree exactly.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "D",
+      "claim": "implementation commit",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md",
+        "commit:f314d20d128cf27f46bb9f603364a6b8bf0b2ee0"
+      ],
+      "observations": [
+        "All record f314d20d128cf27f46bb9f603364a6b8bf0b2ee0 with message formal: stage F03 iteration theorem."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Exact SHA and message match Git history.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "E",
+      "claim": "sealing state",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md",
+        "commit:b85c295540996612633bf7d702098ba9634882fe"
+      ],
+      "observations": [
+        "F03 theorem/state/progress are all updated to sealed by the seal commit."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "No surviving pre-seal status mismatch remains in F03 canonical artifacts.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "F",
+      "claim": "toolchain versions",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md",
+        "formal/lean-toolchain"
+      ],
+      "observations": [
+        "Lean 4.34.0 and Lake 5.0.0-src+293d5d0 are consistently recorded; F03 changes no dependency files."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Historical narrative and sealed dependency state agree.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "G",
+      "claim": "mathlib revision",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md",
+        "formal/lakefile.toml",
+        "formal/lake-manifest.json"
+      ],
+      "observations": [
+        "All record 7801e8406155c31b340d28e2762f754d02b5e9b0."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "mathlib pin remains exact and unchanged through F03.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "H",
+      "claim": "formal definitions",
+      "sources": [
+        "formal/SelfSimilarCY/CoordinatePower.lean",
+        "formal/SelfSimilarCY/CoordinatePowerIteration.lean",
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md"
+      ],
+      "observations": [
+        "F03 imports sealed CoordinatePower and does not redefine Point4 or coordinatePower."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Single-source dependency claim is verified by exact source.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "I",
+      "claim": "theorem statements",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "formal/SelfSimilarCY/CoordinatePowerIteration.lean"
+      ],
+      "observations": [
+        "coordinatePower_iterate_apply and coordinatePower_iterate exactly match the documented formulas."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Theorem names, parameters, and equations match actual Lean source.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "J",
+      "claim": "theorem scope",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "formal/SelfSimilarCY/CoordinatePowerIteration.lean"
+      ],
+      "observations": [
+        "Theorems quantify D n : ℕ with no D >= 2 side condition; n=0, n=1, D=0, D=1 need no extra hypothesis."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Scope statement is directly visible in theorem signatures.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "K",
+      "claim": "explicit non-claims",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "formal/SelfSimilarCY.lean",
+        "formal/SelfSimilarCY/CoordinatePowerIteration.lean"
+      ],
+      "observations": [
+        "No X/X_n pullback tower, W, CY geometry, étale/covering, degree theorem, sheet theorem, metric/Jacobian theorem, renderer theorem, JS↔Lean bridge, CI theorem, axiom, sorry, admit, or opaque placeholder is present."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Explicit F03 non-claims are source-supported.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "L",
+      "claim": "execution evidence",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md",
+        "commit:b85c295540996612633bf7d702098ba9634882fe"
+      ],
+      "observations": [
+        "Canonical docs record Codespaces HEAD f314d20d, parent 5904db17, clean tree, lake build 8928 jobs, direct module compile, Node regressions, and source scan.",
+        "Requested F03 Codespaces transcript is unavailable for exact retrieval in the current R02 thread; R02 did not rerun Lean."
+      ],
+      "classification": "UNVERIFIABLE",
+      "reason": "Repository narratives are mutually consistent, but the requested secondary execution witness could not be independently retrieved.",
+      "repairRequired": false,
+      "recommendedHandling": "Preserve the historical execution narrative. If the exact transcript later becomes available, link it as secondary witness without replacing canonical source."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "M",
+      "claim": "changed-file claims",
+      "sources": [
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md",
+        "compare:5904db171c96f130ea0c39b124c83751931a23ee..f314d20d128cf27f46bb9f603364a6b8bf0b2ee0",
+        "compare:f314d20d128cf27f46bb9f603364a6b8bf0b2ee0..b85c295540996612633bf7d702098ba9634882fe"
+      ],
+      "observations": [
+        "Implementation compare changes exactly six documented files; seal compare changes theorem/state/progress/formal README only; no dependency/runtime/CI file changes."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Changed-file claims match Git compares.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "N",
+      "claim": "next milestone",
+      "sources": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md"
+      ],
+      "observations": [
+        "All name F04 — Pullback Tower as next formal milestone. Current canonical main has no F04 pullback module."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "The next-milestone statement remains the canonical formal sequence; an out-of-main F04 branch does not alter F03 historical truth.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    },
+    {
+      "milestone": "F03",
+      "dimension": "O",
+      "claim": "branch / ancestry claims",
+      "sources": [
+        "branch:formal-f03-iteration-theorem",
+        "commit:f314d20d128cf27f46bb9f603364a6b8bf0b2ee0",
+        "commit:b85c295540996612633bf7d702098ba9634882fe"
+      ],
+      "observations": [
+        "formal-f03-iteration-theorem points to b85c295; seal's sole parent is f314d20d; f314's sole parent is 5904db17."
+      ],
+      "classification": "CONSISTENT",
+      "reason": "Branch pointer and linear implementation→seal ancestry match all historical claims.",
+      "repairRequired": false,
+      "recommendedHandling": "No repair."
+    }
+  ],
+  "recommendedNextMilestone": "R03 — Documents Rematerialization",
+  "r04Recommendation": "not_required_by_R02_findings",
+  "repairPolicy": "Recommendations only. No historical source may be edited in R02."
+}
