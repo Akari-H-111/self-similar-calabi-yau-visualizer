@@ -1,0 +1,115 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "milestone": "R01 — Exact Canonical Recovery",
+  "branch": "formal-doc-recovery-r01",
+  "baseMain": {
+    "ref": "main",
+    "commit": "b85c295540996612633bf7d702098ba9634882fe",
+    "commitMessage": "formal: seal F03 iteration theorem"
+  },
+  "status": "staged",
+  "canonicalState": "unsealed",
+  "sourceAuthority": "GitHub canonical repository",
+  "recoveryPolicy": "exact-recovery-only",
+  "historicalSourceFilesModified": false,
+  "targets": [
+    {
+      "path": "docs/FORMAL_VERIFICATION_PLAN_self_similar_cy_visualizer_v0_01.md",
+      "ref": "b85c295540996612633bf7d702098ba9634882fe",
+      "blobSha": "39f259869a8c93c01a4b7e9dfc4da77c408a96b0",
+      "retrievalStatus": "exact_canonical_retrieval",
+      "classification": "A",
+      "contentModified": false,
+      "sourceAuthority": "GitHub canonical repository",
+      "contentIdentityEvidence": "Git blob SHA returned by exact GitHub fetch"
+    },
+    {
+      "path": "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md",
+      "ref": "b85c295540996612633bf7d702098ba9634882fe",
+      "blobSha": "6dd1d182e2f0dfb0418cfc55a24cf455eb2fb226",
+      "retrievalStatus": "exact_canonical_retrieval",
+      "classification": "A",
+      "contentModified": false,
+      "sourceAuthority": "GitHub canonical repository",
+      "contentIdentityEvidence": "Git blob SHA returned by exact GitHub fetch"
+    },
+    {
+      "path": "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json",
+      "ref": "b85c295540996612633bf7d702098ba9634882fe",
+      "blobSha": "8b22701eddb56d78d219d85ff45caff38e427cf5",
+      "retrievalStatus": "exact_canonical_retrieval",
+      "classification": "A",
+      "contentModified": false,
+      "sourceAuthority": "GitHub canonical repository",
+      "contentIdentityEvidence": "Git blob SHA returned by exact GitHub fetch"
+    },
+    {
+      "path": "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md",
+      "ref": "b85c295540996612633bf7d702098ba9634882fe",
+      "blobSha": "747056d039fd00aecec9d953757a2d54e084b065",
+      "retrievalStatus": "exact_canonical_retrieval",
+      "classification": "A",
+      "contentModified": false,
+      "sourceAuthority": "GitHub canonical repository",
+      "contentIdentityEvidence": "Git blob SHA returned by exact GitHub fetch"
+    },
+    {
+      "path": "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+      "ref": "b85c295540996612633bf7d702098ba9634882fe",
+      "blobSha": "9c7d28fe164177b9c4320d333772ef862e87b6a6",
+      "retrievalStatus": "exact_canonical_retrieval",
+      "classification": "A",
+      "contentModified": false,
+      "sourceAuthority": "GitHub canonical repository",
+      "contentIdentityEvidence": "Git blob SHA returned by exact GitHub fetch"
+    },
+    {
+      "path": "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+      "ref": "b85c295540996612633bf7d702098ba9634882fe",
+      "blobSha": "112e1311feeff3cbd886bd1ae87addbbece0cdc1",
+      "retrievalStatus": "exact_canonical_retrieval",
+      "classification": "A",
+      "contentModified": false,
+      "sourceAuthority": "GitHub canonical repository",
+      "contentIdentityEvidence": "Git blob SHA returned by exact GitHub fetch"
+    },
+    {
+      "path": "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md",
+      "ref": "b85c295540996612633bf7d702098ba9634882fe",
+      "blobSha": "a8391f2d1f7d88f326c5a1ecb91d442eaadaa7ef",
+      "retrievalStatus": "exact_canonical_retrieval",
+      "classification": "A",
+      "contentModified": false,
+      "sourceAuthority": "GitHub canonical repository",
+      "contentIdentityEvidence": "Git blob SHA returned by exact GitHub fetch"
+    }
+  ],
+  "classificationSummary": {
+    "A_exact_canonical_retrieval": 7,
+    "B_canonical_file_present_but_content_read_failure": 0,
+    "C_missing_from_current_canonical_repository": 0,
+    "D_path_or_name_mismatch_requires_audit": 0
+  },
+  "unresolvedTargets": [],
+  "historicalInconsistencyCandidates": [
+    {
+      "scope": "F02 status narrative",
+      "evidence": [
+        "docs/COORDINATE_POWER_MAP_self_similar_cy_visualizer_v0_02.md records implementation staged / execution pending",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_02.json records passed / sealed",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_02.md records passed / sealed"
+      ],
+      "actionInR01": "record only; do not modify historical source",
+      "deferTo": "R02 — Historical Consistency Audit"
+    }
+  ],
+  "verification": {
+    "exactFetch7of7": "passed",
+    "recoveryArtifactsReadback": "pending",
+    "candidateCompare": "pending",
+    "historicalSourcesUnchanged": "pending",
+    "formalRuntimeDependencyCIUnchanged": "pending",
+    "mainFastForward": "pending"
+  },
+  "nextMilestoneAfterSeal": "R02 — Historical Consistency Audit"
+}
