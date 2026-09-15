@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "milestone": "F05 — Contract Bridge Audit",
+  "canonicalF04Parent": "f1602a09ea24e4d71b9352dfc0c3c2602094ed56",
+  "workingBranch": "formal-f05-contract-bridge-audit",
+  "sourceAuthority": "canonical GitHub repository",
+  "classifications": {
+    "EXACT_BRIDGE": "The runtime mathematical contract and sealed Lean statement express the same mathematical relation after explicit representation translation, for runtime inputs admitted by the runtime validator. This does not identify JS objects with Lean objects.",
+    "PARTIAL_BRIDGE": "A common mathematical core exists, but domains, abstraction level, or operational semantics differ and the remainder is not formally bridged.",
+    "ENGINEERING_ONLY": "The runtime behavior is an implementation/verification contract with no corresponding Lean theorem claimed or required.",
+    "FORMAL_ONLY": "A sealed Lean definition/theorem has no direct runtime implementation contract counterpart.",
+    "UNFORMALIZED": "The runtime carries a mathematical or numeric expression, but no sealed Lean theorem establishes the corresponding claimed mathematical interpretation.",
+    "NO_BRIDGE": "The concept is intentionally unresolved, absent, or outside the formal model; no valid JS↔Lean bridge currently exists."
+  },
+  "statistics": {
+    "PARTIAL_BRIDGE": 3,
+    "EXACT_BRIDGE": 4,
+    "FORMAL_ONLY": 3,
+    "ENGINEERING_ONLY": 5,
+    "UNFORMALIZED": 3,
+    "NO_BRIDGE": 4
+  },
+  "rows": [
+    {
+      "id": "D_DOMAIN",
+      "runtimeConcept": "validated parameter D",
+      "runtimeSource": ["scene-spec.js", "data/system.json", "verify_scene_spec_v0_03.js"],
+      "formalConcept": "D : ℕ parameter of coordinatePower / iteration / pullbackTower",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePower.lean", "formal/SelfSimilarCY/CoordinatePowerIteration.lean", "formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "PARTIAL_BRIDGE",
+      "supported": "Every runtime-accepted D is a natural-number exponent usable by the sealed Lean definitions/theorems.",
+      "unsupported": "Runtime additionally requires integer D >= 2 and safe-integer D^2,D^4. Lean theorems quantify over all naturals, including D=0,1, and have no JavaScript safe-integer bound."
+    },
+    {
+      "id": "FOUR_COORDINATES",
+      "runtimeConcept": "pullbackMap.coordinateCount = 4",
+      "runtimeSource": ["scene-spec.js", "data/system.json"],
+      "formalConcept": "Point4 := Fin 4 → ℂ",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePower.lean"],
+      "classification": "EXACT_BRIDGE",
+      "supported": "Both layers fix exactly four coordinates for the coordinate-power map.",
+      "unsupported": "Runtime data representation is JSON metadata; Lean carrier is a function type over complex coordinates."
+    },
+    {
+      "id": "COORDINATE_POWER",
+      "runtimeConcept": "structured pullbackMap {kind: coordinate_power, coordinateCount: 4, exponentParameter: D}",
+      "runtimeSource": ["scene-spec.js", "data/system.json", "verify_scene_spec_v0_03.js"],
+      "formalConcept": "coordinatePower and coordinatePower_apply",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePower.lean"],
+      "classification": "EXACT_BRIDGE",
+      "supported": "The structured runtime declaration reconstructs z_i ↦ z_i^D on four coordinates, matching coordinatePower.",
+      "unsupported": "There is no cross-language proof that a JS object is literally a Lean function; the bridge is semantic."
+    },
+    {
+      "id": "COORDINATE_POWER_UNIQUENESS",
+      "runtimeConcept": "no direct mathematical uniqueness theorem",
+      "runtimeSource": ["verify_one_step_pullback_v0_05.js", "verify_recursive_lazy_expansion_v0_06.js"],
+      "formalConcept": "coordinatePower_unique",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePower.lean"],
+      "classification": "FORMAL_ONLY",
+      "supported": "Lean proves extensional uniqueness of the coordinatewise power map.",
+      "unsupported": "Runtime no-duplication guards are source-of-truth engineering checks, not a proof of function extensional uniqueness."
+    },
+    {
+      "id": "RUNTIME_SINGLE_SOURCE_GUARDS",
+      "runtimeConcept": "consumers must inherit map kind, D and D^4 rather than hard-code/recompute them",
+      "runtimeSource": ["verify_one_step_pullback_v0_05.js", "verify_recursive_lazy_expansion_v0_06.js"],
+      "formalConcept": "none",
+      "formalSource": [],
+      "classification": "ENGINEERING_ONLY",
+      "supported": "Node verifiers check absence of duplicate runtime sources such as direct parameters.D and ** 4 in downstream modules.",
+      "unsupported": "No Lean theorem verifies JavaScript source organization."
+    },
+    {
+      "id": "ONE_STEP_PREIMAGE",
+      "runtimeConcept": "one-step depth=1, relation=inverse_image, X_1 = P_D^{-1}(X)",
+      "runtimeSource": ["one-step-pullback.js", "verify_one_step_pullback_v0_05.js"],
+      "formalConcept": "pullbackTower_succ at n=0 together with pullbackTower_zero",
+      "formalSource": ["formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "EXACT_BRIDGE",
+      "supported": "At the mathematical relation level, depth one is preimage of the base set under coordinatePower D.",
+      "unsupported": "Runtime stores a structural descriptor and does not materialize a Set Point4 or points of X."
+    },
+    {
+      "id": "RECURSIVE_PREIMAGE_RECURRENCE",
+      "runtimeConcept": "each structural level n has sourceDepth=n-1 and relation=inverse_image",
+      "runtimeSource": ["recursive-lazy-expansion.js", "verify_recursive_lazy_expansion_v0_06.js"],
+      "formalConcept": "pullbackTower_succ",
+      "formalSource": ["formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "EXACT_BRIDGE",
+      "supported": "The level-to-predecessor mathematical recurrence matches X_{n+1}=P_D^{-1}(X_n).",
+      "unsupported": "Runtime level materialization schedule is not part of the Lean recurrence."
+    },
+    {
+      "id": "ITERATE_PREIMAGE_CLOSED_FORM",
+      "runtimeConcept": "canonical documented family X_n=(P_D^n)^{-1}(X), represented operationally by repeated structural levels",
+      "runtimeSource": ["README.md", "docs/RECURSIVE_LAZY_EXPANSION_self_similar_cy_visualizer_v0_06.md", "recursive-lazy-expansion.js"],
+      "formalConcept": "pullbackTower_eq_iterate_preimage",
+      "formalSource": ["formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "PARTIAL_BRIDGE",
+      "supported": "The runtime recurrence is consistent with the sealed theorem identifying the mathematical tower with n-fold function-iterate preimage.",
+      "unsupported": "Runtime code does not compute a mathematical set preimage or independently verify the closed-form theorem."
+    },
+    {
+      "id": "COORDINATE_POWER_ITERATION",
+      "runtimeConcept": "no runtime field/function computes P_D^[n] = P_(D^n)",
+      "runtimeSource": ["recursive-lazy-expansion.js"],
+      "formalConcept": "coordinatePower_iterate_apply; coordinatePower_iterate",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePowerIteration.lean"],
+      "classification": "FORMAL_ONLY",
+      "supported": "Lean proves the n-fold coordinate-power iteration formula.",
+      "unsupported": "Lazy runtime expansion repeats structural pullback descriptors; it does not compute the combined exponent D^n map."
+    },
+    {
+      "id": "PULLBACK_COORDINATE_POWER_CLOSED_FORM",
+      "runtimeConcept": "no runtime combined map P_(D^n) object",
+      "runtimeSource": ["recursive-lazy-expansion.js"],
+      "formalConcept": "pullbackTower_eq_coordinatePower_preimage",
+      "formalSource": ["formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "FORMAL_ONLY",
+      "supported": "Lean proves X_n is preimage under coordinatePower (D^n) for arbitrary Set Point4.",
+      "unsupported": "Runtime does not construct this combined map or use it to render geometry."
+    },
+    {
+      "id": "REQUESTED_DEPTH",
+      "runtimeConcept": "request.requestedDepth target for request-bounded lazy materialization",
+      "runtimeSource": ["scene-spec.js", "recursive-lazy-expansion.js", "verify_recursive_lazy_expansion_v0_06.js"],
+      "formalConcept": "n : ℕ index of pullbackTower / function iteration",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePowerIteration.lean", "formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "PARTIAL_BRIDGE",
+      "supported": "A materialized runtime level with depth n is intended to denote the mathematical depth-n structural pullback.",
+      "unsupported": "requestedDepth is a target; materializedDepth may be smaller during lazy expansion. Lean n has no request, frontier, cache, completion, or initialization semantics."
+    },
+    {
+      "id": "LAZY_FRONTIER",
+      "runtimeConcept": "materializedDepth, expansionComplete, levels sequence, expandOneLevel, immutability and stop-at-target",
+      "runtimeSource": ["recursive-lazy-expansion.js", "verify_recursive_lazy_expansion_v0_06.js"],
+      "formalConcept": "none",
+      "formalSource": [],
+      "classification": "ENGINEERING_ONLY",
+      "supported": "Node verifier checks one-level-at-a-time immutable request-bounded expansion.",
+      "unsupported": "Lean F02-F04 says nothing about materialization policy or runtime state."
+    },
+    {
+      "id": "VALIDATION_AND_DOM",
+      "runtimeConcept": "schema validation, validation-before-render, DOM dataset/status updates",
+      "runtimeSource": ["scene-spec.js", "app.js", "base-renderer.js", "one-step-pullback.js", "recursive-lazy-expansion.js", "verify_base_renderer_v0_04.js"],
+      "formalConcept": "none",
+      "formalSource": [],
+      "classification": "ENGINEERING_ONLY",
+      "supported": "Runtime verifiers test these implementation contracts.",
+      "unsupported": "No Lean theorem verifies DOM/browser behavior or JavaScript execution ordering."
+    },
+    {
+      "id": "D2_DERIVED_EXPRESSION",
+      "runtimeConcept": "derived.metricScale = D^2",
+      "runtimeSource": ["scene-spec.js", "verify_scene_spec_v0_03.js"],
+      "formalConcept": "no sealed D^2 bridge theorem",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePower.lean", "formal/SelfSimilarCY/CoordinatePowerIteration.lean", "formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "UNFORMALIZED",
+      "supported": "Runtime computes the numeric square of accepted D.",
+      "unsupported": "No sealed Lean theorem bridges this field, and it is not a proof of P_D^* g_log = D^2 g_log."
+    },
+    {
+      "id": "D4_DERIVED_EXPRESSION",
+      "runtimeConcept": "derived.sheetDegree = D^4; reused as mapDegree/mapDegreePerStep",
+      "runtimeSource": ["scene-spec.js", "one-step-pullback.js", "recursive-lazy-expansion.js", "verify_one_step_pullback_v0_05.js"],
+      "formalConcept": "no sealed map-degree theorem",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePower.lean", "formal/SelfSimilarCY/CoordinatePowerIteration.lean", "formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "UNFORMALIZED",
+      "supported": "Runtime computes and propagates the numeric fourth power of accepted D.",
+      "unsupported": "No sealed Lean theorem proves deg(P_D)=D^4 in any algebraic-geometric/topological sense."
+    },
+    {
+      "id": "ITERATED_D4_EXPRESSION",
+      "runtimeConcept": "iteratedDegreeExpression = {baseDegree: D^4, exponent: n}, described as (D^4)^n",
+      "runtimeSource": ["recursive-lazy-expansion.js", "verify_recursive_lazy_expansion_v0_06.js"],
+      "formalConcept": "no iteratedDegreeIdentity or degree theorem exists",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePowerIteration.lean", "formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "UNFORMALIZED",
+      "supported": "Runtime verifier checks the structural pair at each materialized depth.",
+      "unsupported": "It does not prove (D^4)^n=D^(4n) in Lean and does not establish deg(P_D^[n])=D^(4n)."
+    },
+    {
+      "id": "W_SYMBOL",
+      "runtimeConcept": "baseHypersurface.definingFunction symbol W with representation=unresolved",
+      "runtimeSource": ["scene-spec.js", "data/system.json", "base-renderer.js"],
+      "formalConcept": "no W definition",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePower.lean", "formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "NO_BRIDGE",
+      "supported": "Both project layers avoid inventing concrete W geometry; runtime explicitly guards unresolved representation.",
+      "unsupported": "There is no formal W object, formula, level-set theorem, or geometry."
+    },
+    {
+      "id": "BASE_HYPERSURFACE",
+      "runtimeConcept": "symbolic level-set metadata X=W^{-1}(lambda)",
+      "runtimeSource": ["data/system.json", "docs/SCENE_SPEC_self_similar_cy_visualizer_v0_03.md", "base-renderer.js"],
+      "formalConcept": "pullbackTower accepts arbitrary X : Set Point4 only",
+      "formalSource": ["formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "NO_BRIDGE",
+      "supported": "Formal pullback results may be instantiated with a set X once such a set is separately defined.",
+      "unsupported": "Current Lean source does not define X from W and lambda, nor a Calabi–Yau hypersurface."
+    },
+    {
+      "id": "LAMBDA_KAPPA",
+      "runtimeConcept": "finite-number lambda and kappa validation; lambda names the unresolved level parameter",
+      "runtimeSource": ["scene-spec.js", "data/system.json"],
+      "formalConcept": "no lambda or kappa parameter in F02-F04 formalization",
+      "formalSource": [],
+      "classification": "NO_BRIDGE",
+      "supported": "None beyond the fact that pullbackTower is generic in an arbitrary set X.",
+      "unsupported": "No formal scalar encoding or theorem relates runtime lambda/kappa to Lean objects."
+    },
+    {
+      "id": "NO_SHEET_MATERIALIZATION",
+      "runtimeConcept": "geometryRendered=false and sheetsMaterialized=false guards",
+      "runtimeSource": ["base-renderer.js", "one-step-pullback.js", "recursive-lazy-expansion.js", "verify_recursive_lazy_expansion_v0_06.js"],
+      "formalConcept": "none",
+      "formalSource": [],
+      "classification": "ENGINEERING_ONLY",
+      "supported": "Runtime explicitly refuses to materialize geometry/sheets while W is unresolved.",
+      "unsupported": "This is not a formal theorem about coverings, fibers, sheets, or degree."
+    },
+    {
+      "id": "GEOMETRIC_STRUCTURES",
+      "runtimeConcept": "coverings, étale structure, torus restriction, sheet geometry are absent/non-claims",
+      "runtimeSource": ["README.md", "docs/RECURSIVE_LAZY_EXPANSION_self_similar_cy_visualizer_v0_06.md"],
+      "formalConcept": "no corresponding definitions/theorems",
+      "formalSource": ["formal/SelfSimilarCY/CoordinatePower.lean", "formal/SelfSimilarCY/PullbackTower.lean"],
+      "classification": "NO_BRIDGE",
+      "supported": "None.",
+      "unsupported": "No D^4 sheet geometry, covering theorem, étale theorem, or torus restriction is formalized."
+    },
+    {
+      "id": "BROWSER_RENDERING_CORRECTNESS",
+      "runtimeConcept": "browser/DOM rendering correctness, Three.js/WebGL/UI correctness",
+      "runtimeSource": ["app.js", "base-renderer.js", "one-step-pullback.js", "recursive-lazy-expansion.js"],
+      "formalConcept": "none",
+      "formalSource": [],
+      "classification": "ENGINEERING_ONLY",
+      "supported": "Node verifiers cover selected pure-JS/DOM-like contracts only.",
+      "unsupported": "Browser engine behavior, Three.js/WebGL, and UI correctness are not formally verified; Three.js/WebGL are not implemented."
+    }
+  ],
+  "criticalFindings": {
+    "iteratedDegreeIdentityPresent": false,
+    "formalMapDegreeTheoremPresent": false,
+    "formalMetricScalingTheoremPresent": false,
+    "formalWDefinitionPresent": false,
+    "runtimeWRepresentation": "unresolved",
+    "runtimeSheetObjectsMaterialized": false,
+    "runtimeAndLeanDValidationSemanticsIdentical": false,
+    "requestedDepthIdenticalToLeanTowerIndex": false
+  },
+  "sealStatus": {
+    "auditComplete": true,
+    "freshLeanRegression": "pending_unavailable_in_current_execution_environment",
+    "freshNodeRegression": "pending_unavailable_from_exact_repository_checkout_in_current_execution_environment",
+    "canonicalState": "unsealed"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "formalNamespace": "formal-v0.05",
+  "milestone": "F05 — Contract Bridge Audit",
+  "canonicalParent": "f1602a09ea24e4d71b9352dfc0c3c2602094ed56",
+  "workingBranch": "formal-f05-contract-bridge-audit",
+  "status": "audit_complete_regression_pending",
+  "canonicalState": "unsealed",
+  "sourceAuthority": "canonical GitHub repository",
+  "sourceAudit": {
+    "status": "passed",
+    "headVerified": "f1602a09ea24e4d71b9352dfc0c3c2602094ed56",
+    "f04VerifiedImplementationCommit": "db443db8e21149fbd41d02a500f19a0193b5b7e1",
+    "f04Status": "passed",
+    "f04CanonicalState": "sealed",
+    "iteratedDegreeIdentityFound": false
+  },
+  "bridgeMatrix": {
+    "path": "docs/contract_bridge_matrix_self_similar_cy_visualizer_v0_05.json",
+    "rowCount": 22,
+    "statistics": {
+      "PARTIAL_BRIDGE": 3,
+      "EXACT_BRIDGE": 4,
+      "FORMAL_ONLY": 3,
+      "ENGINEERING_ONLY": 5,
+      "UNFORMALIZED": 3,
+      "NO_BRIDGE": 4
+    }
+  },
+  "criticalConclusions": {
+    "runtimeDToLeanD": "partial_bridge_due_to_runtime_D_ge_2_and_JS_safe_integer_guards",
+    "coordinatePower": "exact_semantic_bridge",
+    "oneStepPreimage": "exact_semantic_bridge",
+    "recursivePreimageRecurrence": "exact_semantic_bridge",
+    "requestedDepthToLeanIndex": "partial_bridge",
+    "D2": "unformalized_numeric_expression_not_metric_theorem",
+    "D4": "unformalized_numeric_expression_not_map_degree_theorem",
+    "iteratedD4": "unformalized_no_iteratedDegreeIdentity",
+    "W": "no_bridge_unresolved_runtime_and_absent_formal_definition",
+    "sheetCoveringEtaleTorusMetricJacobian": "no_bridge_or_engineering_only_as_detailed_in_matrix"
+  },
+  "verificationEvidence": {
+    "historicalF04Regression": "present_but_not_counted_as_fresh_F05_evidence",
+    "freshLeanRegression": "not_run: lean/lake unavailable in current execution environment",
+    "freshNodeRegression": "not_run: exact private repository checkout unavailable to shell execution environment",
+    "placeholderScan": "source audit found no new Lean source because F05 does not modify Lean; mandatory fresh command-line scan still pending",
+    "branchStartCompare": "passed: identical to sealed F04 main before staging"
+  },
+  "scopeGuards": {
+    "leanTheoremSourceModified": false,
+    "runtimeJSModified": false,
+    "dataSystemModified": false,
+    "dependencyFilesModified": false,
+    "githubActionsModified": false,
+    "f06WorkIntroduced": false
+  },
+  "gates": {
+    "canonical_source_audit": "passed",
+    "bridge_matrix_completeness": "passed",
+    "classification_consistency": "passed",
+    "non_claims_completeness": "passed",
+    "fresh_lean_regression": "pending",
+    "fresh_node_regression": "pending",
+    "fresh_placeholder_scan": "pending",
+    "clean_working_tree": "pending_after_staging",
+    "final_compare": "pending_after_staging",
+    "main_fast_forward": "blocked_until_all_seal_gates_pass"
+  },
+  "sealCondition": "not_satisfied: fresh F05 Lean/Node execution evidence is mandatory and unavailable in the current execution environment",
+  "nextMilestoneAfterSeal": "F06 — GitHub CI Integration & Formal Verification Seal"
+}
