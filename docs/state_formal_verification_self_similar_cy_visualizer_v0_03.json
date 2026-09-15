@@ -1,0 +1,87 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "formalNamespace": "formal-v0.03",
+  "milestone": "F03 — Iteration Theorem",
+  "canonicalParent": "5904db171c96f130ea0c39b124c83751931a23ee",
+  "workingBranch": "formal-f03-iteration-theorem",
+  "status": "implementation_staged",
+  "canonicalState": "unsealed",
+  "toolchain": {
+    "lean": "leanprover/lean4:v4.34.0",
+    "lake": "5.0.0-src+293d5d0",
+    "mathlib": "7801e8406155c31b340d28e2762f754d02b5e9b0",
+    "manifest": "formal/lake-manifest.json",
+    "changedFromF02": false
+  },
+  "formalObjects": {
+    "sealedDependencyModule": "formal/SelfSimilarCY/CoordinatePower.lean",
+    "iterationModule": "formal/SelfSimilarCY/CoordinatePowerIteration.lean",
+    "ambient": "Point4 := Fin 4 → ℂ",
+    "coordinatePower": "coordinatePower (D : ℕ) (z : Point4) := fun i => z i ^ D"
+  },
+  "theorems": {
+    "pointwise": "coordinatePower_iterate_apply",
+    "pointwiseStatement": "(coordinatePower D)^[n] z i = z i ^ (D ^ n)",
+    "mapLevel": "coordinatePower_iterate",
+    "mapLevelStatement": "(coordinatePower D)^[n] = coordinatePower (D ^ n)"
+  },
+  "verificationEvidence": {
+    "date": "2026-09-15",
+    "exactRepositoryAudit": "passed",
+    "mainHead": "5904db171c96f130ea0c39b124c83751931a23ee",
+    "f02BranchHead": "5904db171c96f130ea0c39b124c83751931a23ee",
+    "f02SealedState": "passed / sealed",
+    "pinnedMathlibIterateSourceAudit": "passed",
+    "currentExecutionEnvironment": {
+      "node": "v22.16.0 available",
+      "lean": "unavailable",
+      "lake": "unavailable"
+    },
+    "lakeBuild": {
+      "status": "pending",
+      "reason": "Lean/Lake unavailable in the current ChatGPT execution environment"
+    },
+    "iterationModuleCompile": {
+      "status": "pending",
+      "command": "lake env lean SelfSimilarCY/CoordinatePowerIteration.lean"
+    },
+    "legacyNodeRegression": {
+      "status": "pending_current_thread_execution",
+      "verify_scene_spec_v0_03.js": "pending",
+      "verify_base_renderer_v0_04.js": "pending",
+      "verify_one_step_pullback_v0_05.js": "pending",
+      "verify_recursive_lazy_expansion_v0_06.js": "pending"
+    }
+  },
+  "gates": {
+    "exact_parent_audit": "passed",
+    "canonical_sources_read": "passed",
+    "f02_dependency_sealed": "passed",
+    "single_coordinate_power_definition_preserved": "passed_by_source_design",
+    "pointwise_iteration_theorem_staged": "passed",
+    "map_level_corollary_staged": "passed",
+    "boundary_cases_require_no_extra_hypotheses": "passed_by_statement_design",
+    "axiom_sorry_admit_absent_by_source_review": "passed",
+    "pullback_tower_absent": "passed",
+    "W_geometry_absent": "passed",
+    "degree_theorem_absent": "passed",
+    "metric_theorem_absent": "passed",
+    "lake_build": "pending",
+    "iteration_module_compile": "pending",
+    "legacy_node_regression": "pending",
+    "candidate_compare_audit": "pending_until_implementation_commit",
+    "main_fast_forward": "blocked_until_all_execution_gates_pass"
+  },
+  "scopeGuards": {
+    "runtimeModified": false,
+    "dependencyFilesModified": false,
+    "githubActionsIntroduced": false,
+    "pullbackTowerIntroduced": false,
+    "WGeometryIntroduced": false,
+    "degreeTheoremIntroduced": false,
+    "metricTheoremIntroduced": false,
+    "formalLakeBuildArtifactsCommitted": false
+  },
+  "sealCondition": "pending: lake build + direct CoordinatePowerIteration.lean compile + four historical Node regressions + final compare audit",
+  "nextMilestoneAfterSeal": "F04 — Pullback Tower"
+}
