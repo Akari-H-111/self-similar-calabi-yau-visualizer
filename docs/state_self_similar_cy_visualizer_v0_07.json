@@ -1,0 +1,138 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.07",
+  "status": "active",
+  "current_stage": "zoom semantics completed",
+  "milestone": "Thread 06 — Zoom Semantics",
+  "repository": {
+    "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "visibility": "private",
+    "default_branch": "main",
+    "visualizer_v0_06_baseline_commit": "5b60214bb0f108ee111e3f1e78bbf2c9f10d5cce",
+    "visualizer_v0_06_expected_parent": "a72fa447d5a357de35e81bd37d46b56f60316156",
+    "thread_starting_main_commit": "8172da49ec363a958efdbad8e9b988a85cb417de",
+    "starting_state_audit": "v0.06 runtime unchanged; current main is an additive formal/recovery/CI descendant",
+    "connector_read_access": true,
+    "connector_write_access": true
+  },
+  "scene_contract": {
+    "schema_version": 1,
+    "canonical_inputs": ["D", "lambda", "kappa"],
+    "request_parameters": ["requestedDepth"],
+    "pullback_map": {
+      "kind": "coordinate_power",
+      "coordinate_count": 4,
+      "exponent_parameter": "D"
+    },
+    "base_hypersurface": {
+      "kind": "level_set",
+      "defining_function_symbol": "W",
+      "representation": "unresolved",
+      "level_parameter": "lambda"
+    },
+    "derived_quantities": {
+      "metric_scale": "D^2",
+      "sheet_degree": "D^4",
+      "persisted_in_canonical_json": false
+    },
+    "preserved_from_v0_03": true
+  },
+  "base_renderer": {
+    "contract_preserved_from_v0_04": true,
+    "geometry_status": "unresolved_geometry",
+    "geometry_rendered": false
+  },
+  "one_step_pullback": {
+    "contract_preserved_from_v0_05": true,
+    "depth": 1,
+    "relation": "inverse_image",
+    "geometry_status": "unresolved_pullback_geometry",
+    "geometry_rendered": false,
+    "sheets_materialized": false
+  },
+  "recursive_lazy_expansion": {
+    "contract_preserved_from_v0_06": true,
+    "requested_depth_source": "scene.request.requestedDepth",
+    "materialized_depth_source": "recursive model",
+    "expansion_operation": "expandOneLevel",
+    "maximum_levels_added_per_expansion_call": 1,
+    "eager_expansion_to_requested_depth": false,
+    "geometry_rendered": false,
+    "sheets_materialized": false
+  },
+  "zoom_semantics": {
+    "module": "zoom-semantics.js",
+    "meaning": "structural focus / level navigation",
+    "input": "validated normalized scene plus current verified recursive model",
+    "view_state_persisted_in_canonical_json": false,
+    "initial_focus_depth": 0,
+    "available_depth_source": "recursiveModel.materializedDepth",
+    "requested_depth_source": "recursiveModel.requestedDepth",
+    "available_focus_rule": "requestedFocusDepth <= materializedDepth",
+    "unavailable_focus_status": "not_materialized",
+    "unavailable_focused_depth": null,
+    "clamps_unavailable_focus": false,
+    "triggers_recursive_materialization": false,
+    "modifies_requested_depth": false,
+    "formal_metric_scale_source": "scene.derived.metricScale",
+    "formal_metric_scale_expression": "(D^2)^n as structured baseScale/exponent pair",
+    "geometric_zoom_applied": false,
+    "camera_transform_applied": false
+  },
+  "formal_verification_handoff": {
+    "F01_to_F06": "sealed",
+    "reopened_by_v0_07": false,
+    "metric_scale_formal_theorem_claimed": false,
+    "whole_visualizer_formalized_claimed": false
+  },
+  "validation": {
+    "v0_03_scene_verifier": "passed",
+    "v0_04_base_renderer_verifier": "passed",
+    "v0_05_one_step_verifier": "passed",
+    "v0_06_recursive_lazy_verifier": "passed",
+    "v0_07_zoom_semantics_verifier": "passed",
+    "canonical_json_valid": "passed",
+    "malformed_examples_rejected_before_render": "passed",
+    "thread_01_json_loading_preserved": "passed",
+    "validation_before_render_pipeline_preserved": "passed",
+    "zoom_consumes_normalized_scene_and_recursive_state": "passed",
+    "zoom_does_not_materialize_recursion": "passed",
+    "zoom_does_not_modify_requestedDepth": "passed",
+    "D_not_duplicated_as_new_source": "passed",
+    "D2_not_recomputed_in_zoom_layer": "passed",
+    "D2_source_is_scene_derived_metricScale": "passed",
+    "D4_not_used_as_zoom_factor": "passed",
+    "unresolved_W_preserved": "passed",
+    "requestedDepth_0_focus_case": "passed",
+    "requestedDepth_1_focus_case": "passed",
+    "requestedDepth_gt_1_focus_case": "passed",
+    "focus_at_or_below_materialized_depth": "passed",
+    "focus_above_materialized_depth": "passed",
+    "focus_consumes_updated_recursive_state_after_expansion": "passed",
+    "concrete_geometry_absent": "passed",
+    "sheet_objects_absent": "passed",
+    "camera_projection_viewport_transforms_absent": "passed",
+    "javascript_syntax": "passed",
+    "full_browser_runtime_smoke_test": "not_tested"
+  },
+  "failed_validation": [],
+  "scope_exclusions": [
+    "D^4 sheet visualization",
+    "concrete sheet objects",
+    "branch geometry",
+    "arithmetic overlays",
+    "cyclotomic overlays",
+    "Three.js",
+    "WebGL",
+    "GPU buffers",
+    "camera matrices",
+    "perspective or orthographic projection",
+    "physical viewport transforms",
+    "mesh LOD",
+    "performance optimization",
+    "fidelity audit",
+    "later UX",
+    "publication"
+  ],
+  "next_milestone": "Thread 07 — D^4 Sheets"
+}
