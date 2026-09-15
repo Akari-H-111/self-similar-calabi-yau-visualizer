@@ -1,6 +1,6 @@
 # Formal Verification
 
-Status: **formal-v0.04 / Thread F04 — Pullback Tower (implementation staged / execution pending / unsealed)**
+Status: **formal-v0.04 / Thread F04 — Pullback Tower (passed / sealed)**
 
 This directory is the isolated Lean 4 + Lake + mathlib verification layer for the Self-Similar Calabi–Yau Visualizer.
 
@@ -28,7 +28,7 @@ def coordinatePower (D : ℕ) (z : Point4) : Point4 :=
   fun i => z i ^ D
 ```
 
-F03 already proves:
+F03 proves:
 
 ```lean
 theorem coordinatePower_iterate_apply
@@ -45,12 +45,6 @@ theorem coordinatePower_iterate
 ```
 
 F04 imports this sealed module and does not re-prove coordinate arithmetic.
-
-## Pinned mathlib API audit
-
-Before F04 implementation, the exact pinned mathlib revision was checked for the native APIs used by the tower proof. The audit confirmed `Function.iterate_zero`, `Function.iterate_succ`, `Function.iterate_succ_apply`, `Set.ext`, `Set.preimage_id`, `Set.preimage_comp`, `Set.preimage_comp_eq`, `Set.preimage_iterate_eq`, and `Set.preimage_preimage`.
-
-No theorem name or simplifier behavior is assumed from a different Lean/mathlib version.
 
 ## F04 representation
 
@@ -70,22 +64,7 @@ def pullbackTower (D : ℕ) (X : Set Point4) : ℕ → Set Point4
   | Nat.succ n => coordinatePower D ⁻¹' pullbackTower D X n
 ```
 
-so mathematically:
-
-\[
-X_0=X,\qquad X_{n+1}=P_D^{-1}(X_n).
-\]
-
-## F04 staged theorems
-
-The module exposes the recursive equations:
-
-```lean
-pullbackTower_zero
-pullbackTower_succ
-```
-
-and stages the main theorem:
+and proves:
 
 ```lean
 theorem pullbackTower_eq_iterate_preimage
@@ -93,13 +72,7 @@ theorem pullbackTower_eq_iterate_preimage
     pullbackTower D X n = ((coordinatePower D)^[n]) ⁻¹' X
 ```
 
-which is the formal statement
-
-\[
-X_n=((P_D)^{[n]})^{-1}(X).
-\]
-
-The F03 corollary is staged as:
+plus the sealed-F03 corollary:
 
 ```lean
 theorem pullbackTower_eq_coordinatePower_preimage
@@ -107,30 +80,44 @@ theorem pullbackTower_eq_coordinatePower_preimage
     pullbackTower D X n = (coordinatePower (D ^ n)) ⁻¹' X
 ```
 
-and is obtained directly by rewriting with `coordinatePower_iterate`.
+No hypothesis `D >= 2` is added.
 
-No hypothesis `D >= 2` is added. The abstract statements therefore naturally include `n = 0`, `n = 1`, `D = 0`, `D = 1`, `X = ∅`, and `X = Set.univ` under ordinary Lean semantics.
+## History reconciliation
 
-## F04 execution gate
+The original F04 branch was staged directly from sealed F03. R01/R02 later advanced `main` only under `docs/recovery/*`. To preserve both histories, F04 was replayed without content changes onto the R02-sealed `main` as:
 
-F04 is **not yet passed**. The staged branch must still produce fresh evidence for:
-
-```bash
-cd formal
-lake build
-lake env lean SelfSimilarCY/PullbackTower.lean
-cd ..
-
-node verify_scene_spec_v0_03.js
-node verify_base_renderer_v0_04.js
-node verify_one_step_pullback_v0_05.js
-node verify_recursive_lazy_expansion_v0_06.js
-
-grep -nE '\b(axiom|sorry|admit)\b' formal/SelfSimilarCY/PullbackTower.lean || true
-git status
+```text
+db443db8e21149fbd41d02a500f19a0193b5b7e1
+formal: linearize F04 pullback tower after recovery audit
 ```
 
-Historical F03 execution does not substitute for these F04 gates.
+No merge commit, force push, reset, or history rewrite was used.
+
+## Fresh execution evidence
+
+The exact linearized implementation commit was executed in GitHub Codespaces under the pinned environment.
+
+```text
+lake build
+Build completed successfully (8929 jobs).
+```
+
+```text
+lake env lean SelfSimilarCY/PullbackTower.lean
+```
+
+completed with no diagnostics.
+
+Historical regressions all passed:
+
+```text
+scene-spec v0.03 verification: passed
+base-renderer v0.04 verification: passed
+one-step pullback v0.05 verification: passed
+recursive lazy expansion v0.06 verification: passed
+```
+
+The source scan found no `axiom`, `sorry`, or `admit`, and the working tree remained clean.
 
 ## F04 scope boundary
 
@@ -145,14 +132,14 @@ F04 does **not** formalize or claim:
 - GitHub Actions or CI;
 - F05 Contract Bridge work.
 
-No runtime JavaScript or dependency pin is modified by the staged F04 work.
+No runtime JavaScript or dependency pin was modified by F04.
 
-## Current stopping point
+## F04 result
 
-Until fresh execution and final compare gates pass, the canonical conclusion is only:
+All canonical-source, pinned-API, execution, source-scan, clean-tree, ancestry, and scope gates passed.
 
 ```text
-F04 IMPLEMENTATION STAGED / UNSEALED
+F04 PULLBACK TOWER: PASSED / SEALED
 ```
 
-The next milestone, **F05 — Contract Bridge Audit**, may begin only after F04 is sealed.
+The next milestone is **F05 — Contract Bridge Audit**. F04 stops here.

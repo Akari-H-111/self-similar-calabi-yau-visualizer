@@ -4,85 +4,57 @@
 
 **Thread F04 — Pullback Tower**
 
-Status: **implementation staged / execution pending / unsealed**
+Status: **passed / sealed**
 
 Date: 2026-09-15
 
-Canonical parent:
+Canonical mathematical parent:
 
 ```text
 b85c295540996612633bf7d702098ba9634882fe
 formal: seal F03 iteration theorem
 ```
 
+Publication base after document-recovery milestones:
+
+```text
+470109b3b90c0f3b6025b4902b4c4431a7ccd05d
+docs: seal R02 historical consistency audit
+```
+
+Verified implementation commit:
+
+```text
+db443db8e21149fbd41d02a500f19a0193b5b7e1
+formal: linearize F04 pullback tower after recovery audit
+```
+
 Working branch:
 
 ```text
-formal-f04-pullback-tower
+formal-f04-pullback-tower-linearized
 ```
 
-## Gate 0 — canonical repository audit
+## Canonical and history audit
 
-Before F04 implementation, `main` was read directly from GitHub and confirmed at the exact F03 sealing commit above. Its sole parent is the F03 implementation commit
+F04 was originally staged from the exact sealed F03 commit. While F04 execution was being prepared, the independent R01/R02 document-recovery line advanced `main` by six commits under `docs/recovery/*` only. GitHub compare showed the old F04 branch and the new `main` had diverged with merge base equal to sealed F03.
+
+To preserve both histories without a merge commit, force update, or history rewrite, the exact F04 file set was replayed onto current `main` as a new linearized commit. A fresh compare then showed:
 
 ```text
-f314d20d128cf27f46bb9f603364a6b8bf0b2ee0
-formal: stage F03 iteration theorem
+base:       main @ 470109b3b90c0f3b6025b4902b4c4431a7ccd05d
+head:       db443db8e21149fbd41d02a500f19a0193b5b7e1
+status:     ahead
+ahead_by:   1
+behind_by:  0
+merge-base: 470109b3b90c0f3b6025b4902b4c4431a7ccd05d
 ```
 
-whose sole parent is sealed F02:
+The changed files remained exactly the six intended F04 artifacts. No `docs/recovery/*` file was altered by F04.
 
-```text
-5904db171c96f130ea0c39b124c83751931a23ee
-formal: seal F02 coordinate power map
-```
+## Formal result
 
-The sealed F03 state was read as:
-
-```text
-status: passed
-canonicalState: sealed
-```
-
-and records fresh successful execution of `lake build`, direct `CoordinatePowerIteration.lean` compilation, all four historical Node verifiers, a clean working tree, and a source scan with no `axiom`, `sorry`, or `admit`.
-
-The F01/F02/F03 formal source, dependency pins, state/progress documents, and theorem contracts were re-read from the sealed repository state. Exact-name lookup through the connected Documents surface did not return the requested standalone document names; because repository artifacts are canonical by project rule, their exact `docs/` counterparts at the sealed commit were used instead of guessing or relying on memory.
-
-## Pinned mathlib API audit
-
-The dependency lock remains unchanged:
-
-```text
-Lean:    leanprover/lean4:v4.34.0
-Lake:    5.0.0-src+293d5d0
-mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
-```
-
-The exact pinned mathlib source was inspected before implementation. Verified available APIs include:
-
-- `Function.iterate_zero`;
-- `Function.iterate_succ`;
-- `Function.iterate_succ_apply`;
-- `Set.ext`;
-- `Set.preimage_id`;
-- `Set.preimage_comp`;
-- `Set.preimage_comp_eq`;
-- `Set.preimage_iterate_eq`;
-- `Set.preimage_preimage`.
-
-This audit is revision-specific. No theorem name or simplifier behavior was imported from another mathlib version.
-
-## Representation decision
-
-The minimal representation is native
-
-```lean
-Set Point4
-```
-
-with ordinary function preimage. This avoids a project-specific pullback object and preserves the exact mathematical content needed for the later contract bridge.
-
-The tower is recursively defined by:
+`formal/SelfSimilarCY/PullbackTower.lean` defines the native set-theoretic tower
 
 ```lean
 def pullbackTower (D : ℕ) (X : Set Point4) : ℕ → Set Point4
@@ -90,20 +62,7 @@ def pullbackTower (D : ℕ) (X : Set Point4) : ℕ → Set Point4
   | Nat.succ n => coordinatePower D ⁻¹' pullbackTower D X n
 ```
 
-No condition `D >= 2` is added because the abstract recurrence and function iteration are meaningful for all natural `D`.
-
-## Staged formal statements
-
-The new module `formal/SelfSimilarCY/PullbackTower.lean` currently stages:
-
-```lean
-pullbackTower_zero
-pullbackTower_succ
-pullbackTower_eq_iterate_preimage
-pullbackTower_eq_coordinatePower_preimage
-```
-
-The main theorem states:
+and proves
 
 ```lean
 theorem pullbackTower_eq_iterate_preimage
@@ -111,9 +70,7 @@ theorem pullbackTower_eq_iterate_preimage
     pullbackTower D X n = ((coordinatePower D)^[n]) ⁻¹' X
 ```
 
-and is proved by induction using standard preimage composition semantics.
-
-The F03 corollary states:
+plus the sealed-F03 corollary
 
 ```lean
 theorem pullbackTower_eq_coordinatePower_preimage
@@ -121,56 +78,82 @@ theorem pullbackTower_eq_coordinatePower_preimage
     pullbackTower D X n = (coordinatePower (D ^ n)) ⁻¹' X
 ```
 
-and directly rewrites with the sealed theorem `coordinatePower_iterate`.
+No second coordinate-power definition or second iteration proof is introduced.
 
-## Branch discipline
+## Pinned environment
 
-`formal-f04-pullback-tower` was created from the exact sealed F03 SHA. Before staging it pointed byte-for-byte to that commit, so F04 begins as a pure successor of F03.
+The dependency environment remained unchanged:
 
-`main` has not been advanced by F04.
+```text
+Lean:    leanprover/lean4:v4.34.0
+Lake:    5.0.0-src+293d5d0
+mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
+```
 
-## Scope guards
+No `lake update` was performed.
 
-The staged work introduces no:
+## Fresh execution evidence
 
-- runtime JavaScript modification;
-- dependency or manifest modification;
-- GitHub Actions work;
-- `W` or Calabi–Yau geometry;
-- map-degree theorem;
-- sheet model or covering claim;
-- metric or differential theorem;
-- F05 contract-bridge table;
-- F06 CI integration.
+The exact linearized implementation commit `db443db8e21149fbd41d02a500f19a0193b5b7e1` was checked out in GitHub Codespaces with a clean working tree.
 
-The F04 source contains no intentional `axiom`, `sorry`, or `admit`; a fresh command-line source scan is still required by the seal gate.
+Observed toolchain:
 
-## Execution status
+```text
+Lean 4.34.0
+Lake 5.0.0-src+293d5d0
+```
 
-No F04 Lean execution evidence has yet been produced in the required pinned project runtime during this thread. Therefore the following remain **pending**:
+Required Lean gates passed:
 
 ```text
 lake build
+Build completed successfully (8929 jobs).
+```
+
+and
+
+```text
 lake env lean SelfSimilarCY/PullbackTower.lean
 ```
 
-and the fresh historical regressions:
+completed with no Lean diagnostics.
+
+All four historical runtime regressions passed:
 
 ```text
-node verify_scene_spec_v0_03.js
-node verify_base_renderer_v0_04.js
-node verify_one_step_pullback_v0_05.js
-node verify_recursive_lazy_expansion_v0_06.js
+scene-spec v0.03 verification: passed
+base-renderer v0.04 verification: passed
+one-step pullback v0.05 verification: passed
+recursive lazy expansion v0.06 verification: passed
 ```
 
-A clean `git status`, source scan, and final sealed-F03-to-F04 compare are also required before any sealing claim.
+The placeholder scan produced no `axiom`, `sorry`, or `admit` matches, and final `git status` reported:
 
-## Current decision
+```text
+nothing to commit, working tree clean
+```
 
-The only valid conclusion at this point is:
+## Scope audit
+
+Relative to the publication base, F04 changes only:
+
+- `formal/SelfSimilarCY/PullbackTower.lean`;
+- `formal/SelfSimilarCY.lean`;
+- `formal/README.md`;
+- `docs/PULLBACK_TOWER_self_similar_cy_visualizer_v0_04.md`;
+- `docs/state_formal_verification_self_similar_cy_visualizer_v0_04.json`;
+- `docs/progress_formal_verification_self_similar_cy_visualizer_v0_04.md`.
+
+F04 introduces no runtime JavaScript change, dependency change, GitHub Actions, `W` geometry, degree theorem, sheet model, covering/étale claim, metric theorem, or F05/F06 implementation.
+
+## Seal decision
+
+All F04 acceptance gates are satisfied.
 
 \[
-\boxed{\text{F04 IMPLEMENTATION STAGED / UNSEALED}}.
+\boxed{\text{F04 Pullback Tower: PASSED / SEALED}}
 \]
 
-No F05 work may begin until the pending execution and sealing gates are completed.
+Publication to `main` is permitted only by non-force fast-forward after the final seal compare confirms the same scope.
+
+F04 stops here. The next milestone is **F05 — Contract Bridge Audit**.

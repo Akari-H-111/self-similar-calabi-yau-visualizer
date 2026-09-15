@@ -4,69 +4,67 @@
 
 **Thread F04 — Pullback Tower**
 
-Status: **implementation staged / execution pending / unsealed**
+Status: **passed / sealed**
 
-Canonical parent:
+Canonical mathematical parent:
 
 ```text
 b85c295540996612633bf7d702098ba9634882fe
 formal: seal F03 iteration theorem
 ```
 
-Working branch:
+Publication base:
 
 ```text
-formal-f04-pullback-tower
+470109b3b90c0f3b6025b4902b4c4431a7ccd05d
+docs: seal R02 historical consistency audit
+```
+
+Verified implementation commit:
+
+```text
+db443db8e21149fbd41d02a500f19a0193b5b7e1
+formal: linearize F04 pullback tower after recovery audit
 ```
 
 ## Goal
 
-For an arbitrary set
+For arbitrary
 
 \[
 X \subseteq \mathrm{Point4},
 \]
 
-formalize the recursive preimage tower
+formalize
 
 \[
 X_0=X,\qquad X_{n+1}=P_D^{-1}(X_n),
 \]
 
-where `P_D` is the sealed F02 `coordinatePower D`, and prove
+where `P_D = coordinatePower D`, and prove
 
 \[
-X_n=((P_D)^{[n]})^{-1}(X).
+\boxed{X_n=((P_D)^{[n]})^{-1}(X)}.
 \]
 
-Then use the sealed F03 theorem
+Then use sealed F03 directly to obtain
 
 \[
-(P_D)^{[n]}=P_{D^n}
-\]
-
-to obtain directly
-
-\[
-X_n=P_{D^n}^{-1}(X).
+\boxed{X_n=P_{D^n}^{-1}(X)}.
 \]
 
 ## Sealed dependencies
 
-F04 imports `SelfSimilarCY.CoordinatePowerIteration`. It does not redefine either
+F04 imports `SelfSimilarCY.CoordinatePowerIteration` and does not redefine:
 
 ```lean
 abbrev Point4 := Fin 4 → ℂ
-```
 
-or
-
-```lean
 def coordinatePower (D : ℕ) (z : Point4) : Point4 :=
   fun i => z i ^ D
 ```
 
-and it reuses the sealed F03 theorem
+It reuses the sealed theorem
 
 ```lean
 theorem coordinatePower_iterate
@@ -74,60 +72,11 @@ theorem coordinatePower_iterate
     (coordinatePower D)^[n] = coordinatePower (D ^ n)
 ```
 
-rather than re-proving coordinate arithmetic.
+without rebuilding coordinate arithmetic.
 
-## Pinned mathlib API audit
+## Representation
 
-The dependency environment remains exactly:
-
-```text
-Lean:    leanprover/lean4:v4.34.0
-Lake:    5.0.0-src+293d5d0
-mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
-```
-
-Before implementation, the exact pinned mathlib source was audited. Relevant available APIs include:
-
-```lean
-Function.iterate_zero
-Function.iterate_succ
-Function.iterate_succ_apply
-Set.ext
-Set.preimage_id
-Set.preimage_comp
-Set.preimage_comp_eq
-Set.preimage_iterate_eq
-Set.preimage_preimage
-```
-
-In particular, the pinned source states definitionally:
-
-```lean
-@[simp]
-theorem Function.iterate_succ (n : ℕ) :
-    f^[n.succ] = f^[n] ∘ f := rfl
-```
-
-and provides the native preimage/iterate compatibility theorem
-
-```lean
-theorem Set.preimage_iterate_eq {f : α → α} {n : ℕ} :
-    Set.preimage f^[n] = (Set.preimage f)^[n]
-```
-
-as well as standard set extensionality.
-
-## Representation decision
-
-F04 uses the native type
-
-```lean
-Set Point4
-```
-
-and mathlib's ordinary function preimage notation. No project-specific preimage object, predicate wrapper, pullback category, or geometric abstraction is introduced.
-
-The canonical tower is:
+The canonical tower uses native mathlib sets and function preimages:
 
 ```lean
 def pullbackTower (D : ℕ) (X : Set Point4) : ℕ → Set Point4
@@ -135,18 +84,21 @@ def pullbackTower (D : ℕ) (X : Set Point4) : ℕ → Set Point4
   | Nat.succ n => coordinatePower D ⁻¹' pullbackTower D X n
 ```
 
-This is the minimum representation matching the mathematical recurrence and remains suitable for the later F05 contract bridge.
+No project-specific preimage abstraction, pullback category, or geometric structure is introduced.
 
-## F04 theorem statements
-
-The recursive equations are exposed by:
+## Theorems
 
 ```lean
-pullbackTower_zero
-pullbackTower_succ
+@[simp]
+theorem pullbackTower_zero (D : ℕ) (X : Set Point4) :
+    pullbackTower D X 0 = X
+
+@[simp]
+theorem pullbackTower_succ (D : ℕ) (X : Set Point4) (n : ℕ) :
+    pullbackTower D X n.succ = coordinatePower D ⁻¹' pullbackTower D X n
 ```
 
-The main theorem is:
+Main theorem:
 
 ```lean
 theorem pullbackTower_eq_iterate_preimage
@@ -154,7 +106,7 @@ theorem pullbackTower_eq_iterate_preimage
     pullbackTower D X n = ((coordinatePower D)^[n]) ⁻¹' X
 ```
 
-The F03 corollary is:
+F03 corollary:
 
 ```lean
 theorem pullbackTower_eq_coordinatePower_preimage
@@ -162,69 +114,74 @@ theorem pullbackTower_eq_coordinatePower_preimage
     pullbackTower D X n = (coordinatePower (D ^ n)) ⁻¹' X
 ```
 
-The latter is obtained by rewriting with `coordinatePower_iterate`. It does not establish a second iteration proof.
+No hypothesis `D >= 2` is added. The generic result naturally covers `n = 0`, `n = 1`, `D = 0`, `D = 1`, `X = ∅`, and `X = Set.univ`.
 
-## Boundary cases
+## Pinned environment
 
-No hypothesis `D >= 2` is introduced. The set-theoretic recurrence and function iteration are defined for every `D : ℕ` and `n : ℕ`, so the generic statements are intended to cover naturally:
+```text
+Lean:    leanprover/lean4:v4.34.0
+Lake:    5.0.0-src+293d5d0
+mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
+```
 
-- `n = 0`;
-- `n = 1`;
-- `D = 0`;
-- `D = 1`;
-- `X = ∅`;
-- `X = Set.univ`.
+Relevant pinned APIs audited before implementation include `Function.iterate_zero`, `Function.iterate_succ`, `Function.iterate_succ_apply`, `Set.ext`, `Set.preimage_id`, `Set.preimage_comp`, `Set.preimage_comp_eq`, `Set.preimage_iterate_eq`, and `Set.preimage_preimage`.
 
-No duplicate boundary-case lemmas are added because the generic theorem already contains them.
+## Linearization
+
+F04 was first staged from sealed F03. R01/R02 later advanced `main` only through `docs/recovery/*`, so the original F04 branch diverged from `main`. F04 was therefore replayed byte-for-byte onto the R02-sealed `main` as the single linearized implementation commit above.
+
+No merge commit, force push, reset, or history rewrite was used. The linearized compare showed `ahead_by = 1`, `behind_by = 0`, with merge base equal to current `main`.
+
+## Fresh execution evidence
+
+The exact linearized implementation commit was executed in GitHub Codespaces.
+
+```text
+Lean 4.34.0
+Lake 5.0.0-src+293d5d0
+```
+
+```text
+lake build
+Build completed successfully (8929 jobs).
+```
+
+```text
+lake env lean SelfSimilarCY/PullbackTower.lean
+```
+
+completed without diagnostics.
+
+All four historical regressions passed:
+
+```text
+scene-spec v0.03 verification: passed
+base-renderer v0.04 verification: passed
+one-step pullback v0.05 verification: passed
+recursive lazy expansion v0.06 verification: passed
+```
+
+The placeholder scan found no `axiom`, `sorry`, or `admit`, and `git status` reported a clean working tree.
 
 ## Explicit non-claims
 
 F04 does not formalize or claim:
 
-- `W`, `W = 0`, or any Calabi–Yau hypersurface geometry;
+- `W`, `W = 0`, or Calabi–Yau hypersurface geometry;
 - smoothness or singularity structure;
-- algebraic-geometric or topological map degree such as `deg(P_D)=D^4`;
-- sheet objects, `D^4` sheets, coverings, étale maps, torus restrictions, or nonvanishing loci;
+- algebraic-geometric or topological map degree;
+- sheet objects, coverings, étale maps, or torus restrictions;
 - Jacobians, differentials, metric scaling, or `P_D^* g_log = D^2 g_log`;
-- renderer geometry, recursive visualization, WebGL, Three.js, or a JS↔Lean bridge;
-- GitHub Actions or CI integration.
+- renderer geometry, WebGL, Three.js, or a JS↔Lean bridge;
+- GitHub Actions or CI;
+- F05 or F06 implementation.
 
-No `axiom`, `sorry`, or `admit` is permitted.
+## Final decision
 
-## Required execution gates
-
-The staged source is not accepted or sealed until the exact branch is executed with:
-
-```bash
-cd formal
-lake build
-lake env lean SelfSimilarCY/PullbackTower.lean
-cd ..
-```
-
-followed by fresh historical runtime regressions:
-
-```bash
-node verify_scene_spec_v0_03.js
-node verify_base_renderer_v0_04.js
-node verify_one_step_pullback_v0_05.js
-node verify_recursive_lazy_expansion_v0_06.js
-```
-
-and a source scan such as:
-
-```bash
-grep -nE '\b(axiom|sorry|admit)\b' formal/SelfSimilarCY/PullbackTower.lean || true
-```
-
-Source review and pinned-API inspection are not substitutes for the required Lean execution.
-
-## Stopping point
-
-Until all execution and compare gates succeed, the only valid milestone state is
+All F04 execution, source, scope, and ancestry gates are satisfied.
 
 \[
-\boxed{\text{F04 IMPLEMENTATION STAGED / UNSEALED}}.
+\boxed{\textbf{F04 Pullback Tower: PASSED / SEALED}}
 \]
 
-F05 — Contract Bridge Audit must not begin inside this thread.
+F04 stops here. The next milestone is **F05 — Contract Bridge Audit**.

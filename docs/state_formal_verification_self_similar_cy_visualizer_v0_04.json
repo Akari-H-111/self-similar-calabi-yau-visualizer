@@ -3,10 +3,11 @@
   "formalNamespace": "formal-v0.04",
   "milestone": "F04 — Pullback Tower",
   "canonicalParent": "b85c295540996612633bf7d702098ba9634882fe",
-  "verifiedImplementationCommit": null,
-  "workingBranch": "formal-f04-pullback-tower",
-  "status": "implementation_staged",
-  "canonicalState": "unsealed",
+  "publicationBase": "470109b3b90c0f3b6025b4902b4c4431a7ccd05d",
+  "verifiedImplementationCommit": "db443db8e21149fbd41d02a500f19a0193b5b7e1",
+  "workingBranch": "formal-f04-pullback-tower-linearized",
+  "status": "passed",
+  "canonicalState": "sealed",
   "toolchain": {
     "lean": "leanprover/lean4:v4.34.0",
     "lake": "5.0.0-src+293d5d0",
@@ -47,29 +48,42 @@
       "Set.preimage_preimage"
     ]
   },
+  "linearization": {
+    "status": "passed",
+    "reason": "R01/R02 advanced main after F04 was originally staged from sealed F03",
+    "originalStagedCommit": "32b5eb77717eb2a1442b6642183a9a7338725aae",
+    "linearizedCommit": "db443db8e21149fbd41d02a500f19a0193b5b7e1",
+    "mainAtLinearization": "470109b3b90c0f3b6025b4902b4c4431a7ccd05d",
+    "historyRewriteUsed": false,
+    "mergeCommitUsed": false,
+    "forceUpdateUsed": false
+  },
   "verificationEvidence": {
     "canonicalRepositoryAudit": "passed",
     "sealedF03Audit": "passed",
     "branchStartAudit": "passed",
-    "sourceReview": "staged",
-    "lakeBuild": "pending",
-    "pullbackModuleCompile": "pending",
-    "legacyNodeRegression": "pending",
-    "placeholderScan": "pending fresh execution/source scan",
-    "workingTree": "not observable through GitHub contents API; branch compare to be audited"
+    "sourceReview": "passed",
+    "lakeBuild": "passed: Build completed successfully (8929 jobs)",
+    "pullbackModuleCompile": "passed: lake env lean SelfSimilarCY/PullbackTower.lean completed with no diagnostics",
+    "legacyNodeRegression": "passed: all four historical verifiers",
+    "placeholderScan": "passed: no axiom|sorry|admit matches",
+    "workingTree": "passed: nothing to commit, working tree clean",
+    "verifiedRuntime": "Lean 4.34.0 / Lake 5.0.0-src+293d5d0"
   },
   "gates": {
     "exact_parent_audit": "passed",
-    "canonical_sources_read": "passed_with_repository_counterparts_for_unavailable_documents_connector_hits",
+    "canonical_sources_read": "passed",
     "pinned_mathlib_api_audit": "passed",
     "minimal_representation_decision": "passed",
     "pullback_tower_source_staged": "passed",
-    "lake_build": "pending",
-    "pullback_module_compile": "pending",
-    "legacy_node_regression": "pending",
-    "source_placeholder_scan": "pending",
-    "final_compare_audit": "pending",
-    "main_fast_forward": "not_attempted"
+    "linearization_audit": "passed",
+    "lake_build": "passed",
+    "pullback_module_compile": "passed",
+    "legacy_node_regression": "passed",
+    "source_placeholder_scan": "passed",
+    "clean_working_tree": "passed",
+    "scope_compare_audit": "passed",
+    "main_fast_forward": "authorized_after_final_seal_compare"
   },
   "scopeGuards": {
     "runtimeModified": false,
@@ -81,6 +95,6 @@
     "sheetModelIntroduced": false,
     "f05OrF06WorkIntroduced": false
   },
-  "sealCondition": "unsatisfied: fresh lake build, direct PullbackTower.lean compile, historical Node regressions, source scan, clean-state evidence, and final compare audit remain required",
-  "nextMilestone": "F05 — Contract Bridge Audit only after F04 is sealed"
+  "sealCondition": "satisfied",
+  "nextMilestone": "F05 — Contract Bridge Audit"
 }
