@@ -1,0 +1,100 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "formalNamespace": "formal-v0.06",
+  "milestone": "F06 — GitHub CI Integration & Formal Verification Seal",
+  "canonicalParent": "26f3e8818a5b96bc8cebf4edf72d43c124543832",
+  "workingBranch": "formal-f06-github-ci-seal",
+  "verifiedCandidateCommit": "66ad46f520ff80c04673c375c7801723ba0b9aed",
+  "workflowPath": ".github/workflows/formal-verification.yml",
+  "workflowRunId": 35003906913,
+  "workflowRunHeadSha": "66ad46f520ff80c04673c375c7801723ba0b9aed",
+  "workflowRunStatus": "completed",
+  "workflowRunConclusion": "success",
+  "status": "passed",
+  "canonicalState": "sealed",
+  "toolchain": {
+    "leanToolchain": "leanprover/lean4:v4.34.0",
+    "leanObserved": "4.34.0",
+    "leanCommit": "293d5d0c0c3f3dded4688b3ccd6a33939ac5102b",
+    "lakeObserved": "5.0.0-src+293d5d0",
+    "mathlib": "7801e8406155c31b340d28e2762f754d02b5e9b0",
+    "dependencyLock": "formal/lake-manifest.json",
+    "lakeUpdateUsed": false,
+    "elanStableUsed": false,
+    "nodeRequested": "22",
+    "nodeObserved": "v22.23.2"
+  },
+  "jobs": {
+    "formalLean": {
+      "name": "formal-lean",
+      "jobId": 104498766094,
+      "status": "success",
+      "lakeBuild": "passed: Build completed successfully (8929 jobs)",
+      "coordinatePowerCompile": "passed",
+      "coordinatePowerIterationCompile": "passed",
+      "pullbackTowerCompile": "passed",
+      "placeholderGate": "passed"
+    },
+    "runtimeContracts": {
+      "name": "runtime-contracts",
+      "jobId": 104498766196,
+      "status": "success",
+      "verify_scene_spec_v0_03.js": "passed",
+      "verify_base_renderer_v0_04.js": "passed",
+      "verify_one_step_pullback_v0_05.js": "passed",
+      "verify_recursive_lazy_expansion_v0_06.js": "passed",
+      "syntaxChecks": "passed: scene-spec.js, base-renderer.js, one-step-pullback.js, recursive-lazy-expansion.js, app.js"
+    }
+  },
+  "bridgeMatrix": {
+    "path": "docs/contract_bridge_matrix_self_similar_cy_visualizer_v0_05.json",
+    "blobSha": "0fc903f7c3892b83665ec28cee5c5f588ec77aff",
+    "unchanged": true,
+    "statistics": {
+      "EXACT_BRIDGE": 4,
+      "PARTIAL_BRIDGE": 3,
+      "ENGINEERING_ONLY": 5,
+      "FORMAL_ONLY": 3,
+      "UNFORMALIZED": 3,
+      "NO_BRIDGE": 4
+    },
+    "historicalSealStatusMetadataPreserved": true,
+    "finalF05SealAuthority": [
+      "docs/state_formal_verification_self_similar_cy_visualizer_v0_05.json",
+      "docs/CONTRACT_BRIDGE_AUDIT_self_similar_cy_visualizer_v0_05.md",
+      "docs/progress_formal_verification_self_similar_cy_visualizer_v0_05.md"
+    ]
+  },
+  "scopeGuards": {
+    "formalTheoremSourceModified": false,
+    "runtimeSemanticSourceModified": false,
+    "dataSystemModified": false,
+    "dependencyFilesModified": false,
+    "bridgeMatrixModified": false,
+    "WIntroduced": false,
+    "degreeTheoremIntroduced": false,
+    "metricTheoremIntroduced": false,
+    "sheetGeometryIntroduced": false,
+    "coveringOrEtaleIntroduced": false,
+    "torusJacobianDifferentialIntroduced": false,
+    "branchProtectionIntroduced": false,
+    "dependabotIntroduced": false,
+    "releaseOrDeploymentAutomationIntroduced": false
+  },
+  "finalCompare": {
+    "base": "26f3e8818a5b96bc8cebf4edf72d43c124543832",
+    "expectedFiles": [
+      ".github/workflows/formal-verification.yml",
+      "docs/GITHUB_CI_FORMAL_VERIFICATION_SEAL_self_similar_cy_visualizer_v0_06.md",
+      "docs/state_formal_verification_self_similar_cy_visualizer_v0_06.json",
+      "docs/progress_formal_verification_self_similar_cy_visualizer_v0_06.md"
+    ],
+    "forbiddenSemanticChanges": false,
+    "status": "passed"
+  },
+  "localExecutionEvidence": "not separately counted: current assistant execution surface has no direct shell checkout of the private repository; mandatory GitHub Actions candidate run supplies exact executable evidence",
+  "sealCondition": "satisfied: exact F05 parent + pinned environment + lake build + three direct Lean checks + placeholder gate + four Node verifiers + successful candidate GitHub Actions jobs + unchanged F05 bridge matrix + clean F06 scope compare",
+  "sealingCommitMessage": "formal: seal F06 GitHub CI verification",
+  "finalMeaning": "sealed Lean formal core and runtime engineering contracts are continuously verified in separate CI jobs; F05 remains the authoritative bridge boundary; unformalized and no-bridge mathematics remain outside the seal",
+  "nextMilestone": null
+}
