@@ -3,9 +3,10 @@
   "formalNamespace": "formal-v0.03",
   "milestone": "F03 — Iteration Theorem",
   "canonicalParent": "5904db171c96f130ea0c39b124c83751931a23ee",
+  "verifiedImplementationCommit": "f314d20d128cf27f46bb9f603364a6b8bf0b2ee0",
   "workingBranch": "formal-f03-iteration-theorem",
-  "status": "implementation_staged",
-  "canonicalState": "unsealed",
+  "status": "passed",
+  "canonicalState": "sealed",
   "toolchain": {
     "lean": "leanprover/lean4:v4.34.0",
     "lake": "5.0.0-src+293d5d0",
@@ -27,50 +28,65 @@
   },
   "verificationEvidence": {
     "date": "2026-09-15",
+    "environment": "GitHub Codespaces terminal",
+    "branch": "formal-f03-iteration-theorem",
+    "observedHead": "f314d20d128cf27f46bb9f603364a6b8bf0b2ee0",
+    "observedParent": "5904db171c96f130ea0c39b124c83751931a23ee",
+    "workingTree": "clean",
     "exactRepositoryAudit": "passed",
-    "mainHead": "5904db171c96f130ea0c39b124c83751931a23ee",
-    "f02BranchHead": "5904db171c96f130ea0c39b124c83751931a23ee",
     "f02SealedState": "passed / sealed",
     "pinnedMathlibIterateSourceAudit": "passed",
-    "currentExecutionEnvironment": {
-      "node": "v22.16.0 available",
-      "lean": "unavailable",
-      "lake": "unavailable"
+    "toolchainObservation": {
+      "lean": "Lean 4.34.0, commit 293d5d0c0c3f3dded4688b3ccd6a33939ac5102b",
+      "lake": "5.0.0-src+293d5d0"
     },
     "lakeBuild": {
-      "status": "pending",
-      "reason": "Lean/Lake unavailable in the current ChatGPT execution environment"
+      "status": "passed",
+      "observation": "Build completed successfully (8928 jobs)."
     },
     "iterationModuleCompile": {
-      "status": "pending",
-      "command": "lake env lean SelfSimilarCY/CoordinatePowerIteration.lean"
+      "status": "passed",
+      "command": "lake env lean SelfSimilarCY/CoordinatePowerIteration.lean",
+      "observation": "completed without Lean diagnostics"
     },
     "legacyNodeRegression": {
-      "status": "pending_current_thread_execution",
-      "verify_scene_spec_v0_03.js": "pending",
-      "verify_base_renderer_v0_04.js": "pending",
-      "verify_one_step_pullback_v0_05.js": "pending",
-      "verify_recursive_lazy_expansion_v0_06.js": "pending"
-    }
+      "status": "passed",
+      "verify_scene_spec_v0_03.js": "passed",
+      "verify_base_renderer_v0_04.js": "passed",
+      "verify_one_step_pullback_v0_05.js": "passed",
+      "verify_recursive_lazy_expansion_v0_06.js": "passed"
+    },
+    "changedFileAudit": {
+      "status": "passed",
+      "files": [
+        "docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md",
+        "docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md",
+        "docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json",
+        "formal/README.md",
+        "formal/SelfSimilarCY.lean",
+        "formal/SelfSimilarCY/CoordinatePowerIteration.lean"
+      ]
+    },
+    "axiomSorryAdmitScan": "passed; no matches"
   },
   "gates": {
     "exact_parent_audit": "passed",
     "canonical_sources_read": "passed",
     "f02_dependency_sealed": "passed",
-    "single_coordinate_power_definition_preserved": "passed_by_source_design",
-    "pointwise_iteration_theorem_staged": "passed",
-    "map_level_corollary_staged": "passed",
-    "boundary_cases_require_no_extra_hypotheses": "passed_by_statement_design",
-    "axiom_sorry_admit_absent_by_source_review": "passed",
+    "single_coordinate_power_definition_preserved": "passed",
+    "pointwise_iteration_theorem": "passed",
+    "map_level_corollary": "passed",
+    "boundary_cases_require_no_extra_hypotheses": "passed",
+    "axiom_sorry_admit_absent": "passed",
     "pullback_tower_absent": "passed",
     "W_geometry_absent": "passed",
     "degree_theorem_absent": "passed",
     "metric_theorem_absent": "passed",
-    "lake_build": "pending",
-    "iteration_module_compile": "pending",
-    "legacy_node_regression": "pending",
-    "candidate_compare_audit": "pending_until_implementation_commit",
-    "main_fast_forward": "blocked_until_all_execution_gates_pass"
+    "lake_build": "passed",
+    "iteration_module_compile": "passed",
+    "legacy_node_regression": "passed",
+    "candidate_compare_audit": "passed",
+    "main_fast_forward": "passed_by_publishing_this_seal_commit_to_main"
   },
   "scopeGuards": {
     "runtimeModified": false,
@@ -82,6 +98,6 @@
     "metricTheoremIntroduced": false,
     "formalLakeBuildArtifactsCommitted": false
   },
-  "sealCondition": "pending: lake build + direct CoordinatePowerIteration.lean compile + four historical Node regressions + final compare audit",
+  "sealCondition": "satisfied: lake build + direct CoordinatePowerIteration.lean compile + four historical Node regressions + clean ancestry and scope audit",
   "nextMilestoneAfterSeal": "F04 — Pullback Tower"
 }

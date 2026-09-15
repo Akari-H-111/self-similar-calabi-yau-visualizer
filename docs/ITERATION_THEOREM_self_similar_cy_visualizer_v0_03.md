@@ -4,7 +4,7 @@
 
 **Thread F03 — Iteration Theorem**
 
-Status: **implementation staged / execution pending / unsealed**
+Status: **passed / sealed**
 
 Canonical parent:
 
@@ -13,21 +13,22 @@ Canonical parent:
 formal: seal F02 coordinate power map
 ```
 
-Working branch:
+Verified implementation commit:
 
 ```text
-formal-f03-iteration-theorem
+f314d20d128cf27f46bb9f603364a6b8bf0b2ee0
+formal: stage F03 iteration theorem
 ```
 
-## Goal
+## Goal and result
 
-Using the sealed F02 definition
+Using the sealed F02 map
 
 \[
 P_D(z_1,z_2,z_3,z_4)=(z_1^D,z_2^D,z_3^D,z_4^D),
 \]
 
-prove in Lean that function iteration satisfies
+F03 proves in Lean that function iteration satisfies
 
 \[
 (P_D)^{[n]}(z)_i=z_i^{D^n},
@@ -56,84 +57,81 @@ The existing F02 theorems `coordinatePower_apply` and `coordinatePower_unique` r
 
 ## Canonical theorem statements
 
-The pointwise theorem is the core milestone:
-
 ```lean
 theorem coordinatePower_iterate_apply
     (D n : ℕ) (z : Point4) (i : Fin 4) :
-    (coordinatePower D)^[n] z i = z i ^ (D ^ n) := by
-  ...
+    (coordinatePower D)^[n] z i = z i ^ (D ^ n)
 ```
 
-The map-level equality is its direct extensional corollary:
+and:
 
 ```lean
 theorem coordinatePower_iterate
     (D n : ℕ) :
-    (coordinatePower D)^[n] = coordinatePower (D ^ n) := by
-  ...
+    (coordinatePower D)^[n] = coordinatePower (D ^ n)
 ```
 
-## Minimal assumptions
-
-No hypothesis `D >= 2` is added. The runtime scene contract imposes `D >= 2`, but the mathematical function and iteration formula are defined for every `D : ℕ`.
-
-Consequently the same theorem covers without special axioms or side conditions:
-
-- `n = 0`, where the iterate is the identity and `D^0 = 1`;
-- `n = 1`;
-- `D = 0`;
-- `D = 1`.
+No hypothesis `D >= 2` is required. The theorem therefore covers `n = 0`, `n = 1`, `D = 0`, and `D = 1` under ordinary natural-number power semantics.
 
 ## Proof strategy
 
-The proof is deliberately explicit and audit-friendly.
+The proof is explicit and audit-friendly:
 
-1. Induct on `n`, generalizing the input point `z`.
-2. For the successor step, use the pinned `Function.iterate` semantics
+1. induction on `n`, generalizing the point `z`;
+2. use the pinned successor semantics `f^[n.succ] x = f^[n] (f x)`;
+3. apply the induction hypothesis to `coordinatePower D z`;
+4. rewrite with the sealed `coordinatePower_apply` theorem;
+5. use the ordinary power multiplication law, commute natural-number factors, and finish with `pow_succ`;
+6. obtain the map-level result by function extensionality.
 
-   ```lean
-   f^[n.succ] x = f^[n] (f x)
-   ```
+The proof introduces no project axiom, admitted theorem, placeholder, or replacement iteration theory.
 
-   which is definitionally true in the pinned mathlib source.
-3. Apply the induction hypothesis to `coordinatePower D z`.
-4. Use the sealed F02 coordinate theorem to rewrite
-
-   \[
-   (P_D(z))_i=z_i^D.
-   \]
-
-5. Use the ordinary power law
-
-   \[
-   (z_i^D)^{D^n}=z_i^{D\,D^n},
-   \]
-
-   commute the natural-number factors, and use
-
-   \[
-   D^{n+1}=D^nD.
-   \]
-
-6. Obtain the map-level corollary by function extensionality.
-
-The proof introduces no project axiom, no admitted theorem, and no custom replacement for mathlib iteration or power theory.
-
-## Pinned-source audit
-
-The project remains pinned to:
+## Pinned environment
 
 ```text
 Lean:    leanprover/lean4:v4.34.0
+Lake:    5.0.0-src+293d5d0
 mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
 ```
 
-The pinned mathlib source was checked before staging the proof. In `Mathlib/Logic/Function/Iterate.lean`, `Function.iterate_succ_apply` has the exact orientation used here:
+The pinned mathlib source was audited before implementation; `Function.iterate_succ_apply` has the exact orientation used by the proof.
 
-```lean
-theorem iterate_succ_apply (n : ℕ) (x : α) : f^[n.succ] x = f^[n] (f x) := rfl
+## Execution evidence
+
+The exact implementation commit was executed in GitHub Codespaces with a clean working tree.
+
+Observed ancestry:
+
+```text
+HEAD  = f314d20d128cf27f46bb9f603364a6b8bf0b2ee0
+HEAD^ = 5904db171c96f130ea0c39b124c83751931a23ee
 ```
+
+Lean verification:
+
+```text
+lake build
+Build completed successfully (8928 jobs).
+```
+
+and:
+
+```text
+lake env lean SelfSimilarCY/CoordinatePowerIteration.lean
+```
+
+completed without Lean diagnostics.
+
+Fresh historical runtime regressions all passed:
+
+```text
+scene-spec v0.03 verification: passed
+base-renderer v0.04 verification: passed
+one-step pullback v0.05 verification: passed
+recursive lazy expansion v0.06 verification: passed
+```
+
+The working tree remained clean. A source scan found no `axiom`, `sorry`, or `admit` in `CoordinatePowerIteration.lean`.
 
 ## Explicit non-claims
 
@@ -150,34 +148,12 @@ F03 does not define or prove:
 - metric scaling, `P_D^*g_log=D^2g_log`, or Jacobians;
 - renderer geometry, recursive visualization, JS↔Lean bridge, or CI.
 
-## Required execution gates
-
-The staged source may be sealed only after actual execution in the pinned project:
-
-```bash
-cd formal
-lake build
-lake env lean SelfSimilarCY/CoordinatePowerIteration.lean
-cd ..
-```
-
-and then the complete historical runtime regression:
-
-```bash
-node verify_scene_spec_v0_03.js
-node verify_base_renderer_v0_04.js
-node verify_one_step_pullback_v0_05.js
-node verify_recursive_lazy_expansion_v0_06.js
-```
-
-Source review alone is not execution evidence.
-
 ## Stopping point
 
-Before those commands succeed, the only valid conclusion is
+All F03 gates are satisfied, so the milestone is sealed at
 
 \[
-\boxed{\text{F03 IMPLEMENTATION STAGED / UNSEALED}}.
+\boxed{(P_D)^{[n]}=P_{D^n}}.
 \]
 
-After successful execution and a scope/compare audit, F03 may be sealed. Only then does **F04 — Pullback Tower** become eligible to begin.
+F03 stops here. The next formal milestone is **F04 — Pullback Tower**.

@@ -4,7 +4,7 @@
 
 **Thread F03 — Iteration Theorem**
 
-Status: **implementation staged / unsealed**
+Status: **passed / sealed**
 
 Date: 2026-09-15
 
@@ -15,6 +15,13 @@ Canonical parent:
 formal: seal F02 coordinate power map
 ```
 
+Verified implementation commit:
+
+```text
+f314d20d128cf27f46bb9f603364a6b8bf0b2ee0
+formal: stage F03 iteration theorem
+```
+
 Working branch:
 
 ```text
@@ -23,21 +30,9 @@ formal-f03-iteration-theorem
 
 ## Exact repository/source audit
 
-The canonical repository was read directly before implementation.
+Before implementation, both `main` and `formal-f02-coordinate-power` were confirmed at the sealed F02 commit above, whose sole parent is `e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283`. The F02 state was read as `passed / sealed`, and all requested formal/runtime canonical artifacts were retrieved from the repository. No required artifact was missing.
 
-Both `main` and `formal-f02-coordinate-power` pointed to exactly
-`5904db171c96f130ea0c39b124c83751931a23ee`, whose sole parent is
-`e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283`.
-
-The F02 state records `status = passed` and `canonicalState = sealed`, with actual Codespaces evidence for `lake build`, direct `CoordinatePower.lean` compilation, and all four historical Node verifiers.
-
-The requested formal project files, F02 canonical theorem/state/progress files, formal plan, runtime v0.03–v0.06 specifications/state/progress files, runtime modules, and historical Node verifiers were read from the repository canonical commit. The prompt's `@Documents/...` artifacts all had repository-canonical counterparts under `docs/...`; no required artifact was missing.
-
-## Sealed dependency preserved
-
-F03 does not modify `formal/SelfSimilarCY/CoordinatePower.lean`.
-
-The unique F02 definitions remain:
+F03 preserves the sealed F02 definition without modification:
 
 ```lean
 abbrev Point4 := Fin 4 → ℂ
@@ -46,42 +41,11 @@ def coordinatePower (D : ℕ) (z : Point4) : Point4 :=
   fun i => z i ^ D
 ```
 
-with `coordinatePower_apply` and `coordinatePower_unique` unchanged.
+No competing coordinate-power definition was introduced.
 
-No second coordinate-power map is introduced.
+## Formal result
 
-## Pinned mathlib audit
-
-The dependency environment remains the sealed F01/F02 environment:
-
-```text
-Lean:    leanprover/lean4:v4.34.0
-mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
-```
-
-Before staging the proof, the pinned `Mathlib/Logic/Function/Iterate.lean` source was checked. Its successor law is exactly:
-
-```lean
-theorem iterate_succ_apply (n : ℕ) (x : α) : f^[n.succ] x = f^[n] (f x) := rfl
-```
-
-so the induction proof is written against the pinned function-iteration orientation rather than an assumed one.
-
-## Staged formal implementation
-
-Created:
-
-- `formal/SelfSimilarCY/CoordinatePowerIteration.lean`
-- `docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md`
-- `docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json`
-- `docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md`
-
-Modified:
-
-- `formal/SelfSimilarCY.lean` to import the new iteration module;
-- `formal/README.md` to record the F03 theorem contract and unsealed verification state.
-
-The staged pointwise theorem is:
+`formal/SelfSimilarCY/CoordinatePowerIteration.lean` proves the pointwise theorem
 
 ```lean
 theorem coordinatePower_iterate_apply
@@ -89,7 +53,7 @@ theorem coordinatePower_iterate_apply
     (coordinatePower D)^[n] z i = z i ^ (D ^ n)
 ```
 
-The staged map-level corollary is:
+and the map-level corollary
 
 ```lean
 theorem coordinatePower_iterate
@@ -97,72 +61,80 @@ theorem coordinatePower_iterate
     (coordinatePower D)^[n] = coordinatePower (D ^ n)
 ```
 
-The proof uses induction on `n`, the pinned iterate successor semantics, the sealed coordinate formula, the standard power-multiplication law, natural-number commutativity, and `pow_succ`. The map-level theorem is obtained by function extensionality.
+The proof uses natural-number induction, the pinned `Function.iterate` successor semantics, the sealed F02 coordinate formula, standard power laws, and function extensionality. No `D >= 2` hypothesis is added, so the theorem also covers `n = 0`, `n = 1`, `D = 0`, and `D = 1` under ordinary Lean natural-power semantics.
 
-## Minimal-assumption boundary cases
+## Pinned environment
 
-No `D >= 2` hypothesis is added. The theorem statement naturally includes:
+The F01/F02 dependency environment remained unchanged:
 
-- `n = 0`;
-- `n = 1`;
-- `D = 0`;
-- `D = 1`.
-
-The runtime scene restriction `D >= 2` remains a JavaScript contract concern and is not promoted into the mathematical definition or theorem.
-
-## Scope guards
-
-F03 does not introduce:
-
-- `X` or `X_n`;
-- pullback/preimage tower theorems;
-- `W` or Calabi–Yau geometry;
-- torus/nonvanishing subtypes;
-- map-degree or iterated-degree theorems;
-- metric scaling or Jacobians;
-- renderer geometry, recursive visualization, sheet models, or a JS↔Lean bridge;
-- GitHub Actions or CI;
-- `axiom`, `sorry`, `admit`, or opaque placeholders.
-
-The sealed dependency files remain unchanged:
-
-- `formal/lakefile.toml`
-- `formal/lean-toolchain`
-- `formal/lake-manifest.json`
-- `formal/SelfSimilarCY/Basic.lean`
-- `formal/SelfSimilarCY/CoordinatePower.lean`
-
-All runtime JavaScript and historical Node verifier sources remain unchanged by design.
-
-## Execution status
-
-The current ChatGPT execution environment reports Node `v22.16.0`, but does not provide `lean` or `lake`.
-
-Therefore the following required F03 execution gates have **not** yet been satisfied in this thread:
-
-```bash
-cd formal
-lake build
-lake env lean SelfSimilarCY/CoordinatePowerIteration.lean
-cd ..
-node verify_scene_spec_v0_03.js
-node verify_base_renderer_v0_04.js
-node verify_one_step_pullback_v0_05.js
-node verify_recursive_lazy_expansion_v0_06.js
+```text
+Lean:    leanprover/lean4:v4.34.0
+Lake:    5.0.0-src+293d5d0
+mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
 ```
 
-Historical F02 execution evidence is retained as dependency evidence, but it is not substituted for fresh F03 execution evidence.
+The pinned mathlib source was audited before implementation; `Function.iterate_succ_apply` has the orientation used by the proof.
+
+## Actual execution evidence
+
+The F03 implementation commit was checked out in GitHub Codespaces with a clean working tree. The observed ancestry was:
+
+```text
+HEAD  = f314d20d128cf27f46bb9f603364a6b8bf0b2ee0
+HEAD^ = 5904db171c96f130ea0c39b124c83751931a23ee
+```
+
+The toolchain resolved exactly to Lean 4.34.0 and Lake `5.0.0-src+293d5d0`.
+
+The required Lean gates then succeeded:
+
+```text
+lake build
+Build completed successfully (8928 jobs).
+```
+
+and
+
+```text
+lake env lean SelfSimilarCY/CoordinatePowerIteration.lean
+```
+
+completed without Lean diagnostics.
+
+The fresh historical runtime regression suite also passed:
+
+```text
+scene-spec v0.03 verification: passed
+base-renderer v0.04 verification: passed
+one-step pullback v0.05 verification: passed
+recursive lazy expansion v0.06 verification: passed
+```
+
+The working tree remained clean after verification.
+
+## Changed-file / scope audit
+
+Relative to sealed F02, F03 changes only:
+
+- `formal/SelfSimilarCY/CoordinatePowerIteration.lean`;
+- `formal/SelfSimilarCY.lean`;
+- `formal/README.md`;
+- `docs/ITERATION_THEOREM_self_similar_cy_visualizer_v0_03.md`;
+- `docs/state_formal_verification_self_similar_cy_visualizer_v0_03.json`;
+- `docs/progress_formal_verification_self_similar_cy_visualizer_v0_03.md`.
+
+The implementation audit confirmed no runtime JavaScript changes, no dependency-file changes, no GitHub Actions, no pullback-tower theorem, no `W` geometry, no map-degree theorem, and no metric theorem. A source scan found no `axiom`, `sorry`, or `admit` in the F03 theorem module.
 
 ## Seal decision
 
-F03 is **not sealed** at this stage.
+All F03 acceptance gates are satisfied. Therefore:
 
 \[
-\boxed{\text{F03 Iteration Theorem: IMPLEMENTATION STAGED / UNSEALED}}
+\boxed{\text{F03 Iteration Theorem: PASSED / SEALED}}
 \]
 
-`main` must remain at the sealed F02 commit until the Lean build, direct F03 module compile, four Node regressions, and final compare/scope audit all pass.
+The sealing commit may advance `main` only by non-force fast-forward. F03 stops here; no F04 pullback-tower content is introduced.
 
-## Next milestone after seal
+## Next milestone
 
-Only after F03 is sealed may the project begin **F04 — Pullback Tower**.
+The next formal milestone is **F04 — Pullback Tower**, which may now begin in a new thread.
