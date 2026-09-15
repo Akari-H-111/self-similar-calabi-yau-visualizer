@@ -8,7 +8,7 @@ Milestone: **R02 — Historical Consistency Audit**
 
 Branch: `formal-doc-recovery-r02`
 
-Status: **R02 AUDIT STAGED / UNSEALED**
+Status: **PASSED / SEALED**
 
 R02 base `main`:
 
@@ -358,14 +358,34 @@ The rematerialized copies should:
 
 R02 does **not** recommend R04 repair on the present evidence because no `ACTUAL_CONTRADICTION` exists. If a future source reveals a genuine contradiction, a separate reconciliation/repair milestone may be opened without altering this audit's historical record.
 
-## Staged seal decision
+## Final seal decision
 
-The audit content is complete enough to stage because every identified discrepancy has been sourced, placed on a timeline, and classified, with no guessed repair.
+The staged R02 artifacts were read back successfully.
 
-Before R02 may seal, the staged artifacts must be read back and compared against the R01 sealed base. The compare must show changes only under `docs/recovery/*`, with all historical, formal, runtime, dependency, verifier, and CI files unchanged.
-
-Until those gates pass:
+The R01 sealed base → R02 staged-candidate compare reported:
 
 ```text
-R02 AUDIT STAGED / UNSEALED
+status:       ahead
+ahead_by:     1
+behind_by:    0
+merge-base:   234f7829cb6b5fb3af8c84234a84e73fa9397db9
+changed files: exactly 3
 ```
+
+The three changed files are exactly the R02 audit artifacts under `docs/recovery/*`. No historical canonical artifact, formal source, runtime source, verifier, dependency file, or CI file changed.
+
+All audit-completeness gates are therefore satisfied. The presence of three `UNVERIFIABLE` execution-witness rows does not fail R02 because those claims are explicitly marked unresolved rather than silently treated as verified.
+
+Final R02 state:
+
+```text
+status: passed
+canonicalState: sealed
+ACTUAL_CONTRADICTION: 0
+historical sources modified: false
+formal source modified: false
+runtime/dependencies/CI modified: false
+next recovery milestone: R03 — Documents Rematerialization
+```
+
+R02 stops here after non-force fast-forward publication to `main`. No historical source repair is performed.

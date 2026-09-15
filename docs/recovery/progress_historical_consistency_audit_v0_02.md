@@ -4,7 +4,7 @@
 
 **R02 — Historical Consistency Audit**
 
-Status: **staged / unsealed**
+Status: **passed / sealed**
 
 Branch:
 
@@ -135,35 +135,56 @@ F02 pre-seal theorem status vs later sealed state/progress
 
 No R04 repair is presently required.
 
-## Staged artifacts
+## R02 artifacts
 
-This staging step is limited to:
+R02 adds only:
 
 - `docs/recovery/HISTORICAL_CONSISTENCY_AUDIT_v0_02.md`
 - `docs/recovery/historical_consistency_matrix_v0_02.json`
 - `docs/recovery/progress_historical_consistency_audit_v0_02.md`
 
-No historical artifact is to be modified.
+No historical artifact is modified.
 
-## Gates remaining before seal
+## Seal gates
 
-The staged branch must still pass:
+The staged artifacts were read back successfully.
 
-```text
-R02 artifact readback
-R01 sealed base → R02 candidate compare
-changed files only docs/recovery/*
-historical source files unchanged
-formal source unchanged
-runtime/verifiers unchanged
-dependency files unchanged
-no F04/F05/F06 work
-pure successor ancestry
-current main still equals R01 sealed base before publication
-```
-
-Until then:
+R01 sealed base → staged R02 candidate:
 
 ```text
-R02 AUDIT STAGED / UNSEALED
+base:       234f7829cb6b5fb3af8c84234a84e73fa9397db9
+candidate:  e18dc0ebc9ce1fb72dcd8b342516ee65d12b0672
+status:     ahead
+ahead_by:   1
+behind_by:  0
+merge-base: 234f7829cb6b5fb3af8c84234a84e73fa9397db9
 ```
+
+Changed files were exactly the three R02 `docs/recovery/*` artifacts.
+
+Therefore:
+
+```text
+artifact_readback:                    passed
+changed_files_only_docs/recovery:     passed
+historical_sources_unchanged:         passed
+formal_source_unchanged:              passed
+runtime_verifiers_unchanged:          passed
+dependency_files_unchanged:           passed
+CI_unchanged:                         passed
+F04_F05_F06_work_introduced:          false
+audit_completeness:                   passed
+```
+
+## Seal decision
+
+R02 succeeds because all recognizable discrepancies have been sourced, temporalized, and classified without rewriting history or guessing repairs.
+
+```text
+status: passed
+canonicalState: sealed
+```
+
+Publication is restricted to a non-force fast-forward of `main` after the seal-candidate compare confirms pure successor ancestry.
+
+After publication R02 stops. The next recovery milestone is **R03 — Documents Rematerialization**.
