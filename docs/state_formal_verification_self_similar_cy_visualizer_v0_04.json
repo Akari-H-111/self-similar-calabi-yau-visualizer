@@ -1,0 +1,86 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "formalNamespace": "formal-v0.04",
+  "milestone": "F04 — Pullback Tower",
+  "canonicalParent": "b85c295540996612633bf7d702098ba9634882fe",
+  "verifiedImplementationCommit": null,
+  "workingBranch": "formal-f04-pullback-tower",
+  "status": "implementation_staged",
+  "canonicalState": "unsealed",
+  "toolchain": {
+    "lean": "leanprover/lean4:v4.34.0",
+    "lake": "5.0.0-src+293d5d0",
+    "mathlib": "7801e8406155c31b340d28e2762f754d02b5e9b0",
+    "manifest": "formal/lake-manifest.json",
+    "changedFromF03": false
+  },
+  "sealedDependencies": {
+    "point4": "Point4 := Fin 4 → ℂ",
+    "coordinatePower": "coordinatePower (D : ℕ) (z : Point4) := fun i => z i ^ D",
+    "iterationTheorem": "coordinatePower_iterate"
+  },
+  "representation": {
+    "carrier": "Set Point4",
+    "preimage": "mathlib Set.preimage / ⁻¹' notation",
+    "customPreimageAbstractionIntroduced": false
+  },
+  "formalObjects": {
+    "tower": "pullbackTower",
+    "zeroEquation": "pullbackTower_zero",
+    "successorEquation": "pullbackTower_succ",
+    "mainTheorem": "pullbackTower_eq_iterate_preimage",
+    "f03Corollary": "pullbackTower_eq_coordinatePower_preimage"
+  },
+  "pinnedMathlibAudit": {
+    "status": "passed",
+    "iterate": [
+      "Function.iterate_zero",
+      "Function.iterate_succ",
+      "Function.iterate_succ_apply"
+    ],
+    "sets": [
+      "Set.ext",
+      "Set.preimage_id",
+      "Set.preimage_comp",
+      "Set.preimage_comp_eq",
+      "Set.preimage_iterate_eq",
+      "Set.preimage_preimage"
+    ]
+  },
+  "verificationEvidence": {
+    "canonicalRepositoryAudit": "passed",
+    "sealedF03Audit": "passed",
+    "branchStartAudit": "passed",
+    "sourceReview": "staged",
+    "lakeBuild": "pending",
+    "pullbackModuleCompile": "pending",
+    "legacyNodeRegression": "pending",
+    "placeholderScan": "pending fresh execution/source scan",
+    "workingTree": "not observable through GitHub contents API; branch compare to be audited"
+  },
+  "gates": {
+    "exact_parent_audit": "passed",
+    "canonical_sources_read": "passed_with_repository_counterparts_for_unavailable_documents_connector_hits",
+    "pinned_mathlib_api_audit": "passed",
+    "minimal_representation_decision": "passed",
+    "pullback_tower_source_staged": "passed",
+    "lake_build": "pending",
+    "pullback_module_compile": "pending",
+    "legacy_node_regression": "pending",
+    "source_placeholder_scan": "pending",
+    "final_compare_audit": "pending",
+    "main_fast_forward": "not_attempted"
+  },
+  "scopeGuards": {
+    "runtimeModified": false,
+    "dependencyFilesModified": false,
+    "githubActionsIntroduced": false,
+    "WGeometryIntroduced": false,
+    "degreeTheoremIntroduced": false,
+    "metricTheoremIntroduced": false,
+    "sheetModelIntroduced": false,
+    "f05OrF06WorkIntroduced": false
+  },
+  "sealCondition": "unsatisfied: fresh lake build, direct PullbackTower.lean compile, historical Node regressions, source scan, clean-state evidence, and final compare audit remain required",
+  "nextMilestone": "F05 — Contract Bridge Audit only after F04 is sealed"
+}
