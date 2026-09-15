@@ -1,8 +1,8 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.06 — Recursive Lazy Expansion
+**Current version:** v0.07 — Zoom Semantics
 
-This repository is a minimal static HTML/CSS/vanilla-JavaScript application for the Self-Similar Calabi–Yau Visualizer. v0.06 adds a verified request-bounded **recursive lazy structural expansion** on top of the v0.05 One-Step Pullback while preserving the v0.03 mathematical scene contract and the v0.04/v0.05 renderer contracts.
+This repository is a minimal static HTML/CSS/vanilla-JavaScript application for the Self-Similar Calabi–Yau Visualizer. v0.07 adds verified **structural focus / level-navigation semantics** on top of the v0.06 Recursive Lazy Expansion while preserving the v0.03 mathematical scene contract and the v0.04–v0.06 runtime contracts.
 
 ## Canonical mathematical core
 
@@ -18,7 +18,7 @@ X_n = (P_D^n)^{-1}(X),
 P_D(z_1,\ldots,z_4) = (z_1^D,\ldots,z_4^D).
 \]
 
-The scene is loaded from `data/system.json`, validated by `scene-spec.js`, passed through `base-renderer.js` and `one-step-pullback.js`, and then consumed by `recursive-lazy-expansion.js`.
+The scene is loaded from `data/system.json`, validated by `scene-spec.js`, passed through `base-renderer.js`, `one-step-pullback.js`, and `recursive-lazy-expansion.js`, then consumed by `zoom-semantics.js` as derived view state.
 
 ## Preserved canonical contracts
 
@@ -53,63 +53,97 @@ geometryRendered = false
 sheetsMaterialized = false
 ```
 
-The one-step module still does not consume `requestedDepth`.
-
-## v0.06 Recursive Lazy Expansion
-
-The canonical family is linearly indexed by depth, so v0.06 introduces no tree, cache, iterator, scheduler, branch model, or sheet model. The minimal recursive runtime state is an immutable ordered sequence of **structural pullback levels** plus two depth counters:
+The v0.06 recursive contract remains request-bounded:
 
 ```text
-requestedDepth     = requested target depth
-materializedDepth  = highest level currently present in the recursive model
+requestedDepth     = requested target structural depth
+materializedDepth  = highest structural depth currently materialized
 ```
 
-Each materialized level records the structural relation
+`expandOneLevel` remains the only operation that can add a structural level, and application startup still never calls it.
 
-\[
-X_n=P_D^{-1}(X_{n-1})
-\]
+## v0.07 Zoom Semantics
 
-and inherits all map metadata from the verified v0.05 one-step primitive. The recursive module does not hard-code a second `coordinate_power` declaration, directly read `parameters.D`, or recompute `D^4`.
+Because `W` is unresolved and the repository contains no concrete embedding, metric coordinates, points, mesh, camera geometry, projection, or viewport transform, v0.07 does **not** define geometric zoom.
 
-### `requestedDepth` semantics
-
-- `requestedDepth = 0`: the recursive model materializes no pullback level and remains at structural depth `0`.
-- `requestedDepth = 1`: the recursive model materializes exactly depth `1` using the already-verified one-step primitive and is complete.
-- `requestedDepth > 1`: initialization materializes only depth `1`; the model remains incomplete until explicit calls to `expandOneLevel` advance the frontier. Each call can add **at most one** structural level and expansion stops deterministically at `requestedDepth`.
-
-The fixed v0.05 One-Step Pullback remains an upstream verified primitive and diagnostic renderer. Its historical fixed-depth behavior is intentionally independent of the request-driven recursive materialization count.
-
-`app.js` initializes the recursive model but never calls `expandOneLevel`, so application startup cannot eagerly expand an arbitrarily large request.
-
-## Degree information is not sheet geometry
-
-For each transition, the inherited map degree is the already-derived
-
-\[
-D^4.
-\]
-
-At structural depth `n`, v0.06 records the exact iterated-degree expression as the pair
+The truthful minimum semantics is:
 
 ```text
-baseDegree = D^4
+zoom = structural focus / level navigation
+```
+
+The zoom model distinguishes:
+
+```text
+requestedFocusDepth
+focusedDepth
+availableDepth = recursiveModel.materializedDepth
+requestedDepth = recursiveModel.requestedDepth
+focusStatus
+```
+
+If a focus target is already materialized, it is available. If it is deeper than `materializedDepth`, the model returns:
+
+```text
+focusStatus = not_materialized
+focusedDepth = null
+materializationTriggered = false
+```
+
+The focus request is neither clamped nor silently expanded. The zoom module never calls `expandOneLevel`, never rewrites `requestedDepth`, and never maintains a second recursive frontier.
+
+## `D^2` is formal scale metadata, not visual zoom
+
+The scene validator already exposes:
+
+```text
+scene.derived.metricScale = D^2
+```
+
+At an available focused depth `n`, v0.07 records the informational expression
+
+```text
+baseScale = scene.derived.metricScale
 exponent = n
 ```
 
 representing
 
 \[
-(D^4)^n = D^{4n}.
+(D^2)^n=D^{2n}.
 \]
 
-It deliberately does not evaluate this as a materialized sheet count, avoiding both false geometric claims and unnecessary large-integer growth. No sheet array, sheet object, branch object, pullback point, mesh, contour, slice, or implicit surface is created.
+This metadata does not drive a camera or viewport. The zoom model explicitly reports:
 
-Because `W` is unresolved, every pullback level remains structural only and preserves `geometryRendered = false` and `sheetsMaterialized = false`.
+```text
+geometricZoomApplied = false
+cameraTransformApplied = false
+```
+
+`zoom-semantics.js` does not recompute `D^2`, does not read `parameters.D`, and does not use `D^4` or `scene.derived.sheetDegree` as a zoom factor.
+
+The sealed Formal Verification F01–F06 line remains closed. Runtime `metricScale = D^2` is still not claimed as a newly Lean-proved metric theorem.
+
+## Degree information remains distinct from sheet geometry
+
+For each recursive transition, the inherited runtime map-degree metadata remains `D^4`. At structural depth `n`, v0.06 continues to record the iterated-degree expression as:
+
+```text
+baseDegree = D^4
+exponent = n
+```
+
+No sheet array, sheet object, branch object, pullback point, mesh, contour, slice, or implicit surface is created. Thread 07 remains the future `D^4 Sheets` milestone.
 
 ## Rendering surface
 
-The rendering surface remains ordinary DOM. No Canvas, SVG geometry, Three.js, WebGL, GPU buffer, camera, zoom, or arithmetic-overlay architecture is justified by the current canonical information.
+The rendering surface remains ordinary DOM. v0.07 adds no Canvas, SVG geometry, Three.js, WebGL, GPU buffer, camera matrix, projection, physical viewport transform, mesh LOD, or arithmetic/cyclotomic overlay architecture.
+
+## Formal verification boundary
+
+Formal Verification F01–F06 is sealed and remains a stable claim boundary. Its Lean job and the runtime engineering job remain independent. v0.07 extends only the runtime-contract verification surface; it does not reopen the formal line or claim that the whole visualizer is formally verified.
+
+See `docs/FORMAL_HANDOFF_self_similar_cy_visualizer_v0_06.md` for the compact sealed formal boundary.
 
 ## Run locally
 
@@ -128,19 +162,21 @@ node verify_scene_spec_v0_03.js
 node verify_base_renderer_v0_04.js
 node verify_one_step_pullback_v0_05.js
 node verify_recursive_lazy_expansion_v0_06.js
+node verify_zoom_semantics_v0_07.js
 node --check scene-spec.js
 node --check base-renderer.js
 node --check one-step-pullback.js
 node --check recursive-lazy-expansion.js
+node --check zoom-semantics.js
 node --check app.js
 ```
 
-The v0.06 verifier covers deterministic `requestedDepth = 0`, `1`, and `> 1` behavior, one-level-at-a-time expansion, stopping at the requested frontier, reuse of the one-step mathematical primitive, formal iterated-degree information without sheet objects, validation-before-render ordering, unresolved-`W` preservation, and scope guards against later milestones.
+The v0.07 verifier covers deterministic focus at depth `0`, `1`, and higher requested depths; unavailable-focus boundaries; strict separation between zoom and recursive materialization; reuse of the current recursive frontier; `D^2` source-of-truth behavior; validation-before-render ordering; unresolved-`W` preservation; and scope guards against camera, geometry, sheets, overlays, Three.js, and WebGL.
 
-The v0.05 verifier keeps all one-step behavioral assertions. Its one exact version-metadata assertion is minimally generalized to accept repository version metadata at or after v0.05, matching the compatibility approach already used by the historical v0.04 verifier.
+The historical v0.06 verifier keeps all recursive behavioral assertions. Its one exact version-metadata assertion is minimally generalized to accept repository version metadata at or after v0.06, matching the compatibility policy already used by earlier verifiers.
 
-## Scope of v0.06
+## Scope of v0.07
 
-This version implements **Thread 05 — Recursive Lazy Expansion** only. It does not implement zoom semantics, camera navigation, concrete `D^4` sheet visualization, arithmetic/cyclotomic overlays, Three.js, WebGL, GPU buffers, performance optimization, fidelity audit, later UX, or publication work.
+This version implements **Thread 06 — Zoom Semantics** only. It does not implement concrete `D^4` sheet visualization, sheet objects, branch geometry, arithmetic/cyclotomic overlays, Three.js, WebGL, GPU buffers, camera matrices, perspective/orthographic projection, viewport transforms, mesh LOD, performance optimization, fidelity audit, later UX, or publication work.
 
-The next milestone is **Thread 06 — Zoom Semantics**.
+The next milestone is **Thread 07 — D^4 Sheets**.
