@@ -4,7 +4,7 @@
 
 **R01 — Exact Canonical Recovery**
 
-Status: **staged / unsealed**
+Status: **passed / sealed**
 
 Recovery branch:
 
@@ -66,27 +66,49 @@ R01 adds only:
 - `docs/recovery/formal_artifact_recovery_manifest_v0_01.json`
 - `docs/recovery/progress_formal_artifact_recovery_v0_01.md`
 
-No Lean source, dependency file, runtime source, verifier, CI file, or historical source file is intended to change.
+No Lean source, dependency file, runtime source, verifier, CI file, or historical source file changed.
 
-## Verification gates still pending
+## Verification result
 
-Before R01 can be sealed, the following must be checked against the staged branch:
+Recovery metadata was read back successfully from the R01 branch.
 
-```text
-recovery artifact readback
-base-to-candidate compare
-changed-files-only docs/recovery/*
-historical seven source files unchanged
-formal/runtime/dependency/CI unchanged
-pure-successor ancestry from R01 base
-```
-
-Until those checks pass, the correct state remains:
+The base-to-candidate compare reported:
 
 ```text
-R01 RECOVERY STAGED / UNSEALED
+status: ahead
+ahead_by: 3
+behind_by: 0
+merge_base: b85c295540996612633bf7d702098ba9634882fe
 ```
 
-## Stop point after seal
+Changed files were exactly the three `docs/recovery/*` metadata files. Therefore:
 
-After the recovery metadata is verified and sealed, R01 stops. The next milestone is **R02 — Historical Consistency Audit**. R01 does not begin R02 or R03 work.
+```text
+historical seven source files unchanged: passed
+formal/runtime/dependency/CI unchanged: passed
+pure-successor ancestry from R01 base: passed
+```
+
+The branch HEAD before sealing was:
+
+```text
+9360b12b371a2070e14bcbad75794aae2fbb4a13
+docs: stage R01 recovery progress
+```
+
+All R01 recovery gates required before the sealing commit are satisfied.
+
+## Seal decision
+
+R01 may therefore be sealed as:
+
+```text
+status: passed
+canonicalState: sealed
+```
+
+The sealing commit must update only the three recovery metadata files. After that commit, a final compare must again show no changes outside `docs/recovery/*`, and publication to `main` is permitted only by non-force fast-forward.
+
+## Stop point after publication
+
+After the sealing commit is fast-forwarded to `main` and canonical HEAD is read back, R01 stops. The next milestone is **R02 — Historical Consistency Audit**. R01 does not begin R02 or R03 work.

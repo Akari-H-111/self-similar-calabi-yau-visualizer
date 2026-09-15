@@ -7,8 +7,8 @@
     "commit": "b85c295540996612633bf7d702098ba9634882fe",
     "commitMessage": "formal: seal F03 iteration theorem"
   },
-  "status": "staged",
-  "canonicalState": "unsealed",
+  "status": "passed",
+  "canonicalState": "sealed",
   "sourceAuthority": "GitHub canonical repository",
   "recoveryPolicy": "exact-recovery-only",
   "historicalSourceFilesModified": false,
@@ -105,11 +105,15 @@
   ],
   "verification": {
     "exactFetch7of7": "passed",
-    "recoveryArtifactsReadback": "pending",
-    "candidateCompare": "pending",
-    "historicalSourcesUnchanged": "pending",
-    "formalRuntimeDependencyCIUnchanged": "pending",
-    "mainFastForward": "pending"
+    "recoveryArtifactsReadback": "passed",
+    "candidateCompare": "passed",
+    "candidateAheadBy": 3,
+    "candidateBehindBy": 0,
+    "mergeBase": "b85c295540996612633bf7d702098ba9634882fe",
+    "changedFilesOnlyDocsRecovery": "passed",
+    "historicalSourcesUnchanged": "passed",
+    "formalRuntimeDependencyCIUnchanged": "passed",
+    "publicationPolicy": "non-force fast-forward only"
   },
   "nextMilestoneAfterSeal": "R02 — Historical Consistency Audit"
 }

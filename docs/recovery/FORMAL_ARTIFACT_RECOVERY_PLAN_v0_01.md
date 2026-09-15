@@ -106,6 +106,29 @@ Before sealing, R01 verifies:
 6. no formal/runtime/dependency/CI file changed;
 7. the branch remains a pure successor of the recorded R01 base.
 
+## Verified result
+
+R01 verification completed with:
+
+```text
+7/7 targets = A. exact_canonical_retrieval
+recovery metadata readback = passed
+base-to-candidate compare = ahead 3 / behind 0 before sealing
+merge-base = b85c295540996612633bf7d702098ba9634882fe
+changed files = exactly docs/recovery/*
+historical source modifications = none
+formal/runtime/dependency/CI modifications = none
+```
+
+The recovery milestone is therefore eligible for sealing as:
+
+```text
+status: passed
+canonicalState: sealed
+```
+
+Publication to `main` remains constrained to a non-force fast-forward after the final sealing commit and final compare audit.
+
 ## R01 / R02 / R03 division
 
 - **R01 — Exact Canonical Recovery**: recover and record exact canonical identities only.
@@ -114,4 +137,4 @@ Before sealing, R01 verifies:
 
 ## Stop point
 
-R01 stops immediately after recovery metadata is verified and sealed. It does not begin R02 analysis or R03 rematerialization.
+R01 stops immediately after recovery metadata is verified, sealed, and published by non-force fast-forward. It does not begin R02 analysis or R03 rematerialization.
