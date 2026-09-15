@@ -4,13 +4,20 @@
 
 **Thread F05 — Contract Bridge Audit**
 
-Current status: **audit complete / fresh Node + placeholder scan passed / fresh Lean regression pending / unsealed**
+Current status: **passed / sealed**
 
 Canonical F04 parent:
 
 ```text
 f1602a09ea24e4d71b9352dfc0c3c2602094ed56
 formal: seal F04 pullback tower
+```
+
+Verified F05 candidate:
+
+```text
+cbb03ba1570ca2ad226024d59fc4ce695716cd03
+formal: record F05 fresh executable audit evidence
 ```
 
 Working branch:
@@ -200,20 +207,17 @@ Conversely, Lean theorems about arbitrary sets and function iteration do not ver
 
 Historical F04 execution evidence exists but is not counted as fresh F05 evidence.
 
-For F05, the available shell reconstructed the exact canonical runtime/verifier files from GitHub and verified their Git blob SHAs before execution. **11/11** runtime/verifier blobs matched canonical GitHub byte-for-byte. The fresh commands then passed:
+For F05, 11/11 runtime/verifier blobs were checked byte-for-byte against canonical GitHub before fresh Node execution. All four canonical Node verifiers passed. Five historical `node --check` syntax checks also passed.
+
+The four Lean theorem-source blobs under `formal/SelfSimilarCY` were checked byte-for-byte against canonical GitHub. A fresh placeholder scan found no `axiom`, `sorry`, or `admit` matches.
+
+The final Lean regression was then executed in the actual Codespace checkout at verified candidate commit:
 
 ```text
-node verify_scene_spec_v0_03.js
-node verify_base_renderer_v0_04.js
-node verify_one_step_pullback_v0_05.js
-node verify_recursive_lazy_expansion_v0_06.js
+cbb03ba1570ca2ad226024d59fc4ce695716cd03
 ```
 
-All five historical `node --check` syntax checks also passed.
-
-The four Lean theorem-source blobs under `formal/SelfSimilarCY` were likewise reconstructed and verified byte-for-byte against canonical GitHub SHAs. A fresh command-line scan found no `axiom`, `sorry`, or `admit` matches.
-
-This shell does **not** contain `lean`, `lake`, or `elan`, and outbound network/DNS is unavailable. The repository has no existing GitHub Actions workflow, and adding one in F05 would violate the F05/F06 boundary. Therefore these mandatory fresh Lean commands remain unexecuted:
+using repository-pinned Lean 4.34.0 / Lake 5.0.0:
 
 ```bash
 cd formal
@@ -223,30 +227,51 @@ lake env lean SelfSimilarCY/CoordinatePowerIteration.lean
 lake env lean SelfSimilarCY/PullbackTower.lean
 ```
 
-An actual repository checkout must also finish with clean `git status` before sealing. Historical F04 Lean execution is not substituted for these F05 gates.
+Observed result:
+
+```text
+Build completed successfully (8929 jobs).
+```
+
+All three direct Lean module compilations produced no errors.
+
+The actual checkout then passed all four Node verifiers and ended with a clean repository state:
+
+```text
+nothing to commit, working tree clean
+cbb03ba1570ca2ad226024d59fc4ce695716cd03
+```
+
+Therefore the fresh F05 execution gate is satisfied.
 
 ## Scope result
 
-The F05 branch remains audit/documentation-only. It does not modify Lean theorem source, runtime JavaScript, `data/system.json`, dependency files, GitHub Actions, or introduce F06 work.
+Repository-side compare from sealed F04 main to the verified F05 candidate is linear and changes only the four expected F05 documentation/audit artifacts. No Lean theorem source, runtime JavaScript, `data/system.json`, dependency file, or GitHub Actions workflow changed. No F06 work was introduced.
 
-## Stopping point
+## Final decision
 
-The semantic audit, canonical Node regression, JavaScript syntax checks, and canonical placeholder scan have passed. Fresh Lean execution remains mandatory, so F05 remains:
+All F05 gates pass:
 
 ```text
-audit complete
-Node regression = passed
-placeholder scan = passed
-Lean regression = pending
-canonicalState = unsealed
+canonical source audit  = passed
+bridge matrix            = passed
+non-claims               = passed
+fresh Node regression    = passed
+fresh placeholder scan   = passed
+fresh Lean regression    = passed
+clean checkout           = passed
+scope compare             = passed
 ```
 
-No sealing commit and no fast-forward of `main` is permitted yet.
+Therefore:
 
-The next milestone remains:
+```text
+F05 CONTRACT BRIDGE AUDIT:
+PASSED / SEALED
+```
+
+The next milestone is exactly:
 
 ```text
 F06 — GitHub CI Integration & Formal Verification Seal
 ```
-
-F06 must not begin before F05 is actually sealed.

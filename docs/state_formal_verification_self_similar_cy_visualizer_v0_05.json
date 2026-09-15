@@ -4,8 +4,9 @@
   "milestone": "F05 — Contract Bridge Audit",
   "canonicalParent": "f1602a09ea24e4d71b9352dfc0c3c2602094ed56",
   "workingBranch": "formal-f05-contract-bridge-audit",
-  "status": "audit_complete_lean_regression_pending",
-  "canonicalState": "unsealed",
+  "verifiedCandidateCommit": "cbb03ba1570ca2ad226024d59fc4ce695716cd03",
+  "status": "passed",
+  "canonicalState": "sealed",
   "sourceAuthority": "canonical GitHub repository",
   "sourceAudit": {
     "status": "passed",
@@ -45,12 +46,13 @@
       "runtimeAndVerifierBlobs": "passed: 11/11 exact Git blob SHAs matched canonical GitHub blobs before execution",
       "leanSourceBlobs": "passed: 4/4 exact Git blob SHAs matched canonical GitHub blobs before placeholder scan"
     },
-    "freshNodeRegression": "passed: all four canonical Node verifiers on byte-for-byte canonical blobs",
+    "freshNodeRegression": "passed: all four canonical Node verifiers passed on the actual F05 checkout; earlier byte-for-byte canonical-blob execution also passed",
     "freshNodeSyntaxChecks": "passed: scene-spec.js, base-renderer.js, one-step-pullback.js, recursive-lazy-expansion.js, app.js",
     "freshPlaceholderScan": "passed: no axiom|sorry|admit matches in byte-for-byte canonical formal/SelfSimilarCY source blobs",
-    "freshLeanRegression": "not_run: lean/lake unavailable in current execution environment and outbound network unavailable for installing pinned toolchain",
+    "freshLeanRegression": "passed on actual Codespace checkout at cbb03ba1570ca2ad226024d59fc4ce695716cd03 using Lean 4.34.0 / Lake 5.0.0; lake build completed successfully with 8929 jobs and direct compilation of CoordinatePower.lean, CoordinatePowerIteration.lean, and PullbackTower.lean produced no errors",
+    "cleanWorkingTree": "passed on actual F05 checkout: nothing to commit, working tree clean",
     "branchStartCompare": "passed: identical to sealed F04 main before staging",
-    "currentCandidateCompare": "repository-side compare pending refresh after execution-evidence commit"
+    "candidateCompare": "passed: F04 main to cbb03ba is linear, ahead by 2, behind by 0, and changes only the four F05 docs artifacts"
   },
   "scopeGuards": {
     "leanTheoremSourceModified": false,
@@ -67,11 +69,11 @@
     "non_claims_completeness": "passed",
     "fresh_node_regression": "passed",
     "fresh_placeholder_scan": "passed",
-    "fresh_lean_regression": "pending",
-    "clean_working_tree": "pending_on_actual_repository_checkout",
-    "final_compare": "pending_after_all_execution_gates",
-    "main_fast_forward": "blocked_until_all_seal_gates_pass"
+    "fresh_lean_regression": "passed",
+    "clean_working_tree": "passed",
+    "final_compare": "passed",
+    "main_fast_forward": "authorized_after_seal_commit_if_non_force_fast_forward remains valid"
   },
-  "sealCondition": "not_satisfied: fresh F05 Lean build/direct-module execution and final actual-checkout cleanliness/compare remain mandatory",
+  "sealCondition": "satisfied",
   "nextMilestoneAfterSeal": "F06 — GitHub CI Integration & Formal Verification Seal"
 }
