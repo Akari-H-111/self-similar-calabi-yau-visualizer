@@ -3,9 +3,10 @@
   "formalNamespace": "formal-v0.02",
   "milestone": "F02 — Coordinate Power Map",
   "canonicalParent": "04d66ee225426b03296c0cf61247de3d567b23d1",
+  "verifiedImplementationCommit": "e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283",
   "workingBranch": "formal-f02-coordinate-power",
-  "status": "implementation_staged",
-  "canonicalState": "unsealed",
+  "status": "passed",
+  "canonicalState": "sealed",
   "toolchain": {
     "lean": "leanprover/lean4:v4.34.0",
     "lake": "5.0.0-src+293d5d0",
@@ -19,6 +20,29 @@
     "coordinateFormulaTheorem": "coordinatePower_apply",
     "uniquenessTheorem": "coordinatePower_unique"
   },
+  "verificationEvidence": {
+    "date": "2026-09-15",
+    "environment": "GitHub Codespaces terminal",
+    "branch": "formal-f02-coordinate-power",
+    "observedHead": "e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283",
+    "workingTree": "clean",
+    "lakeBuild": {
+      "status": "passed",
+      "observation": "Build completed successfully (8927 jobs)."
+    },
+    "coordinateModuleCompile": {
+      "status": "passed",
+      "command": "lake env lean SelfSimilarCY/CoordinatePower.lean",
+      "observation": "completed without Lean diagnostics before the regression commands"
+    },
+    "legacyNodeRegression": {
+      "status": "passed",
+      "verify_scene_spec_v0_03.js": "passed",
+      "verify_base_renderer_v0_04.js": "passed",
+      "verify_one_step_pullback_v0_05.js": "passed",
+      "verify_recursive_lazy_expansion_v0_06.js": "passed"
+    }
+  },
   "gates": {
     "exact_parent_audit": "passed",
     "canonical_sources_read": "passed",
@@ -29,10 +53,10 @@
     "metric_theorem_absent": "passed",
     "W_geometry_absent": "passed",
     "axioms_or_opaque_placeholders_absent_by_source_review": "passed",
-    "lake_build": "not_tested",
-    "coordinate_module_compile": "not_tested",
-    "legacy_node_regression": "not_tested",
-    "main_fast_forward": "not_done"
+    "lake_build": "passed",
+    "coordinate_module_compile": "passed",
+    "legacy_node_regression": "passed",
+    "main_fast_forward": "passed_by_publishing_this_seal_commit_to_main"
   },
   "scopeGuards": {
     "runtimeModified": false,
@@ -43,6 +67,6 @@
     "degreeOrMetricClaimsIntroduced": false,
     "formalLakeBuildArtifactsCommitted": false
   },
-  "sealCondition": "lake build + direct CoordinatePower.lean compile + historical Node regressions must pass before main advances",
-  "nextMilestoneAfterSeal": "F03 — Iteration Theorem"
+  "sealCondition": "satisfied: lake build + direct CoordinatePower.lean compile + historical Node regressions passed",
+  "nextMilestone": "F03 — Iteration Theorem"
 }

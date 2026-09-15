@@ -1,10 +1,10 @@
 # Formal Verification
 
-Status: **formal-v0.02 / Thread F02 — Coordinate Power Map (implementation staged; execution pending)**
+Status: **formal-v0.02 / Thread F02 — Coordinate Power Map (passed / sealed)**
 
 This directory is the isolated Lean 4 + Lake + mathlib verification layer for the Self-Similar Calabi–Yau Visualizer.
 
-F01 remains sealed as the reproducible toolchain bootstrap. F02 introduces exactly one project-specific mathematical object: the canonical four-coordinate power map
+F01 remains sealed as the reproducible toolchain bootstrap. F02 adds exactly one project-specific mathematical object: the canonical four-coordinate power map
 
 \[
 P_D(z_1,z_2,z_3,z_4)=(z_1^D,z_2^D,z_3^D,z_4^D).
@@ -57,26 +57,47 @@ F02 does **not** formalize:
 
 Those remain later milestones.
 
-## Verification status
+## Verification evidence
 
-The repository implementation is staged on the F02 branch, but F02 is not sealed until the actual Lean environment executes successfully. Required commands are:
+F02 was executed in GitHub Codespaces on the exact implementation commit
+
+```text
+e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283
+```
+
+with a clean working tree.
+
+The pinned Lean project reported:
+
+```text
+Build completed successfully (8927 jobs).
+```
+
+The direct command
 
 ```bash
-cd formal
-lake build
 lake env lean SelfSimilarCY/CoordinatePower.lean
 ```
 
-After that, the four historical Node verifiers should be rerun from the repository root to confirm the runtime layer remains unchanged.
+completed without Lean diagnostics before the regression commands.
 
-Until those commands are observed to pass, the correct status is:
+The historical Node verification suite then reported all four gates passed:
 
 ```text
-implementation_staged / verification_not_tested
+scene-spec v0.03 verification: passed
+base-renderer v0.04 verification: passed
+one-step pullback v0.05 verification: passed
+recursive lazy expansion v0.06 verification: passed
 ```
 
-and `main` must not be advanced.
+No runtime source, dependency pin, or CI configuration was changed by F02.
+
+Therefore the canonical F02 status is:
+
+```text
+passed / sealed
+```
 
 ## Next milestone
 
-After F02 is compiled, regression-checked, documented as passed, and sealed, the next formal milestone is **F03 — Iteration Theorem**.
+The next formal milestone is **F03 — Iteration Theorem**. It must begin in a separate thread and must not enlarge the sealed F02 scope.

@@ -4,7 +4,7 @@
 
 **Thread F02 — Coordinate Power Map**
 
-Status: **implementation staged / not yet sealed**
+Status: **passed / sealed**
 
 Date: 2026-09-15
 
@@ -13,6 +13,13 @@ Canonical parent:
 ```text
 04d66ee225426b03296c0cf61247de3d567b23d1
 formal: bootstrap Lean mathlib verification environment
+```
+
+Verified implementation commit:
+
+```text
+e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283
+formal: stage F02 canonical coordinate power map
 ```
 
 Working branch:
@@ -46,7 +53,7 @@ def coordinatePower (D : ℕ) (z : Point4) : Point4 :=
 
 The JavaScript condition `D >= 2` is not promoted into the function type. That restriction governs accepted runtime scene data, while the mathematical power map itself is naturally defined for every natural exponent. A later contract-bridge milestone may relate the two layers explicitly.
 
-## Formal statements staged
+## Formal statements
 
 `coordinatePower_apply` exposes the coordinate formula by definitional reduction.
 
@@ -56,7 +63,7 @@ This gives the formal layer a single canonical source for `P_D` without introduc
 
 ## Scope guards
 
-The staged F02 change does not introduce:
+F02 does not introduce:
 
 - an iteration theorem;
 - the pullback tower;
@@ -70,7 +77,7 @@ The staged F02 change does not introduce:
 
 The F01 dependency files remain unchanged.
 
-## Files staged in the F02 commit
+## Files introduced or modified by F02
 
 Created:
 
@@ -82,7 +89,7 @@ Created:
 Modified:
 
 - `formal/SelfSimilarCY.lean` to import `SelfSimilarCY.CoordinatePower`
-- `formal/README.md` to describe the staged F02 contract and verification boundary
+- `formal/README.md` to describe the F02 contract and verification boundary
 
 Unchanged:
 
@@ -92,37 +99,54 @@ Unchanged:
 - `formal/SelfSimilarCY/Basic.lean`
 - all visualizer runtime source and historical verifiers
 
-## Verification state
+## Execution evidence
 
-Source-level and repository-level scope review is complete, but the current ChatGPT execution environment does not provide Lean/Lake binaries and cannot execute the pinned Codespaces toolchain. Therefore the following gates remain intentionally unclaimed:
+F02 was executed in GitHub Codespaces on the exact implementation commit
+`e3904e06c2a7dc1c5107c6e6cd5aecba2af1d283` with a clean working tree.
+
+Observed build result:
 
 ```text
-lake_build:             not_tested
-coordinate_module:      not_tested
-legacy_node_regression: not_tested
+Build completed successfully (8927 jobs).
 ```
 
-The exact commands required before sealing are:
+The direct module check
 
 ```bash
-cd formal
-lake build
 lake env lean SelfSimilarCY/CoordinatePower.lean
-cd ..
-node verify_scene_spec_v0_03.js
-node verify_base_renderer_v0_04.js
-node verify_one_step_pullback_v0_05.js
-node verify_recursive_lazy_expansion_v0_06.js
 ```
 
-No successful result should be inferred until those commands are actually observed.
+completed without Lean diagnostics before the regression commands.
 
-## Stopping point
+The historical runtime regression suite then reported:
 
-The F02 implementation is prepared on its own branch, but `main` is deliberately not advanced before execution evidence exists.
+```text
+scene-spec v0.03 verification: passed
+base-renderer v0.04 verification: passed
+one-step pullback v0.05 verification: passed
+recursive lazy expansion v0.06 verification: passed
+```
+
+The detailed regression output also reconfirmed the existing runtime guards: unresolved `W` remains unresolved, no concrete pullback geometry or sheet objects were materialized, and recursive expansion remains structurally lazy.
+
+## Seal decision
+
+All F02 acceptance gates are satisfied:
+
+```text
+lake_build:             passed
+coordinate_module:      passed
+legacy_node_regression: passed
+```
+
+Therefore F02 is now sealed.
 
 \[
-\boxed{\text{coordinate-power formalization staged; verification pending}}
+\boxed{\text{F02 Coordinate Power Map: PASSED / SEALED}}
 \]
 
-After successful execution, F02 can be sealed and only then may **F03 — Iteration Theorem** begin.
+The sealing commit is published to `main` by non-force fast-forward only. No merge commit and no history rewrite are permitted.
+
+## Next milestone
+
+The next formal milestone is **F03 — Iteration Theorem**. F03 must begin in a new thread and must not retroactively enlarge F02 scope.
