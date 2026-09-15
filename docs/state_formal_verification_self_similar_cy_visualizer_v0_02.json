@@ -1,0 +1,48 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "formalNamespace": "formal-v0.02",
+  "milestone": "F02 — Coordinate Power Map",
+  "canonicalParent": "04d66ee225426b03296c0cf61247de3d567b23d1",
+  "workingBranch": "formal-f02-coordinate-power",
+  "status": "implementation_staged",
+  "canonicalState": "unsealed",
+  "toolchain": {
+    "lean": "leanprover/lean4:v4.34.0",
+    "lake": "5.0.0-src+293d5d0",
+    "mathlib": "7801e8406155c31b340d28e2762f754d02b5e9b0",
+    "manifest": "formal/lake-manifest.json",
+    "changedFromF01": false
+  },
+  "formalObjects": {
+    "ambient": "Point4 := Fin 4 → ℂ",
+    "coordinatePower": "coordinatePower (D : ℕ) (z : Point4) := fun i => z i ^ D",
+    "coordinateFormulaTheorem": "coordinatePower_apply",
+    "uniquenessTheorem": "coordinatePower_unique"
+  },
+  "gates": {
+    "exact_parent_audit": "passed",
+    "canonical_sources_read": "passed",
+    "single_coordinate_power_definition_staged": "passed",
+    "iteration_theorem_absent": "passed",
+    "pullback_tower_absent": "passed",
+    "degree_theorem_absent": "passed",
+    "metric_theorem_absent": "passed",
+    "W_geometry_absent": "passed",
+    "axioms_or_opaque_placeholders_absent_by_source_review": "passed",
+    "lake_build": "not_tested",
+    "coordinate_module_compile": "not_tested",
+    "legacy_node_regression": "not_tested",
+    "main_fast_forward": "not_done"
+  },
+  "scopeGuards": {
+    "runtimeModified": false,
+    "dependencyFilesModified": false,
+    "githubActionsIntroduced": false,
+    "iterationIntroduced": false,
+    "pullbackTowerIntroduced": false,
+    "degreeOrMetricClaimsIntroduced": false,
+    "formalLakeBuildArtifactsCommitted": false
+  },
+  "sealCondition": "lake build + direct CoordinatePower.lean compile + historical Node regressions must pass before main advances",
+  "nextMilestoneAfterSeal": "F03 — Iteration Theorem"
+}

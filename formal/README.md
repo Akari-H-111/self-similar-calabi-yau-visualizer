@@ -1,70 +1,82 @@
-# Formal Verification Bootstrap
+# Formal Verification
 
-Status: **formal-v0.01 / Thread F01 — Lean / Lake / mathlib Bootstrap**
+Status: **formal-v0.02 / Thread F02 — Coordinate Power Map (implementation staged; execution pending)**
 
-This directory is an isolated Lean 4 + Lake + mathlib environment for future formalization work in the Self-Similar Calabi–Yau Visualizer repository.
+This directory is the isolated Lean 4 + Lake + mathlib verification layer for the Self-Similar Calabi–Yau Visualizer.
 
-F01 verifies only the **formal verification toolchain bootstrap**. It does not claim that project mathematics has already been formally verified.
+F01 remains sealed as the reproducible toolchain bootstrap. F02 introduces exactly one project-specific mathematical object: the canonical four-coordinate power map
 
-## Pinned toolchain
+\[
+P_D(z_1,z_2,z_3,z_4)=(z_1^D,z_2^D,z_3^D,z_4^D).
+\]
+
+## Pinned environment
+
+The F01 environment is unchanged:
 
 - Lean: `leanprover/lean4:v4.34.0`
-- Lake: `5.0.0-src+293d5d0` as shipped with Lean 4.34.0
+- Lake: `5.0.0-src+293d5d0`
 - mathlib: `7801e8406155c31b340d28e2762f754d02b5e9b0`
 - dependency lock: `lake-manifest.json`
 
-The mathlib dependency is pinned by exact commit SHA in `lakefile.toml`, and the generated manifest records the same exact revision.
+F02 does not alter dependency resolution.
 
-## F01 smoke module
+## Canonical Lean definition
 
-`SelfSimilarCY/Basic.lean` imports `Mathlib` and contains only a tiny environment smoke theorem:
+`SelfSimilarCY/CoordinatePower.lean` defines
 
 ```lean
-example : 1 + 1 = 2 := by
-  norm_num
+abbrev Point4 := Fin 4 → ℂ
+
+def coordinatePower (D : ℕ) (z : Point4) : Point4 :=
+  fun i => z i ^ D
 ```
 
-No project-specific theorem, axiom, opaque placeholder, or mathematical API is introduced in F01.
+The module also contains:
 
-## Verified commands
+```lean
+coordinatePower_apply
+coordinatePower_unique
+```
 
-The following commands were executed successfully in GitHub Codespaces on 2026-09-15:
+The first exposes the coordinate formula. The second proves that any map on `Point4` satisfying the same coordinatewise `D`-th-power rule is equal to `coordinatePower D`.
+
+The JavaScript scene restriction `D >= 2` is intentionally not baked into this definition. The mathematical map exists for every natural exponent; the runtime admissibility condition belongs to the later JS↔Lean contract bridge.
+
+## F02 scope boundary
+
+F02 does **not** formalize:
+
+- iteration `P_D^[n]`;
+- the pullback tower `X_n`;
+- `W` or Calabi–Yau geometry;
+- nonvanishing/torus structure;
+- map degree or a theorem `deg(P_D)=D^4`;
+- metric pullback or `D^2` scaling;
+- sheet objects or renderer behavior.
+
+Those remain later milestones.
+
+## Verification status
+
+The repository implementation is staged on the F02 branch, but F02 is not sealed until the actual Lean environment executes successfully. Required commands are:
 
 ```bash
 cd formal
-lake update
-lake exe cache get
 lake build
-lake env lean SelfSimilarCY/Basic.lean
+lake env lean SelfSimilarCY/CoordinatePower.lean
 ```
 
-Observed build result:
+After that, the four historical Node verifiers should be rerun from the repository root to confirm the runtime layer remains unchanged.
+
+Until those commands are observed to pass, the correct status is:
 
 ```text
-Build completed successfully (8926 jobs).
+implementation_staged / verification_not_tested
 ```
 
-The repository's historical JavaScript verifiers were then re-run successfully:
-
-```bash
-node verify_scene_spec_v0_03.js
-node verify_base_renderer_v0_04.js
-node verify_one_step_pullback_v0_05.js
-node verify_recursive_lazy_expansion_v0_06.js
-```
-
-JavaScript syntax checks for `scene-spec.js`, `base-renderer.js`, `one-step-pullback.js`, `recursive-lazy-expansion.js`, and `app.js` also exited successfully.
-
-## Responsibility boundary
-
-JavaScript/Node remains responsible for the current runtime contracts: JSON validation, validation-before-render ordering, renderer state, one-step pullback state, request-bounded lazy expansion, immutability, and no-eager-materialization guards.
-
-Lean/mathlib is a separate formal branch for mathematical statements introduced in later formal milestones. F01 does not alter the visualizer runtime.
-
-## Build artifacts
-
-`formal/.lake/` is intentionally ignored by Git. `formal/lake-manifest.json` is committed because it is the reproducible dependency-resolution record.
+and `main` must not be advanced.
 
 ## Next milestone
 
-The next formal milestone is **F02 — Coordinate Power Map**. F02 must be handled in a separate thread and must not be backfilled into F01.
+After F02 is compiled, regression-checked, documented as passed, and sealed, the next formal milestone is **F03 — Iteration Theorem**.
