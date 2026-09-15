@@ -1,29 +1,23 @@
 # Formal Verification
 
-Status: **formal-v0.03 / Thread F03 — Iteration Theorem (passed / sealed)**
+Status: **formal-v0.04 / Thread F04 — Pullback Tower (implementation staged / execution pending / unsealed)**
 
 This directory is the isolated Lean 4 + Lake + mathlib verification layer for the Self-Similar Calabi–Yau Visualizer.
 
-F01 remains sealed as the reproducible toolchain bootstrap. F02 remains sealed as the unique canonical definition of the four-coordinate power map
-
-\[
-P_D(z_1,z_2,z_3,z_4)=(z_1^D,z_2^D,z_3^D,z_4^D).
-\]
-
-F03 does not redefine that map. It proves the iteration formula for the existing `coordinatePower` definition.
+F01 remains sealed as the reproducible toolchain bootstrap. F02 remains sealed as the unique canonical definition of the four-coordinate power map. F03 remains sealed as the function-iteration theorem. F04 adds only an abstract set-theoretic preimage tower on top of those sealed dependencies.
 
 ## Pinned environment
 
-The sealed dependency environment is unchanged:
+The dependency environment is unchanged:
 
 - Lean: `leanprover/lean4:v4.34.0`
 - Lake: `5.0.0-src+293d5d0`
 - mathlib: `7801e8406155c31b340d28e2762f754d02b5e9b0`
 - dependency lock: `lake-manifest.json`
 
-F03 does not alter dependency resolution.
+F04 does not alter dependency resolution and does not run `lake update`.
 
-## Sealed F02 dependency
+## Sealed F02/F03 dependencies
 
 `SelfSimilarCY/CoordinatePower.lean` remains the sole project-specific definition of `P_D`:
 
@@ -34,18 +28,7 @@ def coordinatePower (D : ℕ) (z : Point4) : Point4 :=
   fun i => z i ^ D
 ```
 
-with the sealed theorems:
-
-```lean
-coordinatePower_apply
-coordinatePower_unique
-```
-
-F03 does not modify this file.
-
-## F03 theorems
-
-`SelfSimilarCY/CoordinatePowerIteration.lean` proves:
+F03 already proves:
 
 ```lean
 theorem coordinatePower_iterate_apply
@@ -53,7 +36,7 @@ theorem coordinatePower_iterate_apply
     (coordinatePower D)^[n] z i = z i ^ (D ^ n)
 ```
 
-and the direct extensional corollary:
+and:
 
 ```lean
 theorem coordinatePower_iterate
@@ -61,77 +44,115 @@ theorem coordinatePower_iterate
     (coordinatePower D)^[n] = coordinatePower (D ^ n)
 ```
 
-The proof uses natural-number induction, the pinned `Function.iterate` semantics, the sealed coordinate formula, standard power laws, and function extensionality. No hypothesis `D >= 2` is introduced, so `n = 0`, `n = 1`, `D = 0`, and `D = 1` are covered by the same theorem under ordinary Lean semantics.
+F04 imports this sealed module and does not re-prove coordinate arithmetic.
 
-## Verification evidence
+## Pinned mathlib API audit
 
-F03 was executed in GitHub Codespaces on the exact implementation commit:
+Before F04 implementation, the exact pinned mathlib revision was checked for the native APIs used by the tower proof. The audit confirmed `Function.iterate_zero`, `Function.iterate_succ`, `Function.iterate_succ_apply`, `Set.ext`, `Set.preimage_id`, `Set.preimage_comp`, `Set.preimage_comp_eq`, `Set.preimage_iterate_eq`, and `Set.preimage_preimage`.
 
-```text
-f314d20d128cf27f46bb9f603364a6b8bf0b2ee0
+No theorem name or simplifier behavior is assumed from a different Lean/mathlib version.
+
+## F04 representation
+
+The minimal carrier is native:
+
+```lean
+Set Point4
 ```
 
-with parent:
+with ordinary function preimage. No project-specific preimage notion is introduced.
 
-```text
-5904db171c96f130ea0c39b124c83751931a23ee
+`SelfSimilarCY/PullbackTower.lean` defines:
+
+```lean
+def pullbackTower (D : ℕ) (X : Set Point4) : ℕ → Set Point4
+  | 0 => X
+  | Nat.succ n => coordinatePower D ⁻¹' pullbackTower D X n
 ```
 
-and a clean working tree.
-
-The project toolchain resolved to Lean 4.34.0 and Lake `5.0.0-src+293d5d0`.
-
-The required Lean build reported:
-
-```text
-Build completed successfully (8928 jobs).
-```
-
-The direct module command:
-
-```bash
-lake env lean SelfSimilarCY/CoordinatePowerIteration.lean
-```
-
-completed without Lean diagnostics.
-
-The fresh historical Node regression suite then reported all four gates passed:
-
-```text
-scene-spec v0.03 verification: passed
-base-renderer v0.04 verification: passed
-one-step pullback v0.05 verification: passed
-recursive lazy expansion v0.06 verification: passed
-```
-
-A source scan found no `axiom`, `sorry`, or `admit` in the F03 theorem module.
-
-Therefore the canonical F03 status is:
-
-```text
-passed / sealed
-```
-
-## F03 scope boundary
-
-F03 does **not** formalize:
-
-- the pullback tower `X_n`;
-- `W` or Calabi–Yau geometry;
-- preimage identities;
-- nonvanishing/torus structure;
-- map degree or a theorem `deg(P_D)=D^4`;
-- iterated degree;
-- metric pullback or `D^2` scaling;
-- Jacobians, sheets, renderer geometry, recursive visualization, or a JS↔Lean bridge;
-- GitHub Actions or CI.
-
-No runtime JavaScript, dependency pin, or CI configuration is changed by F03.
-
-## Next milestone
-
-The next formal milestone is **F04 — Pullback Tower**. F03 itself stops at
+so mathematically:
 
 \[
-(P_D)^{[n]}=P_{D^n}.
+X_0=X,\qquad X_{n+1}=P_D^{-1}(X_n).
 \]
+
+## F04 staged theorems
+
+The module exposes the recursive equations:
+
+```lean
+pullbackTower_zero
+pullbackTower_succ
+```
+
+and stages the main theorem:
+
+```lean
+theorem pullbackTower_eq_iterate_preimage
+    (D : ℕ) (X : Set Point4) (n : ℕ) :
+    pullbackTower D X n = ((coordinatePower D)^[n]) ⁻¹' X
+```
+
+which is the formal statement
+
+\[
+X_n=((P_D)^{[n]})^{-1}(X).
+\]
+
+The F03 corollary is staged as:
+
+```lean
+theorem pullbackTower_eq_coordinatePower_preimage
+    (D : ℕ) (X : Set Point4) (n : ℕ) :
+    pullbackTower D X n = (coordinatePower (D ^ n)) ⁻¹' X
+```
+
+and is obtained directly by rewriting with `coordinatePower_iterate`.
+
+No hypothesis `D >= 2` is added. The abstract statements therefore naturally include `n = 0`, `n = 1`, `D = 0`, `D = 1`, `X = ∅`, and `X = Set.univ` under ordinary Lean semantics.
+
+## F04 execution gate
+
+F04 is **not yet passed**. The staged branch must still produce fresh evidence for:
+
+```bash
+cd formal
+lake build
+lake env lean SelfSimilarCY/PullbackTower.lean
+cd ..
+
+node verify_scene_spec_v0_03.js
+node verify_base_renderer_v0_04.js
+node verify_one_step_pullback_v0_05.js
+node verify_recursive_lazy_expansion_v0_06.js
+
+grep -nE '\b(axiom|sorry|admit)\b' formal/SelfSimilarCY/PullbackTower.lean || true
+git status
+```
+
+Historical F03 execution does not substitute for these F04 gates.
+
+## F04 scope boundary
+
+F04 does **not** formalize or claim:
+
+- `W`, `W = 0`, or Calabi–Yau geometry;
+- smoothness or singularity structure;
+- map degree such as `deg(P_D)=D^4`;
+- `D^4` sheets, sheet objects, coverings, étale structure, or torus restrictions;
+- metric pullback, `D^2` scaling, Jacobians, or differentials;
+- renderer geometry, WebGL, Three.js, recursive visualization, or a JS↔Lean bridge;
+- GitHub Actions or CI;
+- F05 Contract Bridge work.
+
+No runtime JavaScript or dependency pin is modified by the staged F04 work.
+
+## Current stopping point
+
+Until fresh execution and final compare gates pass, the canonical conclusion is only:
+
+```text
+F04 IMPLEMENTATION STAGED / UNSEALED
+```
+
+The next milestone, **F05 — Contract Bridge Audit**, may begin only after F04 is sealed.
