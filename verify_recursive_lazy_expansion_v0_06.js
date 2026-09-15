@@ -37,7 +37,9 @@ function validateThenInitialize(rawScene, baseTarget, pullbackTarget, recursiveT
   return { scene, baseModel, pullbackModel, recursiveModel };
 }
 
-assert.equal(canonicalScene.version, "v0.06");
+const versionMatch = /^v0\.(\d+)$/.exec(canonicalScene.version);
+assert.ok(versionMatch, "Canonical scene version must use v0.<minor> metadata.");
+assert.ok(Number(versionMatch[1]) >= 6, "Recursive verifier requires version metadata at or after v0.06.");
 
 const canonicalBaseTarget = createTarget();
 const canonicalPullbackTarget = createTarget();

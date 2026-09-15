@@ -90,6 +90,9 @@ jobs:
       - name: Verify recursive lazy expansion v0.06
         run: node verify_recursive_lazy_expansion_v0_06.js
 
+      - name: Verify zoom semantics v0.07
+        run: node verify_zoom_semantics_v0_07.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -97,4 +100,5 @@ jobs:
           node --check base-renderer.js
           node --check one-step-pullback.js
           node --check recursive-lazy-expansion.js
+          node --check zoom-semantics.js
           node --check app.js

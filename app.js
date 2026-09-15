@@ -5,6 +5,7 @@ const dataElement = document.querySelector("#system-data");
 const rendererElement = document.querySelector("#base-renderer");
 const pullbackElement = document.querySelector("#one-step-pullback");
 const recursiveElement = document.querySelector("#recursive-lazy-expansion");
+const zoomElement = document.querySelector("#zoom-semantics");
 
 const fields = {
   project: document.querySelector("#project-value"),
@@ -54,6 +55,17 @@ function resetRenderedState() {
   delete recursiveElement.dataset.expansionComplete;
   delete recursiveElement.dataset.geometryRendered;
   delete recursiveElement.dataset.sheetsMaterialized;
+  zoomElement.hidden = true;
+  zoomElement.textContent = "";
+  delete zoomElement.dataset.state;
+  delete zoomElement.dataset.requestedFocusDepth;
+  delete zoomElement.dataset.focusedDepth;
+  delete zoomElement.dataset.availableDepth;
+  delete zoomElement.dataset.requestedDepth;
+  delete zoomElement.dataset.focusAvailable;
+  delete zoomElement.dataset.geometricZoomApplied;
+  delete zoomElement.dataset.cameraTransformApplied;
+  delete zoomElement.dataset.materializationTriggered;
 }
 
 async function loadSystemConfiguration() {
@@ -71,12 +83,14 @@ async function loadSystemConfiguration() {
     const pullbackModel = OneStepPullback.renderOneStepPullback(scene, baseModel, pullbackElement);
     const recursiveModel = RecursiveLazyExpansion.createRecursiveLazyExpansionModel(scene, baseModel, pullbackModel);
     RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement);
+    const zoomModel = ZoomSemantics.createZoomFocusModel(scene, recursiveModel, 0);
+    ZoomSemantics.renderZoomSemantics(zoomModel, zoomElement);
     displayScene(scene);
     dataElement.hidden = false;
     statusElement.dataset.state = "ready";
-    statusElement.textContent = "Loaded, validated, and initialized the base, one-step, and recursive lazy structural states successfully.";
+    statusElement.textContent = "Loaded, validated, and initialized the base, one-step, recursive lazy, and structural zoom-focus states successfully.";
   } catch (error) {
-    console.error("Failed to load, validate, or initialize the recursive lazy scene:", error);
+    console.error("Failed to load, validate, or initialize the structural scene:", error);
     resetRenderedState();
     statusElement.dataset.state = "error";
     statusElement.textContent = `Failed to load, validate, or render data/system.json: ${error.message}`;

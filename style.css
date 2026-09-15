@@ -64,7 +64,8 @@ h1 {
 .status,
 .base-renderer,
 .one-step-pullback,
-.recursive-lazy-expansion {
+.recursive-lazy-expansion,
+.zoom-semantics {
   margin-bottom: 1rem;
   padding: 0.75rem 1rem;
   border-left: 0.25rem solid currentColor;
@@ -77,7 +78,8 @@ h1 {
 .base-renderer[data-state="unresolved_geometry"],
 .one-step-pullback[data-state="unresolved_pullback_geometry"],
 .recursive-lazy-expansion[data-state="unresolved_geometry"],
-.recursive-lazy-expansion[data-state="unresolved_pullback_geometry"] {
+.recursive-lazy-expansion[data-state="unresolved_pullback_geometry"],
+.zoom-semantics {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
