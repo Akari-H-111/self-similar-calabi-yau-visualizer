@@ -4,7 +4,7 @@
   "milestone": "F05 — Contract Bridge Audit",
   "canonicalParent": "f1602a09ea24e4d71b9352dfc0c3c2602094ed56",
   "workingBranch": "formal-f05-contract-bridge-audit",
-  "status": "audit_complete_regression_pending",
+  "status": "audit_complete_lean_regression_pending",
   "canonicalState": "unsealed",
   "sourceAuthority": "canonical GitHub repository",
   "sourceAudit": {
@@ -41,10 +41,16 @@
   },
   "verificationEvidence": {
     "historicalF04Regression": "present_but_not_counted_as_fresh_F05_evidence",
-    "freshLeanRegression": "not_run: lean/lake unavailable in current execution environment",
-    "freshNodeRegression": "not_run: exact private repository checkout unavailable to shell execution environment",
-    "placeholderScan": "source audit found no new Lean source because F05 does not modify Lean; mandatory fresh command-line scan still pending",
-    "branchStartCompare": "passed: identical to sealed F04 main before staging"
+    "freshCanonicalBlobAudit": {
+      "runtimeAndVerifierBlobs": "passed: 11/11 exact Git blob SHAs matched canonical GitHub blobs before execution",
+      "leanSourceBlobs": "passed: 4/4 exact Git blob SHAs matched canonical GitHub blobs before placeholder scan"
+    },
+    "freshNodeRegression": "passed: all four canonical Node verifiers on byte-for-byte canonical blobs",
+    "freshNodeSyntaxChecks": "passed: scene-spec.js, base-renderer.js, one-step-pullback.js, recursive-lazy-expansion.js, app.js",
+    "freshPlaceholderScan": "passed: no axiom|sorry|admit matches in byte-for-byte canonical formal/SelfSimilarCY source blobs",
+    "freshLeanRegression": "not_run: lean/lake unavailable in current execution environment and outbound network unavailable for installing pinned toolchain",
+    "branchStartCompare": "passed: identical to sealed F04 main before staging",
+    "currentCandidateCompare": "repository-side compare pending refresh after execution-evidence commit"
   },
   "scopeGuards": {
     "leanTheoremSourceModified": false,
@@ -59,13 +65,13 @@
     "bridge_matrix_completeness": "passed",
     "classification_consistency": "passed",
     "non_claims_completeness": "passed",
+    "fresh_node_regression": "passed",
+    "fresh_placeholder_scan": "passed",
     "fresh_lean_regression": "pending",
-    "fresh_node_regression": "pending",
-    "fresh_placeholder_scan": "pending",
-    "clean_working_tree": "pending_after_staging",
-    "final_compare": "pending_after_staging",
+    "clean_working_tree": "pending_on_actual_repository_checkout",
+    "final_compare": "pending_after_all_execution_gates",
     "main_fast_forward": "blocked_until_all_seal_gates_pass"
   },
-  "sealCondition": "not_satisfied: fresh F05 Lean/Node execution evidence is mandatory and unavailable in the current execution environment",
+  "sealCondition": "not_satisfied: fresh F05 Lean build/direct-module execution and final actual-checkout cleanliness/compare remain mandatory",
   "nextMilestoneAfterSeal": "F06 — GitHub CI Integration & Formal Verification Seal"
 }

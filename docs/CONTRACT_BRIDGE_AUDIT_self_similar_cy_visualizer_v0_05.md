@@ -4,7 +4,7 @@
 
 **Thread F05 — Contract Bridge Audit**
 
-Current status: **audit complete / fresh regression pending / unsealed**
+Current status: **audit complete / fresh Node + placeholder scan passed / fresh Lean regression pending / unsealed**
 
 Canonical F04 parent:
 
@@ -19,17 +19,17 @@ Working branch:
 formal-f05-contract-bridge-audit
 ```
 
-## Scope
+## Scope and authority
 
-F05 audits the semantic bridge between the canonical JavaScript/runtime contracts and the sealed F02–F04 Lean definitions/theorems. It does not add or modify Lean theorems, runtime semantics, `data/system.json`, dependencies, GitHub Actions, `W`, sheet geometry, degree theory, metric geometry, or F06 work.
+F05 audits the semantic bridge between canonical JavaScript/runtime contracts and sealed F02–F04 Lean definitions/theorems. It does not add or modify Lean theorems, runtime semantics, `data/system.json`, dependencies, GitHub Actions, `W`, sheet geometry, degree theory, metric geometry, or F06 work.
 
-The audit source authority is the canonical GitHub repository at the F04-sealed commit above.
+Source authority is canonical GitHub. No bridge conclusion is inferred from prompt summaries or prior-chat memory.
 
 ## Classification vocabulary
 
 | Classification | Meaning |
 |---|---|
-| `EXACT_BRIDGE` | Same mathematical relation after explicit representation translation, restricted to runtime-admitted inputs. It does not mean JS objects are definitionally equal to Lean objects. |
+| `EXACT_BRIDGE` | Same mathematical relation after explicit representation translation, restricted to runtime-admitted inputs. It does not identify JS objects with Lean objects. |
 | `PARTIAL_BRIDGE` | A common mathematical core exists, but domains, abstraction level, or operational semantics differ. |
 | `ENGINEERING_ONLY` | Runtime implementation/verification behavior with no Lean theorem counterpart claimed or required. |
 | `FORMAL_ONLY` | A sealed Lean definition/theorem has no direct runtime implementation-contract counterpart. |
@@ -38,25 +38,15 @@ The audit source authority is the canonical GitHub repository at the F04-sealed 
 
 ## Canonical findings
 
-### 1. `D`
+### `D`
 
-Runtime validation requires an integer `D >= 2`, and additionally requires `D^2` and `D^4` to remain JavaScript safe integers. Lean defines `coordinatePower`, its iteration theorem, and the pullback tower for every `D : ℕ`.
-
-Therefore the accepted runtime exponent embeds naturally into the Lean domain, but the two domain/validation contracts are not identical.
+Runtime accepts integer `D >= 2` and additionally requires `D^2` and `D^4` to remain JavaScript safe integers. Lean defines the formal objects for every `D : ℕ`.
 
 **Classification:** `PARTIAL_BRIDGE`.
 
-### 2. Four-coordinate power map
+### Four-coordinate power map
 
-Runtime schema version 1 fixes:
-
-```text
-kind = coordinate_power
-coordinateCount = 4
-exponentParameter = D
-```
-
-and the sealed Lean source fixes:
+Runtime fixes `kind = coordinate_power`, `coordinateCount = 4`, and `exponentParameter = D`. Lean fixes:
 
 ```lean
 abbrev Point4 := Fin 4 → ℂ
@@ -69,35 +59,35 @@ At the mathematical transformation level these express the same four-coordinate 
 
 **Classification:** `EXACT_BRIDGE`.
 
-The sealed theorem `coordinatePower_unique` is stronger and is not itself a runtime theorem. Runtime source-of-truth checks are engineering checks rather than a function-extensionality proof.
+`coordinatePower_unique` is stronger and has no runtime theorem counterpart.
 
-### 3. One-step pullback
+**Classification of that theorem:** `FORMAL_ONLY`.
 
-Runtime v0.05 records exactly depth `1`, `relation = inverse_image`, and the structural statement `X_1 = P_D^{-1}(X)`. Sealed F04 gives the same recurrence through `pullbackTower_zero` and `pullbackTower_succ`.
+### One-step pullback
+
+Runtime v0.05 records depth `1`, `relation = inverse_image`, and `X_1 = P_D^{-1}(X)`. F04 gives the same set-theoretic recurrence.
 
 **Classification:** `EXACT_BRIDGE` for the structural mathematical relation.
 
-The runtime object remains only a descriptor; it does not construct a Lean `Set Point4` or concrete points of `X`.
+The runtime object remains a descriptor and does not construct a Lean `Set Point4`.
 
-### 4. Recursive structural recurrence
+### Recursive structural recurrence
 
-Every positive runtime level records one predecessor depth and `relation = inverse_image`. This matches the sealed recurrence
+Every positive runtime level records one predecessor depth and `relation = inverse_image`, matching:
 
 ```lean
 pullbackTower D X n.succ = coordinatePower D ⁻¹' pullbackTower D X n
 ```
 
-at the mathematical level.
-
 **Classification:** `EXACT_BRIDGE`.
 
-By contrast, `levels`, `materializedDepth`, `expansionComplete`, immutability, `expandOneLevel`, and stop-at-target are runtime materialization semantics only.
+Runtime `levels`, `materializedDepth`, `expansionComplete`, immutability, `expandOneLevel`, and stop-at-target behavior are materialization semantics only.
 
 **Classification:** `ENGINEERING_ONLY`.
 
-### 5. Closed-form pullback tower
+### Closed-form pullback tower
 
-Sealed F04 proves:
+F04 proves:
 
 ```lean
 pullbackTower D X n = ((coordinatePower D)^[n]) ⁻¹' X
@@ -109,106 +99,64 @@ and:
 pullbackTower D X n = (coordinatePower (D ^ n)) ⁻¹' X
 ```
 
-The runtime canonical documentation describes the same family, while the implementation operationally stores only repeated structural levels. It does not compute a set preimage or a combined `coordinatePower (D^n)` runtime object.
+The runtime documentation describes the same tower, while runtime code stores repeated structural levels rather than evaluating sets or constructing a combined `coordinatePower (D^n)` object.
 
-Therefore the recurrence-to-closed-form relationship is source-compatible but not independently established by runtime execution.
+**Classification:** `PARTIAL_BRIDGE` for the documented tower ↔ iterate-preimage statement; `FORMAL_ONLY` for the combined-map theorem itself.
 
-**Classification:** `PARTIAL_BRIDGE` for the documented tower ↔ iterate-preimage statement, and `FORMAL_ONLY` for the combined-map theorem itself.
+### `requestedDepth`
 
-### 6. `requestedDepth`
-
-Lean `n` is a mathematical index. Runtime `requestedDepth` is a target for request-bounded lazy materialization. For `requestedDepth > 1`, initialization deliberately has `materializedDepth = 1`, and later explicit expansion advances at most one level per call.
-
-Thus a runtime materialized level of depth `n` can denote mathematical level `n`, but:
-
-```text
-requestedDepth ≠ current Lean tower level
-```
-
-in general.
+Lean `n` is a mathematical tower index. Runtime `requestedDepth` is a lazy-materialization target. A materialized runtime level of depth `n` can denote mathematical level `n`, but `requestedDepth` need not equal the currently materialized depth.
 
 **Classification:** `PARTIAL_BRIDGE`.
 
-### 7. `D^2`
+### `D^2`
 
-`scene-spec.js` computes:
-
-```text
-derived.metricScale = D^2
-```
-
-This is a runtime numeric derived field only. Sealed F02–F04 contain no theorem bridging that field, and specifically no metric definition or proof of
-
-```math
-P_D^* g_{\log} = D^2 g_{\log}.
-```
+Runtime derives `metricScale = D^2`. No sealed Lean metric object or theorem proves `P_D^* g_log = D^2 g_log`.
 
 **Classification:** `UNFORMALIZED`.
 
-### 8. `D^4`
+### `D^4`
 
-Runtime computes `derived.sheetDegree = D^4`, and downstream modules reuse this number under names such as `mapDegree` or `mapDegreePerStep`. The sealed Lean source contains no algebraic-geometric/topological degree definition or theorem proving
-
-```math
-\deg(P_D)=D^4.
-```
-
-Consequently the runtime numeric expression must not be promoted to a formal map-degree theorem.
+Runtime derives `sheetDegree = D^4` and downstream code reuses that number as `mapDegree` / `mapDegreePerStep`. No sealed Lean degree definition or theorem proves `deg(P_D)=D^4`.
 
 **Classification:** `UNFORMALIZED`.
 
-### 9. `(D^4)^n` / `D^(4n)`
+### `(D^4)^n` / `D^(4n)`
 
-The runtime recursive model stores only:
-
-```json
-{
-  "baseDegree": "D^4 value",
-  "exponent": "n"
-}
-```
-
-and the verifier checks this structural pair. Repository search and exact Lean source audit find no sealed theorem named `iteratedDegreeIdentity` and no degree theorem that could serve as an equivalent bridge.
-
-The mathematical identity may be easy to prove in isolation, but that does not mean it exists in the repository, nor would it by itself prove an iterated map-degree theorem.
+Runtime stores the structured pair `{baseDegree: D^4, exponent: n}`. Exact repository audit finds no sealed theorem named `iteratedDegreeIdentity` and no equivalent degree theorem.
 
 **Classification:** `UNFORMALIZED`.
 
-### 10. `W` and the actual base hypersurface
+A bare arithmetic identity, even if easy to prove, would not by itself establish an iterated map-degree theorem.
 
-Runtime schema fixes only:
+### `W` and the base hypersurface
 
-```text
-symbol = W
-representation = unresolved
-```
-
-and the renderer refuses to draw geometry. F02–F04 define no `W`, no `lambda`, and no theorem identifying an actual set `X` with `W^{-1}(lambda)`. F04 instead quantifies over arbitrary `X : Set Point4`.
+Runtime stores only `symbol = W`, `representation = unresolved`, and refuses to draw geometry. F02–F04 define no `W`, no `lambda`, and no theorem identifying a formal set with `W^{-1}(lambda)`; F04 quantifies over arbitrary `X : Set Point4`.
 
 **Classification:** `NO_BRIDGE`.
 
-### 11. Sheets, coverings, étale/torus structure, Jacobians, differentials, and metric geometry
+### Sheets / coverings / étale / torus / Jacobians / differentials / metric geometry
 
-No runtime sheet objects are materialized, and no such structures exist in sealed F02–F04 Lean source.
+No runtime sheet objects are materialized and no such mathematical structures exist in sealed F02–F04 Lean source.
 
-**Classification:** `NO_BRIDGE` for the mathematical structures. The runtime guards `sheetsMaterialized = false` and `geometryRendered = false` are `ENGINEERING_ONLY`.
+**Classification:** `NO_BRIDGE` for the mathematical structures. Runtime guards such as `sheetsMaterialized = false` and `geometryRendered = false` are `ENGINEERING_ONLY`.
 
-## Machine-readable matrix summary
+## Matrix summary
 
-The canonical JSON matrix contains **22 rows**:
+The canonical machine-readable matrix remains **22 rows**:
 
 ```text
-EXACT_BRIDGE:     4
-PARTIAL_BRIDGE:   3
-ENGINEERING_ONLY: 5
-FORMAL_ONLY:      3
-UNFORMALIZED:     3
-NO_BRIDGE:        4
+EXACT_BRIDGE:      4
+PARTIAL_BRIDGE:    3
+ENGINEERING_ONLY:  5
+FORMAL_ONLY:       3
+UNFORMALIZED:      3
+NO_BRIDGE:         4
 ```
 
 ## Not Formally Verified
 
-The current sealed formal layer does **not** verify:
+The sealed formal layer does **not** verify:
 
 - `W`;
 - `W = 0`;
@@ -226,11 +174,11 @@ The current sealed formal layer does **not** verify:
 - Three.js or WebGL correctness;
 - UI correctness.
 
-The existence of runtime numbers called `metricScale`, `sheetDegree`, `mapDegree`, or `iteratedDegreeExpression` does not remove any item from this list.
+Runtime numbers named `metricScale`, `sheetDegree`, `mapDegree`, or `iteratedDegreeExpression` do not remove any item from this list.
 
 ## Verifier interpretation rule
 
-A Node verifier pass establishes only the engineering assertions encoded by that verifier. In particular:
+A Node verifier pass establishes only its encoded engineering assertions. In particular:
 
 ```text
 runtime D^4 arithmetic / metadata
@@ -246,59 +194,54 @@ request-bounded lazy expansion
 Lean verification of runtime scheduling/materialization
 ```
 
-Conversely, sealed Lean theorems about arbitrary sets and function iteration do not verify JavaScript validation, DOM state, immutability, browser behavior, or rendering.
+Conversely, Lean theorems about arbitrary sets and function iteration do not verify JavaScript validation, DOM state, immutability, browser behavior, or rendering.
 
-## Source audit
+## Fresh execution evidence
 
-Exact canonical source read from `f1602a09ea24e4d71b9352dfc0c3c2602094ed56` includes all F05-requested runtime modules, JSON, historical Node verifiers, v0.01–v0.06 runtime specifications, F01 formal plan, F02/F03/F04 state/progress/specifications, pinned Lake/toolchain/manifest files, and the sealed Lean modules:
+Historical F04 execution evidence exists but is not counted as fresh F05 evidence.
 
-```text
-formal/SelfSimilarCY/CoordinatePower.lean
-formal/SelfSimilarCY/CoordinatePowerIteration.lean
-formal/SelfSimilarCY/PullbackTower.lean
-```
-
-No F05 audit conclusion relies on an invented theorem name or prior-chat theorem summary.
-
-## Regression/seal status
-
-Historical F04 evidence records successful Lean and Node regressions, but F05 explicitly does **not** count that as fresh F05 execution evidence.
-
-In the execution environment available to this audit session:
+For F05, the available shell reconstructed the exact canonical runtime/verifier files from GitHub and verified their Git blob SHAs before execution. **11/11** runtime/verifier blobs matched canonical GitHub byte-for-byte. The fresh commands then passed:
 
 ```text
-node = available
-lean = unavailable
-lake = unavailable
-private repository shell clone = unavailable because the shell environment has no GitHub network access
+node verify_scene_spec_v0_03.js
+node verify_base_renderer_v0_04.js
+node verify_one_step_pullback_v0_05.js
+node verify_recursive_lazy_expansion_v0_06.js
 ```
 
-Therefore the mandatory fresh F05 regression gate has not been satisfied here. The audit artifacts may be staged, but F05 must remain:
+All five historical `node --check` syntax checks also passed.
 
-```text
-audit complete
-fresh regression pending
-canonicalState = unsealed
+The four Lean theorem-source blobs under `formal/SelfSimilarCY` were likewise reconstructed and verified byte-for-byte against canonical GitHub SHAs. A fresh command-line scan found no `axiom`, `sorry`, or `admit` matches.
+
+This shell does **not** contain `lean`, `lake`, or `elan`, and outbound network/DNS is unavailable. The repository has no existing GitHub Actions workflow, and adding one in F05 would violate the F05/F06 boundary. Therefore these mandatory fresh Lean commands remain unexecuted:
+
+```bash
+cd formal
+lake build
+lake env lean SelfSimilarCY/CoordinatePower.lean
+lake env lean SelfSimilarCY/CoordinatePowerIteration.lean
+lake env lean SelfSimilarCY/PullbackTower.lean
 ```
 
-No sealing commit and no fast-forward of `main` is permitted until the exact F05 candidate is freshly executed under the pinned environment and the remaining seal gates pass.
+An actual repository checkout must also finish with clean `git status` before sealing. Historical F04 Lean execution is not substituted for these F05 gates.
 
 ## Scope result
 
-This F05 candidate is intended to add only:
-
-```text
-docs/CONTRACT_BRIDGE_AUDIT_self_similar_cy_visualizer_v0_05.md
-docs/contract_bridge_matrix_self_similar_cy_visualizer_v0_05.json
-docs/state_formal_verification_self_similar_cy_visualizer_v0_05.json
-docs/progress_formal_verification_self_similar_cy_visualizer_v0_05.md
-```
-
-It must not modify Lean source, runtime JavaScript, `data/system.json`, dependency files, GitHub Actions, or introduce F06 work.
+The F05 branch remains audit/documentation-only. It does not modify Lean theorem source, runtime JavaScript, `data/system.json`, dependency files, GitHub Actions, or introduce F06 work.
 
 ## Stopping point
 
-The semantic audit milestone is complete, but the repository milestone is **not sealed** until fresh regression evidence exists.
+The semantic audit, canonical Node regression, JavaScript syntax checks, and canonical placeholder scan have passed. Fresh Lean execution remains mandatory, so F05 remains:
+
+```text
+audit complete
+Node regression = passed
+placeholder scan = passed
+Lean regression = pending
+canonicalState = unsealed
+```
+
+No sealing commit and no fast-forward of `main` is permitted yet.
 
 The next milestone remains:
 
