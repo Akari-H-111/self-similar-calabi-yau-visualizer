@@ -1,0 +1,161 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.09",
+  "status": "passed",
+  "current_stage": "arithmetic overlays completed and staging-CI verified",
+  "milestone": "Thread 08 — Arithmetic Overlays",
+  "repository": {
+    "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "visibility": "private",
+    "default_branch": "main",
+    "thread_starting_main_commit": "e257c2d3b7e52c29f30a9a7c30503fddd5297a2e",
+    "thread_starting_parent": "970bafa06b0af0f68a302164fc63c0d5dc460687",
+    "starting_state_audit": "main exactly matched canonical v0.08; no competing later commit",
+    "connector_read_access": true,
+    "connector_write_access": true,
+    "staging_branch": "thread08-arithmetic-overlays-v0-09",
+    "staging_pull_request": 2
+  },
+  "scene_contract": {
+    "schema_version": 1,
+    "schema_changed_by_v0_09": false,
+    "canonical_inputs": ["D", "lambda", "kappa"],
+    "request_parameters": ["requestedDepth"],
+    "overlay_state_location": "runtime/view request only",
+    "base_hypersurface_representation": "unresolved"
+  },
+  "arithmetic_overlay_audit": {
+    "cyclotomic_refinement": {
+      "implemented": false,
+      "status": "deferred",
+      "source_artifact": null,
+      "source_version": null,
+      "evidence_class": "unresolved_unavailable",
+      "reason": "exact canonical source unavailable to this thread"
+    },
+    "torsion_labels": {
+      "implemented": false,
+      "status": "deferred",
+      "source_artifact": null,
+      "source_version": null,
+      "evidence_class": "unresolved_unavailable",
+      "reason": "exact canonical source unavailable to this thread"
+    },
+    "collision_classes": {
+      "implemented": false,
+      "status": "deferred",
+      "source_artifact": null,
+      "source_version": null,
+      "evidence_class": "unresolved_unavailable",
+      "reason": "exact canonical source unavailable to this thread"
+    },
+    "delta_n_divisor_marking": {
+      "implemented": false,
+      "status": "deferred",
+      "source_artifact": null,
+      "source_version": null,
+      "evidence_class": "unresolved_unavailable",
+      "reason": "exact canonical source unavailable to this thread"
+    },
+    "coordinate_channel_labels": {
+      "implemented": true,
+      "overlay_ids": ["coordinate_channels", "coordinate_iterate_rule"],
+      "source_artifacts": [
+        {
+          "path": "formal/SelfSimilarCY/CoordinatePower.lean",
+          "git_blob_sha": "dcfae8a3ed99544e50ee45aa12acde63e41090c8",
+          "formal_seal_commit": "ff5bcd2f134497c671b2368c372f59b5620a41ab"
+        },
+        {
+          "path": "formal/SelfSimilarCY/CoordinatePowerIteration.lean",
+          "git_blob_sha": "4c78793d586e8ba822d4b326f09fd82dc07eaaf9",
+          "formal_seal_commit": "ff5bcd2f134497c671b2368c372f59b5620a41ab"
+        }
+      ],
+      "evidence_classes": {
+        "coordinate_channels": "source_backed_structural_representation",
+        "coordinate_iterate_rule": "formal_theorem"
+      },
+      "geometry_required": false,
+      "geometry_claimed": false
+    }
+  },
+  "runtime_contract": {
+    "module": "arithmetic-overlays.js",
+    "model_kind": "arithmetic_overlays",
+    "implemented_overlays": ["coordinate_channels", "coordinate_iterate_rule"],
+    "coordinate_channels_scope": "global_system_metadata",
+    "coordinate_iterate_rule_scope": "focused_level_metadata",
+    "toggle_state_is_runtime_view_request": true,
+    "overlay_affects_recursion": false,
+    "overlay_affects_zoom": false,
+    "overlay_affects_sheet_organization": false,
+    "materialization_triggered": false,
+    "geometry_rendered": false,
+    "unavailable_focus_behavior": "coordinate_iterate_rule returns not_materialized without expansion",
+    "unavailable_source_behavior": "deterministic unavailable with null source/version and no descriptor"
+  },
+  "formal_verification_handoff": {
+    "F01_to_F06": "sealed",
+    "reopened_by_v0_09": false,
+    "new_formal_theorem_added": false,
+    "implemented_overlay_uses_existing_sealed_formal_source": true,
+    "whole_visualizer_formalized_claimed": false
+  },
+  "geometry_boundary": {
+    "W_representation": "unresolved",
+    "sheets_materialized": false,
+    "covering_structure_claimed": false,
+    "geometry_rendered": false,
+    "torsion_geometry_claimed": false,
+    "collision_geometry_claimed": false,
+    "cyclotomic_geometry_claimed": false,
+    "divisor_geometry_claimed": false
+  },
+  "validation": {
+    "v0_03_scene_verifier": "passed",
+    "v0_04_base_renderer_verifier": "passed",
+    "v0_05_one_step_verifier": "passed",
+    "v0_06_recursive_lazy_verifier": "passed",
+    "v0_07_zoom_semantics_verifier": "passed",
+    "v0_08_sheet_branch_organization_verifier": "passed",
+    "v0_09_arithmetic_overlays_verifier": "passed",
+    "javascript_syntax": "passed",
+    "formal_lean": "passed",
+    "runtime_contracts": "passed",
+    "full_browser_runtime_smoke_test": "not_tested",
+    "ci_evidence": {
+      "pull_request": 2,
+      "workflow_run_id": 35068678136,
+      "head_sha": "b84e6ef0c138b77be7ec957a5e899eebbfa7ea91",
+      "formal_lean": "completed / success",
+      "runtime_contracts": "completed / success",
+      "evidence_scope": "executable v0.09 staging tree before documentation-only sealing updates"
+    }
+  },
+  "failed_validation": [],
+  "scope_exclusions": [
+    "cyclotomic refinement implementation",
+    "torsion label implementation",
+    "collision class implementation",
+    "Delta_n/divisor implementation",
+    "genuine arithmetic geometry",
+    "genuine D^4 geometric sheets",
+    "covering spaces",
+    "étale maps",
+    "fiber geometry",
+    "resolved W geometry",
+    "performance optimization",
+    "infinite-navigation stress testing",
+    "Three.js",
+    "WebGL",
+    "GPU rendering",
+    "camera geometry",
+    "mesh generation",
+    "physical viewport transform",
+    "global mathematical fidelity audit",
+    "guided UX",
+    "publication"
+  ],
+  "next_milestone": "Thread 09 — Performance and Infinite-Navigation Audit"
+}
