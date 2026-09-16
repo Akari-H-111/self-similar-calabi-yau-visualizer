@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Codespace C04 Workspace Read Probe</title>
+  <title>Codespace C05 Verification Actions</title>
   <style>
     :root { color-scheme: light dark; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     body { max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.5; }
@@ -13,8 +13,9 @@
   </style>
 </head>
 <body>
-  <h1>Codespace C04 Workspace Read Probe</h1>
-  <p>This page declares two read-only WebMCP tools: <code>bridge_status</code> for diagnostics and <code>get_workspace_state</code> for the stable minimal workspace contract. It performs no write actions and never exposes <code>GITHUB_TOKEN</code> to browser code.</p>
+  <h1>Codespace C05 Verification Actions</h1>
+  <p>This page declares two read-only tools and two fixed verification actions. It exposes no arbitrary command, no caller-supplied cwd, and no source-write action.</p>
+  <p><code>run_node_verification</code> runs the eight canonical deterministic Node verifier scripts. <code>run_lean_build</code> runs only <code>lake build</code> inside <code>formal/</code>.</p>
   <p id="webmcp-status">Checking WebMCP availability…</p>
   <p id="runtime-status">Loading runtime state…</p>
   <p id="transport-status">Checking forwarded-origin expectations…</p>
@@ -35,6 +36,23 @@
 
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       return response.json();
+    }
+
+    async function postAction(path) {
+      const response = await fetch(path, {
+        method: "POST",
+        cache: "no-store",
+        credentials: "same-origin",
+        headers: {
+          "x-codespace-webmcp-action": "1"
+        }
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(`${result.error ?? result.status ?? "action_failed"} (HTTP ${response.status})`);
+      }
+      return result;
     }
 
     function addBrowserTransportState(state) {
@@ -61,6 +79,14 @@
 
     async function readWorkspaceState() {
       return fetchJson("/api/workspace-state");
+    }
+
+    async function runNodeVerification() {
+      return postAction("/api/actions/run-node-verification");
+    }
+
+    async function runLeanBuild() {
+      return postAction("/api/actions/run-lean-build");
     }
 
     async function renderRuntimeState() {
@@ -102,14 +128,30 @@
         {
           name: "bridge_status",
           title: "Codespace Bridge Status",
-          description: "Read Codespace identity, Git state, and browser transport diagnostics from this read-only bridge.",
+          description: "Read Codespace identity, Git state, and browser transport diagnostics from this bridge.",
+          readOnly: true,
           execute: readBridgeStatus
         },
         {
           name: "get_workspace_state",
           title: "Get Codespace Workspace State",
           description: "Read the stable minimal workspace state: repository, Codespace name, branch, HEAD, and clean/change-count status.",
+          readOnly: true,
           execute: readWorkspaceState
+        },
+        {
+          name: "run_node_verification",
+          title: "Run Node Verification",
+          description: "Run the eight canonical deterministic Node verifier scripts from the repository root. No command or cwd input is accepted.",
+          readOnly: false,
+          execute: runNodeVerification
+        },
+        {
+          name: "run_lean_build",
+          title: "Run Lean Build",
+          description: "Run the repository-pinned lake build in formal/. This may update local build artifacts but does not intentionally modify source files. No command or cwd input is accepted.",
+          readOnly: false,
+          execute: runLeanBuild
         }
       ];
 
@@ -126,7 +168,7 @@
                 additionalProperties: false
               },
               annotations: {
-                readOnlyHint: true,
+                readOnlyHint: tool.readOnly,
                 untrustedContentHint: true
               },
               async execute() {
@@ -140,7 +182,7 @@
 
       void Promise.all(registrations)
         .then(() => {
-          webMcpStatus.textContent = "WebMCP bridge_status and get_workspace_state registration completed in this browser context.";
+          webMcpStatus.textContent = "WebMCP C05 tools registered: bridge_status, get_workspace_state, run_node_verification, run_lean_build.";
           webMcpStatus.className = "ok";
         })
         .catch((error) => {
