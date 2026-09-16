@@ -157,8 +157,9 @@
     "v0_10_performance_infinite_navigation_verifier": "passed",
     "v0_10_deterministic_stress_depth": 1000,
     "javascript_syntax": "passed on staging evidence",
-    "staging_runtime_contracts": "completed / success",
-    "staging_formal_lean": "pending final staging readback at documentation seal time",
+    "staging_runtime_contracts": "completed / success on run 35071573627 at v0.10 repository metadata",
+    "staging_formal_lean": "completed / success on run 35071167163; no Lean source changed afterward",
+    "final_canonical_main_ci": "post-commit evidence required before Thread 09 is sealed",
     "full_browser_runtime_smoke_test": "not_tested",
     "browser_performance": "not_tested"
   },
