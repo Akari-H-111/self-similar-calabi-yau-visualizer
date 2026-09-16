@@ -1,8 +1,8 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.07 — Zoom Semantics
+**Current version:** v0.08 — Sheet / Branch Organization Semantics
 
-This repository is a minimal static HTML/CSS/vanilla-JavaScript application for the Self-Similar Calabi–Yau Visualizer. v0.07 adds verified **structural focus / level-navigation semantics** on top of the v0.06 Recursive Lazy Expansion while preserving the v0.03 mathematical scene contract and the v0.04–v0.06 runtime contracts.
+This repository is a minimal static HTML/CSS/vanilla-JavaScript application for the Self-Similar Calabi–Yau Visualizer. v0.08 adds verified **aggregate structural sheet/branch organization metadata** on top of the v0.07 structural zoom-focus model while preserving the v0.03–v0.07 runtime contracts and the sealed F01–F06 formal boundary.
 
 ## Canonical mathematical core
 
@@ -18,17 +18,18 @@ X_n = (P_D^n)^{-1}(X),
 P_D(z_1,\ldots,z_4) = (z_1^D,\ldots,z_4^D).
 \]
 
-The scene is loaded from `data/system.json`, validated by `scene-spec.js`, passed through `base-renderer.js`, `one-step-pullback.js`, and `recursive-lazy-expansion.js`, then consumed by `zoom-semantics.js` as derived view state.
+The scene is loaded from `data/system.json`, validated by `scene-spec.js`, passed through the base, one-step, recursive, and zoom layers, then consumed by `sheet-branch-organization.js` as derived structural organization state.
 
 ## Preserved canonical contracts
 
-The v0.03 canonical mathematical inputs remain only:
+The v0.03 canonical mathematical inputs remain only `D`, `lambda`, and `kappa`. `requestedDepth` remains a request parameter. `P_D` still comes only from the structured `coordinate_power` declaration.
 
-- `D`, an integer with `D >= 2`;
-- finite numeric `lambda`;
-- finite numeric `kappa`.
+`scene-spec.js` remains the sole runtime source of the derived values:
 
-`requestedDepth` remains a request parameter rather than an intrinsic mathematical input. `P_D` still comes only from the structured `coordinate_power` declaration, while `D^2` and `D^4` remain derived quantities computed by `scene-spec.js` after validation.
+```text
+scene.derived.metricScale = D^2
+scene.derived.sheetDegree = D^4
+```
 
 The concrete representation of `W` remains exactly:
 
@@ -36,114 +37,132 @@ The concrete representation of `W` remains exactly:
 unresolved
 ```
 
-Accordingly, the v0.04 Base Renderer still reports:
+Accordingly, the runtime still preserves:
 
 ```text
-status = unresolved_geometry
-geometryRendered = false
-```
-
-and the v0.05 One-Step Pullback still reports exactly:
-
-```text
-depth = 1
-relation = inverse_image
-status = unresolved_pullback_geometry
 geometryRendered = false
 sheetsMaterialized = false
 ```
 
-The v0.06 recursive contract remains request-bounded:
+The v0.06 recursion engine remains the only operation that can add structural levels, and v0.07 zoom remains structural focus/navigation only.
+
+## v0.08 representability decision
+
+The historical name “D^4 Sheets” is not interpreted as permission to create `D^4` genuine geometric sheets.
+
+Under the current canonical and formal boundary, v0.08 supports:
 
 ```text
-requestedDepth     = requested target structural depth
-materializedDepth  = highest structural depth currently materialized
+symbolic D^4 multiplicity metadata
++
+aggregate structural organization descriptors
 ```
 
-`expandOneLevel` remains the only operation that can add a structural level, and application startup still never calls it.
-
-## v0.07 Zoom Semantics
-
-Because `W` is unresolved and the repository contains no concrete embedding, metric coordinates, points, mesh, camera geometry, projection, or viewport transform, v0.07 does **not** define geometric zoom.
-
-The truthful minimum semantics is:
+but not:
 
 ```text
-zoom = structural focus / level navigation
+D^4 concrete sheet objects
+covering branches
+fiber geometry
+covering-space claims
+étale claims
 ```
 
-The zoom model distinguishes:
+The reason is explicit: the sealed F01–F06 formal layer does not prove `deg(P_D)=D^4` as a genuine map-degree theorem and does not establish concrete sheets, covering structure, torus restrictions, or a resolved `W` geometry.
+
+## `D^4` source of truth
+
+`sheet-branch-organization.js` reads the per-step numeric metadata only from:
 
 ```text
-requestedFocusDepth
-focusedDepth
-availableDepth = recursiveModel.materializedDepth
-requestedDepth = recursiveModel.requestedDepth
-focusStatus
+scene.derived.sheetDegree
 ```
 
-If a focus target is already materialized, it is available. If it is deeper than `materializedDepth`, the model returns:
+It does not read `parameters.D` and does not recompute `D ** 4`.
+
+The organization model records:
 
 ```text
-focusStatus = not_materialized
-focusedDepth = null
-materializationTriggered = false
+sheetDegreeSource = scene.derived.sheetDegree
+sheetDegreeSemanticStatus = runtime_numeric_organizational_metadata
+sheetDegreePerStep = D^4
 ```
 
-The focus request is neither clamped nor silently expanded. The zoom module never calls `expandOneLevel`, never rewrites `requestedDepth`, and never maintains a second recursive frontier.
+For `D = 2`, the runtime value is `16`; for `D = 3`, it is `81`. These are verifier-backed runtime calculations, not newly formalized geometric degree claims.
 
-## `D^2` is formal scale metadata, not visual zoom
+## Aggregate organization, not sheet enumeration
 
-The scene validator already exposes:
+For each already-materialized positive structural depth, v0.08 creates exactly one aggregate descriptor containing:
 
 ```text
-scene.derived.metricScale = D^2
+depth
+sourceDepth
+nominalMultiplicity = sheetDegreePerStep
+iteratedDegreeExpression
+aggregateOnly = true
+slotsEnumerated = false
+sheetsMaterialized = false
+geometryRendered = false
 ```
 
-At an available focused depth `n`, v0.07 records the informational expression
+The descriptor count therefore follows `materializedDepth`, not `D^4`.
 
-```text
-baseScale = scene.derived.metricScale
-exponent = n
-```
-
-representing
-
-\[
-(D^2)^n=D^{2n}.
-\]
-
-This metadata does not drive a camera or viewport. The zoom model explicitly reports:
-
-```text
-geometricZoomApplied = false
-cameraTransformApplied = false
-```
-
-`zoom-semantics.js` does not recompute `D^2`, does not read `parameters.D`, and does not use `D^4` or `scene.derived.sheetDegree` as a zoom factor.
-
-The sealed Formal Verification F01–F06 line remains closed. Runtime `metricScale = D^2` is still not claimed as a newly Lean-proved metric theorem.
-
-## Degree information remains distinct from sheet geometry
-
-For each recursive transition, the inherited runtime map-degree metadata remains `D^4`. At structural depth `n`, v0.06 continues to record the iterated-degree expression as:
+The existing recursive expression
 
 ```text
 baseDegree = D^4
 exponent = n
 ```
 
-No sheet array, sheet object, branch object, pullback point, mesh, contour, slice, or implicit surface is created. Thread 07 remains the future `D^4 Sheets` milestone.
+remains distinct from the per-step value. Neither expression is treated as a concrete number of geometric sheets.
 
-## Rendering surface
+## Interaction with zoom and recursion
 
-The rendering surface remains ordinary DOM. v0.07 adds no Canvas, SVG geometry, Three.js, WebGL, GPU buffer, camera matrix, projection, physical viewport transform, mesh LOD, or arithmetic/cyclotomic overlay architecture.
+The organization layer consumes the current recursive and zoom models. It does not control either one.
+
+If focus is deeper than the current `materializedDepth`, the model returns:
+
+```text
+organizationStatus = focus_not_materialized
+focusedOrganization = null
+materializationTriggered = false
+```
+
+It does not call `expandOneLevel`, clamp focus, rewrite `requestedDepth`, or create another recursive frontier.
+
+At base depth `0`, the model reports `base_level_no_incoming_branch`. At an already-materialized positive focus depth, it selects the corresponding existing aggregate descriptor.
 
 ## Formal verification boundary
 
-Formal Verification F01–F06 is sealed and remains a stable claim boundary. Its Lean job and the runtime engineering job remain independent. v0.07 extends only the runtime-contract verification surface; it does not reopen the formal line or claim that the whole visualizer is formally verified.
+Formal Verification F01–F06 remains sealed. v0.08 does not add or modify Lean theorem/source files.
 
-See `docs/FORMAL_HANDOFF_self_similar_cy_visualizer_v0_06.md` for the compact sealed formal boundary.
+A green CI run still means:
+
+```text
+sealed Lean formal core passes
++
+runtime engineering contracts pass
+```
+
+It does not mean all visualizer mathematics is formally verified.
+
+In particular, v0.08 does not claim:
+
+```text
+deg(P_D) = D^4 as a genuine map-degree theorem
+concrete D^4 sheets
+covering-space or étale structure
+fiber geometry
+W as a defined Lean hypersurface
+Calabi–Yau geometry
+P_D^* g_log = D^2 g_log
+```
+
+See `docs/FORMAL_HANDOFF_self_similar_cy_visualizer_v0_06.md` for the sealed claim boundary and `docs/SHEET_BRANCH_ORGANIZATION_self_similar_cy_visualizer_v0_08.md` for this milestone's representability audit.
+
+## Rendering surface
+
+The rendering surface remains ordinary DOM. v0.08 adds no Canvas/SVG geometry, Three.js, WebGL, GPU buffers, camera matrices, projection, physical viewport transforms, meshes, or arithmetic/cyclotomic overlays.
 
 ## Run locally
 
@@ -163,20 +182,22 @@ node verify_base_renderer_v0_04.js
 node verify_one_step_pullback_v0_05.js
 node verify_recursive_lazy_expansion_v0_06.js
 node verify_zoom_semantics_v0_07.js
+node verify_sheet_branch_organization_v0_08.js
 node --check scene-spec.js
 node --check base-renderer.js
 node --check one-step-pullback.js
 node --check recursive-lazy-expansion.js
 node --check zoom-semantics.js
+node --check sheet-branch-organization.js
 node --check app.js
 ```
 
-The v0.07 verifier covers deterministic focus at depth `0`, `1`, and higher requested depths; unavailable-focus boundaries; strict separation between zoom and recursive materialization; reuse of the current recursive frontier; `D^2` source-of-truth behavior; validation-before-render ordering; unresolved-`W` preservation; and scope guards against camera, geometry, sheets, overlays, Three.js, and WebGL.
+The v0.08 verifier covers the `D = 2` and `D = 3` source-of-truth cases, materialized depths `0`, `1`, and `>1`, available and unavailable focus states, reuse of the existing iterated-degree expression, strict separation from recursive materialization, preservation of unresolved geometry, and scope guards against concrete sheet/geometry implementations.
 
-The historical v0.06 verifier keeps all recursive behavioral assertions. Its one exact version-metadata assertion is minimally generalized to accept repository version metadata at or after v0.06, matching the compatibility policy already used by earlier verifiers.
+The historical v0.07 verifier keeps all zoom behavioral assertions. Only its exact version-metadata assertion is generalized to accept repository versions at or after v0.07.
 
-## Scope of v0.07
+## Scope of v0.08
 
-This version implements **Thread 06 — Zoom Semantics** only. It does not implement concrete `D^4` sheet visualization, sheet objects, branch geometry, arithmetic/cyclotomic overlays, Three.js, WebGL, GPU buffers, camera matrices, perspective/orthographic projection, viewport transforms, mesh LOD, performance optimization, fidelity audit, later UX, or publication work.
+This version implements **Thread 07 — D^4 Sheet / Branch Organization Semantics** only. It does not implement genuine sheets, covering spaces, fibers, arithmetic overlays, performance optimization, Three.js, WebGL, global fidelity audit, guided UX, or publication work.
 
-The next milestone is **Thread 07 — D^4 Sheets**.
+The next milestone is **Thread 08 — Arithmetic Overlays**.
