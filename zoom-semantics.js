@@ -6,8 +6,8 @@
   const NOT_MATERIALIZED_STATUS = "not_materialized";
 
   function assertFocusDepth(value) {
-    if (!Number.isInteger(value) || value < 0) {
-      throw new TypeError("Zoom focus depth must be a nonnegative integer.");
+    if (!Number.isSafeInteger(value) || value < 0) {
+      throw new TypeError("Zoom focus depth must be a nonnegative safe integer.");
     }
   }
 
