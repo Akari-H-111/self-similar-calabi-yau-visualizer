@@ -1,0 +1,123 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.08",
+  "status": "active",
+  "current_stage": "sheet / branch organization semantics completed",
+  "milestone": "Thread 07 — D^4 Sheet / Branch Organization Semantics",
+  "repository": {
+    "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "visibility": "private",
+    "default_branch": "main",
+    "thread_starting_main_commit": "970bafa06b0af0f68a302164fc63c0d5dc460687",
+    "thread_starting_parent": "8172da49ec363a958efdbad8e9b988a85cb417de",
+    "starting_state_audit": "main exactly matched canonical v0.07; no competing later commit",
+    "connector_read_access": true,
+    "connector_write_access": true
+  },
+  "scene_contract": {
+    "schema_version": 1,
+    "canonical_inputs": ["D", "lambda", "kappa"],
+    "request_parameters": ["requestedDepth"],
+    "pullback_map": {
+      "kind": "coordinate_power",
+      "coordinate_count": 4,
+      "exponent_parameter": "D"
+    },
+    "base_hypersurface": {
+      "kind": "level_set",
+      "defining_function_symbol": "W",
+      "representation": "unresolved",
+      "level_parameter": "lambda"
+    },
+    "derived_quantities": {
+      "metric_scale": "D^2",
+      "sheet_degree": "D^4",
+      "persisted_in_canonical_json": false
+    },
+    "preserved_from_v0_03": true
+  },
+  "sheet_branch_organization": {
+    "module": "sheet-branch-organization.js",
+    "model_kind": "sheet_branch_organization",
+    "descriptor_mode": "aggregate_structural_descriptors",
+    "sheetDegreeSource": "scene.derived.sheetDegree",
+    "sheetDegreeSemanticStatus": "runtime_numeric_organizational_metadata",
+    "sheetDegreePerStep": "D^4 from normalized scene",
+    "per_level_descriptor_count_rule": "one aggregate descriptor per already-materialized positive structural depth",
+    "slotsEnumerated": false,
+    "concreteSheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometryRendered": false,
+    "formalReopeningRequired": false,
+    "materializationTriggered": false,
+    "requested_depth_source": "recursiveModel.requestedDepth",
+    "materialized_depth_source": "recursiveModel.materializedDepth",
+    "focus_source": "zoomModel",
+    "unavailable_focus_status": "focus_not_materialized",
+    "base_focus_status": "base_level_no_incoming_branch",
+    "positive_materialized_focus_status": "structural_organization_available"
+  },
+  "degree_semantics": {
+    "per_step_runtime_metadata": "D^4",
+    "iterated_runtime_expression": "(D^4)^n as inherited baseDegree/exponent pair",
+    "genuine_map_degree_theorem_claimed": false,
+    "iterated_map_degree_theorem_claimed": false,
+    "concrete_sheet_count_claimed": false
+  },
+  "recursive_lazy_expansion": {
+    "contract_preserved_from_v0_06": true,
+    "only_materialization_operation": "expandOneLevel",
+    "organization_layer_calls_expandOneLevel": false,
+    "geometry_rendered": false,
+    "sheets_materialized": false
+  },
+  "zoom_semantics": {
+    "contract_preserved_from_v0_07": true,
+    "meaning": "structural focus / level navigation",
+    "organization_layer_modifies_zoom": false,
+    "organization_layer_triggers_recursive_materialization": false
+  },
+  "formal_verification_handoff": {
+    "F01_to_F06": "sealed",
+    "reopened_by_v0_08": false,
+    "genuine_map_degree_formal_theorem_claimed": false,
+    "covering_structure_formal_theorem_claimed": false,
+    "whole_visualizer_formalized_claimed": false
+  },
+  "validation": {
+    "v0_03_scene_verifier": "pending_ci",
+    "v0_04_base_renderer_verifier": "pending_ci",
+    "v0_05_one_step_verifier": "pending_ci",
+    "v0_06_recursive_lazy_verifier": "pending_ci",
+    "v0_07_zoom_semantics_verifier": "pending_ci",
+    "v0_08_sheet_branch_organization_verifier": "pending_ci",
+    "javascript_syntax": "pending_ci",
+    "formal_lean": "pending_ci",
+    "runtime_contracts": "pending_ci",
+    "full_browser_runtime_smoke_test": "not_tested"
+  },
+  "failed_validation": [],
+  "scope_exclusions": [
+    "genuine D^4 geometric sheets",
+    "covering spaces",
+    "étale maps",
+    "fiber geometry",
+    "resolved W geometry",
+    "Arithmetic Overlays",
+    "cyclotomic overlays",
+    "torsion overlays",
+    "collision classes",
+    "Delta_n visualization",
+    "performance optimization",
+    "Three.js",
+    "WebGL",
+    "GPU rendering",
+    "camera geometry",
+    "mesh generation",
+    "physical viewport transform",
+    "global mathematical fidelity audit",
+    "guided UX",
+    "publication"
+  ],
+  "next_milestone": "Thread 08 — Arithmetic Overlays"
+}
