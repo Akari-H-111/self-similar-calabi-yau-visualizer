@@ -22,6 +22,15 @@ const ACTION_HEADER = "x-codespace-webmcp-action";
 const WORKSPACE_CONTRACT = "codespace-workspace-state/v1";
 const ACTION_RESULT_CONTRACT = "codespace-verification-action-result/v1";
 const STEP_RESULT_CONTRACT = "codespace-verification-step-result/v1";
+const CREDENTIAL_ENV_KEY_PATTERN =
+  /(?:^|_)(?:TOKEN|SECRET|PASSWORD|PASS|CREDENTIAL|API_KEY|PRIVATE_KEY|ACCESS_KEY|AUTH)(?:$|_)/i;
+const CREDENTIAL_ENV_EXACT_KEYS = new Set([
+  "GITHUB_TOKEN",
+  "GH_TOKEN",
+  "GIT_ASKPASS",
+  "SSH_ASKPASS",
+  "SSH_AUTH_SOCK",
+]);
 
 const NODE_VERIFICATION_STEPS = [
   "verify_scene_spec_v0_03.js",
@@ -96,6 +105,19 @@ function classifyStepFailure(error, timedOut) {
   return "execution_error";
 }
 
+function buildSafeChildEnv() {
+  const safeEnv = {};
+
+  for (const [key, value] of Object.entries(process.env)) {
+    if (value === undefined) continue;
+    if (CREDENTIAL_ENV_EXACT_KEYS.has(key)) continue;
+    if (CREDENTIAL_ENV_KEY_PATTERN.test(key)) continue;
+    safeEnv[key] = value;
+  }
+
+  return safeEnv;
+}
+
 async function runGit(args) {
   const { stdout } = await execFileAsync("git", args, {
     cwd: repositoryRoot,
@@ -103,6 +125,7 @@ async function runGit(args) {
     timeout: GIT_TIMEOUT_MS,
     maxBuffer: GIT_MAX_BUFFER,
     windowsHide: true,
+    shell: false,
   });
 
   return stdout.trimEnd();
@@ -169,9 +192,12 @@ async function readRuntimeState() {
   return {
     bridge: {
       name: "codespace-webmcp-verification-bridge",
-      milestone: "C06",
+      milestone: "C07",
       sourceWriteActions: false,
       arbitraryCommand: false,
+      childShell: false,
+      childCredentialEnvStripping: true,
+      safetyAudit: "verify_safety_authority_v0_01.mjs",
       webMcpToolsDeclared: [
         "bridge_status",
         "get_workspace_state",
@@ -204,10 +230,12 @@ async function runFixedStep(step) {
   try {
     const { stdout, stderr } = await execFileAsync(step.command, step.args, {
       cwd: step.cwd,
+      env: buildSafeChildEnv(),
       encoding: "utf8",
       timeout: ACTION_TIMEOUT_MS,
       maxBuffer: ACTION_MAX_BUFFER,
       windowsHide: true,
+      shell: false,
     });
     const finishedAt = new Date().toISOString();
 
@@ -380,9 +408,11 @@ const server = http.createServer(async (request, response) => {
       writeJson(response, 200, {
         status: "ok",
         bridge: "codespace-webmcp-verification-bridge",
-        milestone: "C06",
+        milestone: "C07",
         sourceWriteActions: false,
         arbitraryCommand: false,
+        childShell: false,
+        childCredentialEnvStripping: true,
         actionResultContract: ACTION_RESULT_CONTRACT,
       });
       return;
@@ -423,7 +453,7 @@ const server = http.createServer(async (request, response) => {
       error: "not_found",
     });
   } catch (error) {
-    console.error("C06 bridge request failed:", error);
+    console.error("C07 bridge request failed:", error);
     writeJson(response, 500, {
       status: "error",
       error: "bridge_request_failed",
@@ -432,7 +462,7 @@ const server = http.createServer(async (request, response) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`C06 Codespace verification bridge listening on http://${HOST}:${PORT}`);
+  console.log(`C07 Codespace verification bridge listening on http://${HOST}:${PORT}`);
   console.log(`Repository root: ${repositoryRoot}`);
   console.log(`Action result contract: ${ACTION_RESULT_CONTRACT}`);
   console.log("Fixed actions: run_node_verification, run_lean_build");
