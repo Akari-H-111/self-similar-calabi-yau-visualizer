@@ -48,9 +48,10 @@ async function readRuntimeState() {
   return {
     bridge: {
       name: "codespace-webmcp-readonly-probe",
-      milestone: "C01R",
+      milestone: "C02",
       readOnly: true,
-      webMcpRegistered: false,
+      webMcpToolsDeclared: ["bridge_status"],
+      webMcpRuntimeDiscovery: "browser_only",
     },
     runtime: {
       codespaces: process.env.CODESPACES === "true",
@@ -84,7 +85,8 @@ const server = http.createServer(async (request, response) => {
       writeJson(response, 200, {
         status: "ok",
         bridge: "codespace-webmcp-readonly-probe",
-        milestone: "C01R",
+        milestone: "C02",
+        readOnly: true,
       });
       return;
     }
@@ -118,7 +120,7 @@ const server = http.createServer(async (request, response) => {
       error: "not_found",
     });
   } catch (error) {
-    console.error("C01R bridge request failed:", error);
+    console.error("C02 bridge request failed:", error);
     writeJson(response, 500, {
       status: "error",
       error: "runtime_probe_failed",
@@ -127,6 +129,6 @@ const server = http.createServer(async (request, response) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`C01R read-only Codespace bridge listening on http://${HOST}:${PORT}`);
+  console.log(`C02 read-only Codespace bridge listening on http://${HOST}:${PORT}`);
   console.log(`Repository root: ${repositoryRoot}`);
 });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Codespace C01R Read-Only Probe</title>
+  <title>Codespace C02 WebMCP Discovery Probe</title>
   <style>
     :root { color-scheme: light dark; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     body { max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.5; }
@@ -12,35 +12,85 @@
   </style>
 </head>
 <body>
-  <h1>Codespace C01R Read-Only Probe</h1>
-  <p>This page exposes no WebMCP tools and performs no write actions.</p>
-  <p id="status">Loading runtime state…</p>
+  <h1>Codespace C02 WebMCP Discovery Probe</h1>
+  <p>This page declares one read-only WebMCP tool: <code>bridge_status</code>. It performs no write actions.</p>
+  <p id="webmcp-status">Checking WebMCP availability…</p>
+  <p id="runtime-status">Loading runtime state…</p>
   <pre id="output">{}</pre>
 
   <script>
-    const status = document.getElementById("status");
+    const webMcpStatus = document.getElementById("webmcp-status");
+    const runtimeStatus = document.getElementById("runtime-status");
     const output = document.getElementById("output");
 
-    fetch("/api/runtime-state", {
-      method: "GET",
-      cache: "no-store",
-      credentials: "same-origin"
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-      })
-      .then((state) => {
+    async function fetchRuntimeState() {
+      const response = await fetch("/api/runtime-state", {
+        method: "GET",
+        cache: "no-store",
+        credentials: "same-origin"
+      });
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json();
+    }
+
+    async function renderRuntimeState() {
+      try {
+        const state = await fetchRuntimeState();
         output.textContent = JSON.stringify(state, null, 2);
-        status.textContent = state.runtime?.codespaces
+        runtimeStatus.textContent = state.runtime?.codespaces
           ? "Runtime probe succeeded inside GitHub Codespaces."
           : "Runtime probe is running outside GitHub Codespaces.";
-        status.className = "ok";
-      })
-      .catch((error) => {
-        status.textContent = `Runtime probe failed: ${error.message}`;
+        runtimeStatus.className = "ok";
+      } catch (error) {
+        runtimeStatus.textContent = `Runtime probe failed: ${error.message}`;
         output.textContent = "{}";
-      });
+      }
+    }
+
+    function registerBridgeStatusTool() {
+      const context = document.modelContext;
+      if (!context?.registerTool) {
+        webMcpStatus.textContent = "WebMCP is unavailable in this browser context.";
+        return;
+      }
+
+      const lifecycle = new AbortController();
+      window.addEventListener("pagehide", () => lifecycle.abort(), { once: true });
+
+      const registration = context.registerTool(
+        {
+          name: "bridge_status",
+          title: "Codespace Bridge Status",
+          description: "Read the identity and Git working-tree state reported by this read-only Codespace bridge.",
+          inputSchema: {
+            type: "object",
+            properties: {},
+            additionalProperties: false
+          },
+          annotations: {
+            readOnlyHint: true,
+            untrustedContentHint: true
+          },
+          async execute() {
+            return fetchRuntimeState();
+          }
+        },
+        { signal: lifecycle.signal }
+      );
+
+      void Promise.resolve(registration)
+        .then(() => {
+          webMcpStatus.textContent = "WebMCP bridge_status registration completed in this browser context.";
+          webMcpStatus.className = "ok";
+        })
+        .catch((error) => {
+          webMcpStatus.textContent = `WebMCP registration failed: ${error.message}`;
+        });
+    }
+
+    registerBridgeStatusTool();
+    void renderRuntimeState();
   </script>
 </body>
 </html>
