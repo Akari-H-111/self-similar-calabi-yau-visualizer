@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Codespace C03 Private Transport Probe</title>
+  <title>Codespace C04 Workspace Read Probe</title>
   <style>
     :root { color-scheme: light dark; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     body { max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.5; }
@@ -13,8 +13,8 @@
   </style>
 </head>
 <body>
-  <h1>Codespace C03 Private Transport Probe</h1>
-  <p>This page declares one read-only WebMCP tool: <code>bridge_status</code>. It performs no write actions and never exposes <code>GITHUB_TOKEN</code> to browser code.</p>
+  <h1>Codespace C04 Workspace Read Probe</h1>
+  <p>This page declares two read-only WebMCP tools: <code>bridge_status</code> for diagnostics and <code>get_workspace_state</code> for the stable minimal workspace contract. It performs no write actions and never exposes <code>GITHUB_TOKEN</code> to browser code.</p>
   <p id="webmcp-status">Checking WebMCP availability…</p>
   <p id="runtime-status">Loading runtime state…</p>
   <p id="transport-status">Checking forwarded-origin expectations…</p>
@@ -26,8 +26,8 @@
     const transportStatus = document.getElementById("transport-status");
     const output = document.getElementById("output");
 
-    async function fetchRuntimeState() {
-      const response = await fetch("/api/runtime-state", {
+    async function fetchJson(path) {
+      const response = await fetch(path, {
         method: "GET",
         cache: "no-store",
         credentials: "same-origin"
@@ -56,7 +56,11 @@
     }
 
     async function readBridgeStatus() {
-      return addBrowserTransportState(await fetchRuntimeState());
+      return addBrowserTransportState(await fetchJson("/api/runtime-state"));
+    }
+
+    async function readWorkspaceState() {
+      return fetchJson("/api/workspace-state");
     }
 
     async function renderRuntimeState() {
@@ -84,7 +88,7 @@
       }
     }
 
-    function registerBridgeStatusTool() {
+    function registerTools() {
       const context = document.modelContext;
       if (!context?.registerTool) {
         webMcpStatus.textContent = "WebMCP is unavailable in this browser context.";
@@ -94,38 +98,58 @@
       const lifecycle = new AbortController();
       window.addEventListener("pagehide", () => lifecycle.abort(), { once: true });
 
-      const registration = context.registerTool(
+      const tools = [
         {
           name: "bridge_status",
           title: "Codespace Bridge Status",
-          description: "Read the Codespace identity, Git working-tree state, and browser transport observations reported by this read-only bridge.",
-          inputSchema: {
-            type: "object",
-            properties: {},
-            additionalProperties: false
-          },
-          annotations: {
-            readOnlyHint: true,
-            untrustedContentHint: true
-          },
-          async execute() {
-            return readBridgeStatus();
-          }
+          description: "Read Codespace identity, Git state, and browser transport diagnostics from this read-only bridge.",
+          execute: readBridgeStatus
         },
-        { signal: lifecycle.signal }
+        {
+          name: "get_workspace_state",
+          title: "Get Codespace Workspace State",
+          description: "Read the stable minimal workspace state: repository, Codespace name, branch, HEAD, and clean/change-count status.",
+          execute: readWorkspaceState
+        }
+      ];
+
+      const registrations = tools.map((tool) =>
+        Promise.resolve(
+          context.registerTool(
+            {
+              name: tool.name,
+              title: tool.title,
+              description: tool.description,
+              inputSchema: {
+                type: "object",
+                properties: {},
+                additionalProperties: false
+              },
+              annotations: {
+                readOnlyHint: true,
+                untrustedContentHint: true
+              },
+              async execute() {
+                return tool.execute();
+              }
+            },
+            { signal: lifecycle.signal }
+          )
+        )
       );
 
-      void Promise.resolve(registration)
+      void Promise.all(registrations)
         .then(() => {
-          webMcpStatus.textContent = "WebMCP bridge_status registration completed in this browser context.";
+          webMcpStatus.textContent = "WebMCP bridge_status and get_workspace_state registration completed in this browser context.";
           webMcpStatus.className = "ok";
         })
         .catch((error) => {
+          lifecycle.abort();
           webMcpStatus.textContent = `WebMCP registration failed: ${error.message}`;
         });
     }
 
-    registerBridgeStatusTool();
+    registerTools();
     void renderRuntimeState();
   </script>
 </body>

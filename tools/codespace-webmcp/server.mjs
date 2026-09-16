@@ -14,6 +14,7 @@ const HOST = "0.0.0.0";
 const PORT = 8787;
 const GIT_TIMEOUT_MS = 5_000;
 const GIT_MAX_BUFFER = 64 * 1024;
+const WORKSPACE_CONTRACT = "codespace-workspace-state/v1";
 
 function writeJson(response, statusCode, payload) {
   response.writeHead(statusCode, {
@@ -36,6 +37,23 @@ async function runGit(args) {
   return stdout.trimEnd();
 }
 
+async function readGitState() {
+  const [branch, head, porcelain] = await Promise.all([
+    runGit(["branch", "--show-current"]),
+    runGit(["rev-parse", "HEAD"]),
+    runGit(["status", "--porcelain=v1"]),
+  ]);
+
+  const changeCount = porcelain === "" ? 0 : porcelain.split("\n").length;
+
+  return {
+    branch,
+    head,
+    dirty: changeCount > 0,
+    changeCount,
+  };
+}
+
 function readTransportExpectation() {
   const codespaceName = process.env.CODESPACE_NAME ?? null;
   const portForwardingDomain =
@@ -56,22 +74,35 @@ function readTransportExpectation() {
   };
 }
 
-async function readRuntimeState() {
-  const [branch, head, porcelain] = await Promise.all([
-    runGit(["branch", "--show-current"]),
-    runGit(["rev-parse", "HEAD"]),
-    runGit(["status", "--porcelain=v1"]),
-  ]);
+async function readWorkspaceState() {
+  const git = await readGitState();
 
-  const changeCount = porcelain === "" ? 0 : porcelain.split("\n").length;
+  return {
+    contract: WORKSPACE_CONTRACT,
+    readOnly: true,
+    codespaces: process.env.CODESPACES === "true",
+    repository: process.env.GITHUB_REPOSITORY ?? null,
+    codespaceName: process.env.CODESPACE_NAME ?? null,
+    branch: git.branch,
+    head: git.head,
+    workingTree: {
+      clean: !git.dirty,
+      changeCount: git.changeCount,
+    },
+  };
+}
+
+async function readRuntimeState() {
+  const git = await readGitState();
 
   return {
     bridge: {
       name: "codespace-webmcp-readonly-probe",
-      milestone: "C03",
+      milestone: "C04",
       readOnly: true,
-      webMcpToolsDeclared: ["bridge_status"],
+      webMcpToolsDeclared: ["bridge_status", "get_workspace_state"],
       webMcpRuntimeDiscovery: "browser_only",
+      workspaceContract: WORKSPACE_CONTRACT,
     },
     runtime: {
       codespaces: process.env.CODESPACES === "true",
@@ -81,12 +112,7 @@ async function readRuntimeState() {
         process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN ?? null,
     },
     transport: readTransportExpectation(),
-    git: {
-      branch,
-      head,
-      dirty: changeCount > 0,
-      changeCount,
-    },
+    git,
   };
 }
 
@@ -106,7 +132,7 @@ const server = http.createServer(async (request, response) => {
       writeJson(response, 200, {
         status: "ok",
         bridge: "codespace-webmcp-readonly-probe",
-        milestone: "C03",
+        milestone: "C04",
         readOnly: true,
       });
       return;
@@ -114,6 +140,11 @@ const server = http.createServer(async (request, response) => {
 
     if (url.pathname === "/api/runtime-state") {
       writeJson(response, 200, await readRuntimeState());
+      return;
+    }
+
+    if (url.pathname === "/api/workspace-state") {
+      writeJson(response, 200, await readWorkspaceState());
       return;
     }
 
@@ -142,7 +173,7 @@ const server = http.createServer(async (request, response) => {
       error: "not_found",
     });
   } catch (error) {
-    console.error("C03 bridge request failed:", error);
+    console.error("C04 bridge request failed:", error);
     writeJson(response, 500, {
       status: "error",
       error: "runtime_probe_failed",
@@ -151,6 +182,6 @@ const server = http.createServer(async (request, response) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`C03 read-only Codespace bridge listening on http://${HOST}:${PORT}`);
+  console.log(`C04 read-only Codespace bridge listening on http://${HOST}:${PORT}`);
   console.log(`Repository root: ${repositoryRoot}`);
 });
