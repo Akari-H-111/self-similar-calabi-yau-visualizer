@@ -100,7 +100,10 @@ jobs:
       - name: Verify arithmetic overlays v0.09
         run: node verify_arithmetic_overlays_v0_09.js
 
-      - name: Observe v0.10 baseline performance (non-threshold audit)
+      - name: Verify performance and infinite-navigation semantics v0.10
+        run: node verify_performance_infinite_navigation_v0_10.js
+
+      - name: Observe v0.10 performance (non-threshold audit)
         run: node --expose-gc benchmark_performance_infinite_navigation_v0_10.js
 
       - name: Check runtime source syntax
@@ -113,5 +116,6 @@ jobs:
           node --check zoom-semantics.js
           node --check sheet-branch-organization.js
           node --check arithmetic-overlays.js
+          node --check verify_performance_infinite_navigation_v0_10.js
           node --check benchmark_performance_infinite_navigation_v0_10.js
           node --check app.js
