@@ -49,7 +49,9 @@ function initialize(rawScene, focusDepth = 0) {
   return { scene, baseModel, pullbackModel, recursiveModel, zoomModel, targets: { baseTarget, pullbackTarget, recursiveTarget, zoomTarget } };
 }
 
-assert.equal(canonicalScene.version, "v0.07");
+const versionMatch = /^v0\.(\d+)$/.exec(canonicalScene.version);
+assert.ok(versionMatch, "Canonical scene version must use v0.<minor> metadata.");
+assert.ok(Number(versionMatch[1]) >= 7, "Zoom verifier requires version metadata at or after v0.07.");
 
 const caseA = initialize(canonicalScene, 0);
 assert.equal(caseA.zoomModel.kind, MODEL_KIND);
