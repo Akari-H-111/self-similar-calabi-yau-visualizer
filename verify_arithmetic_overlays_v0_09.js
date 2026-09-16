@@ -92,7 +92,9 @@ function initialize(rawScene, focusDepth = 0, requestedOverlayIds = []) {
   };
 }
 
-assert.equal(canonicalScene.version, "v0.09");
+const canonicalVersionMatch = /^v0\.(\d+)$/.exec(canonicalScene.version);
+assert.ok(canonicalVersionMatch, "Repository version metadata must use v0.xx form.");
+assert.ok(Number(canonicalVersionMatch[1]) >= 9, "v0.09 overlay verifier requires repository version v0.09 or later.");
 
 assert.equal(gitBlobSha(coordinatePowerSource), SOURCE_ARTIFACTS.coordinatePower.blobSha);
 assert.equal(gitBlobSha(coordinateIterationSource), SOURCE_ARTIFACTS.coordinatePowerIteration.blobSha);
