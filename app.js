@@ -6,6 +6,7 @@ const rendererElement = document.querySelector("#base-renderer");
 const pullbackElement = document.querySelector("#one-step-pullback");
 const recursiveElement = document.querySelector("#recursive-lazy-expansion");
 const zoomElement = document.querySelector("#zoom-semantics");
+const sheetBranchElement = document.querySelector("#sheet-branch-organization");
 
 const fields = {
   project: document.querySelector("#project-value"),
@@ -66,6 +67,17 @@ function resetRenderedState() {
   delete zoomElement.dataset.geometricZoomApplied;
   delete zoomElement.dataset.cameraTransformApplied;
   delete zoomElement.dataset.materializationTriggered;
+  sheetBranchElement.hidden = true;
+  sheetBranchElement.textContent = "";
+  delete sheetBranchElement.dataset.state;
+  delete sheetBranchElement.dataset.sheetDegreeSource;
+  delete sheetBranchElement.dataset.sheetDegreePerStep;
+  delete sheetBranchElement.dataset.materializedDepth;
+  delete sheetBranchElement.dataset.focusedDepth;
+  delete sheetBranchElement.dataset.sheetsMaterialized;
+  delete sheetBranchElement.dataset.coveringStructureClaimed;
+  delete sheetBranchElement.dataset.geometryRendered;
+  delete sheetBranchElement.dataset.materializationTriggered;
 }
 
 async function loadSystemConfiguration() {
@@ -85,10 +97,12 @@ async function loadSystemConfiguration() {
     RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement);
     const zoomModel = ZoomSemantics.createZoomFocusModel(scene, recursiveModel, 0);
     ZoomSemantics.renderZoomSemantics(zoomModel, zoomElement);
+    const organizationModel = SheetBranchOrganization.createSheetBranchOrganizationModel(scene, recursiveModel, zoomModel);
+    SheetBranchOrganization.renderSheetBranchOrganization(organizationModel, sheetBranchElement);
     displayScene(scene);
     dataElement.hidden = false;
     statusElement.dataset.state = "ready";
-    statusElement.textContent = "Loaded, validated, and initialized the base, one-step, recursive lazy, and structural zoom-focus states successfully.";
+    statusElement.textContent = "Loaded, validated, and initialized the base, one-step, recursive lazy, structural zoom-focus, and sheet/branch organization states successfully.";
   } catch (error) {
     console.error("Failed to load, validate, or initialize the structural scene:", error);
     resetRenderedState();
