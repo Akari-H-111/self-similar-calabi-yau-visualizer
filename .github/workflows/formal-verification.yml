@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - formal-f06-github-ci-seal
+      - thread09-performance-infinite-navigation-v0-10
   pull_request:
   workflow_dispatch:
 
@@ -99,6 +100,9 @@ jobs:
       - name: Verify arithmetic overlays v0.09
         run: node verify_arithmetic_overlays_v0_09.js
 
+      - name: Observe v0.10 baseline performance (non-threshold audit)
+        run: node --expose-gc benchmark_performance_infinite_navigation_v0_10.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -109,4 +113,5 @@ jobs:
           node --check zoom-semantics.js
           node --check sheet-branch-organization.js
           node --check arithmetic-overlays.js
+          node --check benchmark_performance_infinite_navigation_v0_10.js
           node --check app.js
