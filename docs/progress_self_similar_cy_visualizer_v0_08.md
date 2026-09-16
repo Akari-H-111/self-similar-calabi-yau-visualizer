@@ -4,9 +4,7 @@
 
 **Thread 07 — D^4 Sheet / Branch Organization Semantics**
 
-Status: **implementation staged; CI seal pending**.
-
-Full browser-engine runtime smoke testing remains explicitly `not_tested`.
+Status: **completed and CI-verified**, with full browser-engine runtime smoke testing explicitly left `not_tested`.
 
 ## Canonical starting gate
 
@@ -25,18 +23,11 @@ with sole parent:
 
 No newer competing commit was present when implementation began.
 
-The latest v0.07 `Formal Verification` workflow run was `completed / success`, with both:
-
-```text
-formal-lean
-runtime-contracts
-```
-
-successful.
+The latest v0.07 `Formal Verification` workflow run was already `completed / success`, with both `formal-lean` and `runtime-contracts` successful.
 
 ## Representability audit
 
-The canonical repository supports three increasingly strong interpretations:
+The canonical repository supports three increasingly strong interpretations.
 
 ### A. Symbolic multiplicity
 
@@ -150,7 +141,7 @@ reopened_by_v0_08 = false
 
 for this structural-only implementation.
 
-## Files staged
+## Files
 
 Created:
 
@@ -179,26 +170,17 @@ Unchanged by design:
 - `zoom-semantics.js`
 - all sealed Lean theorem/source files
 
-## Validation plan
+## Validation
 
-The dedicated v0.08 verifier covers:
+A staging pull request was used only to execute the repository CI against the exact v0.08 executable tree before canonical sealing:
 
-- `D = 2 -> sheetDegree = 16` source reuse;
-- `D = 3 -> sheetDegree = 81` source reuse;
-- no duplicated `D` lookup and no `D^4` recomputation;
-- materialized depth `0`, `1`, and `>1`;
-- focus at or below materialized depth;
-- focus above materialized depth;
-- explicit external recursive expansion followed by organization re-derivation;
-- no organization-triggered recursion;
-- no concrete sheets, covering claim, or geometry;
-- no forbidden later rendering technologies.
+```text
+PR: #1
+workflow run: 35065251172
+head SHA: 12ea0ff66ee31683d40a08fd71b441d81f273ce8
+```
 
-The full runtime regression suite and JavaScript syntax checks are wired into the existing `runtime-contracts` job. The sealed `formal-lean` job remains unchanged.
-
-## Validation status
-
-### pending
+### passed
 
 - `verify_scene_spec_v0_03.js`
 - `verify_base_renderer_v0_04.js`
@@ -206,16 +188,32 @@ The full runtime regression suite and JavaScript syntax checks are wired into th
 - `verify_recursive_lazy_expansion_v0_06.js`
 - `verify_zoom_semantics_v0_07.js`
 - `verify_sheet_branch_organization_v0_08.js`
-- JavaScript syntax checks
-- GitHub Actions `runtime-contracts`
-- GitHub Actions `formal-lean`
+- JavaScript syntax checks for all runtime modules including `sheet-branch-organization.js`
+- `D = 2 -> scene.derived.sheetDegree = 16` source reuse
+- `D = 3 -> scene.derived.sheetDegree = 81` source reuse
+- no second `D` source and no `D^4` recomputation in the organization layer
+- materialized depth `0`, `1`, and `>1` organization cases
+- available and unavailable focus cases
+- unavailable organization view does not expand recursion
+- external explicit recursion expansion can be consumed by a newly derived organization model
+- `W = unresolved` preserved
+- `geometryRendered = false`, `sheetsMaterialized = false`, and `coveringStructureClaimed = false` preserved
+- GitHub Actions `runtime-contracts`: `completed / success`
+- GitHub Actions `formal-lean`: `completed / success`
+- sealed Lean `lake build`, direct compilation of `CoordinatePower.lean`, `CoordinatePowerIteration.lean`, and `PullbackTower.lean`, plus placeholder rejection all succeeded
+
+### failed
+
+- None.
 
 ### not_tested
 
-- full browser-engine runtime smoke test with live network fetch and DOM observation
+- Full browser-engine runtime smoke test with live network fetch and DOM observation. This remains an explicitly recorded non-blocker for Thread 07.
 
 ## Stopping point
 
-The implementation is staged but must not be sealed until the complete CI evidence is observed and the state/progress files are updated from `pending_ci` to actual results.
+\[
+\boxed{\text{D}^4\text{ is represented as verified aggregate runtime organization metadata, not concrete sheet geometry}}
+\]
 
-The next milestone after a successful v0.08 seal is **Thread 08 — Arithmetic Overlays**. No Thread 08 implementation is included here.
+The next milestone is **Thread 08 — Arithmetic Overlays**. No Thread 08 implementation is included here.
