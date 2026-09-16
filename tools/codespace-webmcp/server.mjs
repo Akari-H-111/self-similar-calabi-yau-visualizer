@@ -36,6 +36,26 @@ async function runGit(args) {
   return stdout.trimEnd();
 }
 
+function readTransportExpectation() {
+  const codespaceName = process.env.CODESPACE_NAME ?? null;
+  const portForwardingDomain =
+    process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN ?? null;
+
+  const expectedRemoteUrl =
+    codespaceName && portForwardingDomain
+      ? `https://${codespaceName}-${PORT}.${portForwardingDomain}`
+      : null;
+
+  return {
+    port: PORT,
+    expectedRemoteUrl,
+    requiredVisibility: "private",
+    visibilityObserved: null,
+    runtimeVerification: "browser_only",
+    tokenExposedToBrowser: false,
+  };
+}
+
 async function readRuntimeState() {
   const [branch, head, porcelain] = await Promise.all([
     runGit(["branch", "--show-current"]),
@@ -48,7 +68,7 @@ async function readRuntimeState() {
   return {
     bridge: {
       name: "codespace-webmcp-readonly-probe",
-      milestone: "C02",
+      milestone: "C03",
       readOnly: true,
       webMcpToolsDeclared: ["bridge_status"],
       webMcpRuntimeDiscovery: "browser_only",
@@ -60,6 +80,7 @@ async function readRuntimeState() {
       portForwardingDomain:
         process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN ?? null,
     },
+    transport: readTransportExpectation(),
     git: {
       branch,
       head,
@@ -85,7 +106,7 @@ const server = http.createServer(async (request, response) => {
       writeJson(response, 200, {
         status: "ok",
         bridge: "codespace-webmcp-readonly-probe",
-        milestone: "C02",
+        milestone: "C03",
         readOnly: true,
       });
       return;
@@ -102,6 +123,7 @@ const server = http.createServer(async (request, response) => {
         "content-type": "text/html; charset=utf-8",
         "cache-control": "no-store",
         "x-content-type-options": "nosniff",
+        "referrer-policy": "no-referrer",
         "content-security-policy":
           "default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
       });
@@ -120,7 +142,7 @@ const server = http.createServer(async (request, response) => {
       error: "not_found",
     });
   } catch (error) {
-    console.error("C02 bridge request failed:", error);
+    console.error("C03 bridge request failed:", error);
     writeJson(response, 500, {
       status: "error",
       error: "runtime_probe_failed",
@@ -129,6 +151,6 @@ const server = http.createServer(async (request, response) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`C02 read-only Codespace bridge listening on http://${HOST}:${PORT}`);
+  console.log(`C03 read-only Codespace bridge listening on http://${HOST}:${PORT}`);
   console.log(`Repository root: ${repositoryRoot}`);
 });

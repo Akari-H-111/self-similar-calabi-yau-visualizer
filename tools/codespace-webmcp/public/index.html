@@ -3,24 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Codespace C02 WebMCP Discovery Probe</title>
+  <title>Codespace C03 Private Transport Probe</title>
   <style>
     :root { color-scheme: light dark; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     body { max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.5; }
     pre { overflow: auto; padding: 1rem; border: 1px solid currentColor; border-radius: 0.5rem; }
     .ok { font-weight: 700; }
+    .warn { font-weight: 700; }
   </style>
 </head>
 <body>
-  <h1>Codespace C02 WebMCP Discovery Probe</h1>
-  <p>This page declares one read-only WebMCP tool: <code>bridge_status</code>. It performs no write actions.</p>
+  <h1>Codespace C03 Private Transport Probe</h1>
+  <p>This page declares one read-only WebMCP tool: <code>bridge_status</code>. It performs no write actions and never exposes <code>GITHUB_TOKEN</code> to browser code.</p>
   <p id="webmcp-status">Checking WebMCP availability…</p>
   <p id="runtime-status">Loading runtime state…</p>
+  <p id="transport-status">Checking forwarded-origin expectations…</p>
   <pre id="output">{}</pre>
 
   <script>
     const webMcpStatus = document.getElementById("webmcp-status");
     const runtimeStatus = document.getElementById("runtime-status");
+    const transportStatus = document.getElementById("transport-status");
     const output = document.getElementById("output");
 
     async function fetchRuntimeState() {
@@ -34,16 +37,49 @@
       return response.json();
     }
 
+    function addBrowserTransportState(state) {
+      const expectedRemoteUrl = state.transport?.expectedRemoteUrl ?? null;
+      const currentOrigin = window.location.origin;
+      const originMatchesExpected =
+        expectedRemoteUrl !== null && currentOrigin === expectedRemoteUrl;
+
+      return {
+        ...state,
+        browserTransport: {
+          currentOrigin,
+          expectedRemoteUrl,
+          originMatchesExpected,
+          secureContext: window.isSecureContext,
+          topLevelPage: window.top === window.self
+        }
+      };
+    }
+
+    async function readBridgeStatus() {
+      return addBrowserTransportState(await fetchRuntimeState());
+    }
+
     async function renderRuntimeState() {
       try {
-        const state = await fetchRuntimeState();
+        const state = await readBridgeStatus();
         output.textContent = JSON.stringify(state, null, 2);
+
         runtimeStatus.textContent = state.runtime?.codespaces
           ? "Runtime probe succeeded inside GitHub Codespaces."
           : "Runtime probe is running outside GitHub Codespaces.";
-        runtimeStatus.className = "ok";
+        runtimeStatus.className = state.runtime?.codespaces ? "ok" : "warn";
+
+        const transport = state.browserTransport;
+        if (transport.originMatchesExpected && transport.secureContext && transport.topLevelPage) {
+          transportStatus.textContent = "Browser transport matches the expected secure top-level Codespaces forwarded origin.";
+          transportStatus.className = "ok";
+        } else {
+          transportStatus.textContent = "Private forwarded-origin transport is not yet fully observed in this browser context.";
+          transportStatus.className = "warn";
+        }
       } catch (error) {
         runtimeStatus.textContent = `Runtime probe failed: ${error.message}`;
+        transportStatus.textContent = "Transport audit unavailable because runtime-state retrieval failed.";
         output.textContent = "{}";
       }
     }
@@ -62,7 +98,7 @@
         {
           name: "bridge_status",
           title: "Codespace Bridge Status",
-          description: "Read the identity and Git working-tree state reported by this read-only Codespace bridge.",
+          description: "Read the Codespace identity, Git working-tree state, and browser transport observations reported by this read-only bridge.",
           inputSchema: {
             type: "object",
             properties: {},
@@ -73,7 +109,7 @@
             untrustedContentHint: true
           },
           async execute() {
-            return fetchRuntimeState();
+            return readBridgeStatus();
           }
         },
         { signal: lifecycle.signal }
