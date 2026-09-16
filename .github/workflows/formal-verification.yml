@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - formal-f06-github-ci-seal
-      - thread09-performance-infinite-navigation-v0-10
   pull_request:
   workflow_dispatch:
 
@@ -102,9 +101,6 @@ jobs:
 
       - name: Verify performance and infinite-navigation semantics v0.10
         run: node verify_performance_infinite_navigation_v0_10.js
-
-      - name: Observe v0.10 performance (non-threshold audit)
-        run: node --expose-gc benchmark_performance_infinite_navigation_v0_10.js
 
       - name: Check runtime source syntax
         run: |
