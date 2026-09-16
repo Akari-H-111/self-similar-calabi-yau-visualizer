@@ -1,140 +1,202 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.08 — Sheet / Branch Organization Semantics
+**Current version:** v0.09 — Arithmetic Overlays
 
-This repository is a minimal static HTML/CSS/vanilla-JavaScript application for the Self-Similar Calabi–Yau Visualizer. v0.08 adds verified **aggregate structural sheet/branch organization metadata** on top of the v0.07 structural zoom-focus model while preserving the v0.03–v0.07 runtime contracts and the sealed F01–F06 formal boundary.
+This repository is a minimal static HTML/CSS/vanilla-JavaScript application for the Self-Similar Calabi–Yau Visualizer. v0.09 adds **provenance-aware symbolic arithmetic overlays** on top of the v0.08 aggregate sheet/branch organization model while preserving the v0.03–v0.08 runtime contracts and the sealed F01–F06 formal boundary.
 
 ## Canonical mathematical core
 
 \[
 X = W^{-1}(\lambda),
-\]
-
-\[
+\qquad
 X_n = (P_D^n)^{-1}(X),
-\]
-
-\[
+\qquad
 P_D(z_1,\ldots,z_4) = (z_1^D,\ldots,z_4^D).
 \]
 
-The scene is loaded from `data/system.json`, validated by `scene-spec.js`, passed through the base, one-step, recursive, and zoom layers, then consumed by `sheet-branch-organization.js` as derived structural organization state.
+The scene is loaded from `data/system.json`, validated by `scene-spec.js`, and passed through the base, one-step, recursive, zoom, sheet/branch-organization, and arithmetic-overlay layers.
 
 ## Preserved canonical contracts
 
 The v0.03 canonical mathematical inputs remain only `D`, `lambda`, and `kappa`. `requestedDepth` remains a request parameter. `P_D` still comes only from the structured `coordinate_power` declaration.
 
-`scene-spec.js` remains the sole runtime source of the derived values:
+`scene-spec.js` remains the sole runtime source of:
 
 ```text
 scene.derived.metricScale = D^2
 scene.derived.sheetDegree = D^4
 ```
 
-The concrete representation of `W` remains exactly:
+The concrete representation of `W` remains:
 
 ```text
 unresolved
 ```
 
-Accordingly, the runtime still preserves:
+Accordingly:
 
 ```text
 geometryRendered = false
 sheetsMaterialized = false
+coveringStructureClaimed = false
 ```
 
-The v0.06 recursion engine remains the only operation that can add structural levels, and v0.07 zoom remains structural focus/navigation only.
+The v0.06 recursion engine remains the only operation that can add structural levels. v0.07 zoom remains structural focus/navigation only. v0.08 sheet/branch organization remains aggregate structural metadata only.
 
-## v0.08 representability decision
-
-The historical name “D^4 Sheets” is not interpreted as permission to create `D^4` genuine geometric sheets.
-
-Under the current canonical and formal boundary, v0.08 supports:
+v0.09 adds the explicit boundary:
 
 ```text
-symbolic D^4 multiplicity metadata
-+
-aggregate structural organization descriptors
+arithmetic overlay != recursive materialization
+arithmetic truth != geometric realization
 ```
 
-but not:
+## v0.09 evidence audit
+
+The roadmap candidates were audited before implementation.
+
+Deferred because no exact canonical source artifact was available to this thread:
 
 ```text
-D^4 concrete sheet objects
-covering branches
-fiber geometry
-covering-space claims
-étale claims
+cyclotomic refinement
+torsion labels
+collision classes
+Delta_n / divisor marking
 ```
 
-The reason is explicit: the sealed F01–F06 formal layer does not prove `deg(P_D)=D^4` as a genuine map-degree theorem and does not establish concrete sheets, covering structure, torus restrictions, or a resolved `W` geometry.
+These candidates are represented only as deterministic `unavailable` audit entries with no source version and no generated data.
 
-## `D^4` source of truth
+The only source-backed candidate family implemented in v0.09 is **coordinate-channel labels**.
 
-`sheet-branch-organization.js` reads the per-step numeric metadata only from:
+## Implemented arithmetic overlays
+
+### `coordinate_channels`
+
+This global structural overlay is backed by:
 
 ```text
-scene.derived.sheetDegree
+formal/SelfSimilarCY/CoordinatePower.lean
+git blob dcfae8a3ed99544e50ee45aa12acde63e41090c8
 ```
 
-It does not read `parameters.D` and does not recompute `D ** 4`.
+The sealed Lean source defines:
 
-The organization model records:
-
-```text
-sheetDegreeSource = scene.derived.sheetDegree
-sheetDegreeSemanticStatus = runtime_numeric_organizational_metadata
-sheetDegreePerStep = D^4
+```lean
+Point4 := Fin 4 → ℂ
+coordinatePower D z i = z i ^ D
 ```
 
-For `D = 2`, the runtime value is `16`; for `D = 3`, it is `81`. These are verifier-backed runtime calculations, not newly formalized geometric degree claims.
+The overlay labels the four coordinate channels using the already validated runtime `coordinateCount`. It creates no points, fibers, sheets, torus structure, or geometry.
 
-## Aggregate organization, not sheet enumeration
-
-For each already-materialized positive structural depth, v0.08 creates exactly one aggregate descriptor containing:
+Evidence class:
 
 ```text
-depth
-sourceDepth
-nominalMultiplicity = sheetDegreePerStep
-iteratedDegreeExpression
-aggregateOnly = true
-slotsEnumerated = false
-sheetsMaterialized = false
-geometryRendered = false
+source_backed_structural_representation
 ```
 
-The descriptor count therefore follows `materializedDepth`, not `D^4`.
+with sealed `formal_theorem` support.
 
-The existing recursive expression
+### `coordinate_iterate_rule`
+
+This focused-level symbolic overlay is backed by:
 
 ```text
-baseDegree = D^4
-exponent = n
+formal/SelfSimilarCY/CoordinatePowerIteration.lean
+git blob 4c78793d586e8ba822d4b326f09fd82dc07eaaf9
 ```
 
-remains distinct from the per-step value. Neither expression is treated as a concrete number of geometric sheets.
+The sealed theorem is:
 
-## Interaction with zoom and recursion
+```lean
+(coordinatePower D)^[n] z i = z i ^ (D ^ n)
+```
 
-The organization layer consumes the current recursive and zoom models. It does not control either one.
+At an already-materialized focus depth `n`, v0.09 exposes the exponent symbolically as a structured `{ baseParameter, towerDepth }` expression. It does not evaluate a huge `D^n`, build a combined map object, or apply geometric scaling.
 
-If focus is deeper than the current `materializedDepth`, the model returns:
+Evidence class:
 
 ```text
-organizationStatus = focus_not_materialized
-focusedOrganization = null
+formal_theorem
+```
+
+If the requested focus is not materialized, this overlay returns `not_materialized` and does not expand recursion.
+
+## Exact provenance
+
+The two implemented overlays carry exact source path, Git blob SHA, and the sealed F06 commit:
+
+```text
+ff5bcd2f134497c671b2368c372f59b5620a41ab
+```
+
+`verify_arithmetic_overlays_v0_09.js` recomputes the Git blob SHA from the repository source text and checks the expected theorem identities. A stale or source-free provenance claim therefore fails verification.
+
+## Runtime overlay model
+
+`arithmetic-overlays.js` is an independent derived layer. It consumes:
+
+```text
+validated normalized scene
+current recursive model
+current zoom/focus model
+current sheet/branch organization model
+runtime overlay request ids
+```
+
+It records:
+
+```text
+requestedOverlays
+implementedOverlays
+deferredCandidateOverlays
+availableOverlays
+enabledOverlays
+requestResults
+overlayDescriptors
+sourceArtifacts
+requestedDepth
+materializedDepth
+requestedFocusDepth
+focusedDepth
+overlayStateIsViewRequest = true
+recursionModified = false
+zoomModified = false
+sheetOrganizationModified = false
 materializationTriggered = false
+geometryRendered = false
+formalVerificationReopened = false
 ```
 
-It does not call `expandOneLevel`, clamp focus, rewrite `requestedDepth`, or create another recursive frontier.
+Overlay enable/disable state is runtime view state and is not written into `data/system.json`. Schema version 1 is unchanged.
 
-At base depth `0`, the model reports `base_level_no_incoming_branch`. At an already-materialized positive focus depth, it selects the corresponding existing aggregate descriptor.
+## Toggle and availability semantics
+
+The overlay layer supports:
+
+```text
+all disabled
+one enabled
+multiple independently enabled
+disable after enable
+deferred overlay request
+unsupported overlay request
+```
+
+Toggling overlays does not alter:
+
+```text
+requestedDepth
+materializedDepth
+requestedFocusDepth
+focusedDepth
+recursive levels
+sheet/branch descriptors
+```
+
+`coordinate_channels` is global system metadata. `coordinate_iterate_rule` is focused-level metadata and requires an already-materialized focus.
 
 ## Formal verification boundary
 
-Formal Verification F01–F06 remains sealed. v0.08 does not add or modify Lean theorem/source files.
+Formal Verification F01–F06 remains sealed. v0.09 changes no Lean theorem/source file.
 
 A green CI run still means:
 
@@ -144,25 +206,29 @@ sealed Lean formal core passes
 runtime engineering contracts pass
 ```
 
-It does not mean all visualizer mathematics is formally verified.
+It does **not** mean all arithmetic overlay mathematics, all Calabi–Yau geometry, or the entire visualizer is formally verified.
 
-In particular, v0.08 does not claim:
+v0.09 does not claim:
 
 ```text
+cyclotomic refinement theorem/geometry
+torsion loci or torsion geometry
+collision loci or collision geometry
+Delta_n divisor geometry
 deg(P_D) = D^4 as a genuine map-degree theorem
 concrete D^4 sheets
 covering-space or étale structure
 fiber geometry
-W as a defined Lean hypersurface
+resolved W geometry
 Calabi–Yau geometry
 P_D^* g_log = D^2 g_log
 ```
 
-See `docs/FORMAL_HANDOFF_self_similar_cy_visualizer_v0_06.md` for the sealed claim boundary and `docs/SHEET_BRANCH_ORGANIZATION_self_similar_cy_visualizer_v0_08.md` for this milestone's representability audit.
+See `docs/FORMAL_HANDOFF_self_similar_cy_visualizer_v0_06.md` and `docs/ARITHMETIC_OVERLAYS_self_similar_cy_visualizer_v0_09.md` for the exact boundary.
 
 ## Rendering surface
 
-The rendering surface remains ordinary DOM. v0.08 adds no Canvas/SVG geometry, Three.js, WebGL, GPU buffers, camera matrices, projection, physical viewport transforms, meshes, or arithmetic/cyclotomic overlays.
+The rendering surface remains ordinary DOM text/status output. v0.09 adds no Canvas/SVG geometry, Three.js, WebGL, GPU buffers, camera matrices, projection, physical viewport transforms, or meshes.
 
 ## Run locally
 
@@ -183,21 +249,23 @@ node verify_one_step_pullback_v0_05.js
 node verify_recursive_lazy_expansion_v0_06.js
 node verify_zoom_semantics_v0_07.js
 node verify_sheet_branch_organization_v0_08.js
+node verify_arithmetic_overlays_v0_09.js
 node --check scene-spec.js
 node --check base-renderer.js
 node --check one-step-pullback.js
 node --check recursive-lazy-expansion.js
 node --check zoom-semantics.js
 node --check sheet-branch-organization.js
+node --check arithmetic-overlays.js
 node --check app.js
 ```
 
-The v0.08 verifier covers the `D = 2` and `D = 3` source-of-truth cases, materialized depths `0`, `1`, and `>1`, available and unavailable focus states, reuse of the existing iterated-degree expression, strict separation from recursive materialization, preservation of unresolved geometry, and scope guards against concrete sheet/geometry implementations.
+The v0.09 verifier covers exact Lean provenance, evidence classes, toggle independence, unavailable source/focus behavior, recursion/zoom/sheet-organization non-mutation, source-of-truth guards, unresolved geometry, and scope exclusions.
 
-The historical v0.07 verifier keeps all zoom behavioral assertions. Only its exact version-metadata assertion is generalized to accept repository versions at or after v0.07.
+The historical v0.08 verifier keeps all behavioral assertions. Only its exact version-metadata assertion is generalized to accept repository versions at or after v0.08.
 
-## Scope of v0.08
+## Scope of v0.09
 
-This version implements **Thread 07 — D^4 Sheet / Branch Organization Semantics** only. It does not implement genuine sheets, covering spaces, fibers, arithmetic overlays, performance optimization, Three.js, WebGL, global fidelity audit, guided UX, or publication work.
+This version implements **Thread 08 — Arithmetic Overlays** only. It does not implement cyclotomic/torsion/collision/divisor geometry, performance optimization, infinite-navigation stress testing, global mathematical fidelity audit, guided UX, publication work, Three.js, WebGL, or GPU rendering.
 
-The next milestone is **Thread 08 — Arithmetic Overlays**.
+The next milestone is **Thread 09 — Performance and Infinite-Navigation Audit**.

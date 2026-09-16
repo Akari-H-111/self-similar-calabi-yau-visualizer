@@ -7,6 +7,12 @@ const pullbackElement = document.querySelector("#one-step-pullback");
 const recursiveElement = document.querySelector("#recursive-lazy-expansion");
 const zoomElement = document.querySelector("#zoom-semantics");
 const sheetBranchElement = document.querySelector("#sheet-branch-organization");
+const arithmeticOverlayElement = document.querySelector("#arithmetic-overlays");
+
+const initialArithmeticOverlayRequest = Object.freeze([
+  "coordinate_channels",
+  "coordinate_iterate_rule"
+]);
 
 const fields = {
   project: document.querySelector("#project-value"),
@@ -78,6 +84,15 @@ function resetRenderedState() {
   delete sheetBranchElement.dataset.coveringStructureClaimed;
   delete sheetBranchElement.dataset.geometryRendered;
   delete sheetBranchElement.dataset.materializationTriggered;
+  arithmeticOverlayElement.hidden = true;
+  arithmeticOverlayElement.textContent = "";
+  delete arithmeticOverlayElement.dataset.state;
+  delete arithmeticOverlayElement.dataset.availableOverlays;
+  delete arithmeticOverlayElement.dataset.enabledOverlays;
+  delete arithmeticOverlayElement.dataset.materializedDepth;
+  delete arithmeticOverlayElement.dataset.focusedDepth;
+  delete arithmeticOverlayElement.dataset.materializationTriggered;
+  delete arithmeticOverlayElement.dataset.geometryRendered;
 }
 
 async function loadSystemConfiguration() {
@@ -99,10 +114,12 @@ async function loadSystemConfiguration() {
     ZoomSemantics.renderZoomSemantics(zoomModel, zoomElement);
     const organizationModel = SheetBranchOrganization.createSheetBranchOrganizationModel(scene, recursiveModel, zoomModel);
     SheetBranchOrganization.renderSheetBranchOrganization(organizationModel, sheetBranchElement);
+    const arithmeticOverlayModel = ArithmeticOverlays.createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, initialArithmeticOverlayRequest);
+    ArithmeticOverlays.renderArithmeticOverlays(arithmeticOverlayModel, arithmeticOverlayElement);
     displayScene(scene);
     dataElement.hidden = false;
     statusElement.dataset.state = "ready";
-    statusElement.textContent = "Loaded, validated, and initialized the base, one-step, recursive lazy, structural zoom-focus, and sheet/branch organization states successfully.";
+    statusElement.textContent = "Loaded, validated, and initialized the structural scene plus provenance-aware arithmetic overlays successfully.";
   } catch (error) {
     console.error("Failed to load, validate, or initialize the structural scene:", error);
     resetRenderedState();

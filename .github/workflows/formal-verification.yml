@@ -96,6 +96,9 @@ jobs:
       - name: Verify sheet branch organization v0.08
         run: node verify_sheet_branch_organization_v0_08.js
 
+      - name: Verify arithmetic overlays v0.09
+        run: node verify_arithmetic_overlays_v0_09.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -105,4 +108,5 @@ jobs:
           node --check recursive-lazy-expansion.js
           node --check zoom-semantics.js
           node --check sheet-branch-organization.js
+          node --check arithmetic-overlays.js
           node --check app.js
