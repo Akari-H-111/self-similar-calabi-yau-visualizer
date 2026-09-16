@@ -42,9 +42,9 @@
     }
   }
 
-  function assertIntegerAtLeast(value, minimum, path) {
-    if (!Number.isInteger(value) || value < minimum) {
-      throw new SceneSpecError(`${path} must be an integer >= ${minimum}.`);
+  function assertSafeIntegerAtLeast(value, minimum, path) {
+    if (!Number.isSafeInteger(value) || value < minimum) {
+      throw new SceneSpecError(`${path} must be a safe integer >= ${minimum}.`);
     }
   }
 
@@ -75,7 +75,7 @@
 
     assertPlainObject(parameters, "scene.mathematics.parameters");
     assertExactKeys(parameters, ["D", "lambda", "kappa"], "scene.mathematics.parameters");
-    assertIntegerAtLeast(parameters.D, 2, "scene.mathematics.parameters.D");
+    assertSafeIntegerAtLeast(parameters.D, 2, "scene.mathematics.parameters.D");
     assertFiniteNumber(parameters.lambda, "scene.mathematics.parameters.lambda");
     assertFiniteNumber(parameters.kappa, "scene.mathematics.parameters.kappa");
 
@@ -131,7 +131,7 @@
 
     assertPlainObject(scene.request, "scene.request");
     assertExactKeys(scene.request, ["requestedDepth"], "scene.request");
-    assertIntegerAtLeast(scene.request.requestedDepth, 0, "scene.request.requestedDepth");
+    assertSafeIntegerAtLeast(scene.request.requestedDepth, 0, "scene.request.requestedDepth");
 
     return Object.freeze({
       ...scene,
