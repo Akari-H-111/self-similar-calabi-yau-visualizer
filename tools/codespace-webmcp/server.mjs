@@ -20,6 +20,8 @@ const ACTION_MAX_BUFFER = 1024 * 1024;
 const OUTPUT_TAIL_LIMIT = 8_000;
 const ACTION_HEADER = "x-codespace-webmcp-action";
 const WORKSPACE_CONTRACT = "codespace-workspace-state/v1";
+const ACTION_RESULT_CONTRACT = "codespace-verification-action-result/v1";
+const STEP_RESULT_CONTRACT = "codespace-verification-step-result/v1";
 
 const NODE_VERIFICATION_STEPS = [
   "verify_scene_spec_v0_03.js",
@@ -74,11 +76,24 @@ function writeJson(response, statusCode, payload) {
   response.end(`${JSON.stringify(payload, null, 2)}\n`);
 }
 
-function tailText(value) {
+function formatOutput(value) {
   const text = typeof value === "string" ? value : "";
-  return text.length <= OUTPUT_TAIL_LIMIT
-    ? text
-    : text.slice(text.length - OUTPUT_TAIL_LIMIT);
+  const truncated = text.length > OUTPUT_TAIL_LIMIT;
+  const tail = truncated ? text.slice(text.length - OUTPUT_TAIL_LIMIT) : text;
+
+  return {
+    tail,
+    truncated,
+    originalChars: text.length,
+    retainedChars: tail.length,
+  };
+}
+
+function classifyStepFailure(error, timedOut) {
+  if (timedOut) return "timeout";
+  if (Number.isInteger(error?.code)) return "nonzero_exit";
+  if (error?.code === "ENOENT" || error?.code === "EACCES") return "spawn_error";
+  return "execution_error";
 }
 
 async function runGit(args) {
@@ -154,7 +169,7 @@ async function readRuntimeState() {
   return {
     bridge: {
       name: "codespace-webmcp-verification-bridge",
-      milestone: "C05",
+      milestone: "C06",
       sourceWriteActions: false,
       arbitraryCommand: false,
       webMcpToolsDeclared: [
@@ -167,6 +182,8 @@ async function readRuntimeState() {
       activeAction,
       webMcpRuntimeDiscovery: "browser_only",
       workspaceContract: WORKSPACE_CONTRACT,
+      actionResultContract: ACTION_RESULT_CONTRACT,
+      stepResultContract: STEP_RESULT_CONTRACT,
     },
     runtime: {
       codespaces: process.env.CODESPACES === "true",
@@ -192,29 +209,63 @@ async function runFixedStep(step) {
       maxBuffer: ACTION_MAX_BUFFER,
       windowsHide: true,
     });
+    const finishedAt = new Date().toISOString();
 
     return {
+      contract: STEP_RESULT_CONTRACT,
       name: step.name,
       status: "passed",
+      failureKind: null,
       exitCode: 0,
+      signal: null,
+      timedOut: false,
       startedAt,
+      finishedAt,
       durationMs: Date.now() - startedMs,
-      stdoutTail: tailText(stdout),
-      stderrTail: tailText(stderr),
+      stdout: formatOutput(stdout),
+      stderr: formatOutput(stderr),
     };
   } catch (error) {
+    const finishedAt = new Date().toISOString();
+    const timedOut = Boolean(error?.killed && error?.signal);
+
     return {
+      contract: STEP_RESULT_CONTRACT,
       name: step.name,
       status: "failed",
+      failureKind: classifyStepFailure(error, timedOut),
       exitCode: Number.isInteger(error?.code) ? error.code : null,
       signal: error?.signal ?? null,
-      timedOut: Boolean(error?.killed),
+      timedOut,
       startedAt,
+      finishedAt,
       durationMs: Date.now() - startedMs,
-      stdoutTail: tailText(error?.stdout),
-      stderrTail: tailText(error?.stderr),
+      stdout: formatOutput(error?.stdout),
+      stderr: formatOutput(error?.stderr),
     };
   }
+}
+
+function makeNonExecutionActionResult(actionName, status, rejection) {
+  const definition = FIXED_ACTIONS.get(actionName);
+  const expectedStepCount = definition?.steps.length ?? 0;
+
+  return {
+    contract: ACTION_RESULT_CONTRACT,
+    action: actionName,
+    status,
+    ok: false,
+    startedAt: null,
+    finishedAt: null,
+    durationMs: 0,
+    expectedStepCount,
+    executedStepCount: 0,
+    passedStepCount: 0,
+    failedStepCount: 0,
+    stoppedEarly: false,
+    rejection,
+    steps: [],
+  };
 }
 
 async function runFixedAction(actionName) {
@@ -222,23 +273,25 @@ async function runFixedAction(actionName) {
   if (!definition) {
     return {
       httpStatus: 404,
-      payload: { status: "error", error: "unknown_action" },
+      payload: makeNonExecutionActionResult(actionName, "rejected", {
+        code: "unknown_action",
+      }),
     };
   }
 
   if (activeAction !== null) {
     return {
       httpStatus: 409,
-      payload: {
-        status: "busy",
-        action: actionName,
+      payload: makeNonExecutionActionResult(actionName, "busy", {
+        code: "action_busy",
         activeAction,
-      },
+      }),
     };
   }
 
   activeAction = actionName;
   const startedAt = new Date().toISOString();
+  const startedMs = Date.now();
   const steps = [];
 
   try {
@@ -248,19 +301,28 @@ async function runFixedAction(actionName) {
       if (result.status !== "passed") break;
     }
 
+    const passedStepCount = steps.filter((step) => step.status === "passed").length;
+    const failedStepCount = steps.filter((step) => step.status === "failed").length;
     const passed =
       steps.length === definition.steps.length &&
-      steps.every((step) => step.status === "passed");
+      failedStepCount === 0;
 
     return {
       httpStatus: 200,
       payload: {
+        contract: ACTION_RESULT_CONTRACT,
         action: actionName,
         status: passed ? "passed" : "failed",
+        ok: passed,
         startedAt,
         finishedAt: new Date().toISOString(),
-        fixedCommandCount: definition.steps.length,
-        executedCommandCount: steps.length,
+        durationMs: Date.now() - startedMs,
+        expectedStepCount: definition.steps.length,
+        executedStepCount: steps.length,
+        passedStepCount,
+        failedStepCount,
+        stoppedEarly: steps.length < definition.steps.length,
+        rejection: null,
         steps,
       },
     };
@@ -291,10 +353,13 @@ const server = http.createServer(async (request, response) => {
       }
 
       if (request.headers[ACTION_HEADER] !== "1") {
-        writeJson(response, 403, {
-          status: "error",
-          error: "action_header_required",
-        });
+        writeJson(
+          response,
+          403,
+          makeNonExecutionActionResult(actionName, "rejected", {
+            code: "action_header_required",
+          }),
+        );
         return;
       }
 
@@ -315,9 +380,10 @@ const server = http.createServer(async (request, response) => {
       writeJson(response, 200, {
         status: "ok",
         bridge: "codespace-webmcp-verification-bridge",
-        milestone: "C05",
+        milestone: "C06",
         sourceWriteActions: false,
         arbitraryCommand: false,
+        actionResultContract: ACTION_RESULT_CONTRACT,
       });
       return;
     }
@@ -357,7 +423,7 @@ const server = http.createServer(async (request, response) => {
       error: "not_found",
     });
   } catch (error) {
-    console.error("C05 bridge request failed:", error);
+    console.error("C06 bridge request failed:", error);
     writeJson(response, 500, {
       status: "error",
       error: "bridge_request_failed",
@@ -366,7 +432,8 @@ const server = http.createServer(async (request, response) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`C05 Codespace verification bridge listening on http://${HOST}:${PORT}`);
+  console.log(`C06 Codespace verification bridge listening on http://${HOST}:${PORT}`);
   console.log(`Repository root: ${repositoryRoot}`);
+  console.log(`Action result contract: ${ACTION_RESULT_CONTRACT}`);
   console.log("Fixed actions: run_node_verification, run_lean_build");
 });

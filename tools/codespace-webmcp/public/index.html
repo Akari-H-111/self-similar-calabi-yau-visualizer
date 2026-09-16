@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Codespace C05 Verification Actions</title>
+  <title>Codespace C06 Deterministic Output Contract</title>
   <style>
     :root { color-scheme: light dark; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     body { max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.5; }
@@ -13,15 +13,16 @@
   </style>
 </head>
 <body>
-  <h1>Codespace C05 Verification Actions</h1>
-  <p>This page declares two read-only tools and two fixed verification actions. It exposes no arbitrary command, no caller-supplied cwd, and no source-write action.</p>
-  <p><code>run_node_verification</code> runs the eight canonical deterministic Node verifier scripts. <code>run_lean_build</code> runs only <code>lake build</code> inside <code>formal/</code>.</p>
+  <h1>Codespace C06 Deterministic Output Contract</h1>
+  <p>This page keeps the same four WebMCP tools as C05. It adds no new execution capability.</p>
+  <p>Verification actions now return <code>codespace-verification-action-result/v1</code>, with per-step <code>codespace-verification-step-result/v1</code> records for both passing and failing verifier executions.</p>
   <p id="webmcp-status">Checking WebMCP availability…</p>
   <p id="runtime-status">Loading runtime state…</p>
   <p id="transport-status">Checking forwarded-origin expectations…</p>
   <pre id="output">{}</pre>
 
   <script>
+    const ACTION_RESULT_CONTRACT = "codespace-verification-action-result/v1";
     const webMcpStatus = document.getElementById("webmcp-status");
     const runtimeStatus = document.getElementById("runtime-status");
     const transportStatus = document.getElementById("transport-status");
@@ -49,10 +50,11 @@
       });
 
       const result = await response.json();
-      if (!response.ok) {
-        throw new Error(`${result.error ?? result.status ?? "action_failed"} (HTTP ${response.status})`);
+      if (result?.contract === ACTION_RESULT_CONTRACT) {
+        return result;
       }
-      return result;
+
+      throw new Error(`Unexpected action response contract (HTTP ${response.status})`);
     }
 
     function addBrowserTransportState(state) {
@@ -128,7 +130,7 @@
         {
           name: "bridge_status",
           title: "Codespace Bridge Status",
-          description: "Read Codespace identity, Git state, and browser transport diagnostics from this bridge.",
+          description: "Read Codespace identity, Git state, output-contract metadata, and browser transport diagnostics from this bridge.",
           readOnly: true,
           execute: readBridgeStatus
         },
@@ -142,14 +144,14 @@
         {
           name: "run_node_verification",
           title: "Run Node Verification",
-          description: "Run the eight canonical deterministic Node verifier scripts from the repository root. No command or cwd input is accepted.",
+          description: "Run the eight fixed canonical Node verifier scripts. Returns codespace-verification-action-result/v1 for pass, verifier failure, or busy rejection. No command or cwd input is accepted.",
           readOnly: false,
           execute: runNodeVerification
         },
         {
           name: "run_lean_build",
           title: "Run Lean Build",
-          description: "Run the repository-pinned lake build in formal/. This may update local build artifacts but does not intentionally modify source files. No command or cwd input is accepted.",
+          description: "Run only lake build in formal/. Returns codespace-verification-action-result/v1 for pass, build failure, or busy rejection. This may update local build artifacts but does not intentionally modify source files. No command or cwd input is accepted.",
           readOnly: false,
           execute: runLeanBuild
         }
@@ -182,7 +184,7 @@
 
       void Promise.all(registrations)
         .then(() => {
-          webMcpStatus.textContent = "WebMCP C05 tools registered: bridge_status, get_workspace_state, run_node_verification, run_lean_build.";
+          webMcpStatus.textContent = "WebMCP C06 tools registered with action result contract codespace-verification-action-result/v1.";
           webMcpStatus.className = "ok";
         })
         .catch((error) => {
