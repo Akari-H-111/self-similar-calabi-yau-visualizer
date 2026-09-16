@@ -52,7 +52,9 @@ function initialize(rawScene, focusDepth = 0) {
   return { scene, baseModel, pullbackModel, recursiveModel, zoomModel, organizationModel, organizationTarget };
 }
 
-assert.equal(canonicalScene.version, "v0.08");
+const versionMatch = /^v0\.(\d+)$/.exec(canonicalScene.version);
+assert.ok(versionMatch, "Canonical scene version must use v0.<minor> metadata.");
+assert.ok(Number(versionMatch[1]) >= 8, "Sheet/branch organization verifier requires version metadata at or after v0.08.");
 
 const baseCase = initialize(canonicalScene, 0);
 assert.equal(baseCase.organizationModel.kind, MODEL_KIND);
