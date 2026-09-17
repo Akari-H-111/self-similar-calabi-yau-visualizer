@@ -1,0 +1,106 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.16",
+  "runtime_scene_contract": "v0.12",
+  "milestone": "Thread 15 — Structural Camera / Zoom Layer",
+  "status": "implementation_complete_pre_final_docs_verified_artifact_sync_exact_tree_ci_pending",
+  "starting_baseline": {
+    "commit": "d40e938c318a8389baccb58223c9f057217ba018",
+    "tree": "2cd18d37b4b5b0c8b400547eadd113a3b686300e",
+    "parent": "97ee38e7f0a8704297621f8fc15f0109c8512751",
+    "formal_verification": {
+      "run_number": 61,
+      "run_id": 35241064931,
+      "head_sha": "d40e938c318a8389baccb58223c9f057217ba018",
+      "conclusion": "success"
+    },
+    "pages": {
+      "run_id": 35241063761,
+      "head_sha": "d40e938c318a8389baccb58223c9f057217ba018",
+      "conclusion": "success"
+    }
+  },
+  "staging": {
+    "branch": "thread15-structural-camera-zoom-v0-16",
+    "pull_request": 8,
+    "pull_request_role": "CI vehicle only; DO NOT MERGE",
+    "merged": false
+  },
+  "canonical_scene_requested_depth": 0,
+  "implementation": {
+    "camera_model": "structural-camera.js",
+    "layout_source": "structural-visualization.js read-only layout descriptor",
+    "camera_state_independent_from_dom": true,
+    "camera_state_independent_from_structural_focus": true,
+    "pan": true,
+    "wheel_zoom": true,
+    "pointer_drag_pan": true,
+    "pinch_zoom": true,
+    "fit_visible": true,
+    "fit_selected": true,
+    "fit_focused": true,
+    "reset": true,
+    "rerender_persistence": true,
+    "responsive_svg_viewport": true
+  },
+  "semantic_separation": {
+    "cameraScale": "presentation-only SVG viewport scale",
+    "metricScale": "scene.derived.metricScale = D^2 runtime metadata",
+    "structural_focus": "zoom-semantics.js metadata only",
+    "camera_scale_equals_metric_scale": false,
+    "camera_zoom_is_geometric_zoom": false,
+    "camera_actions_modify_recursion": false
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "W": "unresolved"
+  },
+  "camera_truthfulness": {
+    "cameraTransformApplied": {
+      "type": "runtime_presentation_boolean",
+      "identity_camera": false,
+      "transformed_camera": true,
+      "mathematical_or_geometric_claim": false
+    }
+  },
+  "claim_boundary": {
+    "D2": "runtime numeric metadata; not a sealed metric theorem",
+    "D4": "runtime numeric / organizational metadata; not a sealed map-degree theorem",
+    "mathematical_claim_strength_increased": false,
+    "formal_scope_modified": false
+  },
+  "validation": {
+    "pre_final_docs_exact_tree": {
+      "head_sha": "413a75d5d27373b3fd4a11dad1d4713be4d1663e",
+      "tree_sha": "ce2445eefd05d2e418f69d0dd925588e6e4ac009",
+      "formal_verification_run_number": 73,
+      "formal_verification_run_id": 35252344053,
+      "runtime_contracts": "success",
+      "formal_lean": "success",
+      "publication_static_smoke": "success"
+    },
+    "final_staging_exact_tree_ci": "pending_after_final_artifact_sync",
+    "staging_pr_closed_unmerged": "pending",
+    "canonical_replay": "pending",
+    "exact_main_formal_verification": "pending",
+    "exact_sha_pages": "pending"
+  },
+  "sealed_modules_unchanged": [
+    "scene-spec.js",
+    "base-renderer.js",
+    "one-step-pullback.js",
+    "recursive-lazy-expansion.js",
+    "zoom-semantics.js",
+    "sheet-branch-organization.js",
+    "arithmetic-overlays.js",
+    "exposition-layer.js",
+    "interactive-pullback-tower.js",
+    "formal/SelfSimilarCY/CoordinatePower.lean",
+    "formal/SelfSimilarCY/CoordinatePowerIteration.lean",
+    "formal/SelfSimilarCY/PullbackTower.lean"
+  ],
+  "next_milestone_started": false
+}
