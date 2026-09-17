@@ -1,10 +1,10 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.11 — Mathematical Fidelity Audit
+**Current version:** v0.12 — UX / Exposition Layer
 
-This repository is a minimal static HTML/CSS/vanilla-JavaScript structural visualizer. v0.11 adds no new geometry or arithmetic feature. Its purpose is narrower: every mathematical-looking runtime field, label, overlay, and documentation claim is classified by the evidence that actually supports it.
+This repository is a minimal static HTML/CSS/vanilla-JavaScript **structural visualizer**. v0.12 does not add new mathematics or geometry. It adds an exposition layer so a reader can see, on the page itself, which parts are Lean-formalized, which are runtime metadata, which are structural or symbolic, and which remain unresolved or not materialized.
 
-The rule for the current repository is:
+The project keeps the evidence rule established by v0.11:
 
 ```text
 runtime representation
@@ -14,9 +14,41 @@ runtime representation
 != visualization convention
 ```
 
+## What the page shows first
+
+The first-screen current-state summary now exposes:
+
+```text
+focused / materialized / requested depth
+D
+D² runtime metadata
+D⁴ organization metadata
+structural state
+geometry status
+formal status
+navigation status
+W representation
+```
+
+Those values are read from the existing normalized runtime models. `exposition-layer.js` does not recompute D², D⁴, recursion, sheets, or geometry.
+
+The page also exposes the stable vocabulary:
+
+```text
+Lean formalized
+Runtime metadata
+Structural
+Symbolic
+Unresolved
+Not materialized
+Engineering
+```
+
+A generic `verified` badge is intentionally avoided because Lean proof, runtime verification, CI success, and engineering observations are different evidence layers.
+
 ## Project-level structural statement
 
-The repository continues to carry the project-level notation
+The repository continues to carry the project notation
 
 \[
 X=W^{-1}(\lambda),
@@ -26,183 +58,19 @@ X_n=(P_D^n)^{-1}(X),
 P_D(z_1,\ldots,z_4)=(z_1^D,\ldots,z_4^D).
 \]
 
-Thread 10 does not upgrade every part of this display to a Lean theorem. In particular, the runtime representation of `W` remains exactly:
+The sealed Lean core formalizes the coordinate-power map, its iteration law, and an abstract set-theoretic pullback tower for arbitrary `X : Set Point4`. It does **not** define `W` or Calabi–Yau geometry.
+
+The runtime representation of `W` remains exactly:
 
 ```text
 unresolved
 ```
 
-The sealed Lean core formalizes the coordinate-power map, its iteration law, and an abstract set-theoretic pullback tower for arbitrary `X : Set Point4`. It does not define `W` or Calabi–Yau geometry.
+Therefore no geometric Calabi–Yau hypersurface is currently rendered.
 
-## Evidence discipline
+## Lean-formalized scope
 
-v0.11 distinguishes the following statuses:
-
-```text
-formally proved        = theorem present in the sealed Lean source
-runtime-verified       = deterministic repository/runtime assertion checked by Node or CI
-source-backed          = exact retrieved canonical source supports the representation
-representational       = runtime field or descriptor that denotes structure without realizing the mathematical object
-heuristic/convention   = visualization choice without theorem status
-unresolved             = intentionally not represented or not established
-not tested             = potentially testable but no corresponding execution evidence exists
-not available          = exact source required for a stronger claim was not retrieved in this thread
-```
-
-A single feature may have several layers. For example, the coordinate-power map has a runtime representation and deterministic runtime checks, while the same coordinatewise transformation is also formalized in Lean.
-
-## Current mathematical fidelity boundary
-
-### Coordinate-power map
-
-Runtime declares a four-coordinate `coordinate_power` map with exponent parameter `D`. The sealed Lean module `formal/SelfSimilarCY/CoordinatePower.lean` defines
-
-```lean
-Point4 := Fin 4 → ℂ
-coordinatePower D z i = z i ^ D
-```
-
-and proves its coordinate rule and uniqueness at that abstraction level.
-
-### Iteration
-
-The sealed Lean module `formal/SelfSimilarCY/CoordinatePowerIteration.lean` proves
-
-```lean
-(coordinatePower D)^[n] z i = z i ^ (D ^ n)
-```
-
-and the map-level identity
-
-```lean
-(coordinatePower D)^[n] = coordinatePower (D ^ n)
-```
-
-The runtime overlay `coordinate_iterate_rule` exposes only a symbolic exponent descriptor. It does not evaluate a huge `D^n` or construct geometric data.
-
-### Pullback tower
-
-`formal/SelfSimilarCY/PullbackTower.lean` defines repeated ordinary set preimages and proves
-
-```lean
-pullbackTower D X n = ((coordinatePower D)^[n]) ⁻¹' X
-```
-
-plus the corresponding `coordinatePower (D ^ n)` form.
-
-Runtime levels are structural descriptors for this recurrence. They are not actual Lean `Set Point4` values, algebraic varieties, schemes, analytic spaces, fibers, or covering spaces.
-
-## D² and D⁴
-
-`scene-spec.js` deterministically derives:
-
-```text
-scene.derived.metricScale = D^2
-scene.derived.sheetDegree = D^4
-```
-
-Under the current sealed formal scope these are **runtime numeric metadata**.
-
-The repository does not claim that Lean proves:
-
-```text
-P_D^* g_log = D^2 g_log
-deg(P_D) = D^4
-```
-
-Legacy runtime field names such as `metricScale`, `sheetDegree`, `mapDegree`, `mapDegreePerStep`, `iteratedDegreeExpression`, and `formalMetricScaleExpression` are retained for compatibility. Their names do not upgrade the stored values into metric, degree, covering, or sheet theorems.
-
-The current live UI therefore labels D² and D⁴ explicitly as runtime/organization metadata, and the one-step status text explicitly states that D⁴ metadata is not a map-degree theorem in the current formal scope.
-
-## Zoom, sheet, and branch semantics
-
-Zoom remains structural focus/navigation only:
-
-```text
-geometricZoomApplied = false
-cameraTransformApplied = false
-materializationTriggered = false
-```
-
-Sheet/branch organization remains aggregate metadata only:
-
-```text
-sheetDegreeSemanticStatus = runtime_numeric_organizational_metadata
-slotsEnumerated = false
-sheetsMaterialized = false
-coveringStructureClaimed = false
-geometryRendered = false
-materializationTriggered = false
-```
-
-No concrete D⁴ sheets, covering structure, branch geometry, fiber geometry, or étale realization is claimed.
-
-## Arithmetic overlays
-
-Implemented and exact-source-backed:
-
-```text
-coordinate_channels
-coordinate_iterate_rule
-```
-
-Their provenance is tied to the sealed Lean coordinate-power and iteration modules.
-
-The following remain explicitly deferred/unavailable in this visualizer layer because no exact canonical mathematical source for them was retrieved into the relevant source audit:
-
-```text
-cyclotomic refinement
-torsion labels / torsion loci / torsion cosets
-collision classes / collision loci
-Delta_n / divisor marking
-pair discriminants
-triple collisions
-four-coordinate compatibility
-positive-dimensional torsion families
-```
-
-They are not reconstructed from conversation memory and are not silently inserted into runtime data.
-
-## W representation
-
-`data/system.json` stores only:
-
-```text
-symbol = W
-representation = unresolved
-```
-
-Consequently the renderer continues to report unresolved geometry. No points, contours, meshes, hypersurface samples, or implicit geometry are generated.
-
-## Parent-project evidence boundary
-
-Thread 10 attempted exact retrieval of the requested Arithmetic Self-Similar Calabi–Yau parent artifacts. Those exact artifacts were not available through the connected repository/source surfaces used by this thread.
-
-Therefore v0.11 does **not** promote any remembered parent-project result into canonical evidence. Parent-project claims that are not independently present in the current visualizer repository are marked `not available / not source-verified in this thread`.
-
-See `docs/MATHEMATICAL_FIDELITY_self_similar_cy_visualizer_v0_11.md` for the missing exact filenames and the complete ledger.
-
-## Infinite-navigation and performance boundary
-
-"Infinite navigation" retains the v0.10 operational meaning:
-
-```text
-arbitrarily continued finite structural navigation
-```
-
-The benchmark horizons `10, 100, 1000, 2500, 5000, 10000` are engineering observations, not mathematical limits and not a proof of infinite scalability.
-
-The `Number.isSafeInteger` depth/focus guards are JavaScript representation-safety constraints, not mathematical theorems.
-
-Real browser long-session performance and heap behavior remain:
-
-```text
-not_tested
-```
-
-## Formal verification boundary
-
-The sealed Lean core is limited to the explicitly scoped files:
+The sealed formal scope remains unchanged from v0.11:
 
 ```text
 formal/SelfSimilarCY/CoordinatePower.lean
@@ -210,29 +78,134 @@ formal/SelfSimilarCY/CoordinatePowerIteration.lean
 formal/SelfSimilarCY/PullbackTower.lean
 ```
 
-A green `formal-lean` CI job means those pinned Lean sources build, their direct compilations pass, and the placeholder gate passes.
+It establishes the four-coordinate coordinate-power map, the `D^n` iteration rule, the abstract set-theoretic pullback recurrence, and the closed-form preimage description via `coordinatePower (D ^ n)`.
 
-A green `runtime-contracts` CI job means the deterministic JavaScript contracts and claim-discipline verifier pass.
+Thread 11 does not modify `formal/` and does not promote any additional item into the formalized category.
 
-A green workflow therefore means:
+## D² and D⁴
+
+`scene-spec.js` still derives:
 
 ```text
-sealed scoped Lean formal core passes
-+
-runtime engineering / claim-discipline contracts pass
+scene.derived.metricScale = D^2
+scene.derived.sheetDegree = D^4
 ```
 
-It does not mean that the entire visualizer, all Calabi–Yau mathematics, browser behavior, D² metric scaling, D⁴ genuine map degree, covering geometry, or unavailable arithmetic research has been formally verified.
+The current interpretation is unchanged:
 
-## Historical wording
+```text
+D² = runtime numeric metadata
+D⁴ = runtime numeric / organizational metadata
+```
 
-Historical v0.03–v0.06 documents are preserved rather than rewritten. Some of them use stronger phrases such as `sheet degree`, `map degree`, or `degree multiplicativity`. The current canonical interpretation is the later F05/v0.11 boundary: the corresponding runtime D⁴ fields are unformalized numeric/organizational metadata unless and until a stronger exact mathematical source is retrieved and audited.
+The current UI presents D² and D⁴ explicitly as runtime/organization metadata.
 
-The v0.11 audit fixes only wording that is still live in current runtime/UI output.
+The repository does not claim that the sealed Lean core proves:
+
+```text
+P_D^* g_log = D^2 g_log
+deg(P_D) = D^4
+```
+
+D⁴ is therefore **not a map-degree theorem** in the current formal scope. Legacy property names such as `metricScale`, `sheetDegree`, `mapDegree`, `mapDegreePerStep`, `iteratedDegreeExpression`, and `formalMetricScaleExpression` remain compatibility identifiers whose names do not upgrade their evidence status.
+
+## Structural navigation, sheets, and geometry
+
+The underlying runtime contracts remain unchanged:
+
+```text
+geometryRendered = false
+sheetsMaterialized = false
+coveringStructureClaimed = false
+geometricZoomApplied = false
+cameraTransformApplied = false
+materializationTriggered = false
+```
+
+`Zoom semantics` means structural focus/navigation only. No camera or geometric scaling is applied.
+
+Sheet/branch organization remains aggregate metadata only. No concrete D⁴ sheets, fiber geometry, covering structure, étale realization, or branch geometry is created.
+
+The exposition page now puts these boundaries before the implementation diagnostics instead of requiring a reader to reconstruct them from several status messages.
+
+## Arithmetic overlays
+
+Implemented overlays remain:
+
+```text
+coordinate_channels
+coordinate_iterate_rule
+```
+
+They retain their existing sealed Lean provenance.
+
+The following remain unavailable/deferred in this visualizer layer:
+
+```text
+cyclotomic refinement
+torsion labels / loci / cosets
+collision classes / loci
+Delta_n / divisor marking
+pair discriminants
+triple collisions
+four-coordinate compatibility
+positive-dimensional torsion families
+```
+
+The exact parent-project canonical sources needed to strengthen those claims were not available to the Thread 10/10R visualizer audit. They remain **not source-verified in this thread** and are not reconstructed from memory.
+
+## Infinite-navigation and performance boundary
+
+“Infinite navigation” retains the operational meaning:
+
+```text
+arbitrarily continued finite structural navigation
+```
+
+Benchmark horizons such as `10, 100, 1000, 2500, 5000, 10000` are engineering observations, **not mathematical limits** and not proof of literal infinite scalability.
+
+`Number.isSafeInteger` guards are JavaScript representation-safety / engineering constraints, not mathematical theorems.
+
+Real-browser long-session performance and heap behavior remain outside the sealed evidence unless separately measured.
+
+## What green CI means
+
+A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
+
+A green `runtime-contracts` job means the JavaScript contracts, claim-discipline regression, and UX/exposition semantic verifier pass.
+
+It does **not** mean that the **entire visualizer, all Calabi–Yau mathematics**, browser behavior, D² metric scaling, D⁴ genuine map degree, covering geometry, or unavailable arithmetic research has been formally verified.
+
+## UX / exposition architecture
+
+v0.12 adds:
+
+```text
+exposition-layer.js
+verify_ux_exposition_v0_12.js
+docs/UX_EXPOSITION_self_similar_cy_visualizer_v0_12.md
+```
+
+The page hierarchy is now:
+
+```text
+explicit geometry boundary
+current-state summary
+semantic legend
+formal/runtime/unresolved provenance panel
+qualified canonical notation
+implementation diagnostics disclosure
+```
+
+The low-level diagnostic DOM targets and runtime models are preserved for regression/debugging. They are simply moved out of the primary reading path.
+
+Accessibility-oriented changes include one concise ARIA live status region, native `details/summary` disclosures, visible keyboard focus for summaries, single-column narrow-viewport layouts, visible text semantics rather than color-only coding, and no hover-only tooltip dependency for core meaning.
+
+This is a source/contract-level accessibility pass, not a claim of real-browser or assistive-technology certification.
 
 ## Verify
 
-Deterministic runtime and fidelity verification:
+Deterministic runtime, fidelity, and exposition verification:
 
 ```bash
 node verify_scene_spec_v0_03.js
@@ -244,15 +217,10 @@ node verify_sheet_branch_organization_v0_08.js
 node verify_arithmetic_overlays_v0_09.js
 node verify_performance_infinite_navigation_v0_10.js
 node verify_mathematical_fidelity_v0_11.js
+node verify_ux_exposition_v0_12.js
 ```
 
-Optional environment-sensitive benchmark:
-
-```bash
-node --expose-gc benchmark_performance_infinite_navigation_v0_10.js
-```
-
-The v0.11 verifier checks repository claim discipline. It does **not** replace mathematical proof.
+The v0.11 verifier continues to enforce mathematical claim discipline. The v0.12 verifier checks semantic exposition contracts, source-of-truth reuse, accessibility hooks, and byte-for-byte preservation of the sealed v0.11 runtime math/organization engines. Neither verifier replaces mathematical proof.
 
 ## Run locally
 
@@ -264,16 +232,20 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000/` in a browser.
 
-## Scope of v0.11
+## Historical wording
 
-v0.11 completes **Thread 10 — Mathematical Fidelity Audit** only.
+Historical v0.03–v0.06 documents are preserved. Some use stronger phrases such as `sheet degree`, `map degree`, or `degree multiplicativity`. The current canonical interpretation remains the later F05/v0.11 boundary: D², D⁴, and `(D⁴)^n` runtime fields are unformalized metadata unless stronger exact source evidence is retrieved and audited.
 
-It adds no new theorem, no `W` implementation, no genuine D⁴ sheet renderer, no covering/étale/fiber renderer, no cyclotomic/torsion/collision overlay, no Three.js/WebGL/GPU architecture, no camera system, and no publication feature.
+## Scope of v0.12
 
-Detailed audit:
+v0.12 completes **Thread 11 — UX / Exposition Layer** only if staging and canonical exact-SHA CI both pass.
+
+It adds no theorem, no `W` implementation, no genuine D⁴ sheet renderer, no covering/étale/fiber renderer, no cyclotomic/torsion/collision implementation, no camera system, no geometric zoom, and no publication deployment.
+
+Detailed exposition contract:
 
 ```text
-docs/MATHEMATICAL_FIDELITY_self_similar_cy_visualizer_v0_11.md
+docs/UX_EXPOSITION_self_similar_cy_visualizer_v0_12.md
 ```
 
-After Thread 10 is sealed, the roadmap may proceed to **Thread 11 — UX / Exposition Layer** without treating any unresolved mathematical item as solved.
+After Thread 11 is sealed, the natural roadmap milestone is **Thread 12 — Publication Checkpoint**.
