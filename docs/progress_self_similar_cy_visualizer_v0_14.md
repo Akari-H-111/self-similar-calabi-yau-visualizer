@@ -39,7 +39,9 @@ The GitHub connector does not expose the `/pages` metadata endpoint directly, so
 - projected existing adjacent pullback relations into SVG edges;
 - added a symbolic rule panel without creating additional levels;
 - kept canonical `requestedDepth = 0`, so the default page honestly shows only `X_0` as materialized;
-- retained explicit `W: unresolved` and `geometryRendered=false` labeling.
+- retained explicit `W: unresolved` and `geometryRendered=false` labeling;
+- kept the sealed model/runtime engines and Lean source unchanged;
+- made the v0.13 publication verifier persistent-contract compatible while the immutable v0.13 tag retains its original snapshot verifier.
 
 ## Frozen truth boundary
 
@@ -72,18 +74,46 @@ exposition-layer.js
 
 The Lean source and dependency pins are also unchanged.
 
-## Validation status
+## Error history and repairs
 
-At this staging snapshot:
+The staging PR exposed three classes of implementation/integration defects before seal:
+
+1. the v0.11 fidelity verifier contained forward-version wording assumptions tied to older page/README labels;
+2. the v0.13 publication verifier acted as a full presentation snapshot rather than a persistent publication-contract check for post-v0.13 work;
+3. the new SVG marker markup contained one JavaScript string-quoting syntax error.
+
+The first two were repaired without weakening their mathematical truthfulness checks. The third was a one-line syntax repair in `structural-visualization.js`.
+
+## Verified staging evidence
+
+PR #6 is a staging-only CI vehicle and must not be merged as history.
+
+The first fully green implementation tree was:
 
 ```text
-new verifier: authored
-source integration: in progress
-staging PR CI: pending
-exact-main CI: pending
+staging head:
+45a2f621ce84e8e8a609ca3a4eb3b4c1aba1faf7
+
+Formal Verification run #46 / 35231666202:
+  runtime-contracts = success
+    verify_scene_spec_v0_03 = success
+    verify_base_renderer_v0_04 = success
+    verify_one_step_pullback_v0_05 = success
+    verify_recursive_lazy_expansion_v0_06 = success
+    verify_zoom_semantics_v0_07 = success
+    verify_sheet_branch_organization_v0_08 = success
+    verify_arithmetic_overlays_v0_09 = success
+    verify_performance_infinite_navigation_v0_10 = success
+    verify_mathematical_fidelity_v0_11 = success
+    verify_ux_exposition_v0_12 = success
+    verify_publication_checkpoint_v0_13 = success
+    verify_structural_visualization_v0_14 = success
+    runtime source syntax checks = success
+  formal-lean = success
+  publication-static-smoke = success
 ```
 
-No success claim is made until GitHub Actions runs the full regression suite, Lean job, publication static smoke, and the new v0.14 verifier on the final staging tree.
+The current documentation sync is intentionally followed by one final staging CI run. Canonical seal is not self-attested by this document: after final staging green, the verified tree is replayed as exactly one child of the v0.13 canonical commit, and that exact main SHA must independently pass GitHub Actions.
 
 ## Boundary to next milestone
 
