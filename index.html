@@ -11,6 +11,7 @@
   <script src="recursive-lazy-expansion.js" defer></script>
   <script src="zoom-semantics.js" defer></script>
   <script src="sheet-branch-organization.js" defer></script>
+  <script src="interactive-pullback-tower.js" defer></script>
   <script src="structural-visualization.js" defer></script>
   <script src="arithmetic-overlays.js" defer></script>
   <script src="exposition-layer.js" defer></script>
@@ -19,23 +20,24 @@
 <body>
   <main class="shell">
     <header class="hero">
-      <p class="eyebrow">v0.14 · Structural Visualization Layer</p>
+      <p class="eyebrow">v0.15 · Interactive Pullback Tower</p>
       <h1>Self-Similar Calabi–Yau Visualizer</h1>
-      <p class="lede">A structural explorer for the coordinate-power pullback system. The first visible diagram now projects verified finite runtime structure into SVG while keeping geometry, sheets, and covering claims explicitly unmaterialized.</p>
-      <p class="section-note">Built on the sealed v0.12 UX / Exposition Layer and the v0.11 mathematical-fidelity boundary.</p>
-      <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. The interface represents structural and runtime state rather than a completed geometric simulation.</p>
+      <p class="lede">A structural explorer for the coordinate-power pullback system. The pullback tower can now be expanded, collapsed for presentation, selected, and structurally refocused while every visible state remains derived from the sealed runtime model APIs.</p>
+      <p class="section-note">Built on the sealed v0.14 Structural Visualization Layer and the v0.11 mathematical-fidelity boundary.</p>
+      <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. Interaction changes structural runtime and presentation/navigation state only; it does not apply a camera transform or geometric zoom.</p>
     </header>
 
     <section aria-labelledby="structural-visualization-title" class="structural-section">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">Visible structure</p>
-          <h2 id="structural-visualization-title">Structural diagram</h2>
+          <p class="section-kicker">Interactive structure</p>
+          <h2 id="structural-visualization-title">Interactive pullback tower</h2>
         </div>
-        <p class="section-note">Generated from the existing finite runtime models. The diagram is structural, not a geometric realization.</p>
+        <p class="section-note">Expand materializes structural descriptors through the sealed recursion API. Select, refocus, and collapse are navigation/presentation operations and do not materialize geometry or sheets.</p>
       </div>
+      <div id="interactive-pullback-tower" class="interactive-pullback-tower" hidden></div>
       <div id="structural-visualization" class="structural-visualization" hidden></div>
-      <p class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. They are not geometric hypersurfaces, genuine sheets, embedded branches, or a covering-space realization.</p>
+      <p class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. Selection, focus, and collapse are structural UI state. They are not geometric hypersurfaces, genuine sheets, embedded branches, a covering-space realization, or camera movement.</p>
     </section>
 
     <section aria-labelledby="current-state-title" class="primary-section">
@@ -44,7 +46,7 @@
           <p class="section-kicker">At a glance</p>
           <h2 id="current-state-title">Current state</h2>
         </div>
-        <p class="section-note">Values below are read from the existing normalized runtime models; the exposition layer does not recompute mathematical quantities.</p>
+        <p class="section-note">Values below are rebuilt from the current runtime models after every interaction. The canonical <code>data/system.json</code> remains unchanged.</p>
       </div>
 
       <div id="system-status" class="status" role="status" aria-live="polite">Loading data/system.json…</div>
@@ -161,7 +163,7 @@
           <ul>
             <li>Validated parameters and finite depth state.</li>
             <li>D² runtime metadata and D⁴ organization metadata.</li>
-            <li>Lazy level descriptors, structural focus, aggregate organization, symbolic overlays, and the SVG structural projection.</li>
+            <li>Lazy level descriptors, structural selection/focus, presentation collapse, aggregate organization, symbolic overlays, and SVG structural projection.</li>
           </ul>
         </article>
         <article class="provenance-card">
@@ -232,7 +234,7 @@
         </section>
 
         <section aria-labelledby="scene-specification-title">
-          <h2 id="scene-specification-title">Scene specification</h2>
+          <h2 id="scene-specification-title">Canonical scene specification</h2>
           <dl id="system-data" class="system-data" hidden>
             <div><dt>Project</dt><dd id="project-value"></dd></div>
             <div><dt>Version</dt><dd id="version-value"></dd></div>
@@ -240,7 +242,7 @@
             <div><dt>D</dt><dd id="d-value"></dd></div>
             <div><dt>λ</dt><dd id="lambda-value"></dd></div>
             <div><dt>κ</dt><dd id="kappa-value"></dd></div>
-            <div><dt>Requested depth</dt><dd id="depth-value"></dd></div>
+            <div><dt>Canonical requested depth</dt><dd id="depth-value"></dd></div>
             <div><dt>D² runtime metadata</dt><dd id="metric-scale-value"></dd></div>
             <div><dt>D⁴ organization metadata</dt><dd id="sheet-degree-value"></dd></div>
             <div><dt>W representation</dt><dd id="w-status-value"></dd></div>
