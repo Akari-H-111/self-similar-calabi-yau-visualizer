@@ -112,6 +112,9 @@ jobs:
       - name: Verify publication checkpoint v0.13
         run: node verify_publication_checkpoint_v0_13.js
 
+      - name: Verify structural visualization v0.14
+        run: node verify_structural_visualization_v0_14.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -121,6 +124,7 @@ jobs:
           node --check recursive-lazy-expansion.js
           node --check zoom-semantics.js
           node --check sheet-branch-organization.js
+          node --check structural-visualization.js
           node --check arithmetic-overlays.js
           node --check exposition-layer.js
           node --check verify_performance_infinite_navigation_v0_10.js
@@ -128,6 +132,7 @@ jobs:
           node --check verify_mathematical_fidelity_v0_11.js
           node --check verify_ux_exposition_v0_12.js
           node --check verify_publication_checkpoint_v0_13.js
+          node --check verify_structural_visualization_v0_14.js
           node --check app.js
 
   publication-static-smoke:
@@ -166,6 +171,7 @@ jobs:
             recursive-lazy-expansion.js \
             zoom-semantics.js \
             sheet-branch-organization.js \
+            structural-visualization.js \
             arithmetic-overlays.js \
             exposition-layer.js \
             app.js; do
@@ -178,5 +184,6 @@ jobs:
           grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html
           grep -Fq 'D² runtime metadata' /tmp/publication-index.html
           grep -Fq 'D⁴ organization metadata' /tmp/publication-index.html
+          grep -Fq 'Structural diagram' /tmp/publication-index.html
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"
