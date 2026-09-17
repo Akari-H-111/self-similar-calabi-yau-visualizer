@@ -125,7 +125,8 @@ assert.match(progress, /final repository visibility: public/);
 assert.match(progress, /license status = pending user selection/);
 assert.match(progress, /actions\/checkout@v7/);
 assert.match(progress, /actions\/setup-node@v7/);
-assert.match(progress, /DO NOT MERGE/i);
+assert.match(progress, /close the staging PR unmerged/i);
+assert.match(progress, /replay the exact verified tree as one new commit/i);
 
 const state = JSON.parse(read("docs/state_self_similar_cy_visualizer_v0_13.json"));
 assert.equal(state.version, "v0.13");
