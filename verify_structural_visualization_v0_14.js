@@ -175,13 +175,19 @@ assert.match(indexSource, /diagram is structural, not a geometric realization/i)
 assert.match(indexSource, /No geometric Calabi–Yau hypersurface is currently rendered/);
 
 const appSource = read("app.js");
-const organizationCall = "SheetBranchOrganization.createSheetBranchOrganizationModel(scene, recursiveModel, zoomModel)";
 const visualizationCall = "StructuralVisualization.createStructuralVisualizationModel(";
 const visualizationRenderCall = "StructuralVisualization.renderStructuralVisualization(structuralVisualizationModel, structuralVisualizationElement)";
-assert.ok(appSource.indexOf(organizationCall) >= 0);
-assert.ok(appSource.indexOf(visualizationCall) > appSource.indexOf(organizationCall));
+const directOrganizationCall = "SheetBranchOrganization.createSheetBranchOrganizationModel(scene, recursiveModel, zoomModel)";
+const interactionControllerCall = "InteractivePullbackTower.createInteractivePullbackTowerModel(";
+const usesDirectV014Pipeline = appSource.indexOf(directOrganizationCall) >= 0;
+const usesForwardInteractionPipeline = appSource.indexOf(interactionControllerCall) >= 0;
+assert.ok(
+  usesDirectV014Pipeline || usesForwardInteractionPipeline,
+  "App must obtain organization/focus state through the sealed runtime pipeline, directly or through the later interaction controller."
+);
+assert.ok(appSource.indexOf(visualizationCall) >= 0);
 assert.ok(appSource.indexOf(visualizationRenderCall) > appSource.indexOf(visualizationCall));
-assert.equal(appSource.includes("expandOneLevel("), false);
+assert.equal(appSource.includes("expandOneLevel("), false, "App must not become a second recursion authority.");
 
 const workflowSource = read(".github/workflows/formal-verification.yml");
 assert.ok(workflowSource.includes("node verify_structural_visualization_v0_14.js"));
