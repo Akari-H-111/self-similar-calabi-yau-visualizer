@@ -8,6 +8,7 @@ const recursiveElement = document.querySelector("#recursive-lazy-expansion");
 const zoomElement = document.querySelector("#zoom-semantics");
 const sheetBranchElement = document.querySelector("#sheet-branch-organization");
 const arithmeticOverlayElement = document.querySelector("#arithmetic-overlays");
+const expositionElement = document.querySelector("#exposition-layer");
 
 const initialArithmeticOverlayRequest = Object.freeze([
   "coordinate_channels",
@@ -44,6 +45,13 @@ function displayScene(scene) {
 
 function resetRenderedState() {
   dataElement.hidden = true;
+  expositionElement.hidden = true;
+  delete expositionElement.dataset.state;
+  delete expositionElement.dataset.geometryRendered;
+  delete expositionElement.dataset.sheetsMaterialized;
+  delete expositionElement.dataset.coveringStructureClaimed;
+  delete expositionElement.dataset.geometricZoomApplied;
+  delete expositionElement.dataset.cameraTransformApplied;
   rendererElement.hidden = true;
   rendererElement.textContent = "";
   delete rendererElement.dataset.state;
@@ -116,10 +124,19 @@ async function loadSystemConfiguration() {
     SheetBranchOrganization.renderSheetBranchOrganization(organizationModel, sheetBranchElement);
     const arithmeticOverlayModel = ArithmeticOverlays.createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, initialArithmeticOverlayRequest);
     ArithmeticOverlays.renderArithmeticOverlays(arithmeticOverlayModel, arithmeticOverlayElement);
+    const expositionModel = ExpositionLayer.createExpositionModel(
+      scene,
+      baseModel,
+      recursiveModel,
+      zoomModel,
+      organizationModel,
+      arithmeticOverlayModel
+    );
+    ExpositionLayer.renderExpositionLayer(expositionModel, expositionElement);
     displayScene(scene);
     dataElement.hidden = false;
     statusElement.dataset.state = "ready";
-    statusElement.textContent = "Loaded, validated, and initialized the structural scene plus provenance-aware arithmetic overlays successfully.";
+    statusElement.textContent = "Loaded and validated. The current-state summary now reflects the same runtime truthfulness state as the diagnostic models below.";
   } catch (error) {
     console.error("Failed to load, validate, or initialize the structural scene:", error);
     resetRenderedState();
