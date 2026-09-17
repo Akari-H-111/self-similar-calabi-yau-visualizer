@@ -134,6 +134,20 @@ assert.deepEqual(assertFiniteViewBox(zoomed), {
   height: 215
 });
 
+const fakeSurface = {
+  dataset: {},
+  attributes: {},
+  setAttribute(name, value) {
+    this.attributes[name] = value;
+  }
+};
+StructuralCamera.applyStructuralCamera(zoomed, fakeSurface);
+assert.equal(fakeSurface.attributes.viewBox, StructuralCamera.serializeCameraViewBox(zoomed));
+assert.equal(fakeSurface.dataset.cameraState, "transformed");
+assert.equal(fakeSurface.dataset.cameraScale, "2");
+assert.equal(fakeSurface.dataset.cameraTransformApplied, "true");
+assert.equal(fakeSurface.dataset.geometricZoomApplied, "false");
+
 const maxZoom = StructuralCamera.zoomCamera(initialA, 1e9);
 assert.equal(maxZoom.cameraScale, initialA.maxScale, "Zoom must clamp to maxScale.");
 assertFiniteViewBox(maxZoom);
@@ -249,6 +263,7 @@ assert.match(cameraSource, /cameraTransformApplied/);
 assert.match(cameraSource, /geometricZoomApplied:\s*false/);
 assert.match(cameraSource, /reconcileCameraExtent/);
 assert.match(cameraSource, /fitCameraToLevel/);
+assert.match(cameraSource, /applyStructuralCamera/);
 assert.doesNotMatch(cameraSource, /metricScale/);
 for (const forbiddenSourcePattern of [
   /require\s*\(/,
@@ -292,7 +307,7 @@ assert.match(appSource, /StructuralCamera\.reconcileCameraExtent/);
 assert.match(appSource, /StructuralCamera\.fitCameraToLevel/);
 assert.match(appSource, /StructuralCamera\.zoomCamera/);
 assert.match(appSource, /StructuralCamera\.panCamera/);
-assert.match(appSource, /surface\.setAttribute\("viewBox", StructuralCamera\.serializeCameraViewBox/);
+assert.match(appSource, /StructuralCamera\.applyStructuralCamera\(structuralCameraModel, surface\)/);
 assert.match(appSource, /addEventListener\("wheel", handleStructuralCameraWheel, \{ passive: false \}\)/);
 assert.match(appSource, /addEventListener\("pointerdown", handleStructuralCameraPointerDown\)/);
 assert.match(appSource, /addEventListener\("pointermove", handleStructuralCameraPointerMove\)/);
@@ -320,6 +335,7 @@ assert.match(styleSource, /\.structural-camera-toolbar/);
 assert.match(styleSource, /touch-action:\s*none/);
 assert.match(styleSource, /cursor:\s*grab/);
 assert.match(styleSource, /data-camera-dragging="true"/);
+assert.match(styleSource, /min-width:\s*0/, "Camera viewport must remain responsive instead of retaining the old 760px scroll surface floor.");
 
 const workflowSource = read(".github/workflows/formal-verification.yml");
 assert.ok(workflowSource.includes("node verify_structural_camera_zoom_v0_16.js"));
@@ -331,5 +347,6 @@ console.log("Structural camera / zoom v0.16 verification: passed");
 console.log("camera state: persistent immutable presentation model");
 console.log("inputs: buttons + wheel + pointer pan/pinch");
 console.log("structural rerender persistence: verified against real layout descriptors");
+console.log("shared SVG viewport adapter: verified");
 console.log("interaction/recursion mutation by camera: NO");
 console.log("geometric zoom / geometry / sheets / covering promotion: NO");
