@@ -4,7 +4,7 @@
 
 Thread 12 is a publication checkpoint for the already sealed v0.12 implementation. It does not add Calabi–Yau mathematics, strengthen theorem status, implement `W`, materialize sheets, change geometric semantics, or modify the sealed Lean core.
 
-The publication milestone exists to make the repository publicly understandable, reproducible, citable, and statically deployable while preserving the evidence boundaries established by v0.11 and exposed by v0.12.
+The publication milestone exists to make the repository publicly understandable, reproducible, citable, openly licensed, and statically deployable while preserving the evidence boundaries established by v0.11 and exposed by v0.12.
 
 ## 2. Starting canonical baseline
 
@@ -97,16 +97,18 @@ The repository may remain private during staging and verification. Public visibi
 
 ## 7. License status
 
-Current status:
+The user explicitly selected the publication license:
 
 ```text
-explicit repository license: pending user selection
-LICENSE file: not yet committed
+explicit repository license: Apache-2.0
+license name: Apache License, Version 2.0
+OSI status: approved open-source license
+LICENSE file: committed in the v0.13 publication candidate
 ```
 
-The intent to publish source publicly does not itself grant a specific open-source license. Thread 12 must not silently choose MIT, Apache-2.0, GPL, or another license. Final publication seal requires an explicit license decision and corresponding repository artifact.
+The repository therefore follows an OSI-approved open-source licensing route rather than treating public source visibility as sufficient by itself. The SPDX short identifier is `Apache-2.0`, and the operative license text is the repository `LICENSE` artifact.
 
-The pinned mathlib dependency has its own upstream license; that dependency license does not automatically determine this repository's source license.
+The pinned mathlib dependency has its own upstream license. That dependency license did not automatically determine this repository's source license; Apache-2.0 was selected explicitly by the repository owner for this publication checkpoint.
 
 ## 8. Release policy
 
@@ -271,7 +273,7 @@ sealed runtime version remains v0.12
 sealed runtime/Lean source blobs remain unchanged
 publication artifacts exist
 publication provenance boundary is explicit
-license status is explicit
+Apache-2.0 license selection and LICENSE integrity are explicit
 CI uses maintained GitHub action majors
 Node 22 application verification remains pinned
 static smoke job is wired
@@ -285,13 +287,12 @@ It is a repository/publication verifier, not mathematical proof and not a browse
 Blocking before final Thread 12 seal:
 
 ```text
-explicit open-source license selection and LICENSE artifact
+license-bearing staging CI success
 public repository visibility cutover
 GitHub Pages enablement
 actual deployed URL verification
 real-browser initialization smoke
 actual UI screenshot/demo capture
-staging CI success
 final tree audit
 single-child canonical replay
 exact-SHA canonical CI success

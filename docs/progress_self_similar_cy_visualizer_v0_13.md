@@ -6,7 +6,7 @@
 milestone: Thread 12 — Publication Checkpoint
 candidate version: v0.13
 sealed runtime/UI baseline: v0.12
-current phase: implementation-bearing staging CI passed; documentation-bearing candidate pending revalidation
+current phase: pre-license documentation-bearing staging CI passed; license-bearing candidate pending revalidation
 thread sealed: false
 ```
 
@@ -33,6 +33,9 @@ The user explicitly decided:
 final repository visibility: public
 publication audience: public
 open-source intent: yes
+license: Apache License, Version 2.0
+SPDX identifier: Apache-2.0
+open-source route: OSI-approved license
 ```
 
 The repository remains private during staging only because the publication candidate is not yet complete.
@@ -43,7 +46,7 @@ Release naming follows the repository's sequential milestone convention:
 v0.13 — Publication Checkpoint
 ```
 
-The exact open-source license remains an explicit policy decision and has not been guessed.
+The license decision is now resolved and is no longer a publication-policy blocker.
 
 ## Candidate implementation scope
 
@@ -52,7 +55,8 @@ The v0.13 staging candidate is intentionally publication-only.
 Implemented repository changes:
 
 ```text
-README publication/reproducibility/provenance sections
+README publication/reproducibility/provenance/license sections
+LICENSE (Apache-2.0)
 .nojekyll
 verify_publication_checkpoint_v0_13.js
 docs/PUBLICATION_CHECKPOINT_self_similar_cy_visualizer_v0_13.md
@@ -201,20 +205,37 @@ formal-lean: success
 publication-static-smoke: success
 ```
 
-The repaired publication verifier now checks semantic requirements rather than incidental formatting or exact-label placement.
+The repaired publication verifier checks semantic requirements rather than incidental formatting or exact-label placement.
 
-Because this progress/state update itself changes the candidate tree, a new full documentation-bearing staging CI run is still required before the tree can be treated as final staging evidence.
+### Run #40 — complete green documentation-bearing pre-license candidate
+
+```text
+run id: 35213252072
+head: 52477d01df62daf009336b7d405472ad1bd3db33
+status: completed / success
+runtime-contracts: success
+v0.03–v0.13: success
+JavaScript source syntax: success
+formal-lean: success
+publication-static-smoke: success
+```
+
+Run #40 validates the tree carrying the recorded #36–#39 staging evidence. It is retained as external evidence and is not written back through an evidence-loop commit.
+
+The subsequent explicit Apache-2.0 selection changes the candidate tree again, so the license-bearing tree requires a fresh full staging CI run before canonicalization.
 
 ## License gate
 
 Current state:
 
 ```text
-LICENSE = absent
-license status = pending user selection
+LICENSE = present in candidate
+license status = selected: Apache-2.0
+license name = Apache License, Version 2.0
+OSI status = approved open-source license
 ```
 
-This remains blocking for final publication seal. Public visibility or source availability must not be described as a particular open-source license before the user selects one.
+The license gate is resolved by explicit user choice. Public visibility is no longer being confused with the license grant; the repository `LICENSE` artifact carries the operative Apache-2.0 text.
 
 ## Visibility / Pages gate
 
@@ -254,10 +275,11 @@ No second canonical commit will be created merely to write external exact-SHA CI
 ## Remaining blockers before Thread 12 seal
 
 ```text
-[ ] explicit license selection
-[ ] LICENSE artifact
+[x] explicit license selection: Apache-2.0
+[x] LICENSE artifact
 [x] implementation-bearing staging CI green (#39)
-[ ] final documentation-bearing staging CI green
+[x] documentation-bearing pre-license staging CI green (#40)
+[ ] license-bearing staging CI green
 [ ] public visibility cutover
 [ ] branch governance configuration after public cutover
 [ ] GitHub Pages enabled

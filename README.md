@@ -4,7 +4,7 @@
 
 **Publication checkpoint candidate:** v0.13 — Publication Checkpoint
 
-v0.13 is a repository-level publication milestone. It does **not** change the sealed v0.12 runtime/UI semantics, mathematical scope, or Lean formal core. `data/system.json` therefore remains at `v0.12`; the publication checkpoint records and verifies how that sealed implementation is exposed, reproduced, cited, and deployed.
+v0.13 is a repository-level publication milestone. It does **not** change the sealed v0.12 runtime/UI semantics, mathematical scope, or Lean formal core. `data/system.json` therefore remains at `v0.12`; the publication checkpoint records and verifies how that sealed implementation is exposed, reproduced, cited, licensed, and deployed.
 
 This repository is a minimal static HTML/CSS/vanilla-JavaScript **structural visualizer**. v0.12 does not add new mathematics or geometry. It adds an exposition layer so a reader can see, on the page itself, which parts are Lean-formalized, which are runtime metadata, which are structural or symbolic, and which remain unresolved or not materialized.
 
@@ -38,13 +38,13 @@ The intended publication policy is:
 
 ```text
 repository visibility = public at publication cutover
-source availability   = open-source intended
+source availability   = open source
 release checkpoint    = v0.13
-license                = pending explicit license selection
+license                = Apache-2.0 (OSI-approved)
 custom domain         = not required for the first publication
 ```
 
-Until an explicit license is selected and committed, source availability must not be confused with an open-source license grant.
+The repository is licensed under the **Apache License, Version 2.0** (`Apache-2.0`). Apache-2.0 is an OSI-approved open-source license. The repository's `LICENSE` file is the operative license text; public visibility and CI status do not enlarge or replace that grant.
 
 ## What the page shows first
 
@@ -256,7 +256,7 @@ node verify_ux_exposition_v0_12.js
 node verify_publication_checkpoint_v0_13.js
 ```
 
-The v0.11 verifier enforces mathematical claim discipline. The v0.12 verifier checks semantic exposition contracts, source-of-truth reuse, accessibility hooks, and byte-for-byte preservation of the sealed v0.11 runtime math/organization engines. The v0.13 verifier checks publication metadata, provenance boundaries, CI wiring, and publication-state consistency. None of these verifiers replaces mathematical proof.
+The v0.11 verifier enforces mathematical claim discipline. The v0.12 verifier checks semantic exposition contracts, source-of-truth reuse, accessibility hooks, and byte-for-byte preservation of the sealed v0.11 runtime math/organization engines. The v0.13 verifier checks publication metadata, provenance boundaries, license integrity, CI wiring, and publication-state consistency. None of these verifiers replaces mathematical proof.
 
 ## Reproduce the sealed Lean core
 
@@ -318,8 +318,8 @@ Historical v0.03–v0.06 documents are preserved. Some use stronger phrases such
 
 ## Scope of v0.13
 
-v0.13 is **Thread 12 — Publication Checkpoint**. It adds publication/reproducibility evidence and deployment preparation only.
+v0.13 is **Thread 12 — Publication Checkpoint**. It adds publication/reproducibility/licensing evidence and deployment preparation only.
 
 It adds no theorem, no `W` implementation, no genuine D⁴ sheet renderer, no covering/étale/fiber renderer, no cyclotomic/torsion/collision implementation, no camera system, no geometric zoom, and no new runtime mathematics.
 
-The checkpoint is not sealed until the remaining publication gates are resolved, including the explicit license choice, public visibility cutover, static deployment verification, actual UI screenshot/demo capture, final canonical single-child replay, and exact-SHA canonical CI.
+The checkpoint is not sealed until the remaining publication gates are resolved, including public visibility cutover, static deployment verification, actual UI screenshot/demo capture, final canonical single-child replay, and exact-SHA canonical CI.

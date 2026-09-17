@@ -73,7 +73,9 @@ assert.match(readme, /\*\*Current version:\*\* v0\.12 — UX \/ Exposition Layer
 assert.match(readme, /\*\*Publication checkpoint candidate:\*\* v0\.13 — Publication Checkpoint/);
 assert.match(readme, /3038cb49520743e1620032a9104d26cb92bcd49f/);
 assert.match(readme, /Formal Verification run #35 \/ 35204008792/);
-assert.match(readme, /license\s+= pending explicit license selection/i);
+assert.match(readme, /license\s+= Apache-2\.0 \(OSI-approved\)/i);
+assert.match(readme, /Apache License, Version 2\.0/);
+assert.match(readme, /OSI-approved open-source license/i);
 assert.match(readme, /Lean: leanprover\/lean4:v4\.34\.0/);
 assert.match(readme, /mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0/);
 assert.match(readme, /publication-static-smoke/);
@@ -111,7 +113,8 @@ for (const heading of [
   assert.ok(publicationDoc.includes(heading), `Missing publication checkpoint section: ${heading}`);
 }
 assert.match(publicationDoc, /repository visibility: public/);
-assert.match(publicationDoc, /explicit repository license: pending user selection/);
+assert.match(publicationDoc, /explicit repository license: Apache-2\.0/);
+assert.match(publicationDoc, /OSI status: approved open-source license/);
 assert.match(publicationDoc, /actions\/checkout@v7/);
 assert.match(publicationDoc, /actions\/setup-node@v7/);
 assert.match(publicationDoc, /Node 22/);
@@ -122,7 +125,9 @@ const progress = read("docs/progress_self_similar_cy_visualizer_v0_13.md");
 assert.match(progress, /candidate version: v0\.13/);
 assert.match(progress, /sealed runtime\/UI baseline: v0\.12/);
 assert.match(progress, /final repository visibility: public/);
-assert.match(progress, /license status = pending user selection/);
+assert.match(progress, /license status = selected: Apache-2\.0/);
+assert.match(progress, /OSI status = approved open-source license/);
+assert.match(progress, /Run #40 — complete green documentation-bearing pre-license candidate/);
 assert.match(progress, /actions\/checkout@v7/);
 assert.match(progress, /actions\/setup-node@v7/);
 assert.match(progress, /close the staging PR unmerged/i);
@@ -135,8 +140,19 @@ assert.equal(state.repository.starting_canonical_commit, "3038cb49520743e1620032
 assert.equal(state.repository.starting_canonical_ci_run_id, 35204008792);
 assert.equal(state.publication_policy.target_visibility, "public");
 assert.equal(state.publication_policy.open_source_intent, true);
+assert.equal(state.publication_policy.open_source_route, "OSI-approved license");
 assert.equal(state.publication_policy.release_checkpoint, "v0.13");
+assert.equal(state.license.status, "selected");
+assert.equal(state.license.selected_by_user, true);
+assert.equal(state.license.name, "Apache License, Version 2.0");
+assert.equal(state.license.spdx_identifier, "Apache-2.0");
+assert.equal(state.license.osi_approved, true);
+assert.equal(state.license.license_file_present, true);
+assert.equal(state.license.license_blob_sha, "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64");
 assert.equal(state.license.automatic_license_choice_allowed, false);
+assert.equal(state.license.blocking_for_final_seal, false);
+assert.equal(state.staging_ci_history.run_40.run_id, 35213252072);
+assert.equal(state.staging_ci_history.run_40.conclusion, "success");
 assert.equal(state.lean_formal_boundary.modified_by_v0_13, false);
 assert.equal(state.lean_formal_boundary.toolchain, "leanprover/lean4:v4.34.0");
 assert.equal(state.lean_formal_boundary.mathlib_revision, "7801e8406155c31b340d28e2762f754d02b5e9b0");
@@ -147,6 +163,7 @@ assert.equal(state.ci_maintenance.checkout_action, "actions/checkout@v7");
 assert.equal(state.ci_maintenance.setup_node_action, "actions/setup-node@v7");
 assert.equal(state.ci_maintenance.setup_node_package_manager_cache, false);
 assert.equal(state.publication_verification.static_smoke_job, "publication-static-smoke");
+assert.equal(state.publication_verification.license_integrity_verified_by_blob_sha, true);
 assert.equal(state.publication_verification.nojekyll_present, true);
 assert.equal(state.publication_verification.real_browser_initialization_test, "not_tested");
 assert.equal(state.publication_verification.real_browser_long_session_performance, "not_tested");
@@ -164,12 +181,15 @@ assert.deepEqual(state.truthfulness_invariants, {
   W: "unresolved"
 });
 
-if (state.license.status === "pending_user_selection") {
-  assert.equal(exists("LICENSE"), false, "A license must not be silently selected while state says pending_user_selection.");
-  assert.equal(state.license.license_file_present, false);
-} else {
-  assert.equal(exists("LICENSE"), true, "A selected publication license requires a LICENSE artifact.");
-}
+assert.equal(exists("LICENSE"), true, "Apache-2.0 publication selection requires a LICENSE artifact.");
+assert.equal(
+  gitBlobSha(read("LICENSE")),
+  "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+  "LICENSE must remain byte-for-byte the selected Apache License 2.0 artifact."
+);
+assert.match(read("LICENSE"), /^\s*Apache License\s*\n\s*Version 2\.0, January 2004/m);
+assert.match(read("LICENSE"), /3\. Grant of Patent License\./);
+assert.match(read("LICENSE"), /END OF TERMS AND CONDITIONS/);
 
 assert.equal(exists(".nojekyll"), true, ".nojekyll must exist for plain static GitHub Pages preparation.");
 assert.equal(read(".nojekyll"), "", ".nojekyll should be an empty marker file.");
@@ -209,6 +229,6 @@ console.log("sealed runtime and Lean source blobs unchanged: passed");
 console.log("publication provenance and snapshot/seal boundary: passed");
 console.log("maintained GitHub action majors wired: checkout@v7 + setup-node@v7");
 console.log("static HTTP publication smoke wired: passed");
-console.log("license gate: pending explicit user selection");
+console.log("license: Apache-2.0 selected; OSI-approved route; LICENSE integrity passed");
 console.log("real-browser / assistive-technology evidence: not_tested");
 console.log("mathematical claim strength increased: NO");

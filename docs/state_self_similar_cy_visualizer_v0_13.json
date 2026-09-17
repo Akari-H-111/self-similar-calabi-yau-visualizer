@@ -3,7 +3,7 @@
   "version": "v0.13",
   "runtime_ui_baseline": "v0.12",
   "milestone": "Thread 12 — Publication Checkpoint",
-  "status": "implementation_staging_ci_passed_pending_documentation_tree_ci_and_publication_gates",
+  "status": "apache_2_0_selected_pending_license_bearing_tree_ci_and_publication_gates",
   "repository": {
     "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
     "starting_branch": "main",
@@ -25,6 +25,7 @@
     "target_visibility": "public",
     "target_audience": "public",
     "open_source_intent": true,
+    "open_source_route": "OSI-approved license",
     "current_visibility_during_staging": "private",
     "visibility_cutover_status": "pending",
     "release_checkpoint": "v0.13",
@@ -33,10 +34,15 @@
     "custom_domain_required": false
   },
   "license": {
-    "status": "pending_user_selection",
-    "license_file_present": false,
+    "status": "selected",
+    "selected_by_user": true,
+    "name": "Apache License, Version 2.0",
+    "spdx_identifier": "Apache-2.0",
+    "osi_approved": true,
+    "license_file_present": true,
+    "license_blob_sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
     "automatic_license_choice_allowed": false,
-    "blocking_for_final_seal": true
+    "blocking_for_final_seal": false
   },
   "snapshot_seal_boundary": {
     "v0_12_state_progress_are_pre_external_seal_snapshots": true,
@@ -144,11 +150,24 @@
       "publication_static_smoke": "completed / success",
       "classification": "first complete green implementation-bearing staging candidate"
     },
-    "final_documentation_bearing_tree_ci": "pending external CI after this state/progress evidence update"
+    "run_40": {
+      "run_id": 35213252072,
+      "head_sha": "52477d01df62daf009336b7d405472ad1bd3db33",
+      "status": "completed",
+      "conclusion": "success",
+      "runtime_contracts": "completed / success",
+      "runtime_v0_03_through_v0_13": "success",
+      "source_syntax_checks": "success",
+      "formal_lean": "completed / success",
+      "publication_static_smoke": "completed / success",
+      "classification": "complete green documentation-bearing pre-license staging candidate"
+    },
+    "final_license_bearing_tree_ci": "pending external CI after explicit Apache-2.0 selection"
   },
   "publication_verification": {
     "new_verifier": "verify_publication_checkpoint_v0_13.js",
     "static_smoke_job": "publication-static-smoke",
+    "license_integrity_verified_by_blob_sha": true,
     "static_http_paths_verified": [
       "/",
       "/style.css",
@@ -188,8 +207,7 @@
     ]
   },
   "blocking_before_final_seal": [
-    "explicit open-source license selection and LICENSE artifact",
-    "final documentation-bearing staging CI success",
+    "license-bearing staging CI success",
     "public repository visibility cutover",
     "GitHub Pages enablement",
     "actual deployed URL verification",
@@ -208,8 +226,9 @@
   ],
   "seal_policy": {
     "implementation_staging_ci": "completed / success at run 35212692318",
-    "final_documentation_tree_staging_ci": "pending external CI",
-    "static_smoke": "completed / success for implementation-bearing candidate at run 35212692318",
+    "documentation_bearing_pre_license_staging_ci": "completed / success at run 35213252072",
+    "license_bearing_staging_ci": "pending external CI",
+    "static_smoke": "completed / success for pre-license candidate at run 35213252072; license-bearing revalidation pending",
     "deployment": "pending",
     "canonical_main_commit": "pending",
     "final_canonical_runtime_contracts": "pending external exact-SHA CI",
