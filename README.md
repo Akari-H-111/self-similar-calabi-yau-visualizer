@@ -141,6 +141,8 @@ D² = runtime numeric metadata
 D⁴ = runtime numeric / organizational metadata
 ```
 
+In the v0.11 claim-discipline wording, D² and D⁴ explicitly as runtime/organization metadata remain runtime-side classifications rather than theorem promotion.
+
 The repository does not claim that the sealed Lean core proves:
 
 ```text
@@ -148,7 +150,7 @@ P_D^* g_log = D^2 g_log
 deg(P_D) = D^4
 ```
 
-The SVG explicitly states that D⁴ remains organization metadata and that no covering structure is claimed.
+In particular, D⁴ runtime organization metadata is not a map-degree theorem in the current sealed formal scope. The SVG explicitly states that D⁴ remains organization metadata and that no covering structure is claimed.
 
 ## Lean-formalized scope
 
@@ -178,7 +180,7 @@ coordinate_channels
 coordinate_iterate_rule
 ```
 
-Cyclotomic, torsion, collision, divisor, and related parent-project geometry remains deferred unless exact canonical source evidence is retrieved and audited.
+Cyclotomic, torsion, collision, divisor, and related parent-project geometry remains deferred unless exact canonical source evidence is retrieved and audited. Exact parent-project source artifacts are not source-verified in this thread, so no stronger parent-project result is promoted by v0.14.
 
 ## Navigation and performance boundary
 
@@ -188,7 +190,7 @@ Cyclotomic, torsion, collision, divisor, and related parent-project geometry rem
 arbitrarily continued finite structural navigation
 ```
 
-Benchmark horizons and JavaScript safe-integer checks are engineering observations/constraints, not mathematical limits.
+Benchmark horizons are engineering observations, not mathematical limits. JavaScript safe-integer checks are representation-safety / engineering constraints, not mathematical theorems or depth bounds.
 
 Thread 13 does not add user interaction, recursive-expansion controls, camera transforms, or geometric zoom. Those belong to the next interaction milestone.
 
