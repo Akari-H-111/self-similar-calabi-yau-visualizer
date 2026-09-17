@@ -39,14 +39,8 @@ const overlaySource = fs.readFileSync(path.join(repositoryRoot, "arithmetic-over
 const recursiveSource = fs.readFileSync(path.join(repositoryRoot, "recursive-lazy-expansion.js"), "utf8");
 const zoomSource = fs.readFileSync(path.join(repositoryRoot, "zoom-semantics.js"), "utf8");
 const organizationSource = fs.readFileSync(path.join(repositoryRoot, "sheet-branch-organization.js"), "utf8");
-const coordinatePowerSource = fs.readFileSync(
-  path.join(repositoryRoot, "formal", "SelfSimilarCY", "CoordinatePower.lean"),
-  "utf8"
-);
-const coordinateIterationSource = fs.readFileSync(
-  path.join(repositoryRoot, "formal", "SelfSimilarCY", "CoordinatePowerIteration.lean"),
-  "utf8"
-);
+const coordinatePowerSource = fs.readFileSync(path.join(repositoryRoot, "formal", "SelfSimilarCY", "CoordinatePower.lean"), "utf8");
+const coordinateIterationSource = fs.readFileSync(path.join(repositoryRoot, "formal", "SelfSimilarCY", "CoordinatePowerIteration.lean"), "utf8");
 
 function cloneScene(scene = canonicalScene) {
   return JSON.parse(JSON.stringify(scene));
@@ -72,24 +66,9 @@ function initialize(rawScene, focusDepth = 0, requestedOverlayIds = []) {
   const organizationModel = createSheetBranchOrganizationModel(scene, recursiveModel, zoomModel);
   renderSheetBranchOrganization(organizationModel, createTarget());
   const overlayTarget = createTarget();
-  const overlayModel = createArithmeticOverlayModel(
-    scene,
-    recursiveModel,
-    zoomModel,
-    organizationModel,
-    requestedOverlayIds
-  );
+  const overlayModel = createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, requestedOverlayIds);
   renderArithmeticOverlays(overlayModel, overlayTarget);
-  return {
-    scene,
-    baseModel,
-    pullbackModel,
-    recursiveModel,
-    zoomModel,
-    organizationModel,
-    overlayModel,
-    overlayTarget
-  };
+  return { scene, baseModel, pullbackModel, recursiveModel, zoomModel, organizationModel, overlayModel, overlayTarget };
 }
 
 const canonicalVersionMatch = /^v0\.(\d+)$/.exec(canonicalScene.version);
@@ -111,10 +90,7 @@ assert.equal(allDisabled.overlayModel.kind, MODEL_KIND);
 assert.equal(allDisabled.overlayModel.status, IDLE_STATUS);
 assert.deepEqual(allDisabled.overlayModel.enabledOverlays, []);
 assert.deepEqual(allDisabled.overlayModel.overlayDescriptors, []);
-assert.deepEqual([...allDisabled.overlayModel.availableOverlays].sort(), [
-  OVERLAY_IDS.COORDINATE_CHANNELS,
-  OVERLAY_IDS.COORDINATE_ITERATE_RULE
-].sort());
+assert.deepEqual([...allDisabled.overlayModel.availableOverlays].sort(), [OVERLAY_IDS.COORDINATE_CHANNELS, OVERLAY_IDS.COORDINATE_ITERATE_RULE].sort());
 assert.equal(allDisabled.overlayModel.materializationTriggered, false);
 assert.equal(allDisabled.overlayModel.geometryRendered, false);
 assert.equal(allDisabled.overlayModel.formalVerificationReopened, false);
@@ -156,37 +132,17 @@ assert.equal(iterateDescriptor.canonicalSource.artifact, "formal/SelfSimilarCY/C
 assert.equal(iterateDescriptor.geometryRequired, false);
 assert.equal(iterateDescriptor.materializationTriggered, false);
 
-const multipleEnabled = initialize(depthOneScene, 1, [
-  OVERLAY_IDS.COORDINATE_CHANNELS,
-  OVERLAY_IDS.COORDINATE_ITERATE_RULE
-]);
+const multipleEnabled = initialize(depthOneScene, 1, [OVERLAY_IDS.COORDINATE_CHANNELS, OVERLAY_IDS.COORDINATE_ITERATE_RULE]);
 assert.equal(multipleEnabled.overlayModel.enabledOverlays.length, 2);
 assert.equal(multipleEnabled.overlayModel.overlayDescriptors.length, 2);
-assert.deepEqual([...multipleEnabled.overlayModel.enabledOverlays].sort(), [
-  OVERLAY_IDS.COORDINATE_CHANNELS,
-  OVERLAY_IDS.COORDINATE_ITERATE_RULE
-].sort());
+assert.deepEqual([...multipleEnabled.overlayModel.enabledOverlays].sort(), [OVERLAY_IDS.COORDINATE_CHANNELS, OVERLAY_IDS.COORDINATE_ITERATE_RULE].sort());
 
-const coreBeforeToggle = JSON.stringify({
-  recursive: multipleEnabled.recursiveModel,
-  zoom: multipleEnabled.zoomModel,
-  organization: multipleEnabled.organizationModel
-});
-const disabledAfterEnable = createArithmeticOverlayModel(
-  multipleEnabled.scene,
-  multipleEnabled.recursiveModel,
-  multipleEnabled.zoomModel,
-  multipleEnabled.organizationModel,
-  []
-);
+const coreBeforeToggle = JSON.stringify({ recursive: multipleEnabled.recursiveModel, zoom: multipleEnabled.zoomModel, organization: multipleEnabled.organizationModel });
+const disabledAfterEnable = createArithmeticOverlayModel(multipleEnabled.scene, multipleEnabled.recursiveModel, multipleEnabled.zoomModel, multipleEnabled.organizationModel, []);
 assert.equal(disabledAfterEnable.status, IDLE_STATUS);
 assert.deepEqual(disabledAfterEnable.enabledOverlays, []);
 assert.deepEqual(disabledAfterEnable.overlayDescriptors, []);
-assert.equal(JSON.stringify({
-  recursive: multipleEnabled.recursiveModel,
-  zoom: multipleEnabled.zoomModel,
-  organization: multipleEnabled.organizationModel
-}), coreBeforeToggle, "Overlay toggles must not mutate recursive, zoom, or sheet-organization models.");
+assert.equal(JSON.stringify({ recursive: multipleEnabled.recursiveModel, zoom: multipleEnabled.zoomModel, organization: multipleEnabled.organizationModel }), coreBeforeToggle, "Overlay toggles must not mutate recursive, zoom, or sheet-organization models.");
 
 const deferredRequest = initialize(canonicalScene, 0, [OVERLAY_IDS.TORSION_LABELS]);
 assert.equal(deferredRequest.overlayModel.status, IDLE_STATUS);
@@ -206,54 +162,25 @@ depthThreeScene.request.requestedDepth = 3;
 const depthThreeInitial = initialize(depthThreeScene, 1, []);
 assert.equal(depthThreeInitial.recursiveModel.materializedDepth, 1);
 const unavailableZoom = createZoomFocusModel(depthThreeInitial.scene, depthThreeInitial.recursiveModel, 2);
-const unavailableOrganization = createSheetBranchOrganizationModel(
-  depthThreeInitial.scene,
-  depthThreeInitial.recursiveModel,
-  unavailableZoom
-);
-const unavailableCoreSnapshot = JSON.stringify({
-  recursive: depthThreeInitial.recursiveModel,
-  zoom: unavailableZoom,
-  organization: unavailableOrganization
-});
-const unavailableOverlay = createArithmeticOverlayModel(
-  depthThreeInitial.scene,
-  depthThreeInitial.recursiveModel,
-  unavailableZoom,
-  unavailableOrganization,
-  [OVERLAY_IDS.COORDINATE_CHANNELS, OVERLAY_IDS.COORDINATE_ITERATE_RULE]
-);
+const unavailableOrganization = createSheetBranchOrganizationModel(depthThreeInitial.scene, depthThreeInitial.recursiveModel, unavailableZoom);
+const unavailableCoreSnapshot = JSON.stringify({ recursive: depthThreeInitial.recursiveModel, zoom: unavailableZoom, organization: unavailableOrganization });
+const unavailableOverlay = createArithmeticOverlayModel(depthThreeInitial.scene, depthThreeInitial.recursiveModel, unavailableZoom, unavailableOrganization, [OVERLAY_IDS.COORDINATE_CHANNELS, OVERLAY_IDS.COORDINATE_ITERATE_RULE]);
 assert.deepEqual(unavailableOverlay.enabledOverlays, [OVERLAY_IDS.COORDINATE_CHANNELS]);
 assert.equal(unavailableOverlay.requestResults[1].requestStatus, NOT_MATERIALIZED_STATUS);
 assert.equal(unavailableOverlay.requestResults[1].descriptor, null);
 assert.equal(unavailableOverlay.materializationTriggered, false);
 assert.equal(depthThreeInitial.recursiveModel.materializedDepth, 1, "Overlay must not materialize unavailable focus.");
-assert.equal(JSON.stringify({
-  recursive: depthThreeInitial.recursiveModel,
-  zoom: unavailableZoom,
-  organization: unavailableOrganization
-}), unavailableCoreSnapshot);
+assert.equal(JSON.stringify({ recursive: depthThreeInitial.recursiveModel, zoom: unavailableZoom, organization: unavailableOrganization }), unavailableCoreSnapshot);
 
 const expandedDepthTwo = expandOneLevel(depthThreeInitial.recursiveModel);
 const depthTwoZoom = createZoomFocusModel(depthThreeInitial.scene, expandedDepthTwo, 2);
 const depthTwoOrganization = createSheetBranchOrganizationModel(depthThreeInitial.scene, expandedDepthTwo, depthTwoZoom);
-const depthTwoOverlay = createArithmeticOverlayModel(
-  depthThreeInitial.scene,
-  expandedDepthTwo,
-  depthTwoZoom,
-  depthTwoOrganization,
-  [OVERLAY_IDS.COORDINATE_ITERATE_RULE]
-);
+const depthTwoOverlay = createArithmeticOverlayModel(depthThreeInitial.scene, expandedDepthTwo, depthTwoZoom, depthTwoOrganization, [OVERLAY_IDS.COORDINATE_ITERATE_RULE]);
 assert.deepEqual(depthTwoOverlay.enabledOverlays, [OVERLAY_IDS.COORDINATE_ITERATE_RULE]);
 assert.equal(depthTwoOverlay.overlayDescriptors[0].focusedDepth, 2);
 assert.deepEqual(depthTwoOverlay.overlayDescriptors[0].channels[3].exponentExpression, { baseParameter: "D", towerDepth: 2 });
 
-for (const deferredId of [
-  OVERLAY_IDS.CYCLOTOMIC_REFINEMENT,
-  OVERLAY_IDS.TORSION_LABELS,
-  OVERLAY_IDS.COLLISION_CLASSES,
-  OVERLAY_IDS.DELTA_N_DIVISOR
-]) {
+for (const deferredId of [OVERLAY_IDS.CYCLOTOMIC_REFINEMENT, OVERLAY_IDS.TORSION_LABELS, OVERLAY_IDS.COLLISION_CLASSES, OVERLAY_IDS.DELTA_N_DIVISOR]) {
   const deferred = allDisabled.overlayModel.deferredCandidateOverlays.find((entry) => entry.overlayId === deferredId);
   assert.ok(deferred, `${deferredId} must be explicitly recorded as deferred.`);
   assert.equal(deferred.implementationStatus, "deferred");
@@ -272,23 +199,11 @@ assert.throws(() => {
   const recursiveModel = createRecursiveLazyExpansionModel(scene, baseModel, pullbackModel);
   const zoomModel = createZoomFocusModel(scene, recursiveModel, 0);
   const organizationModel = createSheetBranchOrganizationModel(scene, recursiveModel, zoomModel);
-  renderArithmeticOverlays(
-    createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, [OVERLAY_IDS.COORDINATE_CHANNELS]),
-    untouchedTarget
-  );
+  renderArithmeticOverlays(createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, [OVERLAY_IDS.COORDINATE_CHANNELS]), untouchedTarget);
 }, (error) => error instanceof SceneSpecError);
 assert.deepEqual(untouchedTarget, createTarget(), "Malformed scene must be rejected before arithmetic overlay target changes.");
 
-assert.throws(
-  () => createArithmeticOverlayModel(
-    oneEnabled.scene,
-    oneEnabled.recursiveModel,
-    oneEnabled.zoomModel,
-    oneEnabled.organizationModel,
-    [OVERLAY_IDS.COORDINATE_CHANNELS, OVERLAY_IDS.COORDINATE_CHANNELS]
-  ),
-  TypeError
-);
+assert.throws(() => createArithmeticOverlayModel(oneEnabled.scene, oneEnabled.recursiveModel, oneEnabled.zoomModel, oneEnabled.organizationModel, [OVERLAY_IDS.COORDINATE_CHANNELS, OVERLAY_IDS.COORDINATE_CHANNELS]), TypeError);
 
 assert.equal(Object.hasOwn(canonicalScene, "overlays"), false);
 assert.equal(Object.hasOwn(canonicalScene, "enabledOverlays"), false);
@@ -304,16 +219,17 @@ const validationCall = "SceneSpec.validateAndNormalizeScene(rawScene)";
 const recursiveCreateCall = "RecursiveLazyExpansion.createRecursiveLazyExpansionModel(scene, baseModel, pullbackModel)";
 const zoomCreateCall = "ZoomSemantics.createZoomFocusModel(scene, recursiveModel, 0)";
 const organizationCreateCall = "SheetBranchOrganization.createSheetBranchOrganizationModel(scene, recursiveModel, zoomModel)";
-const overlayCreateCall = "ArithmeticOverlays.createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, initialArithmeticOverlayRequest)";
+const interactionControllerCall = "InteractivePullbackTower.createInteractivePullbackTowerModel(scene, baseModel, pullbackModel)";
+const overlayCreateCall = "ArithmeticOverlays.createArithmeticOverlayModel(";
 const overlayRenderCall = "ArithmeticOverlays.renderArithmeticOverlays(arithmeticOverlayModel, arithmeticOverlayElement)";
 assert.ok(appSource.includes('fetch("data/system.json"'));
 assert.ok(appSource.indexOf(validationCall) >= 0);
-assert.ok(appSource.indexOf(recursiveCreateCall) > appSource.indexOf(validationCall));
-assert.ok(appSource.indexOf(zoomCreateCall) > appSource.indexOf(recursiveCreateCall));
-assert.ok(appSource.indexOf(organizationCreateCall) > appSource.indexOf(zoomCreateCall));
-assert.ok(appSource.indexOf(overlayCreateCall) > appSource.indexOf(organizationCreateCall));
-assert.ok(appSource.indexOf(overlayRenderCall) > appSource.indexOf(overlayCreateCall));
-assert.equal(appSource.includes("expandOneLevel("), false, "Application initialization must not expand recursion for arithmetic overlays.");
+const usesDirectOrganizationPipeline = appSource.indexOf(recursiveCreateCall) > appSource.indexOf(validationCall) && appSource.indexOf(zoomCreateCall) > appSource.indexOf(recursiveCreateCall) && appSource.indexOf(organizationCreateCall) > appSource.indexOf(zoomCreateCall);
+const usesForwardInteractionController = appSource.indexOf(interactionControllerCall) > appSource.indexOf(validationCall);
+assert.ok(usesDirectOrganizationPipeline || usesForwardInteractionController, "App must obtain recursive/focus/organization state through sealed APIs directly or through the later interaction controller.");
+assert.ok(appSource.indexOf(overlayCreateCall) >= 0, "App must still build arithmetic overlays from the current runtime models.");
+assert.ok(appSource.indexOf(overlayRenderCall) > appSource.indexOf(overlayCreateCall), "App must render the current arithmetic overlay model.");
+assert.equal(appSource.includes("expandOneLevel("), false, "App must not become a recursion authority for arithmetic overlays.");
 
 const organizationScript = '<script src="sheet-branch-organization.js" defer></script>';
 const overlayScript = '<script src="arithmetic-overlays.js" defer></script>';
@@ -333,22 +249,7 @@ assert.equal(recursiveSource.includes("ArithmeticOverlays"), false, "Recursive e
 assert.equal(zoomSource.includes("ArithmeticOverlays"), false, "Zoom engine must remain overlay-agnostic.");
 assert.equal(organizationSource.includes("ArithmeticOverlays"), false, "Sheet organization must remain overlay-agnostic.");
 
-for (const forbiddenToken of [
-  "sheetObjects",
-  "branchObjects",
-  "torsionPoints",
-  "collisionPoints",
-  "fabricatedPoints",
-  "fiberGeometry",
-  "mesh",
-  "implicitSurface",
-  "THREE",
-  "WebGL",
-  "gpuBuffer",
-  "cameraMatrix",
-  "projectionMatrix",
-  "performanceScheduler"
-]) {
+for (const forbiddenToken of ["sheetObjects", "branchObjects", "torsionPoints", "collisionPoints", "fabricatedPoints", "fiberGeometry", "mesh", "implicitSurface", "THREE", "WebGL", "gpuBuffer", "cameraMatrix", "projectionMatrix", "performanceScheduler"]) {
   assert.equal(overlaySource.includes(forbiddenToken), false, `Arithmetic overlay layer must not contain ${forbiddenToken}.`);
 }
 
