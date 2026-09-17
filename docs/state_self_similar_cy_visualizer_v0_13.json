@@ -1,0 +1,240 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.13",
+  "runtime_ui_baseline": "v0.12",
+  "milestone": "Thread 12 — Publication Checkpoint",
+  "status": "apache_2_0_selected_pending_license_bearing_tree_ci_and_publication_gates",
+  "repository": {
+    "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "starting_branch": "main",
+    "starting_canonical_commit": "3038cb49520743e1620032a9104d26cb92bcd49f",
+    "starting_canonical_parent": "b77a688fed8cbc41e105900d38177e75219825d1",
+    "starting_canonical_tree": "f3d5154e42cdc91b772c395945b4241e7e31980f",
+    "starting_commit_message": "ux: seal v0.12 exposition layer",
+    "starting_canonical_ci_run_number": 35,
+    "starting_canonical_ci_run_id": 35204008792,
+    "starting_runtime_contracts": "completed / success",
+    "starting_formal_lean": "completed / success",
+    "staging_branch": "thread12-publication-checkpoint-v0-13",
+    "staging_pr": 5,
+    "staging_pr_policy": "DO NOT MERGE; CI vehicle only; close unmerged after canonical exact-SHA seal",
+    "canonical_commit_policy": "final main must be exactly one new milestone child whose sole parent is the v0.12 canonical seal",
+    "canonical_ci_policy": "post-commit exact-main GitHub Actions evidence is external sealing evidence and is not written back through a second main commit"
+  },
+  "publication_policy": {
+    "target_visibility": "public",
+    "target_audience": "public",
+    "open_source_intent": true,
+    "open_source_route": "OSI-approved license",
+    "current_visibility_during_staging": "private",
+    "visibility_cutover_status": "pending",
+    "release_checkpoint": "v0.13",
+    "release_created": false,
+    "tag_created": false,
+    "custom_domain_required": false
+  },
+  "license": {
+    "status": "selected",
+    "selected_by_user": true,
+    "name": "Apache License, Version 2.0",
+    "spdx_identifier": "Apache-2.0",
+    "osi_approved": true,
+    "license_file_present": true,
+    "license_blob_sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+    "automatic_license_choice_allowed": false,
+    "blocking_for_final_seal": false
+  },
+  "snapshot_seal_boundary": {
+    "v0_12_state_progress_are_pre_external_seal_snapshots": true,
+    "v0_12_snapshots_rewritten": false,
+    "v0_12_external_seal_commit": "3038cb49520743e1620032a9104d26cb92bcd49f",
+    "v0_12_external_seal_ci_run_id": 35204008792,
+    "v0_12_staging_pr": 4,
+    "v0_12_staging_pr_closed_unmerged": true
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "cameraTransformApplied": false,
+    "materializationTriggered": false,
+    "W": "unresolved"
+  },
+  "lean_formal_boundary": {
+    "modified_by_v0_13": false,
+    "toolchain": "leanprover/lean4:v4.34.0",
+    "mathlib_revision": "7801e8406155c31b340d28e2762f754d02b5e9b0",
+    "formalized": [
+      "coordinate power map",
+      "coordinate power iteration law",
+      "abstract set-theoretic pullback recurrence",
+      "coordinatePower(D^n) preimage closed form"
+    ],
+    "not_promoted": [
+      "D2 metric theorem",
+      "D4 map-degree theorem",
+      "covering or sheets",
+      "W",
+      "Calabi-Yau geometry",
+      "smoothness",
+      "connectedness",
+      "etaleness",
+      "torsion / cyclotomic / collision mathematics"
+    ]
+  },
+  "runtime_boundary": {
+    "runtime_version_changed_by_v0_13": false,
+    "data_system_version": "v0.12",
+    "application_node_version": "22",
+    "sealed_runtime_math_engine_modified": false,
+    "sealed_exposition_semantics_modified": false
+  },
+  "ci_maintenance": {
+    "checkout_action": "actions/checkout@v7",
+    "setup_node_action": "actions/setup-node@v7",
+    "setup_node_package_manager_cache": false,
+    "node20_action_warning_targeted_for_removal": true,
+    "run_39_node20_deprecation_warning_observed": false,
+    "run_39_punycode_deprecation_warning_observed": false,
+    "lean_action_changed": false
+  },
+  "staging_ci_history": {
+    "run_36": {
+      "run_id": 35212321720,
+      "head_sha": "efd8b6c480fe2410ed3c6319bda9d18ca6175973",
+      "runtime_contracts": "failure at verify_publication_checkpoint_v0_13.js",
+      "runtime_v0_03_through_v0_12": "success",
+      "formal_lean": "success",
+      "publication_static_smoke": "success",
+      "classification": "historical publication-verifier false-negative caused by Markdown emphasis around the word not",
+      "mathematical_defect": false,
+      "runtime_engine_defect": false,
+      "lean_defect": false,
+      "static_deployment_defect": false
+    },
+    "run_37": {
+      "run_id": 35212450224,
+      "head_sha": "e7b684fab1ae43ad47ac65a26ccb18a9b77f7066",
+      "runtime_contracts": "failure at verify_publication_checkpoint_v0_13.js",
+      "runtime_v0_03_through_v0_12": "success",
+      "formal_lean": "success",
+      "publication_static_smoke": "success",
+      "classification": "historical publication-verifier false-negative caused by requiring D2 and D4 semantics in one exact phrase",
+      "mathematical_defect": false,
+      "runtime_engine_defect": false,
+      "lean_defect": false,
+      "static_deployment_defect": false
+    },
+    "run_38": {
+      "run_id": 35212620482,
+      "head_sha": "be42f5a9e50810c5637059e612ee6c162ed6c22e",
+      "runtime_contracts": "failure at verify_publication_checkpoint_v0_13.js",
+      "runtime_v0_03_through_v0_12": "success",
+      "formal_lean": "not used as seal evidence; still in progress at this audit point",
+      "publication_static_smoke": "success",
+      "classification": "historical publication-verifier false-negative caused by requiring the literal DO NOT MERGE label instead of canonicalization semantics",
+      "mathematical_defect": false,
+      "runtime_engine_defect": false,
+      "static_deployment_defect": false
+    },
+    "run_39": {
+      "run_id": 35212692318,
+      "head_sha": "165d72f5c56bc5e4244d409d917b299b955de70a",
+      "status": "completed",
+      "conclusion": "success",
+      "runtime_contracts": "completed / success",
+      "runtime_v0_03_through_v0_13": "success",
+      "source_syntax_checks": "success",
+      "formal_lean": "completed / success",
+      "publication_static_smoke": "completed / success",
+      "classification": "first complete green implementation-bearing staging candidate"
+    },
+    "run_40": {
+      "run_id": 35213252072,
+      "head_sha": "52477d01df62daf009336b7d405472ad1bd3db33",
+      "status": "completed",
+      "conclusion": "success",
+      "runtime_contracts": "completed / success",
+      "runtime_v0_03_through_v0_13": "success",
+      "source_syntax_checks": "success",
+      "formal_lean": "completed / success",
+      "publication_static_smoke": "completed / success",
+      "classification": "complete green documentation-bearing pre-license staging candidate"
+    },
+    "final_license_bearing_tree_ci": "pending external CI after explicit Apache-2.0 selection"
+  },
+  "publication_verification": {
+    "new_verifier": "verify_publication_checkpoint_v0_13.js",
+    "static_smoke_job": "publication-static-smoke",
+    "license_integrity_verified_by_blob_sha": true,
+    "static_http_paths_verified": [
+      "/",
+      "/style.css",
+      "/scene-spec.js",
+      "/base-renderer.js",
+      "/one-step-pullback.js",
+      "/recursive-lazy-expansion.js",
+      "/zoom-semantics.js",
+      "/sheet-branch-organization.js",
+      "/arithmetic-overlays.js",
+      "/exposition-layer.js",
+      "/app.js",
+      "/data/system.json"
+    ],
+    "github_pages_source_prepared": true,
+    "nojekyll_present": true,
+    "actual_pages_enabled": false,
+    "actual_deployed_url_verified": false,
+    "real_browser_initialization_test": "not_tested",
+    "real_browser_long_session_performance": "not_tested",
+    "real_assistive_technology_test": "not_tested",
+    "actual_ui_screenshot_captured": false
+  },
+  "parent_project_provenance": {
+    "exact_parent_project_artifacts_source_verified_here": false,
+    "memory_used_as_canonical_evidence": false,
+    "stronger_parent_project_claims_promoted": false
+  },
+  "branch_governance": {
+    "starting_main_protected": false,
+    "protection_decision_after_public_cutover": "pending",
+    "historical_branches_deleted": false,
+    "recommended_minimum": [
+      "block force push",
+      "block deletion",
+      "require linear history when compatible with canonical replay discipline"
+    ]
+  },
+  "blocking_before_final_seal": [
+    "license-bearing staging CI success",
+    "public repository visibility cutover",
+    "GitHub Pages enablement",
+    "actual deployed URL verification",
+    "real-browser initialization smoke",
+    "actual UI screenshot/demo capture",
+    "final tree audit",
+    "single-child canonical replay",
+    "exact-SHA canonical CI success",
+    "tag/release creation"
+  ],
+  "non_blocking_caveats": [
+    "real-browser long-session performance not tested",
+    "real assistive-technology testing not tested",
+    "parent-project exact artifacts not source-verified in the visualizer audit",
+    "historical and staging branches retained"
+  ],
+  "seal_policy": {
+    "implementation_staging_ci": "completed / success at run 35212692318",
+    "documentation_bearing_pre_license_staging_ci": "completed / success at run 35213252072",
+    "license_bearing_staging_ci": "pending external CI",
+    "static_smoke": "completed / success for pre-license candidate at run 35213252072; license-bearing revalidation pending",
+    "deployment": "pending",
+    "canonical_main_commit": "pending",
+    "final_canonical_runtime_contracts": "pending external exact-SHA CI",
+    "final_canonical_formal_lean": "pending external exact-SHA CI",
+    "final_canonical_static_smoke": "pending external exact-SHA CI",
+    "thread_sealed": false
+  },
+  "mathematical_claim_strength_increased": false
+}
