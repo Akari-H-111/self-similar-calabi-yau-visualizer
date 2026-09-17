@@ -21,7 +21,7 @@ jobs:
         working-directory: formal
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up repository-pinned Lean environment
         uses: leanprover/lean-action@v1
@@ -68,12 +68,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
+          package-manager-cache: false
 
       - name: Report Node.js version
         run: node --version
@@ -108,6 +109,9 @@ jobs:
       - name: Verify UX exposition v0.12
         run: node verify_ux_exposition_v0_12.js
 
+      - name: Verify publication checkpoint v0.13
+        run: node verify_publication_checkpoint_v0_13.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -123,4 +127,56 @@ jobs:
           node --check benchmark_performance_infinite_navigation_v0_10.js
           node --check verify_mathematical_fidelity_v0_11.js
           node --check verify_ux_exposition_v0_12.js
+          node --check verify_publication_checkpoint_v0_13.js
           node --check app.js
+
+  publication-static-smoke:
+    name: publication-static-smoke
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Serve static repository and verify publication paths
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8000 --bind 127.0.0.1 >/tmp/publication-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          ready=0
+          for attempt in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8000/ >/tmp/publication-index.html; then
+              ready=1
+              break
+            fi
+            sleep 0.25
+          done
+          if [ "$ready" -ne 1 ]; then
+            cat /tmp/publication-http.log
+            echo "Static HTTP server did not become ready."
+            exit 1
+          fi
+
+          for resource in \
+            style.css \
+            scene-spec.js \
+            base-renderer.js \
+            one-step-pullback.js \
+            recursive-lazy-expansion.js \
+            zoom-semantics.js \
+            sheet-branch-organization.js \
+            arithmetic-overlays.js \
+            exposition-layer.js \
+            app.js; do
+            curl -fsS "http://127.0.0.1:8000/${resource}" >/dev/null
+          done
+
+          curl -fsS http://127.0.0.1:8000/data/system.json >/tmp/publication-system.json
+          python3 -m json.tool /tmp/publication-system.json >/dev/null
+          grep -Fq '"version": "v0.12"' /tmp/publication-system.json
+          grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html
+          grep -Fq 'D² runtime metadata' /tmp/publication-index.html
+          grep -Fq 'D⁴ organization metadata' /tmp/publication-index.html
+          test -f .nojekyll
+          echo "Publication static HTTP smoke: passed"

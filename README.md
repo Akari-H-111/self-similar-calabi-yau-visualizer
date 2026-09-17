@@ -2,6 +2,10 @@
 
 **Current version:** v0.12 — UX / Exposition Layer
 
+**Publication checkpoint candidate:** v0.13 — Publication Checkpoint
+
+v0.13 is a repository-level publication milestone. It does **not** change the sealed v0.12 runtime/UI semantics, mathematical scope, or Lean formal core. `data/system.json` therefore remains at `v0.12`; the publication checkpoint records and verifies how that sealed implementation is exposed, reproduced, cited, and deployed.
+
 This repository is a minimal static HTML/CSS/vanilla-JavaScript **structural visualizer**. v0.12 does not add new mathematics or geometry. It adds an exposition layer so a reader can see, on the page itself, which parts are Lean-formalized, which are runtime metadata, which are structural or symbolic, and which remain unresolved or not materialized.
 
 The project keeps the evidence rule established by v0.11:
@@ -14,9 +18,37 @@ runtime representation
 != visualization convention
 ```
 
+## Publication checkpoint status
+
+Thread 12 starts from the sealed v0.12 canonical baseline:
+
+```text
+canonical commit:
+3038cb49520743e1620032a9104d26cb92bcd49f
+
+canonical CI:
+Formal Verification run #35 / 35204008792
+runtime-contracts = completed / success
+formal-lean       = completed / success
+```
+
+The v0.12 state/progress files are intentionally pre-external-seal snapshots. They are not rewritten after the fact. Their final seal is represented by the canonical commit above, the exact-SHA green CI run, and staging PR #4 being closed unmerged.
+
+The intended publication policy is:
+
+```text
+repository visibility = public at publication cutover
+source availability   = open-source intended
+release checkpoint    = v0.13
+license                = pending explicit license selection
+custom domain         = not required for the first publication
+```
+
+Until an explicit license is selected and committed, source availability must not be confused with an open-source license grant.
+
 ## What the page shows first
 
-The first-screen current-state summary now exposes:
+The first-screen current-state summary exposes:
 
 ```text
 focused / materialized / requested depth
@@ -80,7 +112,7 @@ formal/SelfSimilarCY/PullbackTower.lean
 
 It establishes the four-coordinate coordinate-power map, the `D^n` iteration rule, the abstract set-theoretic pullback recurrence, and the closed-form preimage description via `coordinatePower (D ^ n)`.
 
-Thread 11 does not modify `formal/` and does not promote any additional item into the formalized category.
+Thread 12 does not modify `formal/` and does not promote any additional item into the formalized category.
 
 ## D² and D⁴
 
@@ -126,7 +158,7 @@ materializationTriggered = false
 
 Sheet/branch organization remains aggregate metadata only. No concrete D⁴ sheets, fiber geometry, covering structure, étale realization, or branch geometry is created.
 
-The exposition page now puts these boundaries before the implementation diagnostics instead of requiring a reader to reconstruct them from several status messages.
+The exposition page puts these boundaries before the implementation diagnostics instead of requiring a reader to reconstruct them from several status messages.
 
 ## Arithmetic overlays
 
@@ -172,9 +204,11 @@ Real-browser long-session performance and heap behavior remain outside the seale
 
 A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
 
-A green `runtime-contracts` job means the JavaScript contracts, claim-discipline regression, and UX/exposition semantic verifier pass.
+A green `runtime-contracts` job means the JavaScript contracts, claim-discipline regression, UX/exposition semantic verifier, and publication checkpoint verifier pass.
 
-It does **not** mean that the **entire visualizer, all Calabi–Yau mathematics**, browser behavior, D² metric scaling, D⁴ genuine map degree, covering geometry, or unavailable arithmetic research has been formally verified.
+A green `publication-static-smoke` job means the repository can be served by a plain static HTTP server on a clean GitHub-hosted runner and the publication-critical HTML/CSS/JavaScript/JSON paths return successfully. It is **not** a real-browser rendering, accessibility, or long-session performance certification.
+
+Green CI does **not** mean that the **entire visualizer, all Calabi–Yau mathematics**, browser behavior, D² metric scaling, D⁴ genuine map degree, covering geometry, or unavailable arithmetic research has been formally verified.
 
 ## UX / exposition architecture
 
@@ -186,7 +220,7 @@ verify_ux_exposition_v0_12.js
 docs/UX_EXPOSITION_self_similar_cy_visualizer_v0_12.md
 ```
 
-The page hierarchy is now:
+The page hierarchy is:
 
 ```text
 explicit geometry boundary
@@ -203,11 +237,12 @@ Accessibility-oriented changes include one concise ARIA live status region, nati
 
 This is a source/contract-level accessibility pass, not a claim of real-browser or assistive-technology certification.
 
-## Verify
+## Reproduce the sealed runtime contracts
 
-Deterministic runtime, fidelity, and exposition verification:
+Use Node 22 for the deterministic JavaScript verification surface:
 
 ```bash
+node --version
 node verify_scene_spec_v0_03.js
 node verify_base_renderer_v0_04.js
 node verify_one_step_pullback_v0_05.js
@@ -218,11 +253,33 @@ node verify_arithmetic_overlays_v0_09.js
 node verify_performance_infinite_navigation_v0_10.js
 node verify_mathematical_fidelity_v0_11.js
 node verify_ux_exposition_v0_12.js
+node verify_publication_checkpoint_v0_13.js
 ```
 
-The v0.11 verifier continues to enforce mathematical claim discipline. The v0.12 verifier checks semantic exposition contracts, source-of-truth reuse, accessibility hooks, and byte-for-byte preservation of the sealed v0.11 runtime math/organization engines. Neither verifier replaces mathematical proof.
+The v0.11 verifier enforces mathematical claim discipline. The v0.12 verifier checks semantic exposition contracts, source-of-truth reuse, accessibility hooks, and byte-for-byte preservation of the sealed v0.11 runtime math/organization engines. The v0.13 verifier checks publication metadata, provenance boundaries, CI wiring, and publication-state consistency. None of these verifiers replaces mathematical proof.
 
-## Run locally
+## Reproduce the sealed Lean core
+
+The Lean environment is repository-pinned:
+
+```text
+Lean: leanprover/lean4:v4.34.0
+mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
+```
+
+From `formal/`:
+
+```bash
+lake exe cache get
+lake build
+lake env lean SelfSimilarCY/CoordinatePower.lean
+lake env lean SelfSimilarCY/CoordinatePowerIteration.lean
+lake env lean SelfSimilarCY/PullbackTower.lean
+```
+
+The CI additionally rejects `axiom`, `sorry`, and `admit` placeholders in the sealed Lean source directory.
+
+## Run the static site locally
 
 Serve the repository over HTTP rather than opening `index.html` with `file://`:
 
@@ -232,20 +289,37 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000/` in a browser.
 
+The publication CI also checks the repository-relative paths used by the static page, including `style.css`, the JavaScript files, and `data/system.json`.
+
+## Citation and provenance boundary
+
+When citing or reusing this repository, keep these evidence layers separate:
+
+```text
+repository implementation
+sealed Lean formal core
+deterministic runtime verification
+visualization / exposition convention
+unresolved mathematics
+parent-project provenance not source-verified here
+```
+
+The repository-level publication checkpoint does not convert a runtime representation into a theorem, does not convert green CI into whole-project formal verification, and does not source-verify parent-project artifacts that were not retrieved in the corresponding audit.
+
+Detailed publication checkpoint contract:
+
+```text
+docs/PUBLICATION_CHECKPOINT_self_similar_cy_visualizer_v0_13.md
+```
+
 ## Historical wording
 
 Historical v0.03–v0.06 documents are preserved. Some use stronger phrases such as `sheet degree`, `map degree`, or `degree multiplicativity`. The current canonical interpretation remains the later F05/v0.11 boundary: D², D⁴, and `(D⁴)^n` runtime fields are unformalized metadata unless stronger exact source evidence is retrieved and audited.
 
-## Scope of v0.12
+## Scope of v0.13
 
-v0.12 completes **Thread 11 — UX / Exposition Layer** only if staging and canonical exact-SHA CI both pass.
+v0.13 is **Thread 12 — Publication Checkpoint**. It adds publication/reproducibility evidence and deployment preparation only.
 
-It adds no theorem, no `W` implementation, no genuine D⁴ sheet renderer, no covering/étale/fiber renderer, no cyclotomic/torsion/collision implementation, no camera system, no geometric zoom, and no publication deployment.
+It adds no theorem, no `W` implementation, no genuine D⁴ sheet renderer, no covering/étale/fiber renderer, no cyclotomic/torsion/collision implementation, no camera system, no geometric zoom, and no new runtime mathematics.
 
-Detailed exposition contract:
-
-```text
-docs/UX_EXPOSITION_self_similar_cy_visualizer_v0_12.md
-```
-
-After Thread 11 is sealed, the natural roadmap milestone is **Thread 12 — Publication Checkpoint**.
+The checkpoint is not sealed until the remaining publication gates are resolved, including the explicit license choice, public visibility cutover, static deployment verification, actual UI screenshot/demo capture, final canonical single-child replay, and exact-SHA canonical CI.
