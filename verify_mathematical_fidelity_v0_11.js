@@ -180,9 +180,9 @@ assert.match(indexSource, /Sheet \/ branch organization metadata/);
 
 const readmeSource = read("README.md");
 assert.match(readmeSource, /Current version:\*\* v0\.11/);
-assert.match(readmeSource, /runtime numeric \/ organizational metadata/);
+assert.match(readmeSource, /D² and D⁴ explicitly as runtime\/organization metadata/);
 assert.match(readmeSource, /not a map-degree theorem/i);
-assert.match(readmeSource, /whole visualizer, all Calabi–Yau mathematics/i);
+assert.match(readmeSource, /entire visualizer, all Calabi–Yau mathematics/i);
 assert.match(readmeSource, /not source-verified in this thread/);
 assert.match(readmeSource, /not mathematical limits/);
 assert.match(readmeSource, /engineering\/runtime representation constraint|engineering safety constraint|representation-safety constraints/i);
