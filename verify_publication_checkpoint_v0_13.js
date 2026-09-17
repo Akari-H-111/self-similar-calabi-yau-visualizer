@@ -77,7 +77,7 @@ assert.match(readme, /license\s+= pending explicit license selection/i);
 assert.match(readme, /Lean: leanprover\/lean4:v4\.34\.0/);
 assert.match(readme, /mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0/);
 assert.match(readme, /publication-static-smoke/);
-assert.match(readme, /not a real-browser rendering, accessibility, or long-session performance certification/i);
+assert.match(readme, /It is \*\*not\*\* a real-browser rendering, accessibility, or long-session performance certification/i);
 assert.match(readme, /not source-verified in this thread/);
 assert.match(readme, /D² runtime metadata and D⁴ organization metadata/);
 assert.match(readme, /not a map-degree theorem/i);
