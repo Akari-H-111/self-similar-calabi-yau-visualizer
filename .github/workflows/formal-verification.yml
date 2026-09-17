@@ -102,6 +102,9 @@ jobs:
       - name: Verify performance and infinite-navigation semantics v0.10
         run: node verify_performance_infinite_navigation_v0_10.js
 
+      - name: Verify mathematical fidelity v0.11
+        run: node verify_mathematical_fidelity_v0_11.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -114,4 +117,5 @@ jobs:
           node --check arithmetic-overlays.js
           node --check verify_performance_infinite_navigation_v0_10.js
           node --check benchmark_performance_infinite_navigation_v0_10.js
+          node --check verify_mathematical_fidelity_v0_11.js
           node --check app.js
