@@ -3,7 +3,7 @@
   "version": "v0.14",
   "runtime_scene_baseline": "v0.12",
   "milestone": "Thread 13 — Structural Visualization Layer",
-  "status": "staging_implementation_pending_ci",
+  "status": "staging_verified_canonicalization_candidate",
   "starting_baseline": {
     "repository": "Akari-H-111/self-similar-calabi-yau-visualizer",
     "branch": "main",
@@ -64,18 +64,22 @@
   },
   "validation": {
     "local_full_repository_regression": "not_available_in_connector_runtime",
-    "staging_pull_request_ci": "pending",
-    "runtime_contracts": "pending",
-    "formal_lean": "pending",
-    "publication_static_smoke": "pending",
-    "exact_main_ci": "pending_after_canonicalization"
+    "staging_pull_request": 6,
+    "staging_verified_head": "45a2f621ce84e8e8a609ca3a4eb3b4c1aba1faf7",
+    "staging_workflow_run_id": 35231666202,
+    "staging_workflow_run_number": 46,
+    "staging_pull_request_ci": "success",
+    "runtime_contracts": "success",
+    "formal_lean": "success",
+    "publication_static_smoke": "success",
+    "exact_main_ci_policy": "required after canonical replay; authoritative seal status is external GitHub Actions evidence rather than a self-attested field in this commit"
   },
   "seal_policy": {
     "staging_branch": "thread13-structural-visualization-v0-14",
-    "staging_pr": "pending",
+    "staging_pr": 6,
     "staging_pr_policy": "CI vehicle only; do not merge staging history",
-    "canonical_policy": "after green staging CI, replay the verified final tree as exactly one child of e83ed17a5ce8e45e67ef326042a21ec51ba24222, then require exact-SHA main CI",
-    "thread_sealed": false
+    "canonical_policy": "replay the final staging tree as exactly one child of e83ed17a5ce8e45e67ef326042a21ec51ba24222, then require an exact-SHA main CI success",
+    "seal_authority": "Git object parent/tree identity plus exact-SHA main GitHub Actions evidence; this static state file does not self-certify its own future CI result"
   },
   "mathematical_claim_strength_increased": false,
   "next_milestone_not_started": "Thread 14 — Interaction Layer"
