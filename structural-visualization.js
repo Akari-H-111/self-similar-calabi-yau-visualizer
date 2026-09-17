@@ -5,6 +5,7 @@
   const REPRESENTATION_KIND = "structural_svg_diagram";
   const NODE_KIND = "structural_level_node";
   const EDGE_KIND = "structural_pullback_edge";
+  const LAYOUT_KIND = "structural_visualization_layout";
 
   const SUBSCRIPT_DIGITS = Object.freeze({
     "0": "₀",
@@ -199,9 +200,9 @@
     });
   }
 
-  function buildSvgMarkup(model) {
+  function createStructuralLayoutDescriptor(model) {
     if (!model || model.kind !== MODEL_KIND) {
-      throw new TypeError("Structural visualization markup requires a structural_visualization model.");
+      throw new TypeError("Structural layout descriptor requires a structural_visualization model.");
     }
 
     const nodeX = 92;
@@ -211,7 +212,49 @@
     const nodeStep = 116;
     const ruleX = 476;
     const ruleWidth = 390;
+    const diagramWidth = 960;
     const diagramHeight = Math.max(430, firstNodeY + Math.max(1, model.nodes.length) * nodeStep + 54);
+    const canonicalViewBox = Object.freeze({ x: 0, y: 0, width: diagramWidth, height: diagramHeight });
+
+    return Object.freeze({
+      kind: LAYOUT_KIND,
+      canonicalViewBox,
+      contentBounds: canonicalViewBox,
+      nodeMetrics: Object.freeze({
+        x: nodeX,
+        width: nodeWidth,
+        height: nodeHeight,
+        firstY: firstNodeY,
+        step: nodeStep
+      }),
+      rulePanel: Object.freeze({
+        x: ruleX,
+        width: ruleWidth
+      }),
+      levelBounds: Object.freeze(model.nodes.map((node, index) => Object.freeze({
+        depth: node.depth,
+        x: nodeX,
+        y: firstNodeY + index * nodeStep,
+        width: nodeWidth,
+        height: nodeHeight
+      })))
+    });
+  }
+
+  function buildSvgMarkup(model) {
+    if (!model || model.kind !== MODEL_KIND) {
+      throw new TypeError("Structural visualization markup requires a structural_visualization model.");
+    }
+
+    const layout = createStructuralLayoutDescriptor(model);
+    const nodeX = layout.nodeMetrics.x;
+    const nodeWidth = layout.nodeMetrics.width;
+    const nodeHeight = layout.nodeMetrics.height;
+    const firstNodeY = layout.nodeMetrics.firstY;
+    const nodeStep = layout.nodeMetrics.step;
+    const ruleX = layout.rulePanel.x;
+    const ruleWidth = layout.rulePanel.width;
+    const diagramHeight = layout.canonicalViewBox.height;
 
     const nodeMarkup = model.nodes.map((node, index) => {
       const y = firstNodeY + index * nodeStep;
@@ -319,7 +362,9 @@
     REPRESENTATION_KIND,
     NODE_KIND,
     EDGE_KIND,
+    LAYOUT_KIND,
     createStructuralVisualizationModel,
+    createStructuralLayoutDescriptor,
     buildSvgMarkup,
     renderStructuralVisualization
   });
