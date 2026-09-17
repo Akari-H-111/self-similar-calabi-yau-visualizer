@@ -44,12 +44,7 @@ assert.ok(Number(versionMatch[1]) >= 6, "Recursive verifier requires version met
 const canonicalBaseTarget = createTarget();
 const canonicalPullbackTarget = createTarget();
 const canonicalRecursiveTarget = createTarget();
-const canonical = validateThenInitialize(
-  canonicalScene,
-  canonicalBaseTarget,
-  canonicalPullbackTarget,
-  canonicalRecursiveTarget
-);
+const canonical = validateThenInitialize(canonicalScene, canonicalBaseTarget, canonicalPullbackTarget, canonicalRecursiveTarget);
 
 assert.equal(canonical.recursiveModel.kind, MODEL_KIND);
 assert.equal(canonical.recursiveModel.requestedDepth, 0);
@@ -128,20 +123,14 @@ delete malformed.mathematics.parameters.D;
 const malformedBaseTarget = createTarget();
 const malformedPullbackTarget = createTarget();
 const malformedRecursiveTarget = createTarget();
-assert.throws(
-  () => validateThenInitialize(malformed, malformedBaseTarget, malformedPullbackTarget, malformedRecursiveTarget),
-  (error) => error instanceof SceneSpecError
-);
+assert.throws(() => validateThenInitialize(malformed, malformedBaseTarget, malformedPullbackTarget, malformedRecursiveTarget), (error) => error instanceof SceneSpecError);
 assert.deepEqual(malformedBaseTarget, createTarget());
 assert.deepEqual(malformedPullbackTarget, createTarget());
 assert.deepEqual(malformedRecursiveTarget, createTarget(), "Malformed input must be rejected before recursive state changes.");
 
 const inventedW = cloneScene();
 inventedW.mathematics.baseHypersurface.definingFunction.representation = "polynomial_ast";
-assert.throws(
-  () => validateThenInitialize(inventedW, createTarget(), createTarget(), createTarget()),
-  (error) => error instanceof SceneSpecError
-);
+assert.throws(() => validateThenInitialize(inventedW, createTarget(), createTarget(), createTarget()), (error) => error instanceof SceneSpecError);
 
 assert.equal(Object.hasOwn(canonicalScene, "derived"), false, "D^4 must remain derived rather than persisted in canonical JSON.");
 assert.equal(Object.hasOwn(canonicalScene, "recursiveExpansion"), false, "Recursive runtime state must not be persisted in canonical JSON.");
@@ -152,13 +141,23 @@ const baseRendererCall = "BaseRenderer.renderBaseScene(scene, rendererElement)";
 const pullbackCall = "OneStepPullback.renderOneStepPullback(scene, baseModel, pullbackElement)";
 const recursiveCreateCall = "RecursiveLazyExpansion.createRecursiveLazyExpansionModel(scene, baseModel, pullbackModel)";
 const recursiveRenderCall = "RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement)";
+const interactionControllerCall = "InteractivePullbackTower.createInteractivePullbackTowerModel(scene, baseModel, pullbackModel)";
 assert.ok(appSource.includes('fetch("data/system.json"'), "Thread 01 JSON loading path must remain present.");
 assert.ok(appSource.indexOf(validationCall) >= 0);
 assert.ok(appSource.indexOf(baseRendererCall) > appSource.indexOf(validationCall));
 assert.ok(appSource.indexOf(pullbackCall) > appSource.indexOf(baseRendererCall));
-assert.ok(appSource.indexOf(recursiveCreateCall) > appSource.indexOf(pullbackCall));
-assert.ok(appSource.indexOf(recursiveRenderCall) > appSource.indexOf(recursiveCreateCall));
-assert.equal(appSource.includes("expandOneLevel("), false, "Application initialization must not eagerly expand toward requestedDepth.");
+const usesDirectRecursiveInitialization = appSource.indexOf(recursiveCreateCall) > appSource.indexOf(pullbackCall);
+const usesForwardInteractionController = appSource.indexOf(interactionControllerCall) > appSource.indexOf(pullbackCall);
+assert.ok(
+  usesDirectRecursiveInitialization || usesForwardInteractionController,
+  "App must construct recursive state through the sealed recursion API directly or through the later interaction controller."
+);
+if (usesDirectRecursiveInitialization) {
+  assert.ok(appSource.indexOf(recursiveRenderCall) > appSource.indexOf(recursiveCreateCall));
+} else {
+  assert.ok(appSource.includes("RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement)"));
+}
+assert.equal(appSource.includes("expandOneLevel("), false, "Application initialization must not become a recursion authority or eagerly expand toward requestedDepth.");
 
 const sceneSpecScript = '<script src="scene-spec.js" defer></script>';
 const baseRendererScript = '<script src="base-renderer.js" defer></script>';
