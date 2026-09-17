@@ -72,7 +72,7 @@ const changedDVariant = cloneScene();
 changedDVariant.mathematics.parameters.D = 3;
 const changedDResult = validateThenRender(changedDVariant, createTarget(), createTarget());
 assert.equal(changedDResult.pullbackModel.exponentValue, 3, "Exponent value must come from the structured exponentParameter declaration.");
-assert.equal(changedDResult.pullbackModel.mapDegree, 81, "Map degree must reuse normalized derived.sheetDegree.");
+assert.equal(changedDResult.pullbackModel.mapDegree, 81, "D^4 runtime metadata must reuse normalized derived.sheetDegree.");
 assert.equal(changedDResult.pullbackModel.depth, 1);
 
 const malformed = cloneScene();
@@ -126,5 +126,5 @@ for (const forbiddenToken of ["children", "recursive", "lazy", "WebGL", "THREE",
 console.log("one-step pullback v0.05 verification: passed");
 console.log("materialized structural depth: 1");
 console.log(`pullback geometry state: ${pullbackModel.status}`);
-console.log(`derived map degree: ${pullbackModel.mapDegree} (no sheet objects materialized)`);
+console.log(`D^4 runtime metadata: ${pullbackModel.mapDegree} (no sheet objects materialized; no map-degree theorem claimed)`);
 console.log("requestedDepth recursion guard: passed");

@@ -1,0 +1,200 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.11",
+  "status": "audit_passed_pending_external_canonical_ci",
+  "current_stage": "mathematical fidelity audit completed repository-side; canonical exact-SHA CI remains an external seal gate",
+  "milestone": "Thread 10 — Mathematical Fidelity Audit",
+  "repository": {
+    "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "default_branch": "main",
+    "thread_starting_main_commit": "7f43dc1b1445e0ded12e1ea185f75230bc68cded",
+    "thread_starting_parent": "ddbcd159cdcd5eefa7c6980ef21d401eaf42bcb7",
+    "starting_commit_message": "perf: audit v0.10 infinite-navigation scaling",
+    "starting_canonical_ci_run": 35071832829,
+    "starting_canonical_ci_status": "completed / success",
+    "starting_runtime_contracts": "completed / success",
+    "starting_formal_lean": "completed / success",
+    "staging_branch": "thread10-mathematical-fidelity-v0-11",
+    "canonical_commit_policy": "final main must be exactly one new milestone commit whose sole parent is the Thread 10 starting main commit",
+    "canonical_ci_policy": "post-commit exact-main GitHub Actions evidence is external sealing evidence and is not written back through a second main commit"
+  },
+  "source_hierarchy": [
+    "current canonical GitHub repository source",
+    "sealed Lean source",
+    "exact retrieved canonical parent-project artifact",
+    "exact validation / manifest / audit artifact",
+    "explicit derivation performed and recorded in this thread",
+    "model inference",
+    "memory"
+  ],
+  "evidence_classes": {
+    "A": "runtime representation",
+    "B": "runtime engineering contract",
+    "C": "deterministically verified runtime property",
+    "D": "Lean-formalized theorem or definition",
+    "E": "parent-project mathematically proved result from exact retrieved canonical source",
+    "F": "heuristic / visualization convention",
+    "G": "unresolved / unavailable",
+    "H": "explicitly false or overclaimed"
+  },
+  "parent_source_gate": {
+    "exact_parent_source_available": false,
+    "memory_used_as_canonical_evidence": false,
+    "status": "canonical parent source unavailable in current thread",
+    "missing_exact_filenames": [
+      "README_arithmetic_self_similar_cy_final.md",
+      "final_audit_arithmetic_self_similar_cy.md",
+      "handoff_arithmetic_self_similar_cy_final.md",
+      "state_arithmetic_self_similar_cy_final.json",
+      "dependency_graph_arithmetic_self_similar_cy.json",
+      "verify_self_similar_closure_final.py",
+      "Arithmetic_Self_Similar_Calabi_Yau_final.tex",
+      "validation_arithmetic_self_similar_cy_final.txt",
+      "manifest_arithmetic_self_similar_cy_final.json"
+    ],
+    "parent_results_promoted_to_class_E": []
+  },
+  "lean_formal_boundary": {
+    "sealed": true,
+    "modified_by_v0_11": false,
+    "coordinate_power": {
+      "artifact": "formal/SelfSimilarCY/CoordinatePower.lean",
+      "blob_sha": "dcfae8a3ed99544e50ee45aa12acde63e41090c8",
+      "status": "formally proved / defined",
+      "scope": ["Point4 = Fin 4 → ℂ", "coordinatePower", "coordinatePower_apply", "coordinatePower_unique"]
+    },
+    "coordinate_power_iteration": {
+      "artifact": "formal/SelfSimilarCY/CoordinatePowerIteration.lean",
+      "blob_sha": "4c78793d586e8ba822d4b326f09fd82dc07eaaf9",
+      "status": "formally proved",
+      "scope": ["coordinatePower_iterate_apply", "coordinatePower_iterate"]
+    },
+    "pullback_tower": {
+      "artifact": "formal/SelfSimilarCY/PullbackTower.lean",
+      "blob_sha": "1de5fed3c38e67c89d1c8673c7515f312a7af3e0",
+      "status": "formally proved / defined",
+      "scope": ["abstract set-theoretic pullback tower", "successor preimage recurrence", "iterate-preimage identity", "coordinatePower(D^n)-preimage identity"]
+    },
+    "explicit_nonclaims": [
+      "W",
+      "Calabi–Yau geometry",
+      "smoothness",
+      "connectedness",
+      "étaleness",
+      "deg(P_D)=D^4",
+      "genuine D^4 sheets",
+      "covering-space structure",
+      "fiber geometry",
+      "P_D^* g_log = D^2 g_log",
+      "browser behavior",
+      "performance",
+      "whole visualizer formal verification"
+    ]
+  },
+  "runtime_fidelity": {
+    "coordinate_power": "runtime represented + deterministic contract + exact Lean bridge at coordinate transformation level",
+    "iteration": "symbolic runtime annotation + exact Lean iterate theorem",
+    "pullback_levels": "structural descriptors + exact Lean recurrence bridge; descriptors are not mathematical sets/varieties",
+    "requestedDepth": "engineering request metadata",
+    "materializedDepth": "engineering materialization frontier",
+    "D2": "runtime numeric metadata; metric theorem unformalized",
+    "D4": "runtime numeric / organizational metadata; genuine map-degree theorem unformalized",
+    "legacy_mapDegree_fields": "compatibility field names interpreted only as D^4 runtime metadata",
+    "iteratedDegreeExpression": "symbolic runtime expression; not an iterated map-degree theorem",
+    "zoom": "structural focus/navigation only",
+    "sheets": "not materialized",
+    "covering": "not claimed",
+    "geometry": "not rendered",
+    "W": "unresolved"
+  },
+  "arithmetic_overlays": {
+    "implemented": {
+      "coordinate_channels": "source-backed structural representation with sealed Lean support",
+      "coordinate_iterate_rule": "formally backed symbolic annotation"
+    },
+    "deferred_unavailable": [
+      "cyclotomic_refinement",
+      "torsion_labels",
+      "collision_classes",
+      "delta_n_divisor",
+      "pair discriminants",
+      "triple collisions",
+      "four-coordinate compatibility",
+      "positive-dimensional torsion families"
+    ]
+  },
+  "performance_boundary": {
+    "infinite_navigation_meaning": "arbitrarily continued finite structural navigation",
+    "benchmark_horizons": [10, 100, 1000, 2500, 5000, 10000],
+    "benchmark_horizons_are_mathematical_limits": false,
+    "safe_integer_guard_is_mathematical_theorem": false,
+    "safe_integer_guard_status": "JavaScript representation / engineering safety constraint",
+    "browser_runtime_smoke_test": "not_tested",
+    "browser_performance": "not_tested"
+  },
+  "overclaim_audit": {
+    "substantial_mathematical_repair_required": false,
+    "historical_artifacts_rewritten": false,
+    "historical_wording_current_interpretation": "v0.03-v0.06 degree/metric terminology is preserved historically but constrained by the later F05/v0.11 unformalized-metadata interpretation",
+    "live_repairs": [
+      "one-step runtime text changed from derived map degree to D^4 runtime metadata with an explicit no-map-degree-theorem qualifier",
+      "current page labels D² as runtime metadata and D⁴ as organization metadata",
+      "current page labels sheet/branch section as organization metadata",
+      "current page version label updated to v0.11 Mathematical Fidelity Audit"
+    ]
+  },
+  "verification_policy": {
+    "v0_11_verifier_role": "verify repository claim discipline, not mathematical proof",
+    "required_runtime_regressions": [
+      "verify_scene_spec_v0_03.js",
+      "verify_base_renderer_v0_04.js",
+      "verify_one_step_pullback_v0_05.js",
+      "verify_recursive_lazy_expansion_v0_06.js",
+      "verify_zoom_semantics_v0_07.js",
+      "verify_sheet_branch_organization_v0_08.js",
+      "verify_arithmetic_overlays_v0_09.js",
+      "verify_performance_infinite_navigation_v0_10.js",
+      "verify_mathematical_fidelity_v0_11.js"
+    ],
+    "lean_reopened": false,
+    "final_exact_main_ci_required": true
+  },
+  "files": {
+    "created": [
+      "verify_mathematical_fidelity_v0_11.js",
+      "docs/MATHEMATICAL_FIDELITY_self_similar_cy_visualizer_v0_11.md",
+      "docs/state_self_similar_cy_visualizer_v0_11.json",
+      "docs/progress_self_similar_cy_visualizer_v0_11.md"
+    ],
+    "production_wording_modified": ["one-step-pullback.js", "index.html"],
+    "metadata_documentation_modified": ["README.md", "data/system.json", ".github/workflows/formal-verification.yml"],
+    "historical_verifier_wording_only": ["verify_one_step_pullback_v0_05.js"],
+    "formal_lean_modified": []
+  },
+  "scope_exclusions": [
+    "new theorem discovery",
+    "W implementation",
+    "genuine D^4 sheet rendering",
+    "covering-space renderer",
+    "étale renderer",
+    "fiber renderer",
+    "cyclotomic overlay implementation",
+    "torsion visualization",
+    "collision visualization",
+    "Delta_n rendering",
+    "Three.js",
+    "WebGL",
+    "GPU rendering",
+    "camera system",
+    "publication layout",
+    "GitHub Pages"
+  ],
+  "seal_policy": {
+    "repository_side_audit": "passed",
+    "canonical_main_commit": "pending",
+    "final_canonical_runtime_contracts": "pending external exact-SHA CI",
+    "final_canonical_formal_lean": "pending external exact-SHA CI",
+    "thread_sealed": false
+  },
+  "next_milestone_after_seal": "Thread 11 — UX / Exposition Layer"
+}

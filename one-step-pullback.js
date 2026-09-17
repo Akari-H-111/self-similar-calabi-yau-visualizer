@@ -29,8 +29,8 @@
       sheetsMaterialized: false,
       message:
         `One-step pullback structure initialized: X_1 = P_D^{-1}(X), depth = ${String(ONE_STEP_DEPTH)}, ` +
-        `map exponent = ${String(exponentValue)}, derived map degree = ${String(scene.derived.sheetDegree)}. ` +
-        "Pullback geometry is not drawn because the base geometry is unresolved; no sheets are materialized."
+        `map exponent = ${String(exponentValue)}, D^4 runtime metadata = ${String(scene.derived.sheetDegree)} ` +
+        "(not a map-degree theorem in the current formal scope). Pullback geometry is not drawn because the base geometry is unresolved; no sheets are materialized."
     });
   }
 
