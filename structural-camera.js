@@ -308,6 +308,43 @@
     });
   }
 
+  function resolveStructuralSurface(target) {
+    if (!target || typeof target !== "object") {
+      throw new TypeError("Structural camera application requires an SVG surface or structural visualization target.");
+    }
+    if (typeof target.setAttribute === "function" && target.dataset) return target;
+    if (typeof target.querySelector !== "function") {
+      throw new TypeError("Structural camera target must expose querySelector or be an SVG-like surface.");
+    }
+    const surface = target.querySelector("svg.structural-visualization__surface");
+    if (!surface || typeof surface.setAttribute !== "function" || !surface.dataset) {
+      throw new TypeError("Structural camera target does not contain a structural SVG surface.");
+    }
+    return surface;
+  }
+
+  function applyStructuralCamera(camera, target) {
+    validateCameraModel(camera);
+    const surface = resolveStructuralSurface(target);
+    const serializedViewBox = serializeCameraViewBox(camera);
+    const cameraState = camera.cameraTransformApplied ? "transformed" : "identity";
+
+    surface.setAttribute("viewBox", serializedViewBox);
+    surface.dataset.cameraState = cameraState;
+    surface.dataset.cameraScale = String(camera.cameraScale);
+    surface.dataset.cameraTransformApplied = String(camera.cameraTransformApplied);
+    surface.dataset.geometricZoomApplied = "false";
+
+    if (target !== surface && target.dataset) {
+      target.dataset.cameraState = cameraState;
+      target.dataset.cameraScale = String(camera.cameraScale);
+      target.dataset.cameraTransformApplied = String(camera.cameraTransformApplied);
+      target.dataset.geometricZoomApplied = "false";
+    }
+
+    return camera;
+  }
+
   const api = Object.freeze({
     MODEL_KIND,
     VIEW_KIND,
@@ -323,7 +360,8 @@
     fitCameraToVisibleStructure,
     fitCameraToLevel,
     reconcileCameraExtent,
-    resetCamera
+    resetCamera,
+    applyStructuralCamera
   });
 
   if (typeof module !== "undefined" && module.exports) {
