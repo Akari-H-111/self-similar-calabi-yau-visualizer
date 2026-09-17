@@ -141,9 +141,7 @@ function applyStructuralCameraState() {
     throw new TypeError("Structural camera requires the current structural SVG surface.");
   }
 
-  surface.setAttribute("viewBox", StructuralCamera.serializeCameraViewBox(structuralCameraModel));
-  surface.dataset.cameraTransformApplied = String(structuralCameraModel.cameraTransformApplied);
-  surface.dataset.geometricZoomApplied = "false";
+  StructuralCamera.applyStructuralCamera(structuralCameraModel, surface);
 
   structuralCameraElement.hidden = false;
   structuralCameraElement.dataset.state = "ready";
