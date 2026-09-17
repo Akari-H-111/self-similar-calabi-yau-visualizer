@@ -3,7 +3,7 @@
   "version": "v0.15",
   "runtime_scene_baseline": "v0.12",
   "milestone": "Thread 14 — Interactive Pullback Tower",
-  "status": "implementation_complete_staging_ci_pending",
+  "status": "implementation_complete_staging_full_green_pre_final_docs_exact_tree_ci_pending",
   "starting_baseline": {
     "repository": "Akari-H-111/self-similar-calabi-yau-visualizer",
     "branch": "main",
@@ -66,18 +66,23 @@
   },
   "validation": {
     "staging_branch": "thread14-interactive-pullback-tower-v0-15",
-    "staging_pull_request": null,
-    "staging_workflow_run_id": null,
-    "runtime_contracts": "pending",
-    "formal_lean": "pending",
-    "publication_static_smoke": "pending",
+    "staging_pull_request": 7,
+    "pre_final_docs_verified_head": "08da5cfdccee608783c371efd82429f1ccaa1999",
+    "pre_final_docs_verified_tree": "c7d3c267a709e4ad0d7bcd595b3c37139a8cac66",
+    "staging_workflow_run_id": 35238829762,
+    "staging_workflow_run_number": 59,
+    "runtime_contracts": "success",
+    "formal_lean": "success",
+    "publication_static_smoke": "success",
+    "final_artifact_sync": "this state/progress sync creates a new staging tree; require one additional exact-tree full-green staging run before canonical replay",
+    "final_staging_exact_tree_ci": "pending_after_artifact_sync",
     "exact_main_ci": "pending_after_canonical_replay",
     "pages_exact_sha": "pending_after_canonical_replay"
   },
   "seal_policy": {
     "staging_pr_policy": "CI vehicle only; do not merge staging history",
-    "canonical_policy": "replay final verified staging tree as exactly one child of 97ee38e7f0a8704297621f8fc15f0109c8512751, fast-forward main, then require exact-main Formal Verification and Pages evidence",
-    "seal_authority": "Git object identity plus exact-SHA GitHub Actions evidence; this state file does not self-certify future CI"
+    "canonical_policy": "after final exact-tree staging success, replay that verified staging tree as exactly one child of 97ee38e7f0a8704297621f8fc15f0109c8512751, fast-forward main, then require exact-main Formal Verification and Pages evidence",
+    "seal_authority": "Git object identity plus exact-SHA GitHub Actions evidence; this state file records only already-observed runs and does not self-certify the artifact-sync commit that contains it"
   },
   "mathematical_claim_strength_increased": false,
   "next_milestone_started": false,
