@@ -187,7 +187,10 @@ assert.match(readmeSource, /not a map-degree theorem/i);
 assert.match(readmeSource, /entire visualizer, all Calabi–Yau mathematics/i);
 assert.match(readmeSource, /not source-verified in this thread/);
 assert.match(readmeSource, /not mathematical limits/);
-assert.match(readmeSource, /engineering\/runtime representation constraint|engineering safety constraint|representation-safety constraints/i);
+assert.match(
+  readmeSource,
+  /engineering\/runtime representation constraint|engineering safety constraint|representation[- ]safety(?:\s*\/\s*engineering)?\s+constraints?/i
+);
 
 const fidelitySource = read("docs/MATHEMATICAL_FIDELITY_self_similar_cy_visualizer_v0_11.md");
 for (const requiredSection of [
