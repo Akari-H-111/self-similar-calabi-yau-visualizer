@@ -37,7 +37,6 @@ let interactionModel = null;
 
 function displayScene(scene) {
   const parameters = scene.mathematics.parameters;
-
   fields.project.textContent = scene.project;
   fields.version.textContent = scene.version;
   fields.schemaVersion.textContent = String(scene.schemaVersion);
@@ -51,9 +50,7 @@ function displayScene(scene) {
 }
 
 function clearDataset(target, keys) {
-  for (const key of keys) {
-    delete target.dataset[key];
-  }
+  for (const key of keys) delete target.dataset[key];
 }
 
 function resetRenderedState() {
@@ -61,55 +58,18 @@ function resetRenderedState() {
   canonicalScene = null;
   baseModel = null;
   pullbackModel = null;
-
   dataElement.hidden = true;
 
   expositionElement.hidden = true;
-  clearDataset(expositionElement, [
-    "state",
-    "geometryRendered",
-    "sheetsMaterialized",
-    "coveringStructureClaimed",
-    "geometricZoomApplied",
-    "cameraTransformApplied"
-  ]);
+  clearDataset(expositionElement, ["state", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied"]);
 
   interactionElement.hidden = true;
   interactionElement.innerHTML = "";
-  clearDataset(interactionElement, [
-    "state",
-    "selectedDepth",
-    "focusedDepth",
-    "materializedDepth",
-    "requestedDepth",
-    "sourceRequestedDepth",
-    "visibleDepth",
-    "collapsedDepth",
-    "geometryRendered",
-    "sheetsMaterialized",
-    "coveringStructureClaimed",
-    "geometricZoomApplied",
-    "cameraTransformApplied"
-  ]);
+  clearDataset(interactionElement, ["state", "selectedDepth", "focusedDepth", "materializedDepth", "requestedDepth", "sourceRequestedDepth", "visibleDepth", "collapsedDepth", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied"]);
 
   structuralVisualizationElement.hidden = true;
   structuralVisualizationElement.innerHTML = "";
-  clearDataset(structuralVisualizationElement, [
-    "state",
-    "representationKind",
-    "structuralOnly",
-    "materializedDepth",
-    "focusedDepth",
-    "selectedDepth",
-    "visibleDepth",
-    "collapsedDepth",
-    "geometryRendered",
-    "sheetsMaterialized",
-    "coveringStructureClaimed",
-    "geometricZoomApplied",
-    "cameraTransformApplied",
-    "materializationTriggered"
-  ]);
+  clearDataset(structuralVisualizationElement, ["state", "representationKind", "structuralOnly", "materializedDepth", "focusedDepth", "selectedDepth", "visibleDepth", "collapsedDepth", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied", "materializationTriggered"]);
 
   rendererElement.hidden = true;
   rendererElement.textContent = "";
@@ -121,54 +81,19 @@ function resetRenderedState() {
 
   recursiveElement.hidden = true;
   recursiveElement.textContent = "";
-  clearDataset(recursiveElement, [
-    "state",
-    "requestedDepth",
-    "materializedDepth",
-    "expansionComplete",
-    "geometryRendered",
-    "sheetsMaterialized"
-  ]);
+  clearDataset(recursiveElement, ["state", "requestedDepth", "materializedDepth", "expansionComplete", "geometryRendered", "sheetsMaterialized"]);
 
   zoomElement.hidden = true;
   zoomElement.textContent = "";
-  clearDataset(zoomElement, [
-    "state",
-    "requestedFocusDepth",
-    "focusedDepth",
-    "availableDepth",
-    "requestedDepth",
-    "focusAvailable",
-    "geometricZoomApplied",
-    "cameraTransformApplied",
-    "materializationTriggered"
-  ]);
+  clearDataset(zoomElement, ["state", "requestedFocusDepth", "focusedDepth", "availableDepth", "requestedDepth", "focusAvailable", "geometricZoomApplied", "cameraTransformApplied", "materializationTriggered"]);
 
   sheetBranchElement.hidden = true;
   sheetBranchElement.textContent = "";
-  clearDataset(sheetBranchElement, [
-    "state",
-    "sheetDegreeSource",
-    "sheetDegreePerStep",
-    "materializedDepth",
-    "focusedDepth",
-    "sheetsMaterialized",
-    "coveringStructureClaimed",
-    "geometryRendered",
-    "materializationTriggered"
-  ]);
+  clearDataset(sheetBranchElement, ["state", "sheetDegreeSource", "sheetDegreePerStep", "materializedDepth", "focusedDepth", "sheetsMaterialized", "coveringStructureClaimed", "geometryRendered", "materializationTriggered"]);
 
   arithmeticOverlayElement.hidden = true;
   arithmeticOverlayElement.textContent = "";
-  clearDataset(arithmeticOverlayElement, [
-    "state",
-    "availableOverlays",
-    "enabledOverlays",
-    "materializedDepth",
-    "focusedDepth",
-    "materializationTriggered",
-    "geometryRendered"
-  ]);
+  clearDataset(arithmeticOverlayElement, ["state", "availableOverlays", "enabledOverlays", "materializedDepth", "focusedDepth", "materializationTriggered", "geometryRendered"]);
 }
 
 function renderInteractionState() {
@@ -224,9 +149,7 @@ function renderInteractionState() {
 }
 
 function applyInteraction(action, depth = null) {
-  if (!interactionModel) {
-    throw new TypeError("Interactive pullback state is not initialized.");
-  }
+  if (!interactionModel) throw new TypeError("Interactive pullback state is not initialized.");
 
   switch (action) {
     case "expand-or-reveal":
@@ -250,9 +173,7 @@ function applyInteraction(action, depth = null) {
 
 function handleInteractionClick(event) {
   const control = event.target?.closest?.("[data-interaction-action]");
-  if (!control || !interactionElement.contains(control) || control.disabled) {
-    return;
-  }
+  if (!control || !interactionElement.contains(control) || control.disabled) return;
 
   const action = control.dataset.interactionAction;
   const depth = Object.hasOwn(control.dataset, "depth") ? Number(control.dataset.depth) : null;
@@ -269,24 +190,18 @@ function handleInteractionClick(event) {
 async function loadSystemConfiguration() {
   try {
     const response = await fetch("data/system.json", { cache: "no-store" });
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status} ${response.statusText}`.trim());
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`.trim());
 
     const rawScene = await response.json();
-    canonicalScene = SceneSpec.validateAndNormalizeScene(rawScene);
+    const scene = SceneSpec.validateAndNormalizeScene(rawScene);
+    canonicalScene = scene;
 
-    baseModel = BaseRenderer.renderBaseScene(canonicalScene, rendererElement);
-    pullbackModel = OneStepPullback.renderOneStepPullback(canonicalScene, baseModel, pullbackElement);
-    interactionModel = InteractivePullbackTower.createInteractivePullbackTowerModel(
-      canonicalScene,
-      baseModel,
-      pullbackModel
-    );
+    baseModel = BaseRenderer.renderBaseScene(scene, rendererElement);
+    pullbackModel = OneStepPullback.renderOneStepPullback(scene, baseModel, pullbackElement);
+    interactionModel = InteractivePullbackTower.createInteractivePullbackTowerModel(scene, baseModel, pullbackModel);
 
     renderInteractionState();
-    displayScene(canonicalScene);
+    displayScene(scene);
     dataElement.hidden = false;
   } catch (error) {
     console.error("Failed to load, validate, or initialize the interactive structural scene:", error);
