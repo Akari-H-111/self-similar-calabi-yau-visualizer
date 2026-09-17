@@ -101,6 +101,7 @@ function renderInteractionState() {
     throw new TypeError("Interactive pullback rendering requires initialized canonical and interaction models.");
   }
 
+  const scene = canonicalScene;
   const recursiveModel = interactionModel.recursiveModel;
   const zoomModel = interactionModel.zoomModel;
   const organizationModel = interactionModel.organizationModel;
@@ -111,7 +112,7 @@ function renderInteractionState() {
   InteractivePullbackTower.renderInteractivePullbackTower(interactionModel, interactionElement);
 
   const structuralVisualizationModel = StructuralVisualization.createStructuralVisualizationModel(
-    canonicalScene,
+    scene,
     baseModel,
     recursiveModel,
     zoomModel,
@@ -120,17 +121,11 @@ function renderInteractionState() {
   );
   StructuralVisualization.renderStructuralVisualization(structuralVisualizationModel, structuralVisualizationElement);
 
-  const arithmeticOverlayModel = ArithmeticOverlays.createArithmeticOverlayModel(
-    canonicalScene,
-    recursiveModel,
-    zoomModel,
-    organizationModel,
-    initialArithmeticOverlayRequest
-  );
+  const arithmeticOverlayModel = ArithmeticOverlays.createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, initialArithmeticOverlayRequest);
   ArithmeticOverlays.renderArithmeticOverlays(arithmeticOverlayModel, arithmeticOverlayElement);
 
   const expositionModel = ExpositionLayer.createExpositionModel(
-    canonicalScene,
+    scene,
     baseModel,
     recursiveModel,
     zoomModel,
