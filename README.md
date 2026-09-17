@@ -1,14 +1,16 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.12 — UX / Exposition Layer
+**Current version:** v0.14 — Structural Visualization Layer
 
-**Publication checkpoint candidate:** v0.13 — Publication Checkpoint
+**Published checkpoint:** v0.13 — Publication Checkpoint
 
-v0.13 is a repository-level publication milestone. It does **not** change the sealed v0.12 runtime/UI semantics, mathematical scope, or Lean formal core. `data/system.json` therefore remains at `v0.12`; the publication checkpoint records and verifies how that sealed implementation is exposed, reproduced, cited, licensed, and deployed.
+**Runtime scene contract:** v0.12
 
-This repository is a minimal static HTML/CSS/vanilla-JavaScript **structural visualizer**. v0.12 does not add new mathematics or geometry. It adds an exposition layer so a reader can see, on the page itself, which parts are Lean-formalized, which are runtime metadata, which are structural or symbolic, and which remain unresolved or not materialized.
+This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.14 adds the first deliberately visible graphical layer: a deterministic inline-SVG diagram projected from the existing verified runtime models.
 
-The project keeps the evidence rule established by v0.11:
+The diagram is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric zoom.
+
+The evidence rule remains:
 
 ```text
 runtime representation
@@ -18,69 +20,76 @@ runtime representation
 != visualization convention
 ```
 
-## Publication checkpoint status
+## Published v0.13 baseline
 
-Thread 12 starts from the sealed v0.12 canonical baseline:
-
-```text
-canonical commit:
-3038cb49520743e1620032a9104d26cb92bcd49f
-
-canonical CI:
-Formal Verification run #35 / 35204008792
-runtime-contracts = completed / success
-formal-lean       = completed / success
-```
-
-The v0.12 state/progress files are intentionally pre-external-seal snapshots. They are not rewritten after the fact. Their final seal is represented by the canonical commit above, the exact-SHA green CI run, and staging PR #4 being closed unmerged.
-
-The intended publication policy is:
+Thread 13 starts from the immutable published checkpoint:
 
 ```text
-repository visibility = public at publication cutover
-source availability   = open source
-release checkpoint    = v0.13
-license                = Apache-2.0 (OSI-approved)
-custom domain         = not required for the first publication
+canonical main/tag commit:
+e83ed17a5ce8e45e67ef326042a21ec51ba24222
+
+canonical tree:
+338a519614ea16ceb2e4a1247fc0c94338929f0c
+
+release:
+v0.13 — Publication Checkpoint
+published / immutable / not prerelease
+
+Formal Verification:
+run #42 / 35215769668
+runtime-contracts          = completed / success
+formal-lean                = completed / success
+publication-static-smoke   = completed / success
+
+GitHub Pages build/deployment:
+run 35216628078
+head SHA = e83ed17a5ce8e45e67ef326042a21ec51ba24222
+conclusion = success
 ```
 
-The repository is licensed under the **Apache License, Version 2.0** (`Apache-2.0`). Apache-2.0 is an OSI-approved open-source license. The repository's `LICENSE` file is the operative license text; public visibility and CI status do not enlarge or replace that grant.
+The repository is public and licensed under the **Apache License, Version 2.0** (`Apache-2.0`).
 
-## What the page shows first
+## v0.14 structural visualization
 
-The first-screen current-state summary exposes:
+The new projection module is:
 
 ```text
-focused / materialized / requested depth
-D
-D² runtime metadata
-D⁴ organization metadata
-structural state
-geometry status
-formal status
-navigation status
-W representation
+structural-visualization.js
 ```
 
-Those values are read from the existing normalized runtime models. `exposition-layer.js` does not recompute D², D⁴, recursion, sheets, or geometry.
-
-The page also exposes the stable vocabulary:
+It consumes existing normalized/verified models:
 
 ```text
-Lean formalized
-Runtime metadata
-Structural
-Symbolic
-Unresolved
-Not materialized
-Engineering
+scene
+base_scene
+recursive_lazy_expansion
+structural_zoom_focus
+sheet_branch_organization
 ```
 
-A generic `verified` badge is intentionally avoided because Lean proof, runtime verification, CI success, and engineering observations are different evidence layers.
+and emits a finite SVG structural diagram.
+
+A visible node means a structural level descriptor already materialized by the existing recursion model. A visible arrow means the existing adjacent pullback relation. The SVG does **not** reinterpret those glyphs as geometric hypersurfaces, embedded branches, genuine sheets, or covering maps.
+
+The canonical scene still has:
+
+```text
+requestedDepth = 0
+```
+
+so the default published diagram honestly contains only the materialized base node `X₀`, together with a symbolic rule panel. It does not manufacture `X₁` merely to make the page look busier.
+
+When an already-verified recursive model contains deeper finite descriptors, the same projection deterministically displays the corresponding finite nodes and edges.
+
+Detailed contract:
+
+```text
+docs/STRUCTURAL_VISUALIZATION_self_similar_cy_visualizer_v0_14.md
+```
 
 ## Project-level structural statement
 
-The repository continues to carry the project notation
+The repository carries the project notation
 
 \[
 X=W^{-1}(\lambda),
@@ -90,9 +99,9 @@ X_n=(P_D^n)^{-1}(X),
 P_D(z_1,\ldots,z_4)=(z_1^D,\ldots,z_4^D).
 \]
 
-The sealed Lean core formalizes the coordinate-power map, its iteration law, and an abstract set-theoretic pullback tower for arbitrary `X : Set Point4`. It does **not** define `W` or Calabi–Yau geometry.
+The sealed Lean core formalizes the four-coordinate coordinate-power map, its iteration law, and an abstract set-theoretic pullback tower for arbitrary `X : Set Point4`.
 
-The runtime representation of `W` remains exactly:
+It does **not** define `W` or Calabi–Yau geometry. Runtime `W` remains:
 
 ```text
 unresolved
@@ -100,19 +109,21 @@ unresolved
 
 Therefore no geometric Calabi–Yau hypersurface is currently rendered.
 
-## Lean-formalized scope
+## Frozen truthfulness boundary
 
-The sealed formal scope remains unchanged from v0.11:
+The v0.14 projection preserves:
 
 ```text
-formal/SelfSimilarCY/CoordinatePower.lean
-formal/SelfSimilarCY/CoordinatePowerIteration.lean
-formal/SelfSimilarCY/PullbackTower.lean
+geometryRendered = false
+sheetsMaterialized = false
+coveringStructureClaimed = false
+geometricZoomApplied = false
+cameraTransformApplied = false
+materializationTriggered = false
+W representation = unresolved
 ```
 
-It establishes the four-coordinate coordinate-power map, the `D^n` iteration rule, the abstract set-theoretic pullback recurrence, and the closed-form preimage description via `coordinatePower (D ^ n)`.
-
-Thread 12 does not modify `formal/` and does not promote any additional item into the formalized category.
+The structural visualization rejects inputs that violate this Thread 13 boundary rather than silently upgrading them.
 
 ## D² and D⁴
 
@@ -123,14 +134,12 @@ scene.derived.metricScale = D^2
 scene.derived.sheetDegree = D^4
 ```
 
-The current interpretation is unchanged:
+The current interpretation remains:
 
 ```text
 D² = runtime numeric metadata
 D⁴ = runtime numeric / organizational metadata
 ```
-
-The current UI presents D² and D⁴ explicitly as runtime/organization metadata.
 
 The repository does not claim that the sealed Lean core proves:
 
@@ -139,26 +148,26 @@ P_D^* g_log = D^2 g_log
 deg(P_D) = D^4
 ```
 
-D⁴ is therefore **not a map-degree theorem** in the current formal scope. Legacy property names such as `metricScale`, `sheetDegree`, `mapDegree`, `mapDegreePerStep`, `iteratedDegreeExpression`, and `formalMetricScaleExpression` remain compatibility identifiers whose names do not upgrade their evidence status.
+The SVG explicitly states that D⁴ remains organization metadata and that no covering structure is claimed.
 
-## Structural navigation, sheets, and geometry
+## Lean-formalized scope
 
-The underlying runtime contracts remain unchanged:
+The sealed formal source remains unchanged:
 
 ```text
-geometryRendered = false
-sheetsMaterialized = false
-coveringStructureClaimed = false
-geometricZoomApplied = false
-cameraTransformApplied = false
-materializationTriggered = false
+formal/SelfSimilarCY/CoordinatePower.lean
+formal/SelfSimilarCY/CoordinatePowerIteration.lean
+formal/SelfSimilarCY/PullbackTower.lean
 ```
 
-`Zoom semantics` means structural focus/navigation only. No camera or geometric scaling is applied.
+Pinned environment:
 
-Sheet/branch organization remains aggregate metadata only. No concrete D⁴ sheets, fiber geometry, covering structure, étale realization, or branch geometry is created.
+```text
+Lean: leanprover/lean4:v4.34.0
+mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
+```
 
-The exposition page puts these boundaries before the implementation diagnostics instead of requiring a reader to reconstruct them from several status messages.
+v0.14 does not modify `formal/` and does not promote any new theorem.
 
 ## Arithmetic overlays
 
@@ -169,24 +178,9 @@ coordinate_channels
 coordinate_iterate_rule
 ```
 
-They retain their existing sealed Lean provenance.
+Cyclotomic, torsion, collision, divisor, and related parent-project geometry remains deferred unless exact canonical source evidence is retrieved and audited.
 
-The following remain unavailable/deferred in this visualizer layer:
-
-```text
-cyclotomic refinement
-torsion labels / loci / cosets
-collision classes / loci
-Delta_n / divisor marking
-pair discriminants
-triple collisions
-four-coordinate compatibility
-positive-dimensional torsion families
-```
-
-The exact parent-project canonical sources needed to strengthen those claims were not available to the Thread 10/10R visualizer audit. They remain **not source-verified in this thread** and are not reconstructed from memory.
-
-## Infinite-navigation and performance boundary
+## Navigation and performance boundary
 
 “Infinite navigation” retains the operational meaning:
 
@@ -194,55 +188,25 @@ The exact parent-project canonical sources needed to strengthen those claims wer
 arbitrarily continued finite structural navigation
 ```
 
-Benchmark horizons such as `10, 100, 1000, 2500, 5000, 10000` are engineering observations, **not mathematical limits** and not proof of literal infinite scalability.
+Benchmark horizons and JavaScript safe-integer checks are engineering observations/constraints, not mathematical limits.
 
-`Number.isSafeInteger` guards are JavaScript representation-safety / engineering constraints, not mathematical theorems.
-
-Real-browser long-session performance and heap behavior remain outside the sealed evidence unless separately measured.
+Thread 13 does not add user interaction, recursive-expansion controls, camera transforms, or geometric zoom. Those belong to the next interaction milestone.
 
 ## What green CI means
 
 A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
 
-A green `runtime-contracts` job means the JavaScript contracts, claim-discipline regression, UX/exposition semantic verifier, and publication checkpoint verifier pass.
+A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including the v0.14 structural-visualization verifier.
 
-A green `publication-static-smoke` job means the repository can be served by a plain static HTTP server on a clean GitHub-hosted runner and the publication-critical HTML/CSS/JavaScript/JSON paths return successfully. It is **not** a real-browser rendering, accessibility, or long-session performance certification.
+A green `publication-static-smoke` job means the static repository paths can be served and fetched successfully from a clean GitHub-hosted runner.
 
-Green CI does **not** mean that the **entire visualizer, all Calabi–Yau mathematics**, browser behavior, D² metric scaling, D⁴ genuine map degree, covering geometry, or unavailable arithmetic research has been formally verified.
+Green CI does **not** mean that the entire visualizer, all Calabi–Yau mathematics, browser behavior, D² metric scaling, D⁴ genuine map degree, covering geometry, or unavailable arithmetic research has been formally verified.
 
-## UX / exposition architecture
+## Reproduce runtime verification
 
-v0.12 adds:
-
-```text
-exposition-layer.js
-verify_ux_exposition_v0_12.js
-docs/UX_EXPOSITION_self_similar_cy_visualizer_v0_12.md
-```
-
-The page hierarchy is:
-
-```text
-explicit geometry boundary
-current-state summary
-semantic legend
-formal/runtime/unresolved provenance panel
-qualified canonical notation
-implementation diagnostics disclosure
-```
-
-The low-level diagnostic DOM targets and runtime models are preserved for regression/debugging. They are simply moved out of the primary reading path.
-
-Accessibility-oriented changes include one concise ARIA live status region, native `details/summary` disclosures, visible keyboard focus for summaries, single-column narrow-viewport layouts, visible text semantics rather than color-only coding, and no hover-only tooltip dependency for core meaning.
-
-This is a source/contract-level accessibility pass, not a claim of real-browser or assistive-technology certification.
-
-## Reproduce the sealed runtime contracts
-
-Use Node 22 for the deterministic JavaScript verification surface:
+Use Node 22:
 
 ```bash
-node --version
 node verify_scene_spec_v0_03.js
 node verify_base_renderer_v0_04.js
 node verify_one_step_pullback_v0_05.js
@@ -254,18 +218,12 @@ node verify_performance_infinite_navigation_v0_10.js
 node verify_mathematical_fidelity_v0_11.js
 node verify_ux_exposition_v0_12.js
 node verify_publication_checkpoint_v0_13.js
+node verify_structural_visualization_v0_14.js
 ```
 
-The v0.11 verifier enforces mathematical claim discipline. The v0.12 verifier checks semantic exposition contracts, source-of-truth reuse, accessibility hooks, and byte-for-byte preservation of the sealed v0.11 runtime math/organization engines. The v0.13 verifier checks publication metadata, provenance boundaries, license integrity, CI wiring, and publication-state consistency. None of these verifiers replaces mathematical proof.
+`verify_structural_visualization_v0_14.js` checks canonical depth-zero rendering, deterministic deeper finite fixtures, projection-only source discipline, truthfulness datasets, integration wiring, and byte-for-byte preservation of the sealed model engines.
 
-## Reproduce the sealed Lean core
-
-The Lean environment is repository-pinned:
-
-```text
-Lean: leanprover/lean4:v4.34.0
-mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
-```
+## Reproduce the Lean core
 
 From `formal/`:
 
@@ -277,49 +235,24 @@ lake env lean SelfSimilarCY/CoordinatePowerIteration.lean
 lake env lean SelfSimilarCY/PullbackTower.lean
 ```
 
-The CI additionally rejects `axiom`, `sorry`, and `admit` placeholders in the sealed Lean source directory.
+CI additionally rejects `axiom`, `sorry`, and `admit` placeholders in the sealed Lean source directory.
 
-## Run the static site locally
+## Run locally
 
-Serve the repository over HTTP rather than opening `index.html` with `file://`:
+Serve the repository over HTTP:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000/` in a browser.
+Then open `http://localhost:8000/`.
 
-The publication CI also checks the repository-relative paths used by the static page, including `style.css`, the JavaScript files, and `data/system.json`.
+The page loads `data/system.json`, validates it, builds the established runtime models, projects them into the SVG structural diagram, and then renders the exposition/diagnostic surfaces.
 
-## Citation and provenance boundary
+## Scope of v0.14
 
-When citing or reusing this repository, keep these evidence layers separate:
+v0.14 is **Thread 13 — Structural Visualization Layer**.
 
-```text
-repository implementation
-sealed Lean formal core
-deterministic runtime verification
-visualization / exposition convention
-unresolved mathematics
-parent-project provenance not source-verified here
-```
+It adds a visible deterministic SVG projection and its verifier/documentation only. It does not implement concrete `W`, Calabi–Yau geometry, genuine D⁴ sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision geometry, Canvas/WebGL/Three.js, camera transforms, or interaction controls.
 
-The repository-level publication checkpoint does not convert a runtime representation into a theorem, does not convert green CI into whole-project formal verification, and does not source-verify parent-project artifacts that were not retrieved in the corresponding audit.
-
-Detailed publication checkpoint contract:
-
-```text
-docs/PUBLICATION_CHECKPOINT_self_similar_cy_visualizer_v0_13.md
-```
-
-## Historical wording
-
-Historical v0.03–v0.06 documents are preserved. Some use stronger phrases such as `sheet degree`, `map degree`, or `degree multiplicativity`. The current canonical interpretation remains the later F05/v0.11 boundary: D², D⁴, and `(D⁴)^n` runtime fields are unformalized metadata unless stronger exact source evidence is retrieved and audited.
-
-## Scope of v0.13
-
-v0.13 is **Thread 12 — Publication Checkpoint**. It adds publication/reproducibility/licensing evidence and deployment preparation only.
-
-It adds no theorem, no `W` implementation, no genuine D⁴ sheet renderer, no covering/étale/fiber renderer, no cyclotomic/torsion/collision implementation, no camera system, no geometric zoom, and no new runtime mathematics.
-
-The checkpoint is not sealed until the remaining publication gates are resolved, including public visibility cutover, static deployment verification, actual UI screenshot/demo capture, final canonical single-child replay, and exact-SHA canonical CI.
+The next milestone is **Thread 14 — Interaction Layer**. It is not started here.
