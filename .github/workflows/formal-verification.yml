@@ -183,6 +183,7 @@ jobs:
             sheet-branch-organization.js \
             interactive-pullback-tower.js \
             structural-visualization.js \
+            structural-camera.js \
             arithmetic-overlays.js \
             exposition-layer.js \
             app.js; do
@@ -197,6 +198,8 @@ jobs:
           grep -Fq 'D² runtime metadata' /tmp/publication-index.html
           grep -Fq 'D⁴ organization metadata' /tmp/publication-index.html
           grep -Fq 'Interactive pullback tower' /tmp/publication-index.html
+          grep -Fq 'Structural Camera / Zoom Layer' /tmp/publication-index.html
+          grep -Fq 'presentation-only structural camera' /tmp/publication-index.html
           grep -Fq 'Canonical requested depth' /tmp/publication-index.html
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"
