@@ -13,6 +13,7 @@
   <script src="sheet-branch-organization.js" defer></script>
   <script src="interactive-pullback-tower.js" defer></script>
   <script src="structural-visualization.js" defer></script>
+  <script src="branch-organization-graphics.js" defer></script>
   <script src="structural-camera.js" defer></script>
   <script src="arithmetic-overlays.js" defer></script>
   <script src="exposition-layer.js" defer></script>
@@ -21,11 +22,11 @@
 <body>
   <main class="shell">
     <header class="hero">
-      <p class="eyebrow">v0.16 · Structural Camera / Zoom Layer</p>
+      <p class="eyebrow">v0.17 · D⁴ Branch Organization Graphics</p>
       <h1>Self-Similar Calabi–Yau Visualizer</h1>
-      <p class="lede">A structural explorer for the coordinate-power pullback system. The pullback tower can be expanded, collapsed for presentation, selected, structurally refocused, and navigated through an independent presentation-only SVG camera.</p>
-      <p class="section-note">Built on the sealed v0.15 Interactive Pullback Tower, the v0.14 Structural Visualization Layer, the v0.12 UX / Exposition Layer, and the v0.11 Mathematical Fidelity Audit boundary.</p>
-      <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. Thread 14 interaction semantics alone do not perform a camera transform or geometric zoom. Thread 15 adds a separate presentation-only structural camera; its pan, wheel/pinch zoom, fit, and reset operations change only the SVG viewport and never promote camera scale into mathematical or geometric scaling.</p>
+      <p class="lede">A structural explorer for the coordinate-power pullback system. The pullback tower can be expanded, collapsed for presentation, selected, structurally refocused, navigated through an independent presentation-only SVG camera, and annotated with aggregated multiplicity badges for the existing D⁴ organization metadata.</p>
+      <p class="section-note">Built on the sealed v0.16 Structural Camera / Zoom Layer, the v0.15 Interactive Pullback Tower, the v0.14 Structural Visualization Layer, the v0.12 UX / Exposition Layer, and the v0.11 Mathematical Fidelity Audit boundary.</p>
+      <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. Thread 15 camera operations change only the SVG viewport. Thread 16 adds aggregate graphical badges for D⁴ structural organization multiplicity; the badges do not enumerate concrete sheets, claim covering geometry, or promote D⁴ runtime metadata into a map-degree theorem.</p>
     </header>
 
     <section aria-labelledby="structural-visualization-title" class="structural-section">
@@ -34,7 +35,7 @@
           <p class="section-kicker">Interactive structure</p>
           <h2 id="structural-visualization-title">Structural diagram · Interactive pullback tower</h2>
         </div>
-        <p class="section-note">The diagram is structural, not a geometric realization. Expand materializes structural descriptors through the sealed recursion API; select, refocus, and collapse are navigation/presentation operations. Camera navigation reads that state only as a target and does not modify it.</p>
+        <p class="section-note">The diagram is structural, not a geometric realization. Expand materializes structural descriptors through the sealed recursion API; select, refocus, and collapse are navigation/presentation operations. Camera navigation reads that state only as a target and does not modify it. For each visible positive-depth transition, an aggregate D⁴ badge communicates the exact organization multiplicity without materializing D⁴ graphical objects.</p>
       </div>
       <div id="interactive-pullback-tower" class="interactive-pullback-tower" hidden></div>
       <div id="structural-camera" class="structural-camera" hidden>
@@ -49,7 +50,7 @@
         <p id="structural-camera-status" class="structural-camera-status" aria-live="polite"></p>
         <div id="structural-visualization" class="structural-visualization" data-camera-dragging="false" hidden></div>
       </div>
-      <p class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. Selection, focus, and collapse are structural UI state. Camera scale is presentation-only viewport state. None of these are geometric hypersurfaces, genuine sheets, embedded branches, a covering-space realization, or a mathematical metric-scaling theorem.</p>
+      <p class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. D⁴ badges denote exact aggregate structural organization multiplicity only. At D=2 this can communicate 16-fold structural organization with one badge per visible transition, not sixteen fake geometric sheets. Selection, focus, collapse, and camera scale remain separate structural/presentation state.</p>
     </section>
 
     <section aria-labelledby="current-state-title" class="primary-section">
@@ -93,7 +94,7 @@
       <div class="section-heading"><div><p class="section-kicker">Scope and provenance</p><h2 id="provenance-title">What is established here?</h2></div></div>
       <div class="provenance-grid">
         <article class="provenance-card"><h3>Lean formalized</h3><ul><li>Four-coordinate coordinate-power map.</li><li>Coordinate-power iteration law.</li><li>Abstract set-theoretic pullback recurrence and its coordinate-power closed form.</li></ul></article>
-        <article class="provenance-card"><h3>Runtime / structural</h3><ul><li>Validated parameters and finite depth state.</li><li>D² runtime metadata and D⁴ organization metadata.</li><li>Lazy level descriptors, structural selection/focus, presentation collapse, aggregate organization, symbolic overlays, SVG structural projection, and presentation-only structural camera state.</li></ul></article>
+        <article class="provenance-card"><h3>Runtime / structural</h3><ul><li>Validated parameters and finite depth state.</li><li>D² runtime metadata and D⁴ organization metadata.</li><li>Lazy level descriptors, structural selection/focus, presentation collapse, aggregate organization, D⁴ aggregate multiplicity badges, symbolic overlays, SVG structural projection, and presentation-only structural camera state.</li></ul></article>
         <article class="provenance-card"><h3>Unresolved / not materialized</h3><ul><li><code>W</code> has no concrete representation in this visualizer.</li><li>No Calabi–Yau hypersurface geometry, genuine sheets, covering geometry, or metric realization is rendered here.</li><li>Cyclotomic, torsion, collision, and related parent-project overlays remain deferred unless exact canonical source evidence is available.</li></ul></article>
       </div>
       <details class="explanation-panel"><summary>Formal, runtime, camera, and engineering boundaries</summary><div class="explanation-content"><p>A green <code>formal-lean</code> job means the scoped Lean modules build and pass their direct checks. A green <code>runtime-contracts</code> job means the JavaScript contracts and claim-discipline checks pass. Neither statement means that every mathematical idea named by the project has been formalized.</p><p>“Infinite navigation” means arbitrarily continued <em>finite</em> structural navigation. Structural camera scale is an SVG viewport parameter, distinct from <code>scene.derived.metricScale</code>. JavaScript safe-integer checks and benchmark horizons are engineering constraints or observations, not mathematical bounds.</p></div></details>
