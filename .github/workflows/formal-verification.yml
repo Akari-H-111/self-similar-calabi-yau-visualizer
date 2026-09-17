@@ -118,6 +118,9 @@ jobs:
       - name: Verify interactive pullback tower v0.15
         run: node verify_interactive_pullback_tower_v0_15.js
 
+      - name: Verify structural camera / zoom v0.16
+        run: node verify_structural_camera_zoom_v0_16.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -128,6 +131,7 @@ jobs:
           node --check zoom-semantics.js
           node --check sheet-branch-organization.js
           node --check interactive-pullback-tower.js
+          node --check structural-camera.js
           node --check structural-visualization.js
           node --check arithmetic-overlays.js
           node --check exposition-layer.js
@@ -138,6 +142,7 @@ jobs:
           node --check verify_publication_checkpoint_v0_13.js
           node --check verify_structural_visualization_v0_14.js
           node --check verify_interactive_pullback_tower_v0_15.js
+          node --check verify_structural_camera_zoom_v0_16.js
           node --check app.js
 
   publication-static-smoke:
