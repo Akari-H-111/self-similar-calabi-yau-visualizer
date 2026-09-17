@@ -218,7 +218,7 @@
       `<svg class="structural-visualization__surface" viewBox="0 0 960 ${String(diagramHeight)}" role="img" aria-label="Finite structural pullback diagram. Structural only; no Calabi–Yau geometry or sheets are rendered.">`,
       "<title>Finite structural pullback diagram</title>",
       "<desc>Nodes are finite structural level descriptors from the verified runtime models. Edges denote pullback relations. No geometric Calabi–Yau hypersurface, covering, or genuine sheets are rendered.</desc>",
-      "<defs><marker id="structural-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" /></marker></defs>",
+      '<defs><marker id="structural-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" /></marker></defs>',
       `<text class="structural-diagram__eyebrow" x="${String(nodeX)}" y="54">STRUCTURAL PROJECTION · NOT GEOMETRY</text>`,
       `<text class="structural-diagram__summary" x="${String(nodeX)}" y="84">${escapeXml(summary)}</text>`,
       nodeMarkup,
