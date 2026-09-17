@@ -209,8 +209,8 @@ for (const requiredSection of [
 assert.match(fidelitySource, /canonical parent source unavailable in current thread/);
 assert.match(fidelitySource, /not source-verified in this thread/);
 assert.match(fidelitySource, /README_arithmetic_self_similar_cy_final\.md/);
-assert.match(fidelitySource, /D⁴.*runtime numeric\/organizational metadata/);
-assert.match(fidelitySource, /verify repository claim discipline/i);
+assert.match(fidelitySource, /Runtime numeric\/organizational metadata\. Do not call it a genuine map degree/);
+assert.match(fidelitySource, /claim discipline/i);
 assert.match(fidelitySource, /not a substitute for mathematical proof/i);
 
 const state = JSON.parse(read("docs/state_self_similar_cy_visualizer_v0_11.json"));
