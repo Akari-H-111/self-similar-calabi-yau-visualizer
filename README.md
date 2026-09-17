@@ -20,6 +20,8 @@ runtime representation
 != visualization convention
 ```
 
+The v0.11 claim-discipline vocabulary remains binding: **D² and D⁴ explicitly as runtime/organization metadata**. D⁴ runtime organization metadata is **not a map-degree theorem** in the current sealed formal scope. Exact parent-project mathematical artifacts remain **not source-verified in this thread**, so no unavailable parent result is promoted. Benchmark horizons are **not mathematical limits**, and JavaScript safe-integer checks are representation-safety / engineering constraints rather than mathematical theorems.
+
 ## Thread 14 canonical baseline
 
 Thread 14 starts from the sealed Thread 13 canonical commit:
