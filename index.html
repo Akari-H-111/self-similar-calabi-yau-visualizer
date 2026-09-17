@@ -13,6 +13,7 @@
   <script src="sheet-branch-organization.js" defer></script>
   <script src="interactive-pullback-tower.js" defer></script>
   <script src="structural-visualization.js" defer></script>
+  <script src="structural-camera.js" defer></script>
   <script src="arithmetic-overlays.js" defer></script>
   <script src="exposition-layer.js" defer></script>
   <script src="app.js" defer></script>
@@ -20,11 +21,11 @@
 <body>
   <main class="shell">
     <header class="hero">
-      <p class="eyebrow">v0.15 · Interactive Pullback Tower</p>
+      <p class="eyebrow">v0.16 · Structural Camera / Zoom Layer</p>
       <h1>Self-Similar Calabi–Yau Visualizer</h1>
-      <p class="lede">A structural explorer for the coordinate-power pullback system. The pullback tower can now be expanded, collapsed for presentation, selected, and structurally refocused while every visible state remains derived from the sealed runtime model APIs.</p>
-      <p class="section-note">Built on the sealed v0.14 Structural Visualization Layer, the v0.12 UX / Exposition Layer, and the v0.11 Mathematical Fidelity Audit boundary.</p>
-      <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. Interaction changes structural runtime and presentation/navigation state only; it does not apply a camera transform or geometric zoom.</p>
+      <p class="lede">A structural explorer for the coordinate-power pullback system. The pullback tower can be expanded, collapsed for presentation, selected, structurally refocused, and navigated through an independent presentation-only SVG camera.</p>
+      <p class="section-note">Built on the sealed v0.15 Interactive Pullback Tower, the v0.14 Structural Visualization Layer, the v0.12 UX / Exposition Layer, and the v0.11 Mathematical Fidelity Audit boundary.</p>
+      <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. Thread 14 interaction semantics alone do not perform a camera transform or geometric zoom. Thread 15 adds a separate presentation-only structural camera; its pan, wheel/pinch zoom, fit, and reset operations change only the SVG viewport and never promote camera scale into mathematical or geometric scaling.</p>
     </header>
 
     <section aria-labelledby="structural-visualization-title" class="structural-section">
@@ -33,11 +34,22 @@
           <p class="section-kicker">Interactive structure</p>
           <h2 id="structural-visualization-title">Structural diagram · Interactive pullback tower</h2>
         </div>
-        <p class="section-note">The diagram is structural, not a geometric realization. Expand materializes structural descriptors through the sealed recursion API; select, refocus, and collapse are navigation/presentation operations and do not materialize geometry or sheets.</p>
+        <p class="section-note">The diagram is structural, not a geometric realization. Expand materializes structural descriptors through the sealed recursion API; select, refocus, and collapse are navigation/presentation operations. Camera navigation reads that state only as a target and does not modify it.</p>
       </div>
       <div id="interactive-pullback-tower" class="interactive-pullback-tower" hidden></div>
-      <div id="structural-visualization" class="structural-visualization" hidden></div>
-      <p class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. Selection, focus, and collapse are structural UI state. They are not geometric hypersurfaces, genuine sheets, embedded branches, a covering-space realization, or camera movement.</p>
+      <div id="structural-camera" class="structural-camera" hidden>
+        <div id="structural-camera-controls" class="structural-camera-toolbar" role="group" aria-label="Structural camera controls">
+          <button type="button" data-camera-action="zoom-in">Zoom in</button>
+          <button type="button" data-camera-action="zoom-out">Zoom out</button>
+          <button type="button" data-camera-action="fit-visible">Fit visible structure</button>
+          <button type="button" data-camera-action="fit-selected">Fit selected level</button>
+          <button type="button" data-camera-action="fit-focused">Fit focused level</button>
+          <button type="button" data-camera-action="reset">Reset camera</button>
+        </div>
+        <p id="structural-camera-status" class="structural-camera-status" aria-live="polite"></p>
+        <div id="structural-visualization" class="structural-visualization" data-camera-dragging="false" hidden></div>
+      </div>
+      <p class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. Selection, focus, and collapse are structural UI state. Camera scale is presentation-only viewport state. None of these are geometric hypersurfaces, genuine sheets, embedded branches, a covering-space realization, or a mathematical metric-scaling theorem.</p>
     </section>
 
     <section aria-labelledby="current-state-title" class="primary-section">
@@ -46,7 +58,7 @@
           <p class="section-kicker">At a glance</p>
           <h2 id="current-state-title">Current state</h2>
         </div>
-        <p class="section-note">Values below are rebuilt from the current runtime models after every interaction. The canonical <code>data/system.json</code> remains unchanged.</p>
+        <p class="section-note">Values below are rebuilt from the current runtime models after every interaction. The canonical <code>data/system.json</code> remains unchanged. Structural camera state is maintained separately across those re-renders.</p>
       </div>
 
       <div id="system-status" class="status" role="status" aria-live="polite">Loading data/system.json…</div>
@@ -59,7 +71,7 @@
         <article class="state-card"><p class="state-label">Structural state</p><p class="state-value" data-exposition-field="structure">—</p><p class="state-evidence">Recursive descriptor state</p></article>
         <article class="state-card"><p class="state-label">Geometry</p><p class="state-value" data-exposition-field="geometry">—</p><p class="state-evidence">Truthfulness flag</p></article>
         <article class="state-card"><p class="state-label">Formal status</p><p class="state-value" data-exposition-field="formal">—</p><p class="state-evidence">Scoped Lean core only</p></article>
-        <article class="state-card"><p class="state-label">Navigation</p><p class="state-value" data-exposition-field="navigation">—</p><p class="state-evidence">Finite structural focus, not geometric zoom</p></article>
+        <article class="state-card"><p class="state-label">Navigation</p><p class="state-value" data-exposition-field="navigation">—</p><p class="state-evidence">Structural focus metadata; camera reported separately</p></article>
         <article class="state-card"><p class="state-label">W representation</p><p class="state-value" data-exposition-field="W">—</p><p class="state-evidence">Unresolved by the current visualizer</p></article>
       </div>
     </section>
@@ -73,7 +85,7 @@
         <div><dt><span class="semantic-chip" data-semantic-category="symbolic">Symbolic</span></dt><dd>An expression or annotation is retained symbolically instead of being expanded into geometric objects.</dd></div>
         <div><dt><span class="semantic-chip" data-semantic-category="unresolved">Unresolved</span></dt><dd>The current repository intentionally has no concrete representation or established result for this item.</dd></div>
         <div><dt><span class="semantic-chip" data-semantic-category="not-materialized">Not materialized</span></dt><dd>A possible structural referent is not instantiated as sheets, fibers, covering geometry, or other concrete objects.</dd></div>
-        <div><dt><span class="semantic-chip" data-semantic-category="engineering">Engineering</span></dt><dd>An implementation, representation-safety, CI, or performance statement rather than a mathematical theorem.</dd></div>
+        <div><dt><span class="semantic-chip" data-semantic-category="engineering">Engineering</span></dt><dd>An implementation, representation-safety, CI, performance, or viewport statement rather than a mathematical theorem.</dd></div>
       </dl>
     </section>
 
@@ -81,10 +93,10 @@
       <div class="section-heading"><div><p class="section-kicker">Scope and provenance</p><h2 id="provenance-title">What is established here?</h2></div></div>
       <div class="provenance-grid">
         <article class="provenance-card"><h3>Lean formalized</h3><ul><li>Four-coordinate coordinate-power map.</li><li>Coordinate-power iteration law.</li><li>Abstract set-theoretic pullback recurrence and its coordinate-power closed form.</li></ul></article>
-        <article class="provenance-card"><h3>Runtime / structural</h3><ul><li>Validated parameters and finite depth state.</li><li>D² runtime metadata and D⁴ organization metadata.</li><li>Lazy level descriptors, structural selection/focus, presentation collapse, aggregate organization, symbolic overlays, and SVG structural projection.</li></ul></article>
+        <article class="provenance-card"><h3>Runtime / structural</h3><ul><li>Validated parameters and finite depth state.</li><li>D² runtime metadata and D⁴ organization metadata.</li><li>Lazy level descriptors, structural selection/focus, presentation collapse, aggregate organization, symbolic overlays, SVG structural projection, and presentation-only structural camera state.</li></ul></article>
         <article class="provenance-card"><h3>Unresolved / not materialized</h3><ul><li><code>W</code> has no concrete representation in this visualizer.</li><li>No Calabi–Yau hypersurface geometry, genuine sheets, covering geometry, or metric realization is rendered here.</li><li>Cyclotomic, torsion, collision, and related parent-project overlays remain deferred unless exact canonical source evidence is available.</li></ul></article>
       </div>
-      <details class="explanation-panel"><summary>Formal, runtime, and engineering boundaries</summary><div class="explanation-content"><p>A green <code>formal-lean</code> job means the scoped Lean modules build and pass their direct checks. A green <code>runtime-contracts</code> job means the JavaScript contracts and claim-discipline checks pass. Neither statement means that every mathematical idea named by the project has been formalized.</p><p>“Infinite navigation” means arbitrarily continued <em>finite</em> structural navigation. JavaScript safe-integer checks and benchmark horizons are engineering constraints or observations, not mathematical bounds.</p></div></details>
+      <details class="explanation-panel"><summary>Formal, runtime, camera, and engineering boundaries</summary><div class="explanation-content"><p>A green <code>formal-lean</code> job means the scoped Lean modules build and pass their direct checks. A green <code>runtime-contracts</code> job means the JavaScript contracts and claim-discipline checks pass. Neither statement means that every mathematical idea named by the project has been formalized.</p><p>“Infinite navigation” means arbitrarily continued <em>finite</em> structural navigation. Structural camera scale is an SVG viewport parameter, distinct from <code>scene.derived.metricScale</code>. JavaScript safe-integer checks and benchmark horizons are engineering constraints or observations, not mathematical bounds.</p></div></details>
     </section>
 
     <section aria-labelledby="structure-title">

@@ -1,14 +1,14 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.15 — Interactive Pullback Tower
+**Current version:** v0.16 — Structural Camera / Zoom Layer
 
 **Published checkpoint:** v0.13 — Publication Checkpoint
 
 **Runtime scene contract:** v0.12
 
-This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.15 turns the v0.14 structural SVG projection into an interactive pullback tower while preserving the sealed runtime/model boundaries.
+This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.16 adds a persistent presentation-only structural camera over the v0.15 interactive pullback tower while preserving the sealed runtime/model and Lean boundaries.
 
-The interface is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric/camera zoom.
+The interface is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric zoom.
 
 The evidence rule remains:
 
@@ -20,7 +20,7 @@ runtime representation
 != visualization convention
 ```
 
-The v0.11 claim-discipline vocabulary remains binding: **D² and D⁴ explicitly as runtime/organization metadata**. D⁴ runtime organization metadata is **not a map-degree theorem** in the current sealed formal scope. Exact parent-project mathematical artifacts remain **not source-verified in this thread**, so no unavailable parent result is promoted. Benchmark horizons are **not mathematical limits**, and JavaScript safe-integer checks are representation-safety / engineering constraints rather than mathematical theorems.
+The v0.11 claim-discipline vocabulary remains binding: **D² and D⁴ explicitly as runtime/organization metadata**. D⁴ runtime organization metadata is **not a map-degree theorem** in the current sealed formal scope. Exact parent-project mathematical artifacts remain **not source-verified in this thread**, so no unavailable parent result is promoted. Benchmark horizons are **not mathematical limits**, and JavaScript safe-integer checks are **representation-safety / engineering constraints** rather than mathematical theorems.
 
 ## Published v0.13 checkpoint
 
@@ -40,81 +40,91 @@ published / immutable / not prerelease
 
 The repository is licensed under the **Apache License, Version 2.0** (`Apache-2.0`). The `LICENSE` file remains the operative grant; later implementation milestones do not alter the published checkpoint or its licensing boundary.
 
-## Thread 14 canonical baseline
+## Thread 15 starting canonical baseline
 
-Thread 14 starts from the sealed Thread 13 canonical commit:
+Thread 15 starts from the sealed Thread 14 canonical commit:
 
 ```text
 canonical main commit:
-97ee38e7f0a8704297621f8fc15f0109c8512751
+d40e938c318a8389baccb58223c9f057217ba018
 
 canonical tree:
-6b6948e7d83efdf91c50a73841d71ebbb770ef60
+2cd18d37b4b5b0c8b400547eadd113a3b686300e
 
 parent:
-e83ed17a5ce8e45e67ef326042a21ec51ba24222
+97ee38e7f0a8704297621f8fc15f0109c8512751
 
 Formal Verification:
-run #49 / 35232440872
-runtime-contracts          = completed / success
-formal-lean                = completed / success
-publication-static-smoke   = completed / success
+run #61 / 35241064931
+runtime-contracts          = success
+formal-lean                = success
+publication-static-smoke   = success
 
 GitHub Pages build/deployment:
-run 35232440091
-head SHA = 97ee38e7f0a8704297621f8fc15f0109c8512751
+run 35241063761
+head SHA = d40e938c318a8389baccb58223c9f057217ba018
 conclusion = success
 ```
 
-The published `v0.13` tag remains at `e83ed17a5ce8e45e67ef326042a21ec51ba24222`. The `v0.13 — Publication Checkpoint` release remains published, immutable, and not a prerelease.
+The Thread 14 staging PR was closed unmerged. Thread 15 starts from canonical `main`, not from the old staging branch.
 
-## v0.15 interactive pullback tower
+The published `v0.13` tag remains at `e83ed17a5ce8e45e67ef326042a21ec51ba24222`. v0.16 is an engineering milestone layered after that immutable publication checkpoint; it does not replace the v0.13 release identity.
 
-The new interaction controller is:
+## v0.16 structural camera
+
+The new camera module is:
 
 ```text
-interactive-pullback-tower.js
+structural-camera.js
 ```
 
 Its architecture is:
 
 ```text
-user event
-  -> interaction/controller state
-  -> sealed runtime APIs
-  -> current runtime models
+interaction/controller state
+  -> existing runtime models
   -> structural visualization projection
-  -> DOM/SVG render
+  -> read-only structural layout descriptor
+  -> persistent StructuralCamera state
+  -> SVG viewBox presentation
 ```
 
-The controller reuses:
+The camera supports:
 
 ```text
-RecursiveLazyExpansion
-ZoomSemantics
-SheetBranchOrganization
-StructuralVisualization
+pan
+wheel zoom
+pointer drag pan
+two-pointer pinch zoom
+fit visible structure
+fit selected level
+fit focused level
+reset camera
 ```
 
-It does not define a second recursion engine, recompute D²/D⁴, enumerate sheets, or implement geometry.
-
-The user can:
-
-```text
-expand the next structural level
-collapse materialized descendants for presentation
-select a visible materialized level
-refocus a visible materialized level
-inspect a state-derived structural breadcrumb
-```
-
-Selection and structural focus do not trigger recursive expansion. Collapse does not delete recursive descriptors or reduce `materializedDepth`.
+Camera state is kept independently from the regenerated SVG DOM and is reconciled after structural re-renders.
 
 Detailed contract:
 
 ```text
-docs/INTERACTIVE_PULLBACK_TOWER_self_similar_cy_visualizer_v0_15.md
+docs/STRUCTURAL_CAMERA_ZOOM_self_similar_cy_visualizer_v0_16.md
 ```
+
+## Camera, focus, and geometry are different domains
+
+The sealed `zoom-semantics.js` module still means structural focus metadata only.
+
+```text
+structural focus
+!= camera target
+!= viewport center
+!= cameraScale
+!= geometric zoom
+```
+
+A camera fit command may read the selected or focused level as a presentation target. It cannot modify selection, focus, recursion, or canonical scene state.
+
+`cameraScale` is an SVG viewport value. It is not `scene.derived.metricScale` and it is not a mathematical coordinate-scaling theorem.
 
 ## Canonical `requestedDepth = 0`
 
@@ -125,11 +135,11 @@ data/system.json
 requestedDepth = 0
 ```
 
-Therefore the initial page still begins honestly at `X₀`.
+The initial page therefore still begins honestly at `X₀`.
 
-When the user explicitly asks to expand, v0.15 creates an ephemeral interaction-request state and delegates structural descriptor materialization to the sealed recursion API. This interaction state is not written back to `data/system.json`, is not a new theorem, and is not a new canonical mathematical source.
+Only the sealed v0.15 interaction controller may request finite structural expansion in response to the explicit expand interaction. Camera gestures do not change requested depth or materialize descriptors.
 
-## Interaction semantics
+## v0.15 interaction semantics remain sealed
 
 ```text
 expand
@@ -139,9 +149,9 @@ select
 = selection metadata only
 
 refocus
-= structural navigation metadata only
+= structural focus metadata only
 = no expansion
-= no camera transform
+= no camera transform by the focus module
 = no geometric zoom
 
 collapse
@@ -152,15 +162,78 @@ reveal
 = presentation-only restoration of already materialized descendants
 ```
 
-`structuralDescriptorMaterializationTriggered=true` may appear on an expansion transition. This means a finite recursive descriptor was added. It does **not** mean geometric or sheet materialization.
+The Thread 15 camera is a sibling presentation layer. It does not redefine any of these operations.
 
 ## Structural visualization
 
-`structural-visualization.js` still projects finite verified runtime structure into inline SVG. v0.15 additionally projects selected/focused/collapsed presentation state.
+`structural-visualization.js` continues to project finite verified runtime structure into inline SVG. v0.16 adds a small read-only layout descriptor API so the camera can fit known structural levels without duplicating layout constants or parsing hidden mathematical meaning from the DOM.
 
-A visible node is a finite structural level descriptor. A visible arrow is an adjacent pullback relation already present in the runtime model. These glyphs are not geometric hypersurfaces, embedded branches, genuine sheets, or covering maps.
+A visible node remains a finite structural level descriptor. A visible arrow remains an adjacent pullback relation already present in the runtime model. These glyphs are not geometric hypersurfaces, embedded branches, genuine sheets, or covering maps.
 
-The diagram remains structural, not a geometric realization.
+## Persistent camera semantics
+
+Each accepted structural interaction may regenerate the entire structural SVG markup. The camera model is therefore retained outside that transient SVG and reapplied afterward:
+
+```text
+previous camera state
++ new structural layout extent
+= reconciled deterministic camera state
+```
+
+At identity, the camera follows the new canonical structural extent. When transformed, it preserves the existing presentation center and scale where valid.
+
+The application uses `StructuralCamera.applyStructuralCamera(...)` as the shared SVG viewport adapter.
+
+## Camera truthfulness
+
+The project-wide geometric truth boundary remains:
+
+```text
+geometryRendered = false
+sheetsMaterialized = false
+coveringStructureClaimed = false
+geometricZoomApplied = false
+W representation = unresolved
+```
+
+Camera state has a separate presentation truth flag:
+
+```text
+identity camera:
+cameraTransformApplied = false
+
+transformed camera:
+cameraTransformApplied = true
+```
+
+`cameraTransformApplied=true` is an engineering/UI statement that an SVG viewport transform is active. It does not mean geometric zoom, Calabi–Yau geometry, metric scaling, sheet materialization, or covering geometry.
+
+Earlier sealed models may retain `cameraTransformApplied=false` because those models themselves do not apply the camera transform. The camera layer owns the new presentation truth domain.
+
+## D² and D⁴
+
+`scene-spec.js` still derives:
+
+```text
+scene.derived.metricScale = D^2
+scene.derived.sheetDegree = D^4
+```
+
+The interpretation remains exactly:
+
+```text
+D² = runtime numeric metadata
+D⁴ = runtime numeric / organizational metadata
+```
+
+The repository does not claim that the sealed Lean core proves:
+
+```text
+P_D^* g_log = D^2 g_log
+deg(P_D) = D^4
+```
+
+The camera code does not read, recompute, or alias D² or D⁴.
 
 ## Project-level structural statement
 
@@ -176,51 +249,9 @@ P_D(z_1,\ldots,z_4)=(z_1^D,\ldots,z_4^D).
 
 The sealed Lean core formalizes the four-coordinate coordinate-power map, its iteration law, and an abstract set-theoretic pullback tower for arbitrary `X : Set Point4`.
 
-It does **not** define `W` or Calabi–Yau geometry. Runtime `W` remains:
-
-```text
-unresolved
-```
+It does not define `W` or Calabi–Yau geometry. Runtime `W` remains `unresolved`.
 
 Therefore no geometric Calabi–Yau hypersurface is currently rendered.
-
-## Frozen truthfulness boundary
-
-v0.15 preserves:
-
-```text
-geometryRendered = false
-sheetsMaterialized = false
-coveringStructureClaimed = false
-geometricZoomApplied = false
-cameraTransformApplied = false
-W representation = unresolved
-```
-
-Selection, focus, breadcrumb, collapse, and expansion controls must not promote any of these claims.
-
-## D² and D⁴
-
-`scene-spec.js` still derives:
-
-```text
-scene.derived.metricScale = D^2
-scene.derived.sheetDegree = D^4
-```
-
-The interpretation remains:
-
-```text
-D² = runtime numeric metadata
-D⁴ = runtime numeric / organizational metadata
-```
-
-The repository does not claim that the sealed Lean core proves:
-
-```text
-P_D^* g_log = D^2 g_log
-deg(P_D) = D^4
-```
 
 ## Lean-formalized scope
 
@@ -239,35 +270,19 @@ Lean: leanprover/lean4:v4.34.0
 mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
 ```
 
-v0.15 does not modify `formal/` and does not promote any new theorem.
+v0.16 does not modify the formal core and does not promote a new theorem.
 
 ## Accessibility floor
 
-Essential interaction uses native buttons rather than mouse-only SVG handlers. Selected/focused controls expose pressed/current state, and keyboard focus receives visible `:focus-visible` styling. The final full accessibility audit remains a later milestone.
+Existing structural interaction controls remain native buttons with keyboard focus behavior. Camera controls are also native buttons with `:focus-visible` styling.
 
-## Navigation and camera boundary
+Pointer and wheel gestures are additional camera input surfaces; they do not replace the button controls.
 
-“Infinite navigation” retains the operational meaning:
+The final full accessibility audit remains a later milestone.
 
-```text
-arbitrarily continued finite structural navigation
-```
+## Verification
 
-v0.15 does **not** implement pan, wheel zoom, pinch zoom, fit-to-level camera, SVG viewBox camera navigation, drag canvas, camera matrices, or geometric scaling. Structural refocus is navigation metadata only.
-
-## What green CI means
-
-A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
-
-A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.15 interaction transitions and all earlier verifiers.
-
-A green `publication-static-smoke` job means the static repository paths can be served and fetched successfully from a clean GitHub-hosted runner.
-
-Green CI does **not** mean that the entire visualizer, all Calabi–Yau mathematics, browser behavior, D² metric scaling, D⁴ genuine map degree, covering geometry, or unavailable arithmetic research has been formally verified.
-
-## Reproduce runtime verification
-
-Use Node 22:
+Runtime verification uses Node 22:
 
 ```bash
 node verify_scene_spec_v0_03.js
@@ -283,9 +298,20 @@ node verify_ux_exposition_v0_12.js
 node verify_publication_checkpoint_v0_13.js
 node verify_structural_visualization_v0_14.js
 node verify_interactive_pullback_tower_v0_15.js
+node verify_structural_camera_zoom_v0_16.js
 ```
 
-The v0.15 verifier tests deterministic multi-step interaction sequences, invalid/unmaterialized target rejection, selection/focus/materialization consistency, presentation collapse/reveal, breadcrumb consistency, source-discipline guards, sealed runtime blobs, truthfulness invariants, and index/app/CI integration.
+The v0.16 verifier checks deterministic camera transitions, numeric guards, scale bounds, real layout fixtures, re-render persistence, interaction-state immutability, sealed-source hashes, the shared SVG viewport adapter, responsive camera surface discipline, and app/index/CI integration.
+
+## What green CI means
+
+A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
+
+A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including the v0.16 structural camera verifier and all earlier runtime verifiers.
+
+A green `publication-static-smoke` job means the static repository paths can be served and fetched successfully from a clean GitHub-hosted runner.
+
+Green CI does **not** mean that the entire visualizer, all Calabi–Yau mathematics, browser behavior on every device, D² metric scaling, D⁴ genuine map degree, covering geometry, or unavailable arithmetic research has been formally verified.
 
 ## Reproduce the Lean core
 
@@ -311,12 +337,12 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000/`.
 
-The page loads and validates `data/system.json`, constructs the sealed base/pullback models, creates the interaction controller state, and re-renders the runtime diagnostics, exposition, and structural SVG after each accepted interaction.
+The page loads and validates `data/system.json`, constructs the sealed base/pullback and interaction models, projects the structural SVG, constructs/reconciles the independent camera model, and reapplies the camera view after accepted structural interactions.
 
-## Scope of v0.15
+## Scope of v0.16
 
-v0.15 is **Thread 14 — Interactive Pullback Tower**.
+v0.16 is **Thread 15 — Structural Camera / Zoom Layer**.
 
-It adds interaction/navigation/presentation semantics only. It does not implement concrete `W`, Calabi–Yau geometry, genuine D⁴ sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision geometry, Canvas/WebGL/Three.js, or camera transforms.
+It adds structural viewport navigation only. It does not implement concrete `W`, Calabi–Yau geometry, genuine D⁴ sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision geometry, metric scaling, Canvas/WebGL/Three.js geometry, or a new Lean theorem.
 
-The next milestone is **Thread 15 — Structural Camera / Zoom Layer**. It is not started here.
+No subsequent milestone is started or named by the v0.16 seal artifacts.

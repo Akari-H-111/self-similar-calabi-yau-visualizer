@@ -84,7 +84,8 @@ h3 { font-size: 1rem; }
   background: color-mix(in srgb, Canvas 97%, CanvasText 3%);
 }
 
-.interaction-toolbar {
+.interaction-toolbar,
+.structural-camera-toolbar {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
@@ -92,7 +93,8 @@ h3 { font-size: 1rem; }
 }
 
 .interaction-toolbar button,
-.interaction-level-row button {
+.interaction-level-row button,
+.structural-camera-toolbar button {
   min-height: 2.5rem;
   padding: 0.55rem 0.8rem;
   border: 1px solid currentColor;
@@ -105,13 +107,15 @@ h3 { font-size: 1rem; }
 }
 
 .interaction-toolbar button:disabled,
-.interaction-level-row button:disabled {
+.interaction-level-row button:disabled,
+.structural-camera-toolbar button:disabled {
   cursor: not-allowed;
   opacity: 0.48;
 }
 
 .interaction-toolbar button:focus-visible,
-.interaction-level-row button:focus-visible {
+.interaction-level-row button:focus-visible,
+.structural-camera-toolbar button:focus-visible {
   outline: 0.18rem solid currentColor;
   outline-offset: 0.2rem;
 }
@@ -175,17 +179,38 @@ h3 { font-size: 1rem; }
   border-width: 3px;
 }
 
+.structural-camera {
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, CanvasText 22%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, Canvas 98%, CanvasText 2%);
+}
+
+.structural-camera-status {
+  margin: 0 0 0.85rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.82rem;
+  color: color-mix(in srgb, CanvasText 74%, transparent);
+  overflow-wrap: anywhere;
+}
+
 .structural-visualization {
-  overflow-x: auto;
+  overflow: hidden;
   border: 1px solid color-mix(in srgb, CanvasText 22%, transparent);
   border-radius: 1rem;
   background: color-mix(in srgb, Canvas 97%, CanvasText 3%);
+  cursor: grab;
+  touch-action: none;
+  overscroll-behavior: contain;
+  user-select: none;
 }
+
+.structural-visualization[data-camera-dragging="true"] { cursor: grabbing; }
 
 .structural-visualization__surface {
   display: block;
   width: 100%;
-  min-width: 760px;
+  min-width: 0;
   height: auto;
   color: CanvasText;
 }
@@ -430,7 +455,8 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monos
   .legend-grid { grid-template-columns: 1fr; }
 
   .interaction-level-row { grid-template-columns: 1fr; }
-  .structural-visualization { margin-inline: -0.15rem; }
+  .structural-camera { padding: 0.7rem; }
+  .structural-camera-toolbar button { flex: 1 1 10rem; }
 
   .system-data > div {
     grid-template-columns: 1fr;
