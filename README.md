@@ -22,6 +22,24 @@ runtime representation
 
 The v0.11 claim-discipline vocabulary remains binding: **D² and D⁴ explicitly as runtime/organization metadata**. D⁴ runtime organization metadata is **not a map-degree theorem** in the current sealed formal scope. Exact parent-project mathematical artifacts remain **not source-verified in this thread**, so no unavailable parent result is promoted. Benchmark horizons are **not mathematical limits**, and JavaScript safe-integer checks are representation-safety / engineering constraints rather than mathematical theorems.
 
+## Published v0.13 checkpoint
+
+The immutable publication checkpoint remains:
+
+```text
+v0.13 — Publication Checkpoint
+commit:
+e83ed17a5ce8e45e67ef326042a21ec51ba24222
+
+tree:
+338a519614ea16ceb2e4a1247fc0c94338929f0c
+
+release:
+published / immutable / not prerelease
+```
+
+The repository is licensed under the **Apache License, Version 2.0** (`Apache-2.0`). The `LICENSE` file remains the operative grant; later implementation milestones do not alter the published checkpoint or its licensing boundary.
+
 ## Thread 14 canonical baseline
 
 Thread 14 starts from the sealed Thread 13 canonical commit:
