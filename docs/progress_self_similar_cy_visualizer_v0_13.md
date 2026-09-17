@@ -6,7 +6,7 @@
 milestone: Thread 12 — Publication Checkpoint
 candidate version: v0.13
 sealed runtime/UI baseline: v0.12
-current phase: staging implementation
+current phase: implementation-bearing staging CI passed; documentation-bearing candidate pending revalidation
 thread sealed: false
 ```
 
@@ -49,7 +49,7 @@ The exact open-source license remains an explicit policy decision and has not be
 
 The v0.13 staging candidate is intentionally publication-only.
 
-Planned/implemented repository changes:
+Implemented repository changes:
 
 ```text
 README publication/reproducibility/provenance sections
@@ -98,6 +98,8 @@ The candidate therefore uses v7 rather than preserving the stale v5 assumption.
 
 Application/runtime verification remains Node 22. Automatic package-manager caching is explicitly disabled because this repository has no package-manager workflow.
 
+In staging run #39, the runtime job used the v7 actions and Node 22.23.2 without the earlier Node-20 action-runtime deprecation warning or the earlier `punycode` deprecation warning.
+
 ## Publication truth preservation
 
 No publication change may alter these facts:
@@ -132,6 +134,77 @@ actual GitHub Pages deployed URL
 actual UI screenshot/demo media
 ```
 
+## Staging CI history
+
+Three early staging runs failed only in the new publication verifier while the pre-existing v0.03–v0.12 runtime contracts continued to pass and the static HTTP smoke already passed.
+
+### Run #36 — historical false-negative
+
+```text
+run id: 35212321720
+head: efd8b6c480fe2410ed3c6319bda9d18ca6175973
+runtime v0.03–v0.12: success
+v0.13 publication verifier: failure
+formal-lean: success
+publication-static-smoke: success
+```
+
+Failure cause: the verifier required plain `not` while the truthful README used Markdown emphasis `**not**`.
+
+Classification:
+
+```text
+mathematical defect = false
+runtime engine defect = false
+Lean defect = false
+static deployment defect = false
+publication verifier wording false-negative = true
+```
+
+### Run #37 — historical false-negative
+
+```text
+run id: 35212450224
+head: e7b684fab1ae43ad47ac65a26ccb18a9b77f7066
+runtime v0.03–v0.12: success
+v0.13 publication verifier: failure
+formal-lean: success
+publication-static-smoke: success
+```
+
+Failure cause: the verifier required D² and D⁴ publication semantics to occur in one exact phrase even though the README stated both independently and correctly.
+
+Classification remains non-mathematical and non-runtime.
+
+### Run #38 — historical false-negative
+
+```text
+run id: 35212620482
+head: be42f5a9e50810c5637059e612ee6c162ed6c22e
+runtime v0.03–v0.12: success
+v0.13 publication verifier: failure
+publication-static-smoke: success
+```
+
+Failure cause: the verifier required the literal phrase `DO NOT MERGE` inside the progress artifact instead of checking the actual canonicalization semantics. Its formal job is not used as seal evidence for this run.
+
+### Run #39 — first complete green implementation-bearing candidate
+
+```text
+run id: 35212692318
+head: 165d72f5c56bc5e4244d409d917b299b955de70a
+status: completed / success
+runtime-contracts: success
+v0.03–v0.13: success
+JavaScript source syntax: success
+formal-lean: success
+publication-static-smoke: success
+```
+
+The repaired publication verifier now checks semantic requirements rather than incidental formatting or exact-label placement.
+
+Because this progress/state update itself changes the candidate tree, a new full documentation-bearing staging CI run is still required before the tree can be treated as final staging evidence.
+
 ## License gate
 
 Current state:
@@ -164,7 +237,7 @@ Actual screenshot/demo media remains pending until it can be captured from the d
 
 ## Canonicalization policy
 
-If staging CI and publication gates pass:
+If all publication gates pass:
 
 ```text
 1. audit the final staging tree;
@@ -183,7 +256,8 @@ No second canonical commit will be created merely to write external exact-SHA CI
 ```text
 [ ] explicit license selection
 [ ] LICENSE artifact
-[ ] staging CI green
+[x] implementation-bearing staging CI green (#39)
+[ ] final documentation-bearing staging CI green
 [ ] public visibility cutover
 [ ] branch governance configuration after public cutover
 [ ] GitHub Pages enabled

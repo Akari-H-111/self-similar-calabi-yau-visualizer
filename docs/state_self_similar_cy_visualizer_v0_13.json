@@ -3,7 +3,7 @@
   "version": "v0.13",
   "runtime_ui_baseline": "v0.12",
   "milestone": "Thread 12 — Publication Checkpoint",
-  "status": "staging_candidate_publication_work_in_progress",
+  "status": "implementation_staging_ci_passed_pending_documentation_tree_ci_and_publication_gates",
   "repository": {
     "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
     "starting_branch": "main",
@@ -16,6 +16,7 @@
     "starting_runtime_contracts": "completed / success",
     "starting_formal_lean": "completed / success",
     "staging_branch": "thread12-publication-checkpoint-v0-13",
+    "staging_pr": 5,
     "staging_pr_policy": "DO NOT MERGE; CI vehicle only; close unmerged after canonical exact-SHA seal",
     "canonical_commit_policy": "final main must be exactly one new milestone child whose sole parent is the v0.12 canonical seal",
     "canonical_ci_policy": "post-commit exact-main GitHub Actions evidence is external sealing evidence and is not written back through a second main commit"
@@ -88,7 +89,62 @@
     "setup_node_action": "actions/setup-node@v7",
     "setup_node_package_manager_cache": false,
     "node20_action_warning_targeted_for_removal": true,
+    "run_39_node20_deprecation_warning_observed": false,
+    "run_39_punycode_deprecation_warning_observed": false,
     "lean_action_changed": false
+  },
+  "staging_ci_history": {
+    "run_36": {
+      "run_id": 35212321720,
+      "head_sha": "efd8b6c480fe2410ed3c6319bda9d18ca6175973",
+      "runtime_contracts": "failure at verify_publication_checkpoint_v0_13.js",
+      "runtime_v0_03_through_v0_12": "success",
+      "formal_lean": "success",
+      "publication_static_smoke": "success",
+      "classification": "historical publication-verifier false-negative caused by Markdown emphasis around the word not",
+      "mathematical_defect": false,
+      "runtime_engine_defect": false,
+      "lean_defect": false,
+      "static_deployment_defect": false
+    },
+    "run_37": {
+      "run_id": 35212450224,
+      "head_sha": "e7b684fab1ae43ad47ac65a26ccb18a9b77f7066",
+      "runtime_contracts": "failure at verify_publication_checkpoint_v0_13.js",
+      "runtime_v0_03_through_v0_12": "success",
+      "formal_lean": "success",
+      "publication_static_smoke": "success",
+      "classification": "historical publication-verifier false-negative caused by requiring D2 and D4 semantics in one exact phrase",
+      "mathematical_defect": false,
+      "runtime_engine_defect": false,
+      "lean_defect": false,
+      "static_deployment_defect": false
+    },
+    "run_38": {
+      "run_id": 35212620482,
+      "head_sha": "be42f5a9e50810c5637059e612ee6c162ed6c22e",
+      "runtime_contracts": "failure at verify_publication_checkpoint_v0_13.js",
+      "runtime_v0_03_through_v0_12": "success",
+      "formal_lean": "not used as seal evidence; still in progress at this audit point",
+      "publication_static_smoke": "success",
+      "classification": "historical publication-verifier false-negative caused by requiring the literal DO NOT MERGE label instead of canonicalization semantics",
+      "mathematical_defect": false,
+      "runtime_engine_defect": false,
+      "static_deployment_defect": false
+    },
+    "run_39": {
+      "run_id": 35212692318,
+      "head_sha": "165d72f5c56bc5e4244d409d917b299b955de70a",
+      "status": "completed",
+      "conclusion": "success",
+      "runtime_contracts": "completed / success",
+      "runtime_v0_03_through_v0_13": "success",
+      "source_syntax_checks": "success",
+      "formal_lean": "completed / success",
+      "publication_static_smoke": "completed / success",
+      "classification": "first complete green implementation-bearing staging candidate"
+    },
+    "final_documentation_bearing_tree_ci": "pending external CI after this state/progress evidence update"
   },
   "publication_verification": {
     "new_verifier": "verify_publication_checkpoint_v0_13.js",
@@ -133,12 +189,12 @@
   },
   "blocking_before_final_seal": [
     "explicit open-source license selection and LICENSE artifact",
+    "final documentation-bearing staging CI success",
     "public repository visibility cutover",
     "GitHub Pages enablement",
     "actual deployed URL verification",
     "real-browser initialization smoke",
     "actual UI screenshot/demo capture",
-    "staging CI success",
     "final tree audit",
     "single-child canonical replay",
     "exact-SHA canonical CI success",
@@ -151,8 +207,9 @@
     "historical and staging branches retained"
   ],
   "seal_policy": {
-    "staging_ci": "pending",
-    "static_smoke": "pending",
+    "implementation_staging_ci": "completed / success at run 35212692318",
+    "final_documentation_tree_staging_ci": "pending external CI",
+    "static_smoke": "completed / success for implementation-bearing candidate at run 35212692318",
     "deployment": "pending",
     "canonical_main_commit": "pending",
     "final_canonical_runtime_contracts": "pending external exact-SHA CI",
