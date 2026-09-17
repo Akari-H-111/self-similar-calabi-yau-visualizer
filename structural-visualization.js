@@ -35,7 +35,7 @@
       .replaceAll("'", "&apos;");
   }
 
-  function assertCompatibleInputs(scene, baseModel, recursiveModel, zoomModel, organizationModel) {
+  function assertCompatibleInputs(scene, baseModel, recursiveModel, zoomModel, organizationModel, interactionModel) {
     if (!scene || !scene.mathematics || !scene.mathematics.parameters) {
       throw new TypeError("Structural visualization requires a validated normalized scene.");
     }
@@ -61,9 +61,25 @@
       throw new TypeError("Structural visualization requires organization and zoom focus state to agree.");
     }
 
+    if (interactionModel !== undefined && interactionModel !== null) {
+      if (interactionModel.kind !== "interactive_pullback_tower") {
+        throw new TypeError("Structural visualization interaction metadata must come from interactive_pullback_tower.");
+      }
+      if (
+        interactionModel.materializedDepth !== recursiveModel.materializedDepth ||
+        interactionModel.requestedDepth !== recursiveModel.requestedDepth ||
+        interactionModel.focusedDepth !== zoomModel.focusedDepth
+      ) {
+        throw new TypeError("Structural visualization interaction metadata must agree with runtime model depths.");
+      }
+      if (interactionModel.presentation.visibleDepth > recursiveModel.materializedDepth) {
+        throw new TypeError("Structural visualization cannot display beyond the materialized runtime depth.");
+      }
+    }
+
     const W = scene.mathematics.baseHypersurface?.definingFunction;
     if (!W || W.representation !== "unresolved") {
-      throw new TypeError("Thread 13 structural visualization is restricted to the unresolved-W truth boundary.");
+      throw new TypeError("Structural visualization is restricted to the unresolved-W truth boundary.");
     }
 
     if (
@@ -81,7 +97,7 @@
     }
   }
 
-  function createNode(depth, focusedDepth) {
+  function createNode(depth, focusedDepth, selectedDepth) {
     return Object.freeze({
       kind: NODE_KIND,
       depth,
@@ -89,6 +105,7 @@
       label: `X${formatSubscriptNumber(depth)}`,
       role: depth === 0 ? "base_structural_level" : "materialized_structural_level",
       focused: focusedDepth === depth,
+      selected: selectedDepth === depth,
       geometryRendered: false,
       sheetsMaterialized: false
     });
@@ -107,25 +124,43 @@
     });
   }
 
-  function createStructuralVisualizationModel(scene, baseModel, recursiveModel, zoomModel, organizationModel) {
-    assertCompatibleInputs(scene, baseModel, recursiveModel, zoomModel, organizationModel);
+  function createStructuralVisualizationModel(scene, baseModel, recursiveModel, zoomModel, organizationModel, interactionModel = null) {
+    assertCompatibleInputs(scene, baseModel, recursiveModel, zoomModel, organizationModel, interactionModel);
+
+    const selectedDepth = interactionModel ? interactionModel.selectedDepth : null;
+    const visibleDepth = interactionModel ? interactionModel.presentation.visibleDepth : recursiveModel.materializedDepth;
+    const collapsedDepth = interactionModel ? interactionModel.presentation.collapsedDepth : null;
+    const visibleLevels = recursiveModel.levels.filter((level) => level.depth <= visibleDepth);
 
     const nodes = Object.freeze([
-      createNode(0, zoomModel.focusedDepth),
-      ...recursiveModel.levels.map((level) => createNode(level.depth, zoomModel.focusedDepth))
+      createNode(0, zoomModel.focusedDepth, selectedDepth),
+      ...visibleLevels.map((level) => createNode(level.depth, zoomModel.focusedDepth, selectedDepth))
     ]);
-    const edges = Object.freeze(recursiveModel.levels.map(createEdge));
-    const continuation = recursiveModel.materializedDepth < recursiveModel.requestedDepth
-      ? Object.freeze({
-          present: true,
-          nextDepth: recursiveModel.materializedDepth + 1,
-          label: "next structural level not materialized"
-        })
-      : Object.freeze({
-          present: false,
-          nextDepth: null,
-          label: "requested structural frontier reached"
-        });
+    const edges = Object.freeze(visibleLevels.map(createEdge));
+
+    let continuation;
+    if (collapsedDepth !== null && visibleDepth < recursiveModel.materializedDepth) {
+      continuation = Object.freeze({
+        present: true,
+        status: "presentation_collapsed",
+        nextDepth: visibleDepth + 1,
+        label: "materialized structural descendants hidden by presentation collapse"
+      });
+    } else if (recursiveModel.materializedDepth < recursiveModel.requestedDepth) {
+      continuation = Object.freeze({
+        present: true,
+        status: "not_materialized",
+        nextDepth: recursiveModel.materializedDepth + 1,
+        label: "next structural level not materialized"
+      });
+    } else {
+      continuation = Object.freeze({
+        present: false,
+        status: "requested_frontier_reached",
+        nextDepth: null,
+        label: "requested structural frontier reached"
+      });
+    }
 
     const truthfulness = Object.freeze({
       geometryRendered: false,
@@ -153,6 +188,9 @@
         requestedDepth: recursiveModel.requestedDepth,
         materializedDepth: recursiveModel.materializedDepth,
         focusedDepth: zoomModel.focusedDepth,
+        selectedDepth,
+        visibleDepth,
+        collapsedDepth,
         definingFunctionSymbol: scene.mathematics.baseHypersurface.definingFunction.symbol,
         definingFunctionRepresentation: scene.mathematics.baseHypersurface.definingFunction.representation,
         organizationSemanticStatus: organizationModel.sheetDegreeSemanticStatus
@@ -178,12 +216,16 @@
     const nodeMarkup = model.nodes.map((node, index) => {
       const y = firstNodeY + index * nodeStep;
       const roleLabel = node.depth === 0 ? "base structural level" : "materialized structural descriptor";
-      const focusedClass = node.focused ? " is-focused" : "";
+      const stateClasses = `${node.focused ? " is-focused" : ""}${node.selected ? " is-selected" : ""}`;
+      const annotations = [];
+      if (node.selected) annotations.push("selected");
+      if (node.focused) annotations.push("focused");
+      const annotationText = annotations.length > 0 ? ` · ${annotations.join(" · ")}` : "";
       return [
-        `<g class="structural-node${focusedClass}" data-structural-node-depth="${String(node.depth)}">`,
+        `<g class="structural-node${stateClasses}" data-structural-node-depth="${String(node.depth)}" data-selected="${String(node.selected)}" data-focused="${String(node.focused)}">`,
         `<rect x="${String(nodeX)}" y="${String(y)}" width="${String(nodeWidth)}" height="${String(nodeHeight)}" rx="18" />`,
         `<text class="structural-node__label" x="${String(nodeX + 24)}" y="${String(y + 31)}">${escapeXml(node.label)}</text>`,
-        `<text class="structural-node__meta" x="${String(nodeX + 24)}" y="${String(y + 54)}">${escapeXml(roleLabel)}${node.focused ? " · focused" : ""}</text>`,
+        `<text class="structural-node__meta" x="${String(nodeX + 24)}" y="${String(y + 54)}">${escapeXml(roleLabel + annotationText)}</text>`,
         "</g>"
       ].join("");
     }).join("");
@@ -202,22 +244,29 @@
     }).join("");
 
     const frontierY = firstNodeY + model.nodes.length * nodeStep;
-    const frontierMarkup = model.continuation.present
-      ? [
-          `<g class="structural-frontier" data-frontier-depth="${String(model.continuation.nextDepth)}">`,
-          `<rect x="${String(nodeX)}" y="${String(frontierY)}" width="${String(nodeWidth)}" height="58" rx="16" />`,
-          `<text x="${String(nodeX + 24)}" y="${String(frontierY + 35)}">X${escapeXml(formatSubscriptNumber(model.continuation.nextDepth))} · not materialized</text>`,
-          "</g>"
-        ].join("")
-      : `<text class="structural-frontier__text" x="${String(nodeX)}" y="${String(frontierY + 20)}">${escapeXml(model.continuation.label)}</text>`;
+    let frontierMarkup;
+    if (!model.continuation.present) {
+      frontierMarkup = `<text class="structural-frontier__text" x="${String(nodeX)}" y="${String(frontierY + 20)}">${escapeXml(model.continuation.label)}</text>`;
+    } else {
+      const frontierLabel = model.continuation.status === "presentation_collapsed"
+        ? `X${formatSubscriptNumber(model.continuation.nextDepth)} · materialized, hidden by presentation collapse`
+        : `X${formatSubscriptNumber(model.continuation.nextDepth)} · not materialized`;
+      frontierMarkup = [
+        `<g class="structural-frontier" data-frontier-depth="${String(model.continuation.nextDepth)}" data-frontier-status="${escapeXml(model.continuation.status)}">`,
+        `<rect x="${String(nodeX)}" y="${String(frontierY)}" width="${String(nodeWidth)}" height="58" rx="16" />`,
+        `<text x="${String(nodeX + 24)}" y="${String(frontierY + 35)}">${escapeXml(frontierLabel)}</text>`,
+        "</g>"
+      ].join("");
+    }
 
     const focusedDepth = model.sceneState.focusedDepth === null ? "unavailable" : String(model.sceneState.focusedDepth);
-    const summary = `D=${String(model.sceneState.D)} · focused=${focusedDepth} · materialized=${String(model.sceneState.materializedDepth)} · requested=${String(model.sceneState.requestedDepth)}`;
+    const selectedDepth = model.sceneState.selectedDepth === null ? "none" : String(model.sceneState.selectedDepth);
+    const summary = `D=${String(model.sceneState.D)} · selected=${selectedDepth} · focused=${focusedDepth} · visible=${String(model.sceneState.visibleDepth)} · materialized=${String(model.sceneState.materializedDepth)} · requested=${String(model.sceneState.requestedDepth)}`;
 
     return [
       `<svg class="structural-visualization__surface" viewBox="0 0 960 ${String(diagramHeight)}" role="img" aria-label="Finite structural pullback diagram. Structural only; no Calabi–Yau geometry or sheets are rendered.">`,
       "<title>Finite structural pullback diagram</title>",
-      "<desc>Nodes are finite structural level descriptors from the verified runtime models. Edges denote pullback relations. No geometric Calabi–Yau hypersurface, covering, or genuine sheets are rendered.</desc>",
+      "<desc>Nodes are finite structural level descriptors from the verified runtime models. Edges denote pullback relations. Selection, focus, and presentation collapse are navigation metadata. No geometric Calabi–Yau hypersurface, covering, or genuine sheets are rendered.</desc>",
       '<defs><marker id="structural-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" /></marker></defs>',
       `<text class="structural-diagram__eyebrow" x="${String(nodeX)}" y="54">STRUCTURAL PROJECTION · NOT GEOMETRY</text>`,
       `<text class="structural-diagram__summary" x="${String(nodeX)}" y="84">${escapeXml(summary)}</text>`,
@@ -251,6 +300,9 @@
     target.dataset.structuralOnly = String(model.structuralOnly);
     target.dataset.materializedDepth = String(model.sceneState.materializedDepth);
     target.dataset.focusedDepth = model.sceneState.focusedDepth === null ? "" : String(model.sceneState.focusedDepth);
+    target.dataset.selectedDepth = model.sceneState.selectedDepth === null ? "" : String(model.sceneState.selectedDepth);
+    target.dataset.visibleDepth = String(model.sceneState.visibleDepth);
+    target.dataset.collapsedDepth = model.sceneState.collapsedDepth === null ? "" : String(model.sceneState.collapsedDepth);
     target.dataset.geometryRendered = String(model.truthfulness.geometryRendered);
     target.dataset.sheetsMaterialized = String(model.truthfulness.sheetsMaterialized);
     target.dataset.coveringStructureClaimed = String(model.truthfulness.coveringStructureClaimed);

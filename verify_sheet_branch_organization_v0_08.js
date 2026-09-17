@@ -104,11 +104,7 @@ assert.equal(depthThreeInitial.recursiveModel.materializedDepth, 1);
 assert.equal(depthThreeInitial.organizationModel.levelOrganizations.length, 1);
 
 const unavailableZoom = createZoomFocusModel(depthThreeInitial.scene, depthThreeInitial.recursiveModel, 2);
-const unavailableOrganization = createSheetBranchOrganizationModel(
-  depthThreeInitial.scene,
-  depthThreeInitial.recursiveModel,
-  unavailableZoom
-);
+const unavailableOrganization = createSheetBranchOrganizationModel(depthThreeInitial.scene, depthThreeInitial.recursiveModel, unavailableZoom);
 assert.equal(unavailableOrganization.organizationStatus, NOT_MATERIALIZED_STATUS);
 assert.equal(unavailableOrganization.organizationAvailable, false);
 assert.equal(unavailableOrganization.focusedDepth, null);
@@ -158,10 +154,7 @@ assert.throws(() => {
 assert.deepEqual(untouchedTarget, createTarget(), "Malformed scene must be rejected before organization target changes.");
 
 const incompatibleZoom = { ...depthOne.zoomModel, availableDepth: 0 };
-assert.throws(
-  () => createSheetBranchOrganizationModel(depthOne.scene, depthOne.recursiveModel, incompatibleZoom),
-  TypeError
-);
+assert.throws(() => createSheetBranchOrganizationModel(depthOne.scene, depthOne.recursiveModel, incompatibleZoom), TypeError);
 
 assert.equal(Object.hasOwn(canonicalScene, "sheetBranchOrganization"), false);
 assert.equal(Object.hasOwn(canonicalScene, "derived"), false);
@@ -175,13 +168,14 @@ const recursiveCreateCall = "RecursiveLazyExpansion.createRecursiveLazyExpansion
 const zoomCreateCall = "ZoomSemantics.createZoomFocusModel(scene, recursiveModel, 0)";
 const organizationCreateCall = "SheetBranchOrganization.createSheetBranchOrganizationModel(scene, recursiveModel, zoomModel)";
 const organizationRenderCall = "SheetBranchOrganization.renderSheetBranchOrganization(organizationModel, sheetBranchElement)";
+const interactionControllerCall = "InteractivePullbackTower.createInteractivePullbackTowerModel(scene, baseModel, pullbackModel)";
 assert.ok(appSource.includes('fetch("data/system.json"'));
 assert.ok(appSource.indexOf(validationCall) >= 0);
-assert.ok(appSource.indexOf(recursiveCreateCall) > appSource.indexOf(validationCall));
-assert.ok(appSource.indexOf(zoomCreateCall) > appSource.indexOf(recursiveCreateCall));
-assert.ok(appSource.indexOf(organizationCreateCall) > appSource.indexOf(zoomCreateCall));
-assert.ok(appSource.indexOf(organizationRenderCall) > appSource.indexOf(organizationCreateCall));
-assert.equal(appSource.includes("expandOneLevel("), false, "Application initialization must not expand recursion for sheet organization.");
+const usesDirectOrganizationPipeline = appSource.indexOf(recursiveCreateCall) > appSource.indexOf(validationCall) && appSource.indexOf(zoomCreateCall) > appSource.indexOf(recursiveCreateCall) && appSource.indexOf(organizationCreateCall) > appSource.indexOf(zoomCreateCall);
+const usesForwardInteractionController = appSource.indexOf(interactionControllerCall) > appSource.indexOf(validationCall);
+assert.ok(usesDirectOrganizationPipeline || usesForwardInteractionController, "App must obtain recursive/focus/organization state through sealed APIs directly or through the later interaction controller.");
+assert.ok(appSource.includes(organizationRenderCall), "Current organization state must still be rendered from the model.");
+assert.equal(appSource.includes("expandOneLevel("), false, "App must not become the recursion authority for sheet organization.");
 
 const sceneSpecScript = '<script src="scene-spec.js" defer></script>';
 const recursiveScript = '<script src="recursive-lazy-expansion.js" defer></script>';
@@ -205,19 +199,7 @@ assert.equal(recursiveSource.includes("SheetBranchOrganization"), false, "Recurs
 assert.equal(zoomSource.includes("SheetBranchOrganization"), false, "Zoom engine must remain organization-agnostic.");
 
 for (const forbiddenToken of [
-  "sheetObjects",
-  "branchObjects",
-  "fiberGeometry",
-  "points",
-  "mesh",
-  "implicitSurface",
-  "THREE",
-  "WebGL",
-  "canvas",
-  "<svg",
-  "cameraMatrix",
-  "projectionMatrix",
-  "viewportTransform"
+  "sheetObjects", "branchObjects", "fiberGeometry", "points", "mesh", "implicitSurface", "THREE", "WebGL", "canvas", "<svg", "cameraMatrix", "projectionMatrix", "viewportTransform"
 ]) {
   assert.equal(organizationSource.includes(forbiddenToken), false, `Organization layer must not contain ${forbiddenToken}.`);
 }

@@ -1,14 +1,14 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.14 — Structural Visualization Layer
+**Current version:** v0.15 — Interactive Pullback Tower
 
 **Published checkpoint:** v0.13 — Publication Checkpoint
 
 **Runtime scene contract:** v0.12
 
-This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.14 adds the first deliberately visible graphical layer: a deterministic inline-SVG diagram projected from the existing verified runtime models.
+This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.15 turns the v0.14 structural SVG projection into an interactive pullback tower while preserving the sealed runtime/model boundaries.
 
-The diagram is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric zoom.
+The interface is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric/camera zoom.
 
 The evidence rule remains:
 
@@ -20,72 +20,147 @@ runtime representation
 != visualization convention
 ```
 
-## Published v0.13 baseline
+The v0.11 claim-discipline vocabulary remains binding: **D² and D⁴ explicitly as runtime/organization metadata**. D⁴ runtime organization metadata is **not a map-degree theorem** in the current sealed formal scope. Exact parent-project mathematical artifacts remain **not source-verified in this thread**, so no unavailable parent result is promoted. Benchmark horizons are **not mathematical limits**, and JavaScript safe-integer checks are representation-safety / engineering constraints rather than mathematical theorems.
 
-Thread 13 starts from the immutable published checkpoint:
+## Published v0.13 checkpoint
+
+The immutable publication checkpoint remains:
 
 ```text
-canonical main/tag commit:
+v0.13 — Publication Checkpoint
+commit:
 e83ed17a5ce8e45e67ef326042a21ec51ba24222
 
-canonical tree:
+tree:
 338a519614ea16ceb2e4a1247fc0c94338929f0c
 
 release:
-v0.13 — Publication Checkpoint
 published / immutable / not prerelease
+```
+
+The repository is licensed under the **Apache License, Version 2.0** (`Apache-2.0`). The `LICENSE` file remains the operative grant; later implementation milestones do not alter the published checkpoint or its licensing boundary.
+
+## Thread 14 canonical baseline
+
+Thread 14 starts from the sealed Thread 13 canonical commit:
+
+```text
+canonical main commit:
+97ee38e7f0a8704297621f8fc15f0109c8512751
+
+canonical tree:
+6b6948e7d83efdf91c50a73841d71ebbb770ef60
+
+parent:
+e83ed17a5ce8e45e67ef326042a21ec51ba24222
 
 Formal Verification:
-run #42 / 35215769668
+run #49 / 35232440872
 runtime-contracts          = completed / success
 formal-lean                = completed / success
 publication-static-smoke   = completed / success
 
 GitHub Pages build/deployment:
-run 35216628078
-head SHA = e83ed17a5ce8e45e67ef326042a21ec51ba24222
+run 35232440091
+head SHA = 97ee38e7f0a8704297621f8fc15f0109c8512751
 conclusion = success
 ```
 
-The repository is public and licensed under the **Apache License, Version 2.0** (`Apache-2.0`).
+The published `v0.13` tag remains at `e83ed17a5ce8e45e67ef326042a21ec51ba24222`. The `v0.13 — Publication Checkpoint` release remains published, immutable, and not a prerelease.
 
-## v0.14 structural visualization
+## v0.15 interactive pullback tower
 
-The new projection module is:
-
-```text
-structural-visualization.js
-```
-
-It consumes existing normalized/verified models:
+The new interaction controller is:
 
 ```text
-scene
-base_scene
-recursive_lazy_expansion
-structural_zoom_focus
-sheet_branch_organization
+interactive-pullback-tower.js
 ```
 
-and emits a finite SVG structural diagram.
-
-A visible node means a structural level descriptor already materialized by the existing recursion model. A visible arrow means the existing adjacent pullback relation. The SVG does **not** reinterpret those glyphs as geometric hypersurfaces, embedded branches, genuine sheets, or covering maps.
-
-The canonical scene still has:
+Its architecture is:
 
 ```text
-requestedDepth = 0
+user event
+  -> interaction/controller state
+  -> sealed runtime APIs
+  -> current runtime models
+  -> structural visualization projection
+  -> DOM/SVG render
 ```
 
-so the default published diagram honestly contains only the materialized base node `X₀`, together with a symbolic rule panel. It does not manufacture `X₁` merely to make the page look busier.
+The controller reuses:
 
-When an already-verified recursive model contains deeper finite descriptors, the same projection deterministically displays the corresponding finite nodes and edges.
+```text
+RecursiveLazyExpansion
+ZoomSemantics
+SheetBranchOrganization
+StructuralVisualization
+```
+
+It does not define a second recursion engine, recompute D²/D⁴, enumerate sheets, or implement geometry.
+
+The user can:
+
+```text
+expand the next structural level
+collapse materialized descendants for presentation
+select a visible materialized level
+refocus a visible materialized level
+inspect a state-derived structural breadcrumb
+```
+
+Selection and structural focus do not trigger recursive expansion. Collapse does not delete recursive descriptors or reduce `materializedDepth`.
 
 Detailed contract:
 
 ```text
-docs/STRUCTURAL_VISUALIZATION_self_similar_cy_visualizer_v0_14.md
+docs/INTERACTIVE_PULLBACK_TOWER_self_similar_cy_visualizer_v0_15.md
 ```
+
+## Canonical `requestedDepth = 0`
+
+The canonical scene remains unchanged:
+
+```text
+data/system.json
+requestedDepth = 0
+```
+
+Therefore the initial page still begins honestly at `X₀`.
+
+When the user explicitly asks to expand, v0.15 creates an ephemeral interaction-request state and delegates structural descriptor materialization to the sealed recursion API. This interaction state is not written back to `data/system.json`, is not a new theorem, and is not a new canonical mathematical source.
+
+## Interaction semantics
+
+```text
+expand
+= the only interaction allowed to increase structural descriptor materialization
+
+select
+= selection metadata only
+
+refocus
+= structural navigation metadata only
+= no expansion
+= no camera transform
+= no geometric zoom
+
+collapse
+= presentation-only hiding of descendants
+= no deletion of mathematical/runtime structure
+
+reveal
+= presentation-only restoration of already materialized descendants
+```
+
+`structuralDescriptorMaterializationTriggered=true` may appear on an expansion transition. This means a finite recursive descriptor was added. It does **not** mean geometric or sheet materialization.
+
+## Structural visualization
+
+`structural-visualization.js` still projects finite verified runtime structure into inline SVG. v0.15 additionally projects selected/focused/collapsed presentation state.
+
+A visible node is a finite structural level descriptor. A visible arrow is an adjacent pullback relation already present in the runtime model. These glyphs are not geometric hypersurfaces, embedded branches, genuine sheets, or covering maps.
+
+The diagram remains structural, not a geometric realization.
 
 ## Project-level structural statement
 
@@ -111,7 +186,7 @@ Therefore no geometric Calabi–Yau hypersurface is currently rendered.
 
 ## Frozen truthfulness boundary
 
-The v0.14 projection preserves:
+v0.15 preserves:
 
 ```text
 geometryRendered = false
@@ -119,11 +194,10 @@ sheetsMaterialized = false
 coveringStructureClaimed = false
 geometricZoomApplied = false
 cameraTransformApplied = false
-materializationTriggered = false
 W representation = unresolved
 ```
 
-The structural visualization rejects inputs that violate this Thread 13 boundary rather than silently upgrading them.
+Selection, focus, breadcrumb, collapse, and expansion controls must not promote any of these claims.
 
 ## D² and D⁴
 
@@ -134,14 +208,12 @@ scene.derived.metricScale = D^2
 scene.derived.sheetDegree = D^4
 ```
 
-The current interpretation remains:
+The interpretation remains:
 
 ```text
 D² = runtime numeric metadata
 D⁴ = runtime numeric / organizational metadata
 ```
-
-In the v0.11 claim-discipline wording, D² and D⁴ explicitly as runtime/organization metadata remain runtime-side classifications rather than theorem promotion.
 
 The repository does not claim that the sealed Lean core proves:
 
@@ -149,8 +221,6 @@ The repository does not claim that the sealed Lean core proves:
 P_D^* g_log = D^2 g_log
 deg(P_D) = D^4
 ```
-
-In particular, D⁴ runtime organization metadata is not a map-degree theorem in the current sealed formal scope. The SVG explicitly states that D⁴ remains organization metadata and that no covering structure is claimed.
 
 ## Lean-formalized scope
 
@@ -169,20 +239,13 @@ Lean: leanprover/lean4:v4.34.0
 mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
 ```
 
-v0.14 does not modify `formal/` and does not promote any new theorem.
+v0.15 does not modify `formal/` and does not promote any new theorem.
 
-## Arithmetic overlays
+## Accessibility floor
 
-Implemented overlays remain:
+Essential interaction uses native buttons rather than mouse-only SVG handlers. Selected/focused controls expose pressed/current state, and keyboard focus receives visible `:focus-visible` styling. The final full accessibility audit remains a later milestone.
 
-```text
-coordinate_channels
-coordinate_iterate_rule
-```
-
-Cyclotomic, torsion, collision, divisor, and related parent-project geometry remains deferred unless exact canonical source evidence is retrieved and audited. Exact parent-project source artifacts are not source-verified in this thread, so no stronger parent-project result is promoted by v0.14.
-
-## Navigation and performance boundary
+## Navigation and camera boundary
 
 “Infinite navigation” retains the operational meaning:
 
@@ -190,15 +253,13 @@ Cyclotomic, torsion, collision, divisor, and related parent-project geometry rem
 arbitrarily continued finite structural navigation
 ```
 
-Benchmark horizons are engineering observations, not mathematical limits. JavaScript safe-integer checks are representation-safety / engineering constraints, not mathematical theorems or depth bounds.
-
-Thread 13 does not add user interaction, recursive-expansion controls, camera transforms, or geometric zoom. Those belong to the next interaction milestone.
+v0.15 does **not** implement pan, wheel zoom, pinch zoom, fit-to-level camera, SVG viewBox camera navigation, drag canvas, camera matrices, or geometric scaling. Structural refocus is navigation metadata only.
 
 ## What green CI means
 
 A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
 
-A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including the v0.14 structural-visualization verifier.
+A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.15 interaction transitions and all earlier verifiers.
 
 A green `publication-static-smoke` job means the static repository paths can be served and fetched successfully from a clean GitHub-hosted runner.
 
@@ -221,9 +282,10 @@ node verify_mathematical_fidelity_v0_11.js
 node verify_ux_exposition_v0_12.js
 node verify_publication_checkpoint_v0_13.js
 node verify_structural_visualization_v0_14.js
+node verify_interactive_pullback_tower_v0_15.js
 ```
 
-`verify_structural_visualization_v0_14.js` checks canonical depth-zero rendering, deterministic deeper finite fixtures, projection-only source discipline, truthfulness datasets, integration wiring, and byte-for-byte preservation of the sealed model engines.
+The v0.15 verifier tests deterministic multi-step interaction sequences, invalid/unmaterialized target rejection, selection/focus/materialization consistency, presentation collapse/reveal, breadcrumb consistency, source-discipline guards, sealed runtime blobs, truthfulness invariants, and index/app/CI integration.
 
 ## Reproduce the Lean core
 
@@ -249,12 +311,12 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000/`.
 
-The page loads `data/system.json`, validates it, builds the established runtime models, projects them into the SVG structural diagram, and then renders the exposition/diagnostic surfaces.
+The page loads and validates `data/system.json`, constructs the sealed base/pullback models, creates the interaction controller state, and re-renders the runtime diagnostics, exposition, and structural SVG after each accepted interaction.
 
-## Scope of v0.14
+## Scope of v0.15
 
-v0.14 is **Thread 13 — Structural Visualization Layer**.
+v0.15 is **Thread 14 — Interactive Pullback Tower**.
 
-It adds a visible deterministic SVG projection and its verifier/documentation only. It does not implement concrete `W`, Calabi–Yau geometry, genuine D⁴ sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision geometry, Canvas/WebGL/Three.js, camera transforms, or interaction controls.
+It adds interaction/navigation/presentation semantics only. It does not implement concrete `W`, Calabi–Yau geometry, genuine D⁴ sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision geometry, Canvas/WebGL/Three.js, or camera transforms.
 
-The next milestone is **Thread 14 — Interaction Layer**. It is not started here.
+The next milestone is **Thread 15 — Structural Camera / Zoom Layer**. It is not started here.

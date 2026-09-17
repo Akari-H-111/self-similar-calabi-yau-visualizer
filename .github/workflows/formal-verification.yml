@@ -115,6 +115,9 @@ jobs:
       - name: Verify structural visualization v0.14
         run: node verify_structural_visualization_v0_14.js
 
+      - name: Verify interactive pullback tower v0.15
+        run: node verify_interactive_pullback_tower_v0_15.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -124,6 +127,7 @@ jobs:
           node --check recursive-lazy-expansion.js
           node --check zoom-semantics.js
           node --check sheet-branch-organization.js
+          node --check interactive-pullback-tower.js
           node --check structural-visualization.js
           node --check arithmetic-overlays.js
           node --check exposition-layer.js
@@ -133,6 +137,7 @@ jobs:
           node --check verify_ux_exposition_v0_12.js
           node --check verify_publication_checkpoint_v0_13.js
           node --check verify_structural_visualization_v0_14.js
+          node --check verify_interactive_pullback_tower_v0_15.js
           node --check app.js
 
   publication-static-smoke:
@@ -171,6 +176,7 @@ jobs:
             recursive-lazy-expansion.js \
             zoom-semantics.js \
             sheet-branch-organization.js \
+            interactive-pullback-tower.js \
             structural-visualization.js \
             arithmetic-overlays.js \
             exposition-layer.js \
@@ -181,9 +187,11 @@ jobs:
           curl -fsS http://127.0.0.1:8000/data/system.json >/tmp/publication-system.json
           python3 -m json.tool /tmp/publication-system.json >/dev/null
           grep -Fq '"version": "v0.12"' /tmp/publication-system.json
+          grep -Fq '"requestedDepth": 0' /tmp/publication-system.json
           grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html
           grep -Fq 'D² runtime metadata' /tmp/publication-index.html
           grep -Fq 'D⁴ organization metadata' /tmp/publication-index.html
-          grep -Fq 'Structural diagram' /tmp/publication-index.html
+          grep -Fq 'Interactive pullback tower' /tmp/publication-index.html
+          grep -Fq 'Canonical requested depth' /tmp/publication-index.html
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"

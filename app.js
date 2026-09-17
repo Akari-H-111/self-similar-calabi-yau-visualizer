@@ -7,6 +7,7 @@ const pullbackElement = document.querySelector("#one-step-pullback");
 const recursiveElement = document.querySelector("#recursive-lazy-expansion");
 const zoomElement = document.querySelector("#zoom-semantics");
 const sheetBranchElement = document.querySelector("#sheet-branch-organization");
+const interactionElement = document.querySelector("#interactive-pullback-tower");
 const structuralVisualizationElement = document.querySelector("#structural-visualization");
 const arithmeticOverlayElement = document.querySelector("#arithmetic-overlays");
 const expositionElement = document.querySelector("#exposition-layer");
@@ -29,9 +30,13 @@ const fields = {
   definingFunctionStatus: document.querySelector("#w-status-value")
 };
 
+let canonicalScene = null;
+let baseModel = null;
+let pullbackModel = null;
+let interactionModel = null;
+
 function displayScene(scene) {
   const parameters = scene.mathematics.parameters;
-
   fields.project.textContent = scene.project;
   fields.version.textContent = scene.version;
   fields.schemaVersion.textContent = String(scene.schemaVersion);
@@ -44,127 +49,162 @@ function displayScene(scene) {
   fields.definingFunctionStatus.textContent = scene.mathematics.baseHypersurface.definingFunction.representation;
 }
 
+function clearDataset(target, keys) {
+  for (const key of keys) delete target.dataset[key];
+}
+
 function resetRenderedState() {
+  interactionModel = null;
+  canonicalScene = null;
+  baseModel = null;
+  pullbackModel = null;
   dataElement.hidden = true;
+
   expositionElement.hidden = true;
-  delete expositionElement.dataset.state;
-  delete expositionElement.dataset.geometryRendered;
-  delete expositionElement.dataset.sheetsMaterialized;
-  delete expositionElement.dataset.coveringStructureClaimed;
-  delete expositionElement.dataset.geometricZoomApplied;
-  delete expositionElement.dataset.cameraTransformApplied;
+  clearDataset(expositionElement, ["state", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied"]);
+
+  interactionElement.hidden = true;
+  interactionElement.innerHTML = "";
+  clearDataset(interactionElement, ["state", "selectedDepth", "focusedDepth", "materializedDepth", "requestedDepth", "sourceRequestedDepth", "visibleDepth", "collapsedDepth", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied"]);
+
   structuralVisualizationElement.hidden = true;
   structuralVisualizationElement.innerHTML = "";
-  delete structuralVisualizationElement.dataset.state;
-  delete structuralVisualizationElement.dataset.representationKind;
-  delete structuralVisualizationElement.dataset.structuralOnly;
-  delete structuralVisualizationElement.dataset.materializedDepth;
-  delete structuralVisualizationElement.dataset.focusedDepth;
-  delete structuralVisualizationElement.dataset.geometryRendered;
-  delete structuralVisualizationElement.dataset.sheetsMaterialized;
-  delete structuralVisualizationElement.dataset.coveringStructureClaimed;
-  delete structuralVisualizationElement.dataset.geometricZoomApplied;
-  delete structuralVisualizationElement.dataset.cameraTransformApplied;
-  delete structuralVisualizationElement.dataset.materializationTriggered;
+  clearDataset(structuralVisualizationElement, ["state", "representationKind", "structuralOnly", "materializedDepth", "focusedDepth", "selectedDepth", "visibleDepth", "collapsedDepth", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied", "materializationTriggered"]);
+
   rendererElement.hidden = true;
   rendererElement.textContent = "";
-  delete rendererElement.dataset.state;
-  delete rendererElement.dataset.geometryRendered;
+  clearDataset(rendererElement, ["state", "geometryRendered"]);
+
   pullbackElement.hidden = true;
   pullbackElement.textContent = "";
-  delete pullbackElement.dataset.state;
-  delete pullbackElement.dataset.depth;
-  delete pullbackElement.dataset.geometryRendered;
-  delete pullbackElement.dataset.sheetsMaterialized;
+  clearDataset(pullbackElement, ["state", "depth", "geometryRendered", "sheetsMaterialized"]);
+
   recursiveElement.hidden = true;
   recursiveElement.textContent = "";
-  delete recursiveElement.dataset.state;
-  delete recursiveElement.dataset.requestedDepth;
-  delete recursiveElement.dataset.materializedDepth;
-  delete recursiveElement.dataset.expansionComplete;
-  delete recursiveElement.dataset.geometryRendered;
-  delete recursiveElement.dataset.sheetsMaterialized;
+  clearDataset(recursiveElement, ["state", "requestedDepth", "materializedDepth", "expansionComplete", "geometryRendered", "sheetsMaterialized"]);
+
   zoomElement.hidden = true;
   zoomElement.textContent = "";
-  delete zoomElement.dataset.state;
-  delete zoomElement.dataset.requestedFocusDepth;
-  delete zoomElement.dataset.focusedDepth;
-  delete zoomElement.dataset.availableDepth;
-  delete zoomElement.dataset.requestedDepth;
-  delete zoomElement.dataset.focusAvailable;
-  delete zoomElement.dataset.geometricZoomApplied;
-  delete zoomElement.dataset.cameraTransformApplied;
-  delete zoomElement.dataset.materializationTriggered;
+  clearDataset(zoomElement, ["state", "requestedFocusDepth", "focusedDepth", "availableDepth", "requestedDepth", "focusAvailable", "geometricZoomApplied", "cameraTransformApplied", "materializationTriggered"]);
+
   sheetBranchElement.hidden = true;
   sheetBranchElement.textContent = "";
-  delete sheetBranchElement.dataset.state;
-  delete sheetBranchElement.dataset.sheetDegreeSource;
-  delete sheetBranchElement.dataset.sheetDegreePerStep;
-  delete sheetBranchElement.dataset.materializedDepth;
-  delete sheetBranchElement.dataset.focusedDepth;
-  delete sheetBranchElement.dataset.sheetsMaterialized;
-  delete sheetBranchElement.dataset.coveringStructureClaimed;
-  delete sheetBranchElement.dataset.geometryRendered;
-  delete sheetBranchElement.dataset.materializationTriggered;
+  clearDataset(sheetBranchElement, ["state", "sheetDegreeSource", "sheetDegreePerStep", "materializedDepth", "focusedDepth", "sheetsMaterialized", "coveringStructureClaimed", "geometryRendered", "materializationTriggered"]);
+
   arithmeticOverlayElement.hidden = true;
   arithmeticOverlayElement.textContent = "";
-  delete arithmeticOverlayElement.dataset.state;
-  delete arithmeticOverlayElement.dataset.availableOverlays;
-  delete arithmeticOverlayElement.dataset.enabledOverlays;
-  delete arithmeticOverlayElement.dataset.materializedDepth;
-  delete arithmeticOverlayElement.dataset.focusedDepth;
-  delete arithmeticOverlayElement.dataset.materializationTriggered;
-  delete arithmeticOverlayElement.dataset.geometryRendered;
+  clearDataset(arithmeticOverlayElement, ["state", "availableOverlays", "enabledOverlays", "materializedDepth", "focusedDepth", "materializationTriggered", "geometryRendered"]);
+}
+
+function renderInteractionState() {
+  if (!canonicalScene || !baseModel || !pullbackModel || !interactionModel) {
+    throw new TypeError("Interactive pullback rendering requires initialized canonical and interaction models.");
+  }
+
+  const scene = canonicalScene;
+  const recursiveModel = interactionModel.recursiveModel;
+  const zoomModel = interactionModel.zoomModel;
+  const organizationModel = interactionModel.organizationModel;
+
+  RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement);
+  ZoomSemantics.renderZoomSemantics(zoomModel, zoomElement);
+  SheetBranchOrganization.renderSheetBranchOrganization(organizationModel, sheetBranchElement);
+  InteractivePullbackTower.renderInteractivePullbackTower(interactionModel, interactionElement);
+
+  const structuralVisualizationModel = StructuralVisualization.createStructuralVisualizationModel(
+    scene,
+    baseModel,
+    recursiveModel,
+    zoomModel,
+    organizationModel,
+    interactionModel
+  );
+  StructuralVisualization.renderStructuralVisualization(structuralVisualizationModel, structuralVisualizationElement);
+
+  const arithmeticOverlayModel = ArithmeticOverlays.createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, initialArithmeticOverlayRequest);
+  ArithmeticOverlays.renderArithmeticOverlays(arithmeticOverlayModel, arithmeticOverlayElement);
+
+  const expositionModel = ExpositionLayer.createExpositionModel(
+    scene,
+    baseModel,
+    recursiveModel,
+    zoomModel,
+    organizationModel,
+    arithmeticOverlayModel
+  );
+  ExpositionLayer.renderExpositionLayer(expositionModel, expositionElement);
+
+  statusElement.dataset.state = "ready";
+  statusElement.textContent = (
+    `Interactive structural tower ready: selected X_${String(interactionModel.selectedDepth)}, ` +
+    `focused X_${String(interactionModel.focusedDepth)}, materialized depth ${String(interactionModel.materializedDepth)}, ` +
+    `interaction-requested depth ${String(interactionModel.requestedDepth)}. ` +
+    "No geometric zoom, camera transform, genuine sheets, or Calabi–Yau geometry is materialized."
+  );
+}
+
+function applyInteraction(action, depth = null) {
+  if (!interactionModel) throw new TypeError("Interactive pullback state is not initialized.");
+
+  switch (action) {
+    case "expand-or-reveal":
+      interactionModel = InteractivePullbackTower.expandOrReveal(interactionModel);
+      break;
+    case "collapse-selected":
+      interactionModel = InteractivePullbackTower.collapseSelected(interactionModel);
+      break;
+    case "select":
+      interactionModel = InteractivePullbackTower.selectDepth(interactionModel, depth);
+      break;
+    case "refocus":
+      interactionModel = InteractivePullbackTower.refocusDepth(interactionModel, depth);
+      break;
+    default:
+      throw new TypeError(`Unknown interaction action: ${String(action)}`);
+  }
+
+  renderInteractionState();
+}
+
+function handleInteractionClick(event) {
+  const control = event.target?.closest?.("[data-interaction-action]");
+  if (!control || !interactionElement.contains(control) || control.disabled) return;
+
+  const action = control.dataset.interactionAction;
+  const depth = Object.hasOwn(control.dataset, "depth") ? Number(control.dataset.depth) : null;
+
+  try {
+    applyInteraction(action, depth);
+  } catch (error) {
+    console.error("Interactive structural transition rejected:", error);
+    statusElement.dataset.state = "error";
+    statusElement.textContent = `Interactive structural transition rejected: ${error.message}`;
+  }
 }
 
 async function loadSystemConfiguration() {
   try {
     const response = await fetch("data/system.json", { cache: "no-store" });
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status} ${response.statusText}`.trim());
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`.trim());
 
     const rawScene = await response.json();
     const scene = SceneSpec.validateAndNormalizeScene(rawScene);
+    canonicalScene = scene;
 
-    const baseModel = BaseRenderer.renderBaseScene(scene, rendererElement);
-    const pullbackModel = OneStepPullback.renderOneStepPullback(scene, baseModel, pullbackElement);
-    const recursiveModel = RecursiveLazyExpansion.createRecursiveLazyExpansionModel(scene, baseModel, pullbackModel);
-    RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement);
-    const zoomModel = ZoomSemantics.createZoomFocusModel(scene, recursiveModel, 0);
-    ZoomSemantics.renderZoomSemantics(zoomModel, zoomElement);
-    const organizationModel = SheetBranchOrganization.createSheetBranchOrganizationModel(scene, recursiveModel, zoomModel);
-    SheetBranchOrganization.renderSheetBranchOrganization(organizationModel, sheetBranchElement);
-    const structuralVisualizationModel = StructuralVisualization.createStructuralVisualizationModel(
-      scene,
-      baseModel,
-      recursiveModel,
-      zoomModel,
-      organizationModel
-    );
-    StructuralVisualization.renderStructuralVisualization(structuralVisualizationModel, structuralVisualizationElement);
-    const arithmeticOverlayModel = ArithmeticOverlays.createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, initialArithmeticOverlayRequest);
-    ArithmeticOverlays.renderArithmeticOverlays(arithmeticOverlayModel, arithmeticOverlayElement);
-    const expositionModel = ExpositionLayer.createExpositionModel(
-      scene,
-      baseModel,
-      recursiveModel,
-      zoomModel,
-      organizationModel,
-      arithmeticOverlayModel
-    );
-    ExpositionLayer.renderExpositionLayer(expositionModel, expositionElement);
+    baseModel = BaseRenderer.renderBaseScene(scene, rendererElement);
+    pullbackModel = OneStepPullback.renderOneStepPullback(scene, baseModel, pullbackElement);
+    interactionModel = InteractivePullbackTower.createInteractivePullbackTowerModel(scene, baseModel, pullbackModel);
+
+    renderInteractionState();
     displayScene(scene);
     dataElement.hidden = false;
-    statusElement.dataset.state = "ready";
-    statusElement.textContent = "Loaded and validated. The structural diagram is a model-derived SVG projection; geometry and sheets remain unmaterialized.";
   } catch (error) {
-    console.error("Failed to load, validate, or initialize the structural scene:", error);
+    console.error("Failed to load, validate, or initialize the interactive structural scene:", error);
     resetRenderedState();
     statusElement.dataset.state = "error";
     statusElement.textContent = `Failed to load, validate, or render data/system.json: ${error.message}`;
   }
 }
 
+interactionElement.addEventListener("click", handleInteractionClick);
 loadSystemConfiguration();

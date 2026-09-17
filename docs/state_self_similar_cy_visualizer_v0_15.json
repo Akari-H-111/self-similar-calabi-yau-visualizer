@@ -1,0 +1,90 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.15",
+  "runtime_scene_baseline": "v0.12",
+  "milestone": "Thread 14 — Interactive Pullback Tower",
+  "status": "implementation_complete_staging_full_green_pre_final_docs_exact_tree_ci_pending",
+  "starting_baseline": {
+    "repository": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "branch": "main",
+    "commit": "97ee38e7f0a8704297621f8fc15f0109c8512751",
+    "tree": "6b6948e7d83efdf91c50a73841d71ebbb770ef60",
+    "parent": "e83ed17a5ce8e45e67ef326042a21ec51ba24222",
+    "formal_verification_run_id": 35232440872,
+    "formal_verification_run_number": 49,
+    "formal_verification_conclusion": "success",
+    "pages_build_deployment_run_id": 35232440091,
+    "pages_build_deployment_conclusion": "success",
+    "release_tag": "v0.13",
+    "release_commit": "e83ed17a5ce8e45e67ef326042a21ec51ba24222",
+    "release_immutable": true,
+    "release_prerelease": false
+  },
+  "canonical_scene_requested_depth": 0,
+  "implementation": {
+    "new_controller": "interactive-pullback-tower.js",
+    "new_verifier": "verify_interactive_pullback_tower_v0_15.js",
+    "new_contract_doc": "docs/INTERACTIVE_PULLBACK_TOWER_self_similar_cy_visualizer_v0_15.md",
+    "selection_state": true,
+    "structural_focus": true,
+    "presentation_collapse": true,
+    "explicit_interaction_depth_request": true,
+    "breadcrumb_model": true,
+    "event_delegation": true,
+    "native_buttons": true,
+    "recursion_engine_modified": false,
+    "zoom_engine_modified": false,
+    "sheet_organization_engine_modified": false,
+    "arithmetic_overlay_engine_modified": false,
+    "lean_modified": false,
+    "canonical_scene_schema_modified": false,
+    "canonical_system_json_modified": false,
+    "camera_layer_added": false
+  },
+  "interaction_semantics": {
+    "expand": "the only transition allowed to increase structural descriptor materialization; orchestration delegates to RecursiveLazyExpansion.expandOneLevel and sealed model factories",
+    "select": "navigation metadata only; target must already be materialized and presentation-visible",
+    "refocus": "structural focus metadata only; target must already be materialized and presentation-visible; no recursive expansion or camera transform",
+    "collapse": "presentation-only hiding of materialized descendants; recursive descriptors remain materialized",
+    "reveal": "presentation-only restoration of already materialized descendants",
+    "canonical_request_source": "data/system.json remains requestedDepth=0; interaction requestedDepth is ephemeral runtime state"
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "cameraTransformApplied": false,
+    "W": "unresolved"
+  },
+  "claim_boundary": {
+    "D2": "runtime metadata; no metric theorem promoted",
+    "D4": "runtime/organizational metadata; no map-degree theorem promoted",
+    "structural_descriptor_materialization": "runtime descriptor state only; not geometric or sheet materialization",
+    "selection_focus_collapse": "interaction/navigation/presentation state only",
+    "mathematical_claim_strength_increased": false
+  },
+  "validation": {
+    "staging_branch": "thread14-interactive-pullback-tower-v0-15",
+    "staging_pull_request": 7,
+    "pre_final_docs_verified_head": "08da5cfdccee608783c371efd82429f1ccaa1999",
+    "pre_final_docs_verified_tree": "c7d3c267a709e4ad0d7bcd595b3c37139a8cac66",
+    "staging_workflow_run_id": 35238829762,
+    "staging_workflow_run_number": 59,
+    "runtime_contracts": "success",
+    "formal_lean": "success",
+    "publication_static_smoke": "success",
+    "final_artifact_sync": "this state/progress sync creates a new staging tree; require one additional exact-tree full-green staging run before canonical replay",
+    "final_staging_exact_tree_ci": "pending_after_artifact_sync",
+    "exact_main_ci": "pending_after_canonical_replay",
+    "pages_exact_sha": "pending_after_canonical_replay"
+  },
+  "seal_policy": {
+    "staging_pr_policy": "CI vehicle only; do not merge staging history",
+    "canonical_policy": "after final exact-tree staging success, replay that verified staging tree as exactly one child of 97ee38e7f0a8704297621f8fc15f0109c8512751, fast-forward main, then require exact-main Formal Verification and Pages evidence",
+    "seal_authority": "Git object identity plus exact-SHA GitHub Actions evidence; this state file records only already-observed runs and does not self-certify the artifact-sync commit that contains it"
+  },
+  "mathematical_claim_strength_increased": false,
+  "next_milestone_started": false,
+  "next_milestone": "Thread 15 — Structural Camera / Zoom Layer"
+}
