@@ -172,15 +172,22 @@ const recursiveCreateCall = "RecursiveLazyExpansion.createRecursiveLazyExpansion
 const recursiveRenderCall = "RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement)";
 const zoomCreateCall = "ZoomSemantics.createZoomFocusModel(scene, recursiveModel, 0)";
 const zoomRenderCall = "ZoomSemantics.renderZoomSemantics(zoomModel, zoomElement)";
+const interactionControllerCall = "InteractivePullbackTower.createInteractivePullbackTowerModel(scene, baseModel, pullbackModel)";
 assert.ok(appSource.includes('fetch("data/system.json"'));
 assert.ok(appSource.indexOf(validationCall) >= 0);
 assert.ok(appSource.indexOf(baseCall) > appSource.indexOf(validationCall));
 assert.ok(appSource.indexOf(pullbackCall) > appSource.indexOf(baseCall));
-assert.ok(appSource.indexOf(recursiveCreateCall) > appSource.indexOf(pullbackCall));
-assert.ok(appSource.indexOf(recursiveRenderCall) > appSource.indexOf(recursiveCreateCall));
-assert.ok(appSource.indexOf(zoomCreateCall) > appSource.indexOf(recursiveRenderCall));
-assert.ok(appSource.indexOf(zoomRenderCall) > appSource.indexOf(zoomCreateCall));
-assert.equal(appSource.includes("expandOneLevel("), false, "Zoom initialization must not eagerly expand recursion.");
+const usesDirectZoomPipeline = appSource.indexOf(recursiveCreateCall) > appSource.indexOf(pullbackCall) && appSource.indexOf(zoomCreateCall) > appSource.indexOf(recursiveCreateCall);
+const usesForwardInteractionController = appSource.indexOf(interactionControllerCall) > appSource.indexOf(pullbackCall);
+assert.ok(usesDirectZoomPipeline || usesForwardInteractionController, "App must obtain recursive/focus state through sealed runtime APIs directly or through the later interaction controller.");
+if (usesDirectZoomPipeline) {
+  assert.ok(appSource.indexOf(recursiveRenderCall) > appSource.indexOf(recursiveCreateCall));
+  assert.ok(appSource.indexOf(zoomRenderCall) > appSource.indexOf(zoomCreateCall));
+} else {
+  assert.ok(appSource.includes("RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement)"));
+  assert.ok(appSource.includes("ZoomSemantics.renderZoomSemantics(zoomModel, zoomElement)"));
+}
+assert.equal(appSource.includes("expandOneLevel("), false, "App must not become a recursion authority; zoom/refocus must not eagerly expand recursion.");
 
 const sceneSpecScript = '<script src="scene-spec.js" defer></script>';
 const baseScript = '<script src="base-renderer.js" defer></script>';
