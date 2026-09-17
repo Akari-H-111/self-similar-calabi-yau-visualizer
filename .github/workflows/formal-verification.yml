@@ -105,6 +105,9 @@ jobs:
       - name: Verify mathematical fidelity v0.11
         run: node verify_mathematical_fidelity_v0_11.js
 
+      - name: Verify UX exposition v0.12
+        run: node verify_ux_exposition_v0_12.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -115,7 +118,9 @@ jobs:
           node --check zoom-semantics.js
           node --check sheet-branch-organization.js
           node --check arithmetic-overlays.js
+          node --check exposition-layer.js
           node --check verify_performance_infinite_navigation_v0_10.js
           node --check benchmark_performance_infinite_navigation_v0_10.js
           node --check verify_mathematical_fidelity_v0_11.js
+          node --check verify_ux_exposition_v0_12.js
           node --check app.js

@@ -54,7 +54,9 @@ function buildModels(rawScene, focusDepth = 0, requestedOverlays = []) {
   return { scene, baseModel, oneStepModel, recursiveModel, zoomModel, organizationModel, overlayModel };
 }
 
-assert.equal(canonicalScene.version, "v0.11", "Thread 10 canonical scene metadata must be v0.11.");
+const canonicalVersionMatch = /^v0\.(\d+)$/.exec(canonicalScene.version);
+assert.ok(canonicalVersionMatch, "Canonical scene version must use v0.<minor> metadata.");
+assert.ok(Number(canonicalVersionMatch[1]) >= 11, "Mathematical fidelity verifier requires version metadata at or after v0.11.");
 
 const baseCase = buildModels(canonicalScene, 0, [
   ArithmeticOverlays.OVERLAY_IDS.COORDINATE_CHANNELS,
@@ -173,19 +175,22 @@ assert.match(pullbackTowerSource, /no Calabi--Yau geometry, degree theorem,/);
 assert.match(pullbackTowerSource, /covering-space structure, or metric claim/);
 
 const indexSource = read("index.html");
-assert.match(indexSource, /v0\.11 · Mathematical Fidelity Audit/);
+assert.match(indexSource, /Mathematical Fidelity Audit|UX \/ Exposition Layer/);
 assert.match(indexSource, /D² runtime metadata/);
 assert.match(indexSource, /D⁴ organization metadata/);
 assert.match(indexSource, /Sheet \/ branch organization metadata/);
 
 const readmeSource = read("README.md");
-assert.match(readmeSource, /Current version:\*\* v0\.11/);
+assert.match(readmeSource, /Current version:\*\* v0\.\d+/);
 assert.match(readmeSource, /D² and D⁴ explicitly as runtime\/organization metadata/);
 assert.match(readmeSource, /not a map-degree theorem/i);
 assert.match(readmeSource, /entire visualizer, all Calabi–Yau mathematics/i);
 assert.match(readmeSource, /not source-verified in this thread/);
 assert.match(readmeSource, /not mathematical limits/);
-assert.match(readmeSource, /engineering\/runtime representation constraint|engineering safety constraint|representation-safety constraints/i);
+assert.match(
+  readmeSource,
+  /engineering\/runtime representation constraint|engineering safety constraint|representation[- ]safety(?:\s*\/\s*engineering)?\s+constraints?/i
+);
 
 const fidelitySource = read("docs/MATHEMATICAL_FIDELITY_self_similar_cy_visualizer_v0_11.md");
 for (const requiredSection of [

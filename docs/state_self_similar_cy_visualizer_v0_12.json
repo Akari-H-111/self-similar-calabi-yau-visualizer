@@ -1,0 +1,173 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.12",
+  "status": "repaired_staging_ci_passed_pending_final_tree_ci_and_canonical_seal",
+  "current_stage": "Thread 11 UX / Exposition implementation and repaired staging CI passed; documentation-bearing final staging tree CI, canonicalization, and exact-SHA canonical CI remain seal gates",
+  "milestone": "Thread 11 — UX / Exposition Layer",
+  "repository": {
+    "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "default_branch": "main",
+    "thread_starting_main_commit": "b77a688fed8cbc41e105900d38177e75219825d1",
+    "thread_starting_parent": "7f43dc1b1445e0ded12e1ea185f75230bc68cded",
+    "starting_commit_message": "audit: seal v0.11 mathematical fidelity",
+    "starting_tree": "80e807f4d6ed868ceef9270b1d37cc0c1dbe5ed4",
+    "starting_canonical_ci_run": 35195693622,
+    "starting_canonical_ci_status": "completed / success",
+    "starting_runtime_contracts": "completed / success",
+    "starting_formal_lean": "completed / success",
+    "staging_branch": "thread11-ux-exposition-v0-12",
+    "staging_pr": 4,
+    "staging_pr_policy": "DO NOT MERGE; CI vehicle only; close unmerged after canonical exact-SHA seal",
+    "canonical_commit_policy": "final main must be exactly one new milestone child whose sole parent is the Thread 10 canonical seal",
+    "canonical_ci_policy": "post-commit exact-main GitHub Actions evidence is external sealing evidence and is not written back through a second main commit"
+  },
+  "ux_problem": {
+    "primary_issue": "truthfulness was present but distributed across engineering-oriented diagnostics",
+    "mathematical_repair_required": false,
+    "engine_change_required": false
+  },
+  "semantic_categories": [
+    "Lean formalized",
+    "Runtime metadata",
+    "Structural",
+    "Symbolic",
+    "Unresolved",
+    "Not materialized",
+    "Engineering"
+  ],
+  "information_architecture": [
+    "current-state summary",
+    "semantic legend",
+    "formal/runtime/unresolved provenance panel",
+    "qualified canonical structure",
+    "secondary implementation diagnostics disclosure"
+  ],
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "cameraTransformApplied": false,
+    "materializationTriggered": false
+  },
+  "runtime_metadata_policy": {
+    "D2": "runtime numeric metadata; not a sealed metric theorem",
+    "D4": "runtime numeric / organizational metadata; not a sealed map-degree theorem",
+    "iterated_D4": "symbolic/runtime organization only",
+    "W": "unresolved"
+  },
+  "lean_formal_boundary": {
+    "modified_by_v0_12": false,
+    "formalized": [
+      "coordinate power map",
+      "coordinate power iteration law",
+      "abstract set-theoretic pullback recurrence",
+      "coordinatePower(D^n) preimage closed form"
+    ],
+    "not_promoted": [
+      "D2 metric theorem",
+      "D4 map-degree theorem",
+      "covering or sheets",
+      "W",
+      "Calabi-Yau geometry",
+      "smoothness",
+      "connectedness",
+      "etaleness",
+      "torsion / cyclotomic / collision mathematics"
+    ]
+  },
+  "accessibility": {
+    "single_live_status_region": true,
+    "native_details_summary_disclosures": true,
+    "visible_focus_for_disclosures": true,
+    "narrow_viewport_single_column": true,
+    "reduced_motion_rule": true,
+    "color_is_not_only_semantic_carrier": true,
+    "hover_only_core_tooltips": false,
+    "real_browser_assistive_technology_test": "not_tested"
+  },
+  "verification_policy": {
+    "new_verifier": "verify_ux_exposition_v0_12.js",
+    "semantic_not_typographic": true,
+    "required_runtime_regressions": [
+      "verify_scene_spec_v0_03.js",
+      "verify_base_renderer_v0_04.js",
+      "verify_one_step_pullback_v0_05.js",
+      "verify_recursive_lazy_expansion_v0_06.js",
+      "verify_zoom_semantics_v0_07.js",
+      "verify_sheet_branch_organization_v0_08.js",
+      "verify_arithmetic_overlays_v0_09.js",
+      "verify_performance_infinite_navigation_v0_10.js",
+      "verify_mathematical_fidelity_v0_11.js",
+      "verify_ux_exposition_v0_12.js"
+    ],
+    "formal_lean_required": true,
+    "staging_ci_required": true,
+    "final_exact_main_ci_required": true,
+    "final_documentation_tree_ci_external_evidence": true
+  },
+  "staging_ci_history": {
+    "run_32": {
+      "run_id": 35201729327,
+      "head_sha": "5f2c09ac697f6cf50f8051771b8cbc5415b02708",
+      "runtime_contracts": "failure",
+      "formal_lean": "success",
+      "classification": "historical false-negative wording assertion in v0.11 fidelity verifier",
+      "runtime_steps_before_failure": "v0.03 through v0.10 passed",
+      "failed_assertion_subject": "README safe-integer engineering/representation-safety wording",
+      "mathematical_defect": false,
+      "runtime_engine_defect": false,
+      "lean_defect": false
+    },
+    "repair": {
+      "commit": "80a2dfc44101300f2ded1938ab9af80a91c2afa8",
+      "message": "test: accept semantic representation-safety wording in v0.11 fidelity gate",
+      "changed_files": ["verify_mathematical_fidelity_v0_11.js"],
+      "effect": "broaden semantic wording acceptance without weakening mathematical boundary assertions"
+    },
+    "run_33": {
+      "run_id": 35202768806,
+      "head_sha": "80a2dfc44101300f2ded1938ab9af80a91c2afa8",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "runtime_contracts": "completed / success",
+      "formal_lean": "completed / success",
+      "v0_12_verifier": "completed / success",
+      "syntax_checks": "completed / success"
+    },
+    "final_documentation_bearing_tree_ci": "pending external CI after this state/progress evidence update"
+  },
+  "files": {
+    "created": [
+      "exposition-layer.js",
+      "verify_ux_exposition_v0_12.js",
+      "docs/UX_EXPOSITION_self_similar_cy_visualizer_v0_12.md",
+      "docs/state_self_similar_cy_visualizer_v0_12.json",
+      "docs/progress_self_similar_cy_visualizer_v0_12.md"
+    ],
+    "presentation_modified": ["index.html", "app.js", "style.css"],
+    "metadata_documentation_modified": ["README.md", "data/system.json", ".github/workflows/formal-verification.yml"],
+    "historical_verifier_compatibility_modified": ["verify_mathematical_fidelity_v0_11.js"],
+    "sealed_runtime_math_engine_modified": [],
+    "formal_lean_modified": []
+  },
+  "residual_risks": [
+    "GitHub code-search index is not relied upon for absence proofs",
+    "GitHub surface has no branch reflog proving historical absence of force updates",
+    "legacy identifiers and historical terminology remain",
+    "exact parent-project canonical sources remain unavailable to this thread",
+    "real-browser long-session performance remains outside sealed evidence",
+    "real assistive-technology testing remains not_tested"
+  ],
+  "seal_policy": {
+    "implementation_staging_ci": "completed / success at run 35202768806",
+    "final_documentation_tree_staging_ci": "pending external CI",
+    "canonical_main_commit": "pending",
+    "final_canonical_runtime_contracts": "pending external exact-SHA CI",
+    "final_canonical_formal_lean": "pending external exact-SHA CI",
+    "thread_sealed": false
+  },
+  "mathematical_claim_strength_increased": false,
+  "next_milestone_after_seal": "Thread 12 — Publication Checkpoint"
+}
