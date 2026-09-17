@@ -1,8 +1,8 @@
 {
   "project": "Self-Similar Calabi–Yau Visualizer",
   "version": "v0.12",
-  "status": "staging_implementation_pending_ci_and_canonical_seal",
-  "current_stage": "Thread 11 UX / Exposition Layer implemented on staging; regression, staging CI, canonicalization, and exact-SHA canonical CI remain seal gates",
+  "status": "repaired_staging_ci_passed_pending_final_tree_ci_and_canonical_seal",
+  "current_stage": "Thread 11 UX / Exposition implementation and repaired staging CI passed; documentation-bearing final staging tree CI, canonicalization, and exact-SHA canonical CI remain seal gates",
   "milestone": "Thread 11 — UX / Exposition Layer",
   "repository": {
     "full_name": "Akari-H-111/self-similar-calabi-yau-visualizer",
@@ -16,6 +16,8 @@
     "starting_runtime_contracts": "completed / success",
     "starting_formal_lean": "completed / success",
     "staging_branch": "thread11-ux-exposition-v0-12",
+    "staging_pr": 4,
+    "staging_pr_policy": "DO NOT MERGE; CI vehicle only; close unmerged after canonical exact-SHA seal",
     "canonical_commit_policy": "final main must be exactly one new milestone child whose sole parent is the Thread 10 canonical seal",
     "canonical_ci_policy": "post-commit exact-main GitHub Actions evidence is external sealing evidence and is not written back through a second main commit"
   },
@@ -101,7 +103,40 @@
     ],
     "formal_lean_required": true,
     "staging_ci_required": true,
-    "final_exact_main_ci_required": true
+    "final_exact_main_ci_required": true,
+    "final_documentation_tree_ci_external_evidence": true
+  },
+  "staging_ci_history": {
+    "run_32": {
+      "run_id": 35201729327,
+      "head_sha": "5f2c09ac697f6cf50f8051771b8cbc5415b02708",
+      "runtime_contracts": "failure",
+      "formal_lean": "success",
+      "classification": "historical false-negative wording assertion in v0.11 fidelity verifier",
+      "runtime_steps_before_failure": "v0.03 through v0.10 passed",
+      "failed_assertion_subject": "README safe-integer engineering/representation-safety wording",
+      "mathematical_defect": false,
+      "runtime_engine_defect": false,
+      "lean_defect": false
+    },
+    "repair": {
+      "commit": "80a2dfc44101300f2ded1938ab9af80a91c2afa8",
+      "message": "test: accept semantic representation-safety wording in v0.11 fidelity gate",
+      "changed_files": ["verify_mathematical_fidelity_v0_11.js"],
+      "effect": "broaden semantic wording acceptance without weakening mathematical boundary assertions"
+    },
+    "run_33": {
+      "run_id": 35202768806,
+      "head_sha": "80a2dfc44101300f2ded1938ab9af80a91c2afa8",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "runtime_contracts": "completed / success",
+      "formal_lean": "completed / success",
+      "v0_12_verifier": "completed / success",
+      "syntax_checks": "completed / success"
+    },
+    "final_documentation_bearing_tree_ci": "pending external CI after this state/progress evidence update"
   },
   "files": {
     "created": [
@@ -126,7 +161,8 @@
     "real assistive-technology testing remains not_tested"
   ],
   "seal_policy": {
-    "staging_ci": "pending",
+    "implementation_staging_ci": "completed / success at run 35202768806",
+    "final_documentation_tree_staging_ci": "pending external CI",
     "canonical_main_commit": "pending",
     "final_canonical_runtime_contracts": "pending external exact-SHA CI",
     "final_canonical_formal_lean": "pending external exact-SHA CI",

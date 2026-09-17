@@ -186,9 +186,66 @@ The verifier is deliberately semantic rather than prose-exact. It checks categor
 
 It does not attempt to prove subjective UX quality or mathematics through JavaScript.
 
-## Regression plan
+The v0.11 fidelity verifier receives only forward-version / semantic wording compatibility adjustments required to run the existing claim-discipline assertions against v0.12. The mathematical boundary assertions remain in place.
 
-Staging CI must execute:
+## Staging CI history
+
+Staging-only PR:
+
+```text
+PR #4
+DO NOT MERGE — Thread 11 v0.12 UX / Exposition staging CI
+base = main @ b77a688fed8cbc41e105900d38177e75219825d1
+head = thread11-ux-exposition-v0-12
+```
+
+### Historical staging run #32
+
+```text
+run id = 35201729327
+head = 5f2c09ac697f6cf50f8051771b8cbc5415b02708
+runtime-contracts = failure
+formal-lean = success
+```
+
+The runtime job passed v0.03 through v0.10, then failed inside `verify_mathematical_fidelity_v0_11.js` before the v0.12 verifier executed.
+
+Failure classification:
+
+```text
+historical false-negative wording assertion
+```
+
+The README truthfully described `Number.isSafeInteger` as:
+
+```text
+JavaScript representation-safety / engineering constraints
+```
+
+while the legacy v0.11 assertion accepted only a narrower list of synonymous phrases. No runtime engine, Lean source, mathematical claim, or UX behavior failed.
+
+Repair commit:
+
+```text
+80a2dfc44101300f2ded1938ab9af80a91c2afa8
+test: accept semantic representation-safety wording in v0.11 fidelity gate
+```
+
+The repair changed only `verify_mathematical_fidelity_v0_11.js`, broadening the semantic pattern without weakening the mathematical boundary checks.
+
+### Repaired staging run #33
+
+```text
+run id = 35202768806
+head = 80a2dfc44101300f2ded1938ab9af80a91c2afa8
+event = pull_request
+status = completed
+conclusion = success
+runtime-contracts = completed / success
+formal-lean = completed / success
+```
+
+The runtime job passed:
 
 ```text
 v0.03 scene specification
@@ -202,44 +259,78 @@ v0.10 performance/infinite-navigation contracts
 v0.11 mathematical fidelity
 v0.12 UX/exposition
 JavaScript syntax checks
-formal-lean
 ```
 
-The v0.11 verifier receives only a forward-version compatibility adjustment needed for running its claim-discipline assertions against v0.12. Its mathematical boundary is not weakened.
+The formal job passed the pinned toolchain/dependency gate, mathlib cache restore, `lake build`, all three direct Lean compilations, and the placeholder rejection gate.
 
-## Staging and canonicalization
+## Final staging-tree policy
 
-The work branch is:
+This progress/state evidence update changes documentation only. Therefore the resulting final staging tree must itself receive a fresh full CI pass before canonicalization.
+
+That final-tree staging CI is treated as external evidence and is not written back through another staging documentation commit, avoiding an infinite evidence-update loop.
+
+Only after the final staging tree receives both jobs `completed / success` may canonicalization proceed.
+
+## Changed-files audit
+
+Relative to the Thread 10 canonical parent, Thread 11 changes only:
 
 ```text
-thread11-ux-exposition-v0-12
+.github/workflows/formal-verification.yml
+README.md
+app.js
+data/system.json
+docs/UX_EXPOSITION_self_similar_cy_visualizer_v0_12.md
+docs/progress_self_similar_cy_visualizer_v0_12.md
+docs/state_self_similar_cy_visualizer_v0_12.json
+exposition-layer.js
+index.html
+style.css
+verify_mathematical_fidelity_v0_11.js
+verify_ux_exposition_v0_12.js
 ```
 
-A staging-only PR will be used as a CI vehicle and must be marked `DO NOT MERGE`.
+No file under `formal/` and none of the seven sealed mathematical/runtime organization engines is modified.
 
-After staging CI and final diff audit pass, the verified final tree is to be replayed as exactly one canonical child of:
+## Canonicalization policy
+
+After final staging CI and final diff audit pass, the verified final tree is replayed as exactly one canonical child of:
 
 ```text
 b77a688fed8cbc41e105900d38177e75219825d1
 ```
 
-The expected canonical commit message is:
+Expected canonical message:
 
 ```text
 ux: seal v0.12 exposition layer
 ```
 
-The exact-SHA canonical push CI remains external sealing evidence. No second commit will be made merely to write that evidence back into state/progress files.
+Then `main` is advanced by a non-force fast-forward only.
+
+The exact-SHA canonical push CI remains external sealing evidence. No second canonical commit will be made merely to write that evidence back into state/progress files.
+
+PR #4 must be closed unmerged after canonical exact-SHA CI succeeds.
+
+## Residual risks
+
+The remaining risks are deliberately carried forward rather than disguised as solved:
+
+```text
+GitHub code-search index is not relied upon for absence proofs
+GitHub surface has no branch reflog proving historical absence of force updates
+legacy identifiers and historical terminology remain
+exact parent-project canonical sources remain unavailable to this thread
+real-browser long-session performance remains outside sealed evidence
+real assistive-technology testing remains not_tested
+```
 
 ## Current stopping condition
 
-At the time this progress artifact is authored, implementation is staged but the following remain pending:
+Repository implementation and repaired staging CI have passed. Remaining gates are:
 
 ```text
-workflow wiring
-v0.11 forward-compatibility verifier adjustment
-full staging regression
-staging CI
+final documentation-bearing staging tree CI
 final changed-files/diff audit
 single-child canonical replay
 fast-forward main
