@@ -1,0 +1,108 @@
+{
+  "project": "Self-Similar Calabi-Yau Visualizer",
+  "thread": 16,
+  "milestone": "D4 Branch Organization Graphics",
+  "version": "v0.17",
+  "status": "implemented_and_pre_final_ci_verified_pending_final_exact_tree_seal",
+  "starting_canonical": {
+    "commit": "49ece02ada3a3f4aba2077fa86fd494df3c8188a",
+    "tree": "9a9f1ea776789fb4f9a02b0c43b59f2ac6c3cbf2",
+    "sole_parent": "d40e938c318a8389baccb58223c9f057217ba018",
+    "commit_message": "visualization: seal Thread 15 structural camera zoom v0.16"
+  },
+  "inherited_thread15_seal_evidence": {
+    "formal_verification": {
+      "run_number": 76,
+      "run_id": 35253648915,
+      "head_sha": "49ece02ada3a3f4aba2077fa86fd494df3c8188a",
+      "conclusion": "success"
+    },
+    "pages": {
+      "run_id": 35253643964,
+      "head_sha": "49ece02ada3a3f4aba2077fa86fd494df3c8188a",
+      "conclusion": "success"
+    },
+    "staging_pr_8": {
+      "state": "closed",
+      "merged": false,
+      "draft": true,
+      "role": "CI vehicle only"
+    }
+  },
+  "implementation": {
+    "new_module": "branch-organization-graphics.js",
+    "new_verifier": "verify_branch_organization_graphics_v0_17.js",
+    "representation_kind": "aggregate_structural_branch_badges",
+    "multiplicity_source": "scene.derived.sheetDegree",
+    "recomputes_D4": false,
+    "badge_count_depends_on_multiplicity": false,
+    "branch_lod_control_added": false,
+    "new_lean_theorem": false
+  },
+  "validated_fixtures": {
+    "D2": {
+      "D4": 16,
+      "encoding": "one aggregate badge per visible transition"
+    },
+    "D3": {
+      "D4": 81,
+      "encoding": "one aggregate badge per visible transition"
+    },
+    "D64": {
+      "D4": 16777216,
+      "encoding": "one aggregate badge per visible transition"
+    },
+    "D1": {
+      "accepted_by_current_schema": false,
+      "classification": "current schema / representation boundary, not a mathematical impossibility"
+    }
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "W": "unresolved"
+  },
+  "state_separation": {
+    "recursive_depth": "sealed v0.15 interaction domain",
+    "structural_focus": "sealed v0.07/v0.15 domain",
+    "selection_and_collapse": "sealed v0.15 interaction domain",
+    "camera": "sealed v0.16 presentation domain",
+    "branch_graphics": "v0.17 read-only presentation projection",
+    "cross_domain_mutation": false
+  },
+  "sealed_semantic_modules_modified": false,
+  "canonical_scene": {
+    "path": "data/system.json",
+    "requestedDepth": 0,
+    "D": 2,
+    "W": "unresolved",
+    "modified_by_v0_17": false
+  },
+  "pre_final_artifact_ci": {
+    "head_commit": "10b9be784a1706008712c72e8fa31c5be6469ab8",
+    "tree": "263666ef1f132271bd88577a566670a99a3cb3db",
+    "workflow_run_number": 79,
+    "workflow_run_id": 35256652594,
+    "runtime_contracts": "success",
+    "formal_lean": "success",
+    "publication_static_smoke": "success",
+    "v0_03_through_v0_17": "success"
+  },
+  "staging": {
+    "branch": "thread16-d4-branch-organization-graphics-v0-17",
+    "pull_request": 9,
+    "pull_request_role": "draft CI vehicle only; do not merge",
+    "final_exact_tree_ci": "pending_after_final_artifact_sync",
+    "pull_request_closed_unmerged": "pending"
+  },
+  "canonicalization": {
+    "exact_verified_tree_replay_as_single_child": "pending",
+    "main_fast_forward": "pending",
+    "exact_main_formal_verification": "pending",
+    "exact_sha_pages": "pending",
+    "seal_authority": "external Git object identity plus exact-SHA workflow evidence"
+  },
+  "thread16_sealed": false
+}
