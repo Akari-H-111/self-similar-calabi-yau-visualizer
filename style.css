@@ -93,6 +93,114 @@ h3 {
   color: color-mix(in srgb, CanvasText 76%, transparent);
 }
 
+.structural-section {
+  padding-top: 0.25rem;
+}
+
+.structural-visualization {
+  overflow-x: auto;
+  border: 1px solid color-mix(in srgb, CanvasText 22%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, Canvas 97%, CanvasText 3%);
+}
+
+.structural-visualization__surface {
+  display: block;
+  width: 100%;
+  min-width: 760px;
+  height: auto;
+  color: CanvasText;
+}
+
+.structural-visualization__surface text,
+.structural-visualization__surface path,
+.structural-visualization__surface rect {
+  vector-effect: non-scaling-stroke;
+}
+
+.structural-diagram__eyebrow {
+  fill: currentColor;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.structural-diagram__summary,
+.structural-node__meta,
+.structural-edge text,
+.structural-rule-panel__meta,
+.structural-diagram__boundary,
+.structural-frontier__text,
+.structural-frontier text {
+  fill: currentColor;
+  opacity: 0.72;
+  font-size: 14px;
+}
+
+.structural-node rect,
+.structural-rule-panel rect,
+.structural-frontier rect {
+  fill: color-mix(in srgb, Canvas 92%, CanvasText 8%);
+  stroke: currentColor;
+  stroke-width: 1.25;
+}
+
+.structural-node.is-focused rect {
+  stroke-width: 3;
+}
+
+.structural-node__label {
+  fill: currentColor;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.structural-edge path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+#structural-arrow path {
+  fill: currentColor;
+}
+
+.structural-frontier rect {
+  fill: transparent;
+  stroke-dasharray: 7 7;
+  opacity: 0.65;
+}
+
+.structural-rule-panel rect {
+  fill: transparent;
+  stroke-dasharray: 5 6;
+  opacity: 0.82;
+}
+
+.structural-rule-panel__title {
+  fill: currentColor;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.structural-rule-panel__formula {
+  fill: currentColor;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 21px;
+}
+
+.structural-rule-panel__formula--small {
+  font-size: 17px;
+}
+
+.structural-boundary-caption {
+  max-width: 78ch;
+  margin: 0.85rem 0 0;
+  color: color-mix(in srgb, CanvasText 76%, transparent);
+  font-size: 0.92rem;
+}
+
 .primary-section {
   padding-top: 0.25rem;
 }
@@ -291,6 +399,10 @@ code {
   .provenance-grid,
   .legend-grid {
     grid-template-columns: 1fr;
+  }
+
+  .structural-visualization {
+    margin-inline: -0.15rem;
   }
 
   .system-data > div {

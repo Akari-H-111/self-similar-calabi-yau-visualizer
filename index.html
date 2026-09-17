@@ -11,6 +11,7 @@
   <script src="recursive-lazy-expansion.js" defer></script>
   <script src="zoom-semantics.js" defer></script>
   <script src="sheet-branch-organization.js" defer></script>
+  <script src="structural-visualization.js" defer></script>
   <script src="arithmetic-overlays.js" defer></script>
   <script src="exposition-layer.js" defer></script>
   <script src="app.js" defer></script>
@@ -18,11 +19,24 @@
 <body>
   <main class="shell">
     <header class="hero">
-      <p class="eyebrow">v0.12 · UX / Exposition Layer</p>
+      <p class="eyebrow">v0.14 · Structural Visualization Layer</p>
       <h1>Self-Similar Calabi–Yau Visualizer</h1>
-      <p class="lede">A structural explorer for the coordinate-power pullback system. It distinguishes what the runtime represents, what the sealed Lean core formalizes, and what remains unresolved or not materialized.</p>
+      <p class="lede">A structural explorer for the coordinate-power pullback system. The first visible diagram now projects verified finite runtime structure into SVG while keeping geometry, sheets, and covering claims explicitly unmaterialized.</p>
+      <p class="section-note">Built on the sealed v0.12 UX / Exposition Layer and the v0.11 mathematical-fidelity boundary.</p>
       <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. The interface represents structural and runtime state rather than a completed geometric simulation.</p>
     </header>
+
+    <section aria-labelledby="structural-visualization-title" class="structural-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Visible structure</p>
+          <h2 id="structural-visualization-title">Structural diagram</h2>
+        </div>
+        <p class="section-note">Generated from the existing finite runtime models. The diagram is structural, not a geometric realization.</p>
+      </div>
+      <div id="structural-visualization" class="structural-visualization" hidden></div>
+      <p class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. They are not geometric hypersurfaces, genuine sheets, embedded branches, or a covering-space realization.</p>
+    </section>
 
     <section aria-labelledby="current-state-title" class="primary-section">
       <div class="section-heading">
@@ -147,7 +161,7 @@
           <ul>
             <li>Validated parameters and finite depth state.</li>
             <li>D² runtime metadata and D⁴ organization metadata.</li>
-            <li>Lazy level descriptors, structural focus, aggregate organization, and symbolic overlays.</li>
+            <li>Lazy level descriptors, structural focus, aggregate organization, symbolic overlays, and the SVG structural projection.</li>
           </ul>
         </article>
         <article class="provenance-card">

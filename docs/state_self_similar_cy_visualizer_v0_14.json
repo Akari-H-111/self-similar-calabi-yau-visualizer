@@ -1,0 +1,86 @@
+{
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.14",
+  "runtime_scene_baseline": "v0.12",
+  "milestone": "Thread 13 — Structural Visualization Layer",
+  "status": "staging_verified_canonicalization_candidate",
+  "starting_baseline": {
+    "repository": "Akari-H-111/self-similar-calabi-yau-visualizer",
+    "branch": "main",
+    "commit": "e83ed17a5ce8e45e67ef326042a21ec51ba24222",
+    "tree": "338a519614ea16ceb2e4a1247fc0c94338929f0c",
+    "release": "v0.13 — Publication Checkpoint",
+    "tag": "v0.13",
+    "release_immutable": true,
+    "release_prerelease": false,
+    "formal_verification_run_id": 35215769668,
+    "formal_verification_run_number": 42,
+    "formal_verification_conclusion": "success",
+    "pages_build_deployment_run_id": 35216628078,
+    "pages_build_deployment_conclusion": "success"
+  },
+  "implementation": {
+    "new_runtime_projection": "structural-visualization.js",
+    "new_verifier": "verify_structural_visualization_v0_14.js",
+    "new_contract_doc": "docs/STRUCTURAL_VISUALIZATION_self_similar_cy_visualizer_v0_14.md",
+    "representation_kind": "structural_svg_diagram",
+    "projection_only": true,
+    "svg": true,
+    "canvas": false,
+    "webgl": false,
+    "three_js": false,
+    "interaction_added": false,
+    "recursion_engine_modified": false,
+    "zoom_engine_modified": false,
+    "sheet_organization_engine_modified": false,
+    "arithmetic_overlay_engine_modified": false,
+    "exposition_model_modified": false,
+    "lean_modified": false
+  },
+  "canonical_default_projection": {
+    "requestedDepth": 0,
+    "materializedDepth": 0,
+    "focusedDepth": 0,
+    "materialized_nodes": 1,
+    "structural_edges": 0,
+    "base_node": "X_0",
+    "symbolic_rule_panel_present": true
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "cameraTransformApplied": false,
+    "materializationTriggered": false,
+    "W": "unresolved"
+  },
+  "claim_boundary": {
+    "D2": "runtime metadata; no metric theorem promoted",
+    "D4": "runtime/organizational metadata; no map-degree theorem promoted",
+    "structural_nodes": "finite runtime descriptors, not geometric hypersurfaces",
+    "structural_edges": "pullback relation glyphs, not covering maps or embedded branches",
+    "mathematical_claim_strength_increased": false
+  },
+  "validation": {
+    "local_full_repository_regression": "not_available_in_connector_runtime",
+    "staging_pull_request": 6,
+    "staging_verified_head": "45a2f621ce84e8e8a609ca3a4eb3b4c1aba1faf7",
+    "staging_workflow_run_id": 35231666202,
+    "staging_workflow_run_number": 46,
+    "staging_pull_request_ci": "success",
+    "runtime_contracts": "success",
+    "formal_lean": "success",
+    "publication_static_smoke": "success",
+    "exact_main_ci_policy": "required after canonical replay; authoritative seal status is external GitHub Actions evidence rather than a self-attested field in this commit"
+  },
+  "seal_policy": {
+    "staging_branch": "thread13-structural-visualization-v0-14",
+    "staging_pr": 6,
+    "staging_pr_policy": "CI vehicle only; do not merge staging history",
+    "canonical_policy": "replay the final staging tree as exactly one child of e83ed17a5ce8e45e67ef326042a21ec51ba24222, then require an exact-SHA main CI success",
+    "seal_authority": "Git object parent/tree identity plus exact-SHA main GitHub Actions evidence; this static state file does not self-certify its own future CI result"
+  },
+  "mathematical_claim_strength_increased": false,
+  "next_milestone_not_started": "Thread 14 — Interaction Layer"
+}
