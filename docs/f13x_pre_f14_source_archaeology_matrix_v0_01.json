@@ -1,0 +1,351 @@
+{
+  "artifact": "F13x Pre-F14 Source Archaeology Matrix",
+  "version": "v0.01",
+  "status": "ARCHAEOLOGY_AUDIT_EXCEPTION",
+  "canonicalParent": {
+    "commit": "c64443eff3eae8853cbdcae972d7e6772c10f701",
+    "tree": "70b3687339b5b4a23ba28b2e35c04d6a4c2ea9c8",
+    "soleParent": "e2ecd34a1bdc0bc53a30eed64645b93fa7065f3f",
+    "theoremLevel": "PASS / Level 2 — Differential Regularity Bridge"
+  },
+  "baselineEvidence": {
+    "laurentDifferentialBlob": "f3a27de774ecaa3b0e232f1fe7f0b06d381da55b",
+    "laurentCriticalBlob": "caf9e0af928a76cb6bc14ab2d7d24c68a98b10d6",
+    "workflowBlob": "a3b319fe03a562faf06e7a47b6d3337ecbae2130",
+    "formalVerification": {
+      "runNumber": 166,
+      "runId": 35380384684,
+      "conclusion": "success"
+    },
+    "pages": {
+      "runNumber": 17,
+      "runId": 35380384161,
+      "conclusion": "success"
+    },
+    "issueReceipt": 16
+  },
+  "pinnedEnvironment": {
+    "lean": "leanprover/lean4:v4.34.0",
+    "mathlib": "7801e8406155c31b340d28e2762f754d02b5e9b0"
+  },
+  "historicalArtifactRecovery": {
+    "texSourcesRecoveredInConnectedRepositoryScope": false,
+    "executableVerifierRecovered": false,
+    "searchedFamilies": [
+      "Arithmetic_Self_Similar_Calabi_Yau_*.tex",
+      "verify_arithmetic_self_similar_cy_*.py",
+      "validation_arithmetic_self_similar_cy_*.txt",
+      "state_arithmetic_self_similar_cy_*.json",
+      "manifest_arithmetic_self_similar_cy_*.json",
+      "base_etale_tower_audit_*.md",
+      "Number_Field_Self_Similar_CY_*.tex",
+      "Profinite_Cyclotomic_Choice_Geometry_*.tex",
+      "Dirichlet_Mellin_Coordinates_*.tex",
+      "sympy/groebner/resultant/saturation/Newton/local logarithm"
+    ],
+    "qualification": "Historical source conclusions may be retained as provenance/regression targets only; they were not re-executed in F13x."
+  },
+  "verificationLevels": {
+    "A": "Lean formal theorem",
+    "B": "exact symbolic verification",
+    "C": "finite computational model / regression",
+    "D": "source mathematical argument",
+    "E": "heuristic / conjectural / exposition"
+  },
+  "reuseClasses": {
+    "A": "DIRECTLY REUSABLE",
+    "B": "REGRESSION / ORACLE ONLY",
+    "C": "METHODOLOGY ONLY",
+    "D": "HISTORICAL CONTEXT ONLY",
+    "E": "NOT REUSABLE",
+    "F": "UNSAFE / OVERCLAIM RISK"
+  },
+  "candidates": [
+    {
+      "id": "F13_TOTAL_DIFFERENTIAL",
+      "source": "formal/SelfSimilarCY/LaurentDifferential.lean",
+      "verificationLevel": "A",
+      "reuseClass": "A",
+      "possibleF14Use": "primary analytic input",
+      "risk": "none beyond theorem boundary"
+    },
+    {
+      "id": "CRITICAL_IFF_TOTAL_DERIVATIVE_ZERO",
+      "source": "formal/SelfSimilarCY/LaurentDifferential.lean",
+      "verificationLevel": "A",
+      "reuseClass": "A",
+      "possibleF14Use": "critical-locus to differential bridge",
+      "risk": "not a Jacobian criterion"
+    },
+    {
+      "id": "NONZERO_DIFFERENTIAL_REGULAR_FIBER",
+      "source": "formal/SelfSimilarCY/LaurentDifferential.lean",
+      "verificationLevel": "A",
+      "reuseClass": "A",
+      "possibleF14Use": "regular-point input",
+      "risk": "not a regular-value theorem"
+    },
+    {
+      "id": "SURJECTIVE_DIFFERENTIAL_REGULAR_FIBER",
+      "source": "formal/SelfSimilarCY/LaurentDifferential.lean",
+      "verificationLevel": "A",
+      "reuseClass": "A",
+      "possibleF14Use": "IFT range hypothesis",
+      "risk": "not a submersion theorem"
+    },
+    {
+      "id": "COORDINATE_DERIVATIVE_BRIDGE",
+      "source": "formal/SelfSimilarCY/LaurentCritical.lean; formal/SelfSimilarCY/LaurentDifferential.lean",
+      "verificationLevel": "A",
+      "reuseClass": "A",
+      "possibleF14Use": "coordinate-isolation fallback",
+      "risk": "requires coordinate splitting/permutation"
+    },
+    {
+      "id": "KAPPA_ZERO_EDGE_CASE",
+      "source": "formal/SelfSimilarCY/LaurentCritical.lean; formal/SelfSimilarCY/LaurentDifferential.lean",
+      "verificationLevel": "A",
+      "reuseClass": "A",
+      "possibleF14Use": "preserve source edge case",
+      "risk": "do not add unnecessary κ ≠ 0"
+    },
+    {
+      "id": "HISTORICAL_CRITICAL_DISCRIMINANT_RESULTANT",
+      "source": "historical source-audit provenance; executable verifier not recovered",
+      "verificationLevel": "D",
+      "reuseClass": "B",
+      "possibleF14Use": "semantic regression target",
+      "risk": "must not be described as rerun or as smoothness proof"
+    },
+    {
+      "id": "HISTORICAL_TORUS_SATURATION_GROEBNER",
+      "source": "historical verifier family not recovered",
+      "verificationLevel": "not currently inspectable",
+      "reuseClass": "B",
+      "possibleF14Use": "regression only if recovered/revalidated",
+      "risk": "NOT FOUND"
+    },
+    {
+      "id": "ORDINARY_LOG_DERIVATIVE_EQUIVALENCE",
+      "source": "historical source algebra",
+      "verificationLevel": "D",
+      "reuseClass": "B",
+      "possibleF14Use": "optional semantic regression",
+      "risk": "not a local logarithm theorem"
+    },
+    {
+      "id": "NEWTON_NONDEGENERACY",
+      "source": "historical source argument",
+      "verificationLevel": "D",
+      "reuseClass": "C",
+      "possibleF14Use": "methodology only",
+      "risk": "not required for preferred route"
+    },
+    {
+      "id": "NUMBER_FIELD_DZ_POWER_PATTERN",
+      "source": "historical Number Field source",
+      "verificationLevel": "D",
+      "reuseClass": "C",
+      "possibleF14Use": "proof architecture analogy",
+      "risk": "different morphism/field theorem"
+    },
+    {
+      "id": "LOCAL_LOG_INVERSE_PATTERN",
+      "source": "historical source argument",
+      "verificationLevel": "D",
+      "reuseClass": "C",
+      "possibleF14Use": "local-coordinate analogy",
+      "risk": "branch bookkeeping"
+    },
+    {
+      "id": "DOWNSTREAM_ARITHMETIC_BRANCHES",
+      "source": "historical cyclotomic/Dirichlet–Mellin/profinite sources",
+      "verificationLevel": "D/E",
+      "reuseClass": "D",
+      "possibleF14Use": "provenance only",
+      "risk": "no direct analytic lemma"
+    },
+    {
+      "id": "OLD_SOURCE_SMOOTH_WORDING",
+      "source": "historical source/exposition",
+      "verificationLevel": "D/E",
+      "reuseClass": "F",
+      "possibleF14Use": "none",
+      "risk": "unsafe promotion to formal smoothness"
+    },
+    {
+      "id": "FINITE_ETALE_CONNECTEDNESS_CANONICAL_BUNDLE",
+      "source": "historical other theorem layers",
+      "verificationLevel": "D",
+      "reuseClass": "E",
+      "possibleF14Use": "none for F14 core",
+      "risk": "theorem-layer mismatch"
+    }
+  ],
+  "pinnedMathlibLandingZone": {
+    "preferred": {
+      "file": "Mathlib/Analysis/Calculus/Implicit.lean",
+      "api": "HasStrictFDerivAt.implicitFunction",
+      "exactRevision": "7801e8406155c31b340d28e2762f754d02b5e9b0",
+      "requiredProjectBridge": [
+        "HasStrictFDerivAt or sufficient ContDiffAt",
+        "f'.range = ⊤"
+      ],
+      "note": "finite-dimensional codomain automatically supplies complemented kernel machinery"
+    },
+    "coordinateFallback": {
+      "file": "Mathlib/Analysis/Calculus/ImplicitContDiff.lean",
+      "api": "ContDiffAt.implicitFunction",
+      "verdict": "VIABLE",
+      "requirement": "choose a coordinate with invertible partial derivative and reorganize Point4 as product"
+    },
+    "genericSubmersion": {
+      "file": "Mathlib/Geometry/Manifold/Submersion.lean",
+      "verdict": "EXPENSIVE",
+      "blocker": "pinned file lists finite-dimensional surjective mfderiv ⇒ submersion as TODO"
+    }
+  },
+  "routeFeasibility": {
+    "ambientPoint4IFT": "PREFER",
+    "coordinateIsolation": "VIABLE",
+    "logCoordinate": "NOT RECOMMENDED",
+    "genericManifoldSubmersion": "EXPENSIVE"
+  },
+  "missingF14Hypotheses": [
+    "ContDiffAt or HasStrictFDerivAt for laurentWPoint at torus points",
+    "conversion from existing Function.Surjective differential to differential.range = ⊤",
+    "project-specific instantiation of HasStrictFDerivAt.implicitFunction",
+    "local identification of implicit parametrization with the Laurent level set/baseFiber",
+    "optional packaging as local graph / regular-level / submanifold theorem only after the above"
+  ],
+  "decisionMatrix": [
+    {
+      "id": 1,
+      "question": "F13 canonical baseline intact?",
+      "status": "PASS"
+    },
+    {
+      "id": 2,
+      "question": "old CY smoothness source located?",
+      "status": "PARTIAL"
+    },
+    {
+      "id": 3,
+      "question": "old exact critical/discriminant verifier located?",
+      "status": "NOT FOUND"
+    },
+    {
+      "id": 4,
+      "question": "torus-saturation verifier reusable?",
+      "status": "NOT FOUND"
+    },
+    {
+      "id": 5,
+      "question": "κ=0 regression reusable?",
+      "status": "PASS"
+    },
+    {
+      "id": 6,
+      "question": "ordinary/log derivative equivalence reusable?",
+      "status": "PARTIAL"
+    },
+    {
+      "id": 7,
+      "question": "Newton nondegeneracy material reusable?",
+      "status": "NOT APPLICABLE"
+    },
+    {
+      "id": 8,
+      "question": "old local logarithmic inverse material relevant?",
+      "status": "PARTIAL"
+    },
+    {
+      "id": 9,
+      "question": "Number Field derivative/invertibility pattern relevant?",
+      "status": "PARTIAL"
+    },
+    {
+      "id": 10,
+      "question": "any historical IFT proof actually exists?",
+      "status": "NOT FOUND"
+    },
+    {
+      "id": 11,
+      "question": "any historical regular-value theorem actually exists?",
+      "status": "NOT FOUND"
+    },
+    {
+      "id": 12,
+      "question": "any historical local-graph proof actually exists?",
+      "status": "NOT FOUND"
+    },
+    {
+      "id": 13,
+      "question": "any historical Lean smoothness theorem exists?",
+      "status": "NOT FOUND"
+    },
+    {
+      "id": 14,
+      "question": "current F13 representation sufficient for F14?",
+      "status": "PASS"
+    },
+    {
+      "id": 15,
+      "question": "coordinate-isolation route viable?",
+      "status": "PASS"
+    },
+    {
+      "id": 16,
+      "question": "ambient Point4 IFT route viable?",
+      "status": "PASS"
+    },
+    {
+      "id": 17,
+      "question": "log-coordinate route viable?",
+      "status": "PARTIAL"
+    },
+    {
+      "id": 18,
+      "question": "generic submersion route viable?",
+      "status": "PARTIAL"
+    },
+    {
+      "id": 19,
+      "question": "pinned mathlib exact API sufficient?",
+      "status": "PARTIAL"
+    },
+    {
+      "id": 20,
+      "question": "what precise hypotheses remain missing?",
+      "status": "PASS"
+    },
+    {
+      "id": 21,
+      "question": "regression harness worth preserving?",
+      "status": "PARTIAL"
+    },
+    {
+      "id": 22,
+      "question": "anything worth merging from F13x?",
+      "status": "DEFERRED"
+    },
+    {
+      "id": 23,
+      "question": "is repository ready to open formal F14?",
+      "status": "PASS"
+    }
+  ],
+  "verdict": "PASS WITH CONDITIONS — F14 may begin after F13x provenance matrix is sealed and an isolated pinned-API feasibility probe is completed.",
+  "mergePolicy": "DO NOT MERGE by default; archaeology documentation may be proposed later as provenance-only material.",
+  "nextAction": {
+    "kind": "isolated feasibility probe",
+    "modifySealedF13Modules": false,
+    "addRegressionHarnessNow": false,
+    "chain": [
+      "laurentWPoint",
+      "ContDiffAt / HasStrictFDerivAt",
+      "range = ⊤ from existing surjectivity",
+      "HasStrictFDerivAt.implicitFunction"
+    ]
+  }
+}
