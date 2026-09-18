@@ -13,6 +13,7 @@ require("./zoom-semantics.js");
 require("./sheet-branch-organization.js");
 const InteractivePullbackTower = require("./interactive-pullback-tower.js");
 const StructuralVisualization = require("./structural-visualization.js");
+const StructuralCamera = require("./structural-camera.js");
 const BranchOrganizationGraphics = require("./branch-organization-graphics.js");
 const ArithmeticOverlays = require("./arithmetic-overlays.js");
 const ArithmeticOverlayGraphics = require("./arithmetic-overlay-graphics.js");
@@ -207,6 +208,41 @@ InfiniteNavigationRenderer.applyRendererStateToTarget(integratedState, structura
 assert.equal((structuralTarget.innerHTML.match(/data-structural-node-depth=/g) || []).length, integratedState.activeRenderedDepthCount);
 assert.equal(structuralTarget.dataset.renderVirtualized, "true");
 assert.match(structuralTarget.innerHTML, /data-frontier-status="view_pruned"|requested structural frontier reached/, "Virtualized SVG must distinguish view-pruned continuation from semantic frontier completion.");
+
+assert.equal(integratedState.activeRenderedDepths.includes(30), false, "Depth 30 should begin outside the frontier render window.");
+const offWindowSelected = InteractivePullbackTower.selectDepth(interactionModel, 30);
+assert.equal(offWindowSelected.selectedDepth, 30, "Selection authority must not depend on an existing SVG/DOM object.");
+const offWindowState = InfiniteNavigationRenderer.createInfiniteNavigationRendererState(
+  offWindowSelected,
+  integratedState
+);
+assert.equal(offWindowState.virtualAnchorDepth, integratedState.virtualAnchorDepth, "Off-window selection must not silently move the virtual anchor.");
+assert.ok(offWindowState.activeRenderedDepths.includes(30), "Selected off-window depth must become render-addressable.");
+assert.ok(offWindowState.activeRenderedDepths.includes(29), "Selected predecessor must be retained for aligned D4 graphics.");
+
+const offWindowStructural = StructuralVisualization.createStructuralVisualizationModel(
+  runtimeScene,
+  baseModel,
+  offWindowSelected.recursiveModel,
+  offWindowSelected.zoomModel,
+  offWindowSelected.organizationModel,
+  offWindowSelected,
+  InfiniteNavigationRenderer.createStructuralPresentationOptions(offWindowState)
+);
+const offWindowLayout = StructuralVisualization.createStructuralLayoutDescriptor(offWindowStructural);
+assert.ok(offWindowLayout.levelBounds.some((level) => level.depth === 30));
+let deepCamera = StructuralCamera.createStructuralCameraModel({
+  canonicalViewBox: offWindowLayout.canonicalViewBox,
+  contentBounds: offWindowLayout.contentBounds
+});
+deepCamera = StructuralCamera.fitCameraToLevel(deepCamera, offWindowLayout, 30, {padding: 24});
+const deepViewBox = StructuralCamera.getCameraViewBox(deepCamera);
+for (const coordinate of [deepViewBox.x, deepViewBox.y, deepViewBox.width, deepViewBox.height]) {
+  assert.equal(Number.isFinite(coordinate), true, "Deep virtual camera fit must stay finite after local rebasing.");
+}
+assert.equal(deepCamera.truthfulness.geometricZoomApplied, false);
+assert.equal(deepCamera.truthfulness.geometryRendered, false);
+assert.equal(offWindowSelected.recursiveModel.levels.length, 64, "Camera targeting must not prune or expand semantic levels.");
 
 const interactionTarget = {dataset: {}, hidden: true, innerHTML: ""};
 InfiniteNavigationRenderer.renderVirtualizedInteractionPresentation(

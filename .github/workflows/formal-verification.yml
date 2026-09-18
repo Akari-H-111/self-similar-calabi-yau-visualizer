@@ -130,6 +130,9 @@ jobs:
       - name: Verify infinite-navigation renderer v0.19
         run: node verify_infinite_navigation_renderer_v0_19.js
 
+      - name: Benchmark infinite-navigation renderer v0.19
+        run: node benchmark_infinite_navigation_renderer_v0_19.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
