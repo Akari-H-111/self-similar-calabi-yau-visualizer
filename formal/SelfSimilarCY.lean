@@ -8,3 +8,5 @@ import SelfSimilarCY.LaurentW
 import SelfSimilarCY.BaseFiber
 import SelfSimilarCY.StationaryFamily
 import SelfSimilarCY.ConcretePullbackTower
+import SelfSimilarCY.TorusPowerKernel
+import SelfSimilarCY.TorusPowerFibers
