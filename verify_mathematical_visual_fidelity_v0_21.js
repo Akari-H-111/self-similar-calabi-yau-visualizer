@@ -272,8 +272,8 @@ const state = JSON.parse(read("docs/state_self_similar_cy_visualizer_v0_21.json"
 assert.equal(state.thread, "20");
 assert.equal(state.version, "v0.21");
 assert.equal(state.thread20_sealed, false);
-assert.equal(state.formal_modified, false);
-assert.equal(state.sealed_semantic_modules_modified, false);
+assert.equal(state.production_boundary.formal_modified, false);
+assert.equal(state.production_boundary.sealed_semantic_modules_modified, false);
 
 const workflow = read(".github/workflows/formal-verification.yml");
 for (const marker of [
