@@ -11,13 +11,14 @@ const interactionElement = document.querySelector("#interactive-pullback-tower")
 const structuralCameraElement = document.querySelector("#structural-camera");
 const structuralCameraControlsElement = document.querySelector("#structural-camera-controls");
 const structuralCameraStatusElement = document.querySelector("#structural-camera-status");
+const arithmeticOverlayControlsElement = document.querySelector("#arithmetic-overlay-controls");
 const structuralVisualizationElement = document.querySelector("#structural-visualization");
 const arithmeticOverlayElement = document.querySelector("#arithmetic-overlays");
 const expositionElement = document.querySelector("#exposition-layer");
 
 const initialArithmeticOverlayRequest = Object.freeze([
-  "coordinate_channels",
-  "coordinate_iterate_rule"
+  ArithmeticOverlays.OVERLAY_IDS.COORDINATE_CHANNELS,
+  ArithmeticOverlays.OVERLAY_IDS.COORDINATE_ITERATE_RULE
 ]);
 
 const fields = {
@@ -39,6 +40,7 @@ let pullbackModel = null;
 let interactionModel = null;
 let structuralCameraModel = null;
 let structuralLayoutDescriptor = null;
+let arithmeticOverlayPresentationState = Object.freeze([...initialArithmeticOverlayRequest]);
 const activeCameraPointers = new Map();
 let cameraGesture = null;
 
@@ -70,6 +72,7 @@ function resetRenderedState() {
   interactionModel = null;
   structuralCameraModel = null;
   structuralLayoutDescriptor = null;
+  arithmeticOverlayPresentationState = Object.freeze([...initialArithmeticOverlayRequest]);
   canonicalScene = null;
   baseModel = null;
   pullbackModel = null;
@@ -89,7 +92,7 @@ function resetRenderedState() {
 
   structuralVisualizationElement.hidden = true;
   structuralVisualizationElement.innerHTML = "";
-  clearDataset(structuralVisualizationElement, ["state", "representationKind", "structuralOnly", "materializedDepth", "focusedDepth", "selectedDepth", "visibleDepth", "collapsedDepth", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied", "materializationTriggered", "cameraDragging"]);
+  clearDataset(structuralVisualizationElement, ["state", "representationKind", "structuralOnly", "materializedDepth", "focusedDepth", "selectedDepth", "visibleDepth", "collapsedDepth", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied", "materializationTriggered", "cameraDragging", "arithmeticOverlayGraphicsState", "arithmeticOverlayGraphicsRepresentation", "arithmeticOverlayGraphicsEnabled", "arithmeticOverlayGraphicsAnnotationCount"]);
 
   rendererElement.hidden = true;
   rendererElement.textContent = "";
@@ -114,6 +117,7 @@ function resetRenderedState() {
   arithmeticOverlayElement.hidden = true;
   arithmeticOverlayElement.textContent = "";
   clearDataset(arithmeticOverlayElement, ["state", "availableOverlays", "enabledOverlays", "materializedDepth", "focusedDepth", "materializationTriggered", "geometryRendered"]);
+  updateArithmeticOverlayControlState();
 }
 
 function getStructuralSurface() {
@@ -180,6 +184,81 @@ function reconcileStructuralCamera(layoutDescriptor) {
   applyStructuralCameraState();
 }
 
+function updateArithmeticOverlayControlState() {
+  const enabled = new Set(arithmeticOverlayPresentationState);
+  for (const control of arithmeticOverlayControlsElement.querySelectorAll("[data-arithmetic-overlay-id]")) {
+    control.checked = enabled.has(control.dataset.arithmeticOverlayId);
+  }
+}
+
+function renderArithmeticOverlayPresentation() {
+  if (!canonicalScene || !baseModel || !interactionModel || !structuralLayoutDescriptor) {
+    throw new TypeError("Arithmetic overlay presentation requires initialized runtime and structural layout state.");
+  }
+
+  const recursiveModel = interactionModel.recursiveModel;
+  const zoomModel = interactionModel.zoomModel;
+  const organizationModel = interactionModel.organizationModel;
+  const arithmeticOverlayModel = ArithmeticOverlays.createArithmeticOverlayModel(
+    canonicalScene,
+    recursiveModel,
+    zoomModel,
+    organizationModel,
+    arithmeticOverlayPresentationState
+  );
+
+  ArithmeticOverlays.renderArithmeticOverlays(arithmeticOverlayModel, arithmeticOverlayElement);
+  ArithmeticOverlayGraphics.projectArithmeticOverlayGraphics(
+    arithmeticOverlayModel,
+    structuralLayoutDescriptor,
+    structuralVisualizationElement
+  );
+
+  const expositionModel = ExpositionLayer.createExpositionModel(
+    canonicalScene,
+    baseModel,
+    recursiveModel,
+    zoomModel,
+    organizationModel,
+    arithmeticOverlayModel
+  );
+  ExpositionLayer.renderExpositionLayer(expositionModel, expositionElement);
+  updateArithmeticOverlayControlState();
+
+  return arithmeticOverlayModel;
+}
+
+function setArithmeticOverlayPresentation(overlayId, enabled) {
+  if (!initialArithmeticOverlayRequest.includes(overlayId)) {
+    throw new TypeError(`Unsupported arithmetic overlay presentation id: ${String(overlayId)}`);
+  }
+
+  const enabledSet = new Set(arithmeticOverlayPresentationState);
+  if (enabled) {
+    enabledSet.add(overlayId);
+  } else {
+    enabledSet.delete(overlayId);
+  }
+  arithmeticOverlayPresentationState = Object.freeze(
+    initialArithmeticOverlayRequest.filter((candidate) => enabledSet.has(candidate))
+  );
+  renderArithmeticOverlayPresentation();
+}
+
+function handleArithmeticOverlayToggle(event) {
+  const control = event.target?.closest?.("[data-arithmetic-overlay-id]");
+  if (!control || !arithmeticOverlayControlsElement.contains(control) || control.type !== "checkbox") return;
+
+  try {
+    setArithmeticOverlayPresentation(control.dataset.arithmeticOverlayId, control.checked);
+  } catch (error) {
+    console.error("Arithmetic overlay presentation transition rejected:", error);
+    control.checked = arithmeticOverlayPresentationState.includes(control.dataset.arithmeticOverlayId);
+    statusElement.dataset.state = "error";
+    statusElement.textContent = `Arithmetic overlay presentation transition rejected: ${error.message}`;
+  }
+}
+
 function renderInteractionState() {
   if (!canonicalScene || !baseModel || !pullbackModel || !interactionModel) {
     throw new TypeError("Interactive pullback rendering requires initialized canonical and interaction models.");
@@ -206,18 +285,7 @@ function renderInteractionState() {
   StructuralVisualization.renderStructuralVisualization(structuralVisualizationModel, structuralVisualizationElement);
   reconcileStructuralCamera(StructuralVisualization.createStructuralLayoutDescriptor(structuralVisualizationModel));
 
-  const arithmeticOverlayModel = ArithmeticOverlays.createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, initialArithmeticOverlayRequest);
-  ArithmeticOverlays.renderArithmeticOverlays(arithmeticOverlayModel, arithmeticOverlayElement);
-
-  const expositionModel = ExpositionLayer.createExpositionModel(
-    scene,
-    baseModel,
-    recursiveModel,
-    zoomModel,
-    organizationModel,
-    arithmeticOverlayModel
-  );
-  ExpositionLayer.renderExpositionLayer(expositionModel, expositionElement);
+  renderArithmeticOverlayPresentation();
 
   statusElement.dataset.state = "ready";
   statusElement.textContent = (
@@ -495,6 +563,7 @@ async function loadSystemConfiguration() {
 
 interactionElement.addEventListener("click", handleInteractionClick);
 structuralCameraControlsElement.addEventListener("click", handleCameraControlClick);
+arithmeticOverlayControlsElement.addEventListener("change", handleArithmeticOverlayToggle);
 structuralVisualizationElement.addEventListener("wheel", handleStructuralCameraWheel, { passive: false });
 structuralVisualizationElement.addEventListener("pointerdown", handleStructuralCameraPointerDown);
 structuralVisualizationElement.addEventListener("pointermove", handleStructuralCameraPointerMove);
