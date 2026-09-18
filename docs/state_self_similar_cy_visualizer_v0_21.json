@@ -3,7 +3,7 @@
   "thread": "20",
   "milestone": "Mathematical / Visual Fidelity Audit II",
   "version": "v0.21",
-  "status": "implemented_pending_staging_ci_and_final_evidence",
+  "status": "pre_final_staging_ci_verified_pending_final_exact_tree_ci",
   "starting_canonical": {
     "commit": "874a80f7702f85996eb893690cc34e7d8869161c",
     "tree": "d818e6a0c9aa04711fefc8f298140a0676c29f7a",
@@ -49,7 +49,7 @@
     "geometry_admission": false
   },
   "browser_evidence": {
-    "v0_21_spot_check": "not_tested",
+    "v0_21_spot_check": "not_tested_no_reliable_browser_execution_surface_in_this_thread",
     "actual_screen_reader": "not_tested",
     "WCAG_certification": false,
     "all_browser_support": "not_tested"
@@ -59,7 +59,7 @@
     "pull_request": 14,
     "pull_request_state": "open_draft",
     "role": "CI vehicle only; do not merge",
-    "final_exact_tree_ci": "pending"
+    "final_exact_tree_ci": "pending_after_evidence_sync"
   },
   "canonicalization": {
     "close_pr_unmerged": "pending",
@@ -68,5 +68,18 @@
     "exact_main_formal_verification": "pending",
     "exact_sha_pages": "pending"
   },
-  "thread20_sealed": false
+  "thread20_sealed": false,
+  "pre_final_staging_ci": {
+    "head_commit": "63ef0862e1280b67954645c0a3c3994b75770a88",
+    "tree": "1ac42bf4462dcb02afdc0e01dc804b81bc0f4d0e",
+    "workflow_run_number": 133,
+    "workflow_run_id": 35337570182,
+    "conclusion": "success",
+    "runtime_contracts": "success",
+    "formal_lean": "success",
+    "publication_static_smoke": "success",
+    "v0_03_through_v0_21": "success",
+    "benchmark_v0_19": "success",
+    "syntax_checks": "success"
+  }
 }
