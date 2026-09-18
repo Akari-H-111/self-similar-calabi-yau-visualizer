@@ -100,15 +100,47 @@ Because `app.js` and `infinite-navigation-renderer.js` remain unchanged, Thread 
 
 HIA-03 remains intentionally unchanged pending direct screen-reader evidence.
 
+## Pre-final staging CI
+
+The first complete v0.21 staging candidate passed the full workflow:
+
+```text
+head commit = 63ef0862e1280b67954645c0a3c3994b75770a88
+tree        = 1ac42bf4462dcb02afdc0e01dc804b81bc0f4d0e
+
+Formal Verification #133
+run id = 35337570182
+conclusion = success
+
+runtime-contracts        = success
+formal-lean              = success
+publication-static-smoke = success
+
+v0.03 through v0.21      = success
+benchmark v0.19          = success
+runtime syntax checks    = success
+```
+
+This is pre-final evidence because recording this evidence changes the staging tree. The post-sync tree must therefore pass the complete workflow again before exact-tree replay.
+
+No reliable browser-execution surface is available in this thread for a v0.21 Chromium spot check, so:
+
+```text
+v0.21 browser spot check = not_tested
+actual screen reader     = not_tested
+```
+
+No browser or accessibility certification is inferred from static/CI success.
+
 ## Remaining gates
 
 ```text
-wire v0.21 verifier into workflow
-update README / publication smoke
-run staging CI
-inspect failures as regressions first
-optional narrow Chromium spot check if reliable execution is available
-freeze final staging tree
+v0.21 verifier wired into workflow = done
+README / publication smoke updated = done
+pre-final staging CI #133 = success
+browser spot check = not_tested (no reliable browser execution surface)
+freeze post-evidence-sync final staging tree
+run complete final-tree CI
 close PR #14 unmerged
 recheck main = 874a80f7702f85996eb893690cc34e7d8869161c
 exact-tree replay as one child of that commit
