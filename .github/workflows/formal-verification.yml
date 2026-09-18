@@ -124,6 +124,9 @@ jobs:
       - name: Verify D4 branch organization graphics v0.17
         run: node verify_branch_organization_graphics_v0_17.js
 
+      - name: Verify arithmetic overlay graphics v0.18
+        run: node verify_arithmetic_overlay_graphics_v0_18.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -138,6 +141,7 @@ jobs:
           node --check structural-visualization.js
           node --check branch-organization-graphics.js
           node --check arithmetic-overlays.js
+          node --check arithmetic-overlay-graphics.js
           node --check exposition-layer.js
           node --check verify_performance_infinite_navigation_v0_10.js
           node --check benchmark_performance_infinite_navigation_v0_10.js
@@ -148,6 +152,7 @@ jobs:
           node --check verify_interactive_pullback_tower_v0_15.js
           node --check verify_structural_camera_zoom_v0_16.js
           node --check verify_branch_organization_graphics_v0_17.js
+          node --check verify_arithmetic_overlay_graphics_v0_18.js
           node --check app.js
 
   publication-static-smoke:
@@ -191,6 +196,7 @@ jobs:
             branch-organization-graphics.js \
             structural-camera.js \
             arithmetic-overlays.js \
+            arithmetic-overlay-graphics.js \
             exposition-layer.js \
             app.js; do
             curl -fsS "http://127.0.0.1:8000/${resource}" >/dev/null
@@ -208,6 +214,9 @@ jobs:
           grep -Fq 'presentation-only structural camera' /tmp/publication-index.html
           grep -Fq 'D⁴ Branch Organization Graphics' /tmp/publication-index.html
           grep -Fq '16-fold structural organization' /tmp/publication-index.html
+          grep -Fq 'v0.18 · Arithmetic Overlay Graphics' /tmp/publication-index.html
+          grep -Fq 'Symbolic arithmetic overlays' /tmp/publication-index.html
+          grep -Fq 'Coordinate iterate rule' /tmp/publication-index.html
           grep -Fq 'Canonical requested depth' /tmp/publication-index.html
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"

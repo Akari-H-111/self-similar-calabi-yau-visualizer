@@ -16,17 +16,18 @@
   <script src="branch-organization-graphics.js" defer></script>
   <script src="structural-camera.js" defer></script>
   <script src="arithmetic-overlays.js" defer></script>
+  <script src="arithmetic-overlay-graphics.js" defer></script>
   <script src="exposition-layer.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
   <main class="shell">
     <header class="hero">
-      <p class="eyebrow">v0.17 · D⁴ Branch Organization Graphics</p>
+      <p class="eyebrow">v0.18 · Arithmetic Overlay Graphics</p>
       <h1>Self-Similar Calabi–Yau Visualizer</h1>
-      <p class="lede">A structural explorer for the coordinate-power pullback system. The pullback tower can be expanded, collapsed for presentation, selected, structurally refocused, navigated through an independent presentation-only SVG camera, and annotated with aggregated multiplicity badges for the existing D⁴ organization metadata.</p>
-      <p class="section-note">Built on the sealed v0.16 Structural Camera / Zoom Layer, the v0.15 Interactive Pullback Tower, the v0.14 Structural Visualization Layer, the v0.12 UX / Exposition Layer, and the v0.11 Mathematical Fidelity Audit boundary.</p>
-      <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. Thread 14 interaction semantics alone do not perform a camera transform or geometric zoom. Thread 15 camera operations change only the SVG viewport. Thread 16 adds aggregate graphical badges for D⁴ structural organization multiplicity; the badges do not enumerate concrete sheets, claim covering geometry, or promote D⁴ runtime metadata into a map-degree theorem.</p>
+      <p class="lede">A structural explorer for the coordinate-power pullback system. The pullback tower can be expanded, collapsed for presentation, selected, structurally refocused, navigated through an independent presentation-only SVG camera, annotated with aggregated multiplicity badges for the existing D⁴ organization metadata, and overlaid with source-backed symbolic arithmetic annotations.</p>
+      <p class="section-note">Built on the sealed v0.17 D⁴ Branch Organization Graphics layer, the v0.16 Structural Camera / Zoom Layer, the v0.15 Interactive Pullback Tower, the v0.14 Structural Visualization Layer, the v0.12 UX / Exposition Layer, and the v0.11 Mathematical Fidelity Audit boundary.</p>
+      <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. Thread 14 interaction semantics alone do not perform a camera transform or geometric zoom. Thread 15 camera operations change only the SVG viewport. Thread 16 adds aggregate graphical badges for D⁴ structural organization multiplicity; the badges do not enumerate concrete sheets, claim covering geometry, or promote D⁴ runtime metadata into a map-degree theorem. Thread 17 adds symbolic/runtime arithmetic annotations only; it does not draw arithmetic loci, fibers, divisors, torsion sets, collision sets, or geometric preimages.</p>
     </header>
 
     <section aria-labelledby="structural-visualization-title" class="structural-section">
@@ -35,7 +36,7 @@
           <p class="section-kicker">Interactive structure</p>
           <h2 id="structural-visualization-title">Structural diagram · Interactive pullback tower</h2>
         </div>
-        <p class="section-note">The diagram is structural, not a geometric realization. Expand materializes structural descriptors through the sealed recursion API; select, refocus, and collapse are navigation/presentation operations. Camera navigation reads that state only as a target and does not modify it. For each visible positive-depth transition, an aggregate D⁴ badge communicates the exact organization multiplicity without materializing D⁴ graphical objects.</p>
+        <p class="section-note">The diagram is structural, not a geometric realization. Expand materializes structural descriptors through the sealed recursion API; select, refocus, and collapse are navigation/presentation operations. Camera navigation reads that state only as a target and does not modify it. For each visible positive-depth transition, an aggregate D⁴ badge communicates the exact organization multiplicity without materializing D⁴ graphical objects. Arithmetic overlay controls only toggle source-backed symbolic annotations attached to this same structural canvas.</p>
       </div>
       <div id="interactive-pullback-tower" class="interactive-pullback-tower" hidden></div>
       <div id="structural-camera" class="structural-camera" hidden>
@@ -48,9 +49,20 @@
           <button type="button" data-camera-action="reset">Reset camera</button>
         </div>
         <p id="structural-camera-status" class="structural-camera-status" aria-live="polite"></p>
+        <fieldset id="arithmetic-overlay-controls" class="arithmetic-overlay-controls">
+          <legend>Symbolic arithmetic overlays</legend>
+          <label>
+            <input type="checkbox" data-arithmetic-overlay-id="coordinate_channels" checked>
+            <span><strong>Coordinate channels</strong><small>Source-backed structural representation · Lean-supported coordinate map</small></span>
+          </label>
+          <label>
+            <input type="checkbox" data-arithmetic-overlay-id="coordinate_iterate_rule" checked>
+            <span><strong>Coordinate iterate rule</strong><small>Lean formalized symbolic rule · focused structural level only</small></span>
+          </label>
+        </fieldset>
         <div id="structural-visualization" class="structural-visualization" data-camera-dragging="false" hidden></div>
       </div>
-      <p class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. D⁴ badges denote exact aggregate structural organization multiplicity only. At D=2 this can communicate 16-fold structural organization with one badge per visible transition, not sixteen fake geometric sheets. Selection, focus, and collapse remain structural/presentation state. Camera scale is presentation-only viewport state.</p>
+      <p class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. D⁴ badges denote exact aggregate structural organization multiplicity only. At D=2 this can communicate 16-fold structural organization with one badge per visible transition, not sixteen fake geometric sheets. Arithmetic markers are symbolic annotations with explicit evidence/provenance, not geometric arithmetic loci. Selection, focus, collapse, arithmetic overlay toggles, and camera state remain separate presentation/runtime domains. Camera scale is presentation-only viewport state.</p>
     </section>
 
     <section aria-labelledby="current-state-title" class="primary-section">
