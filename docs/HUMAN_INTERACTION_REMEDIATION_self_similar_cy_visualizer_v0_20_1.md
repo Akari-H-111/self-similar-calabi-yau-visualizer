@@ -111,6 +111,83 @@ Reveal -> Collapse becomes available again when appropriate
 
 Layer C actual screen-reader evidence remains not_tested.
 
+## Browser retest evidence
+
+The candidate production JavaScript was reconstructed from the exact canonical v0.20 Pages artifact plus the two staging production patches. Git blob identity was then checked against the staging branch:
+
+```text
+app.js
+4b5767b5f5fae9fac25d042e777b150a2ef92c38
+
+infinite-navigation-renderer.js
+b463a0bb230cde4fd78d26a9d754b83290caa8f0
+```
+
+Browser engine:
+
+```text
+Chromium 144.0.7559.96
+```
+
+HIA-01 exercised with native keyboard Enter:
+
+```text
+Zoom in -> scale 1.25
+Reset enabled
+Reset camera -> scale 1
+Reset disabled
+activeElement -> Zoom in
+focus-visible -> true
+geometricZoomApplied -> false
+PASS
+```
+
+HIA-02 exercised after materializing depth 24 and selecting/refocusing depth 20:
+
+```text
+before collapse:
+  Collapse disabled = false
+
+after collapse:
+  visibleDepth = 20
+  materializedDepth = 24
+  Collapse disabled = true
+  activeElement = Select X_20
+  Expand label = Reveal collapsed levels
+
+after reveal:
+  visibleDepth = 24
+  Collapse disabled = false
+PASS
+```
+
+Truth boundary in the exercised browser path:
+
+```text
+geometryRendered = false
+sheetsMaterialized = false
+coveringStructureClaimed = false
+geometricZoomApplied = false
+polite live regions = 1
+console/page errors = 0
+```
+
+This is browser-level evidence for the exercised Chromium paths. Actual VoiceOver/NVDA/JAWS evidence remains not_tested.
+
+## Pre-final staging CI
+
+```text
+head = c232e95bc813fac47a4679ad80f78a145de2fd20
+tree = 610a03b54279e08ef346342539980561c43ac5a6
+Formal Verification run #119 / 35328786702
+
+runtime-contracts        = success
+formal-lean              = success
+publication-static-smoke = success
+```
+
+This CI predates the final evidence synchronization and therefore does not certify the final staging tree.
+
 ## Seal authority
 
 This file does not self-certify the remediation. Seal authority requires exact final staging tree CI, browser evidence on that exact candidate, PR closed unmerged, exact-tree replay as one child of the v0.20 canonical commit, then exact-main Formal Verification and exact-SHA Pages.

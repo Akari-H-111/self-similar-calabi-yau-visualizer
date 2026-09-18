@@ -1,0 +1,79 @@
+{
+  "evidence_kind": "chromium_human_interaction_retest",
+  "thread": "19R",
+  "version": "v0.20.1",
+  "browser": {
+    "engine": "Chromium",
+    "version": "144.0.7559.96",
+    "mode": "headless browser DOM/keyboard execution",
+    "navigation_note": "set_content sandbox reconstructed from exact v0.20 Pages artifact because URL navigation is blocked in the controlled browser environment"
+  },
+  "candidate_identity": {
+    "staging_branch": "thread19r-human-interaction-remediation-v0-20-1",
+    "production_patch_origin_commit": "61fef12d897a84e7e469a1d89cfa208e52fa38c2",
+    "production_blobs": {
+      "app.js": "4b5767b5f5fae9fac25d042e777b150a2ef92c38",
+      "infinite-navigation-renderer.js": "b463a0bb230cde4fd78d26a9d754b83290caa8f0"
+    },
+    "base_pages": {
+      "canonical_commit": "3b2c8e2119a44db069f77e8106145e35126ac7b1",
+      "pages_run_number": 8,
+      "pages_run_id": 35325886754
+    }
+  },
+  "tests": {
+    "HIA_01_reset_focus": {
+      "before_reset": {
+        "cameraScale": "1.25",
+        "resetDisabled": false
+      },
+      "after_reset": {
+        "cameraScale": "1",
+        "activeCameraAction": "zoom-in",
+        "focusVisible": true,
+        "resetDisabled": true,
+        "geometricZoomApplied": false
+      },
+      "pass": true
+    },
+    "HIA_02_collapse_state": {
+      "before": {
+        "collapseDisabled": false,
+        "visibleDepth": 24,
+        "materializedDepth": 24,
+        "selectedDepth": 20,
+        "focusedDepth": 20
+      },
+      "after_collapse": {
+        "collapseDisabled": true,
+        "expandLabel": "Reveal collapsed levels",
+        "activeInteractionAction": "select",
+        "activeDepth": 20,
+        "visibleDepth": 20,
+        "materializedDepth": 24,
+        "selectedDepth": 20,
+        "focusedDepth": 20
+      },
+      "after_reveal": {
+        "collapseDisabled": false,
+        "expandLabel": "Expand next level",
+        "visibleDepth": 24,
+        "materializedDepth": 24,
+        "selectedDepth": 20,
+        "focusedDepth": 20
+      },
+      "pass": true
+    },
+    "truth_boundary": {
+      "geometryRendered": false,
+      "sheetsMaterialized": false,
+      "coveringStructureClaimed": false,
+      "geometricZoomApplied": false,
+      "politeLiveRegionCount": 1,
+      "pass": true
+    }
+  },
+  "console_or_page_errors": [],
+  "overall_pass": true,
+  "screen_reader_evidence": "not_tested"
+}
