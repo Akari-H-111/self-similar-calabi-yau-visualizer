@@ -76,6 +76,14 @@ browser zoom 200%/400% = not_tested
 
 No WCAG, screen-reader, or all-browser certification is claimed.
 
+## Staging PR
+
+```text
+PR #12
+state = open / draft
+role = CI VEHICLE ONLY / DO NOT MERGE
+```
+
 ## Next gate
 
 Run v0.03-v0.20 on the staging branch/draft PR. If old verifiers identify a genuine historical contract regression, repair the new presentation implementation rather than weakening the older verifier.

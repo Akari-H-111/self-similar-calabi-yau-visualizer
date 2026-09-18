@@ -53,7 +53,7 @@
     "new_lean_theorem": false
   },
   "evidence": {
-    "static_contract": "implemented_pending_ci",
+    "static_contract": "implementation_added_ci_pending",
     "browser_smoke": "not_tested",
     "screen_reader": "not_tested",
     "quantitative_contrast": "not_tested",
@@ -70,8 +70,9 @@
   },
   "staging": {
     "branch": "thread19-visual-semantics-accessibility-v0-20",
-    "pull_request": "pending_first_diff",
-    "role": "draft CI vehicle only; do not merge"
+    "pull_request": 12,
+    "role": "draft CI vehicle only; do not merge",
+    "pull_request_state": "open_draft"
   },
   "thread19_sealed": false
 }

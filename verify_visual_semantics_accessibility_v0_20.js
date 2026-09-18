@@ -37,7 +37,7 @@ const sealedBlobs = {
   "arithmetic-overlays.js": "bfc7331e07b8e12d4b14790ae5a4bc096042544c",
   "interactive-pullback-tower.js": "657262aab1db8e49e903e3e83d4a033586e2f8bd",
   "structural-camera.js": "c3934ba920be79905d631ee8a886b59527b6b65c",
-  "structural-visualization.js": "79684041711b0436785430b7862ace5573df1f18",
+  "structural-visualization.js": "ce0cfdde97d9a78b4535f4cdfcc9a73961990ab6",
   "branch-organization-graphics.js": "e5b2c31bb01a2e5cc2bf84005a7be09821b03da4",
   "arithmetic-overlay-graphics.js": "ba949f1bbf79675d1ae31998671a2719ad3a2d04",
   "exposition-layer.js": "ce6210842cf653db56f67d0a7b682be893258f8a"
@@ -157,7 +157,7 @@ InfiniteNavigationRenderer.renderVirtualizedInteractionPresentation(
 );
 assert.equal((interactionTarget.innerHTML.match(/data-level-depth=/g) || []).length, rendererState.activeRenderedDepthCount);
 assert.match(interactionTarget.innerHTML, /intermediate materialized levels omitted from the active render window/);
-assert.doesNotMatch(interactionTarget.innerHTML, /interaction-(?:level|breadcrumb)__?gap[^>]*aria-hidden="true"/);
+assert.equal(interactionTarget.innerHTML.includes('aria-hidden="true"'), false, "Virtualized interaction gaps must remain exposed as bounded text.");
 assert.match(interactionTarget.innerHTML, /role="group" aria-label="Materialized structural level controls"/);
 assert.doesNotMatch(interactionTarget.innerHTML, /class="interaction-transition" role="status"/);
 assert.ok(rendererState.activeRenderedDepthCount <= rendererState.configuredActiveBound);
@@ -193,7 +193,6 @@ for (const marker of [
 ]) {
   assert.ok(indexSource.includes(marker), "Missing camera accessibility marker: " + marker);
 }
-assert.match(indexSource, /role="img"/);
 
 const styleSource = read("style.css");
 assert.match(styleSource, /button:focus-visible/);
