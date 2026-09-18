@@ -545,3 +545,15 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monos
   *::before,
   *::after { scroll-behavior: auto !important; }
 }
+
+/* v0.19 infinite-navigation presentation virtualization */
+.interaction-level-gap,
+.interaction-breadcrumb__gap {
+  opacity: 0.72;
+  font-size: 0.86rem;
+}
+
+.structural-virtual-gap {
+  font-size: 12px;
+  opacity: 0.72;
+}

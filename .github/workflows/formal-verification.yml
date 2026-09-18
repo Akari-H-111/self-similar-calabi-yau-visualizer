@@ -127,6 +127,12 @@ jobs:
       - name: Verify arithmetic overlay graphics v0.18
         run: node verify_arithmetic_overlay_graphics_v0_18.js
 
+      - name: Verify infinite-navigation renderer v0.19
+        run: node verify_infinite_navigation_renderer_v0_19.js
+
+      - name: Benchmark infinite-navigation renderer v0.19
+        run: node benchmark_infinite_navigation_renderer_v0_19.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -137,6 +143,7 @@ jobs:
           node --check zoom-semantics.js
           node --check sheet-branch-organization.js
           node --check interactive-pullback-tower.js
+          node --check infinite-navigation-renderer.js
           node --check structural-camera.js
           node --check structural-visualization.js
           node --check branch-organization-graphics.js
@@ -153,6 +160,8 @@ jobs:
           node --check verify_structural_camera_zoom_v0_16.js
           node --check verify_branch_organization_graphics_v0_17.js
           node --check verify_arithmetic_overlay_graphics_v0_18.js
+          node --check verify_infinite_navigation_renderer_v0_19.js
+          node --check benchmark_infinite_navigation_renderer_v0_19.js
           node --check app.js
 
   publication-static-smoke:
@@ -192,6 +201,7 @@ jobs:
             zoom-semantics.js \
             sheet-branch-organization.js \
             interactive-pullback-tower.js \
+            infinite-navigation-renderer.js \
             structural-visualization.js \
             branch-organization-graphics.js \
             structural-camera.js \
@@ -214,9 +224,10 @@ jobs:
           grep -Fq 'presentation-only structural camera' /tmp/publication-index.html
           grep -Fq 'D⁴ Branch Organization Graphics' /tmp/publication-index.html
           grep -Fq '16-fold structural organization' /tmp/publication-index.html
-          grep -Fq 'v0.18 · Arithmetic Overlay Graphics' /tmp/publication-index.html
+          grep -Fq 'v0.19 · Infinite-Navigation Rendering Engine' /tmp/publication-index.html
           grep -Fq 'Symbolic arithmetic overlays' /tmp/publication-index.html
           grep -Fq 'Coordinate iterate rule' /tmp/publication-index.html
+          grep -Fq 'bounded active render window' /tmp/publication-index.html
           grep -Fq 'Canonical requested depth' /tmp/publication-index.html
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"
