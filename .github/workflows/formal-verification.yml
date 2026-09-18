@@ -224,9 +224,10 @@ jobs:
           grep -Fq 'presentation-only structural camera' /tmp/publication-index.html
           grep -Fq 'D⁴ Branch Organization Graphics' /tmp/publication-index.html
           grep -Fq '16-fold structural organization' /tmp/publication-index.html
-          grep -Fq 'v0.18 · Arithmetic Overlay Graphics' /tmp/publication-index.html
+          grep -Fq 'v0.19 · Infinite-Navigation Rendering Engine' /tmp/publication-index.html
           grep -Fq 'Symbolic arithmetic overlays' /tmp/publication-index.html
           grep -Fq 'Coordinate iterate rule' /tmp/publication-index.html
+          grep -Fq 'bounded active render window' /tmp/publication-index.html
           grep -Fq 'Canonical requested depth' /tmp/publication-index.html
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"

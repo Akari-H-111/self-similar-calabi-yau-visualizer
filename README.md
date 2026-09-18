@@ -1,12 +1,12 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.18 — Arithmetic Overlay Graphics
+**Current version:** v0.19 — Infinite-Navigation Rendering Engine
 
 **Published checkpoint:** v0.13 — Publication Checkpoint
 
 **Runtime scene contract:** v0.12
 
-This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.18 adds presentation-only, source-backed symbolic arithmetic annotations for the already-supported v0.09 arithmetic overlay semantics, layered over the sealed v0.17 D⁴ branch graphics, v0.16 structural camera, and v0.15 interactive pullback tower.
+This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.19 adds a presentation-only infinite-navigation rendering engine above the sealed semantic recursion: deterministic viewport/render-window virtualization, overscan, floating-origin deep-depth handling, bounded presentation-slot recycling, and a bounded recomputable virtual-layout cache. The v0.18 arithmetic graphics, v0.17 D⁴ branch graphics, v0.16 camera, and v0.15 interaction semantics remain beneath that adapter.
 
 The interface is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric zoom.
 
@@ -42,36 +42,36 @@ published / immutable / not prerelease
 
 The repository is licensed under the **Apache License, Version 2.0** (`Apache-2.0`). The `LICENSE` file remains the operative grant.
 
-## Thread 17 starting canonical baseline
+## Thread 18 starting canonical baseline
 
-Thread 17 starts from sealed Thread 16 canonical `main`:
+Thread 18 starts from sealed Thread 17 canonical `main`:
 
 ```text
 commit:
-10a315458b7321ee0f48e553d533c3519fd99916
+f1b2a0a43aae609574be795f5e3a89fe3e53fcc0
 
 tree:
-c9917ee4cf6ce750c5320f94e42f3ef33b0506f6
+c02f66550fb27f4e2f3ba891cae816e28abd80b8
 
 sole parent:
-49ece02ada3a3f4aba2077fa86fd494df3c8188a
+10a315458b7321ee0f48e553d533c3519fd99916
 
 commit message:
-visualization: seal Thread 16 D4 branch organization graphics v0.17
+visualization: seal Thread 17 arithmetic overlay graphics v0.18
 ```
 
 Inherited external evidence rechecked before implementation:
 
 ```text
-Formal Verification run #82 / 35257740985
-head SHA 10a315458b7321ee0f48e553d533c3519fd99916
+Formal Verification run #95 / 35316280060
+head SHA f1b2a0a43aae609574be795f5e3a89fe3e53fcc0
 conclusion = success
 
-Pages run 35257739889
-head SHA 10a315458b7321ee0f48e553d533c3519fd99916
+Pages run #6 / 35316279726
+head SHA f1b2a0a43aae609574be795f5e3a89fe3e53fcc0
 conclusion = success
 
-Thread 16 staging PR #9
+Thread 17 staging PR #10
 closed / merged=false / draft CI vehicle only
 ```
 
@@ -185,6 +185,70 @@ Detailed contract:
 
 ```text
 docs/ARITHMETIC_OVERLAY_GRAPHICS_self_similar_cy_visualizer_v0_18.md
+```
+
+## v0.19 infinite-navigation rendering engine
+
+The new presentation adapter is:
+
+```text
+infinite-navigation-renderer.js
+```
+
+Its state separation is explicit:
+
+```text
+semantic materialization
+!= virtual layout
+!= render materialization
+```
+
+The sealed interaction/recursion authority remains unchanged. `expandOneLevel()` is still the only structural semantic expansion path, and viewport pruning never deletes or rewrites `recursiveModel.levels`.
+
+For the default v0.19 policy:
+
+```text
+viewportLevelCapacity = 9
+overscanLevels = 2
+configured active bound = 18
+virtual layout cache capacity <= 36
+```
+
+The active structural SVG nodes and interaction control rows are projected only for the bounded active depth set. Base, selected, focused, and their required predecessors are pinned when necessary so navigation, D⁴ transition badges, arithmetic annotations, and camera targeting remain addressable.
+
+Deep layout uses an anchor-relative floating-origin description. A far depth can remain semantically materialized and presentation-visible without forcing an unsafe absolute SVG coordinate.
+
+The derived virtual-layout cache is:
+
+```text
+bounded
+deterministic
+recomputable
+non-canonical
+evictable
+```
+
+Cache eviction is presentation-only and does not alter retained semantic structure.
+
+The v0.19 benchmark on GitHub Actions run #106 sampled semantic depths `100`, `1,000`, `10,000`, and `1,000,000`. In that Node runner observation, every horizon reported:
+
+```text
+maximumActiveRenderedDepthCount = 14
+maximumPresentationPoolSize = 14
+configuredActiveBound = 18
+maximumVirtualLayoutCacheEntries = 36
+virtualLayoutCacheCapacity = 36
+virtualLayoutCacheHits = 10
+virtualLayoutCacheMisses = 69
+virtualLayoutCacheEvictions = 33
+```
+
+Those numbers are engineering observations for the exercised policy, not mathematical limits or browser-memory proofs. The benchmark explicitly records `browserEvidence = not_tested`, `timingAndHeapAreEnvironmentSensitive = true`, and `benchmarkThresholdIsSemanticLimit = false`.
+
+Detailed contract:
+
+```text
+docs/INFINITE_NAVIGATION_RENDERING_ENGINE_self_similar_cy_visualizer_v0_19.md
 ```
 
 ## D=1 and representation safety
@@ -303,7 +367,7 @@ Lean: leanprover/lean4:v4.34.0
 mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
 ```
 
-v0.18 adds no Lean theorem and changes no formal file, toolchain pin, or mathlib pin.
+v0.19 adds no Lean theorem and changes no formal file, toolchain pin, or mathlib pin.
 
 ## Verification
 
@@ -326,17 +390,19 @@ node verify_interactive_pullback_tower_v0_15.js
 node verify_structural_camera_zoom_v0_16.js
 node verify_branch_organization_graphics_v0_17.js
 node verify_arithmetic_overlay_graphics_v0_18.js
+node verify_infinite_navigation_renderer_v0_19.js
+node benchmark_infinite_navigation_renderer_v0_19.js
 ```
 
-The v0.18 verifier checks canonical semantic reuse, the four independent-toggle combinations, provenance/evidence exposure, runtime and camera isolation, deterministic markup, rerender replacement without duplicate accumulation, structural attachment, D⁴ badge coexistence, deferred-overlay admission discipline, truthfulness flags, browser integration contracts, source discipline, and CI wiring.
+The v0.19 verifier checks sealed semantic blob identity, deterministic render-window construction, bounded active render count, presentation-slot recycling, bounded recomputable cache behavior, deep floating-origin descriptors, off-window selection and camera targeting, structural/interaction virtualization, explicit D⁴ reprojection, arithmetic coexistence, truthfulness flags, source discipline, and CI wiring.
 
-The current Thread 17 staging CI evidence is recorded in the v0.18 state/progress artifacts. Those artifacts intentionally do not self-certify the final seal.
+The current Thread 18 staging CI evidence is recorded in the v0.19 state/progress artifacts. Those artifacts intentionally do not self-certify the final seal.
 
 ## What green CI means
 
 A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
 
-A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.18 and all earlier runtime verifiers.
+A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.19 and all earlier runtime verifiers plus the v0.19 benchmark execution.
 
 A green `publication-static-smoke` job means the static repository paths can be served and fetched successfully from a clean GitHub-hosted runner.
 
@@ -366,10 +432,12 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000/`.
 
-## Scope of v0.18
+## Scope of v0.19
 
-v0.18 is **Thread 17 — Arithmetic Overlay Graphics**.
+v0.19 is **Thread 18 — Infinite-Navigation Rendering Engine**.
 
-It adds graphical projection only for arithmetic overlay semantics already admitted and provenance-backed in the canonical repository. It does not add new arithmetic semantics, concrete `W`, Calabi–Yau geometry, genuine sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision/divisor geometry, metric scaling, an infinite-navigation rendering engine, or a new Lean theorem.
+It adds presentation virtualization, floating-origin deep navigation, bounded presentation pooling/recycling, bounded derived-layout caching, and deterministic reprojection orchestration above the existing sealed semantic/runtime layers.
 
-The final v0.18 state/progress artifacts are intentionally non-self-certifying. Thread 17 is sealed only after the exact final staging tree passes CI, PR #10 is closed unmerged, that exact tree is replayed as one child of the Thread 16 canonical commit `10a315458b7321ee0f48e553d533c3519fd99916`, `main` is fast-forwarded, and exact-main Formal Verification plus exact-SHA Pages both succeed.
+It does not add a second recursion engine, new mathematics, concrete `W`, Calabi–Yau geometry, genuine sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision/divisor geometry, geometric zoom, metric scaling, or a new Lean theorem.
+
+The final v0.19 state/progress artifacts are intentionally non-self-certifying. Thread 18 is sealed only after the exact final staging tree passes CI, PR #11 is closed unmerged, that exact tree is replayed as exactly one child of the Thread 17 canonical commit `f1b2a0a43aae609574be795f5e3a89fe3e53fcc0`, `main` is fast-forwarded without force, and exact-main Formal Verification plus exact-SHA Pages both succeed.
