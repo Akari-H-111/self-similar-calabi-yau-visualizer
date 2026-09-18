@@ -8,7 +8,7 @@ open scoped BigOperators
 The Laurent expression extended from the concrete torus to the ambient complex
 coordinate space `Point4 = Fin 4 → ℂ`.
 
-This is a derived analytic bridge.  It is intentionally defined on all of
+This is a derived analytic bridge. It is intentionally defined on all of
 `Point4`; differentiability statements below are made only at points coming
 from `Torus4`, where every coordinate product is nonzero.
 -/
@@ -31,21 +31,9 @@ coming from `Torus4`.
 -/
 theorem differentiableAt_laurentWPoint_toPoint4 (κ : ℂ) (z : Torus4) :
     DifferentiableAt ℂ (laurentWPoint κ) z.toPoint4 := by
-  have hsum :
-      DifferentiableAt ℂ (fun x : Point4 => ∑ i, x i) z.toPoint4 := by
-    fun_prop
-  have hprod :
-      DifferentiableAt ℂ (fun x : Point4 => ∏ i, x i) z.toPoint4 := by
-    fun_prop
-  have hinv :
-      DifferentiableAt ℂ (fun x : Point4 => (∏ i, x i)⁻¹) z.toPoint4 :=
-    hprod.inv (pointProduct_ne_zero z)
-  have hscaled :
-      DifferentiableAt ℂ
-        (fun x : Point4 => κ * (∏ i, x i)⁻¹)
-        z.toPoint4 :=
-    hinv.const_mul κ
-  simpa [laurentWPoint, div_eq_mul_inv] using hsum.add hscaled
+  have hprod : (∏ i, z.toPoint4 i) ≠ 0 := pointProduct_ne_zero z
+  unfold laurentWPoint
+  fun_prop
 
 /--
 The genuine total complex Fréchet derivative of the ambient Laurent expression
@@ -75,7 +63,8 @@ theorem laurentWPoint_update_eq_coordinateSlice
     laurentComplementProduct
   rw [Finset.sum_update_of_mem (Finset.mem_univ i)]
   rw [Finset.prod_update_of_mem (Finset.mem_univ i)]
-  simp [Torus4.toPoint4]
+  simp only [Finset.sdiff_singleton_eq_erase]
+  simp [Torus4.toPoint4, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_left_comm, mul_assoc]
 
 /--
 The total Fréchet derivative evaluated on the `i`-th standard basis direction
@@ -85,13 +74,23 @@ theorem laurentTotalDifferential_apply_single
     (κ : ℂ) (z : Torus4) (i : Fin 4) :
     laurentTotalDifferential κ z (Pi.single i (1 : ℂ)) =
       laurentCoordinateDerivativeValue κ z i := by
+  have hupdate :
+      Function.update z.toPoint4 i (z i : ℂ) = z.toPoint4 := by
+    simpa [Torus4.toPoint4] using (Function.update_eq_self i z.toPoint4)
+  have houter :
+      HasFDerivAt
+        (laurentWPoint κ)
+        (laurentTotalDifferential κ z)
+        (Function.update z.toPoint4 i (z i : ℂ)) := by
+    rw [hupdate]
+    exact hasFDerivAt_laurentWPoint_toPoint4 κ z
   have hcomp :
       HasDerivAt
         (fun t : ℂ => laurentWPoint κ (Function.update z.toPoint4 i t))
         (laurentTotalDifferential κ z (Pi.single i (1 : ℂ)))
         (z i : ℂ) := by
     simpa using
-      (hasFDerivAt_laurentWPoint_toPoint4 κ z).comp_hasDerivAt
+      houter.comp_hasDerivAt
         (z i : ℂ) (hasDerivAt_update z.toPoint4 i (z i : ℂ))
   have hcomp' :
       HasDerivAt
@@ -106,7 +105,7 @@ F12's coordinate critical predicate is equivalent to vanishing of the genuine
 total complex Fréchet derivative.
 
 This is the semantic bridge from coordinate partial derivatives to a total
-differential.  It is not a scheme-theoretic Jacobian criterion.
+differential. It is not a scheme-theoretic Jacobian criterion.
 -/
 theorem isLaurentCritical_iff_totalDifferential_eq_zero
     (κ : ℂ) (z : Torus4) :
@@ -114,11 +113,14 @@ theorem isLaurentCritical_iff_totalDifferential_eq_zero
   constructor
   · intro hcrit
     ext v
+    classical
     have hv : v = ∑ i, v i • Pi.single i (1 : ℂ) := by
       funext j
-      simp
-    rw [hv]
-    simp [laurentTotalDifferential_apply_single, hcrit]
+      simp [Finset.sum_apply, Pi.single_apply]
+    rw [hv, map_sum]
+    apply Finset.sum_eq_zero
+    intro i hi
+    rw [map_smul, laurentTotalDifferential_apply_single, hcrit i, smul_zero]
   · intro hzero i
     have hi :=
       congrArg
@@ -168,10 +170,9 @@ private theorem continuousLinearMap_to_complex_surjective_of_ne_zero
     Function.Surjective L := by
   have hex : ∃ v : Point4, L v ≠ 0 := by
     by_contra h
-    push_neg at h
     apply hL
     ext v
-    simpa using h v
+    simpa using not_ne_iff.mp (not_exists.mp h v)
   obtain ⟨v, hv⟩ := hex
   intro y
   refine ⟨(y / L v) • v, ?_⟩
@@ -203,7 +204,7 @@ theorem laurentTotalDifferential_surjective_on_baseFiber
 Full source-compatible regularity regime: the total complex differential is
 surjective at every point of the base fiber.
 
-This theorem deliberately stops at differential regularity.  It does not claim
+This theorem deliberately stops at differential regularity. It does not claim
 a manifold regular-value theorem, a smooth submanifold theorem, or
 scheme-theoretic smoothness.
 -/
