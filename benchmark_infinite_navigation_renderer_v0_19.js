@@ -4,7 +4,7 @@ const { performance } = require("node:perf_hooks");
 const InfiniteNavigationRenderer = require("./infinite-navigation-renderer.js");
 
 const HORIZONS = Object.freeze([100, 1000, 10000, 1000000]);
-const TRANSITIONS = Object.freeze([0, 0.25, 0.5, 0.75, 1]);
+const TRANSITIONS = Object.freeze([0, 0.25, 0.5, 0.75, 1, 0.5]);
 
 function round(value, digits = 6) {
   const factor = 10 ** digits;
