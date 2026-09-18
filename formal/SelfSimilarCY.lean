@@ -4,3 +4,5 @@ import SelfSimilarCY.CoordinatePowerIteration
 import SelfSimilarCY.PullbackTower
 import SelfSimilarCY.Torus4
 import SelfSimilarCY.TorusCoordinatePower
+import SelfSimilarCY.LaurentW
+import SelfSimilarCY.BaseFiber
