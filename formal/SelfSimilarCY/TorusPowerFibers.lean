@@ -80,7 +80,8 @@ theorem torusCoordinatePower_root
     (D : ℕ) (hD : D ≠ 0) (y : Torus4) :
     torusCoordinatePower D (torusCoordinatePowerRoot D y) = y := by
   funext i
-  simp [torusCoordinatePowerRoot, torusCoordinatePower]
+  simpa [torusCoordinatePowerRoot, torusCoordinatePower] using
+    complexUnitNthRoot_pow D hD (y i)
 
 /-- For every positive exponent, the torus coordinate-power map is surjective. -/
 theorem torusCoordinatePower_surjective
