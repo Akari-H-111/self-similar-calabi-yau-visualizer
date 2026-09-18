@@ -1,0 +1,123 @@
+{
+  "project": "Self-Similar Calabi-Yau Visualizer",
+  "thread": 17,
+  "milestone": "Arithmetic Overlay Graphics",
+  "version": "v0.18",
+  "status": "implemented_and_pre_final_ci_verified_pending_final_exact_tree_seal",
+  "starting_canonical": {
+    "commit": "10a315458b7321ee0f48e553d533c3519fd99916",
+    "tree": "c9917ee4cf6ce750c5320f94e42f3ef33b0506f6",
+    "sole_parent": "49ece02ada3a3f4aba2077fa86fd494df3c8188a",
+    "commit_message": "visualization: seal Thread 16 D4 branch organization graphics v0.17"
+  },
+  "inherited_thread16_seal_evidence": {
+    "formal_verification": {
+      "run_number": 82,
+      "run_id": 35257740985,
+      "head_sha": "10a315458b7321ee0f48e553d533c3519fd99916",
+      "conclusion": "success"
+    },
+    "pages": {
+      "run_id": 35257739889,
+      "head_sha": "10a315458b7321ee0f48e553d533c3519fd99916",
+      "conclusion": "success"
+    },
+    "staging_pr_9": {
+      "state": "closed",
+      "merged": false,
+      "draft": true,
+      "role": "CI vehicle only"
+    }
+  },
+  "immutable_publication_checkpoint": {
+    "tag": "v0.13",
+    "commit": "e83ed17a5ce8e45e67ef326042a21ec51ba24222",
+    "release_immutable": true,
+    "prerelease": false
+  },
+  "implementation": {
+    "new_module": "arithmetic-overlay-graphics.js",
+    "new_verifier": "verify_arithmetic_overlay_graphics_v0_18.js",
+    "source_contract": "arithmetic_overlays_model_output",
+    "representation_kind": "source_backed_symbolic_arithmetic_annotations",
+    "supported_overlay_ids": [
+      "coordinate_channels",
+      "coordinate_iterate_rule"
+    ],
+    "independent_toggle_state": true,
+    "uses_existing_structural_layout_descriptor": true,
+    "uses_existing_structural_svg": true,
+    "uses_existing_structural_camera": true,
+    "observer_added": false,
+    "second_arithmetic_engine_added": false,
+    "new_lean_theorem": false
+  },
+  "evidence_contract": {
+    "coordinate_channels": {
+      "evidence_class": "source_backed_structural_representation",
+      "formal_support": "formal_theorem",
+      "source": "formal/SelfSimilarCY/CoordinatePower.lean"
+    },
+    "coordinate_iterate_rule": {
+      "evidence_class": "formal_theorem",
+      "theorem_identity": "coordinatePower_iterate_apply",
+      "source": "formal/SelfSimilarCY/CoordinatePowerIteration.lean"
+    }
+  },
+  "deferred_candidates": {
+    "cyclotomic_refinement": "unavailable",
+    "torsion_labels": "unavailable",
+    "collision_classes": "unavailable",
+    "delta_n_divisor": "unavailable"
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "W": "unresolved"
+  },
+  "state_separation": {
+    "recursive_depth": "sealed v0.15 interaction domain",
+    "structural_focus": "sealed v0.07/v0.15 domain",
+    "selection_and_collapse": "sealed v0.15 interaction domain",
+    "camera": "sealed v0.16 presentation domain",
+    "branch_graphics": "sealed v0.17 presentation projection",
+    "arithmetic_overlay_semantics": "sealed v0.09 semantic domain",
+    "arithmetic_overlay_graphics": "v0.18 read-only presentation projection",
+    "cross_domain_mutation": false
+  },
+  "sealed_semantic_modules_modified": false,
+  "canonical_scene": {
+    "path": "data/system.json",
+    "requestedDepth": 0,
+    "D": 2,
+    "W": "unresolved",
+    "modified_by_v0_18": false
+  },
+  "pre_final_artifact_ci": {
+    "head_commit": "e2c36346ab9282fe8383b448cd574cd45f2e0abc",
+    "tree": "d5c7cd1de2513af8b79f2144bd6b4b6f4c98f89a",
+    "workflow_run_number": 89,
+    "workflow_run_id": 35315748774,
+    "runtime_contracts": "success",
+    "formal_lean": "success",
+    "publication_static_smoke": "success",
+    "v0_03_through_v0_18": "success"
+  },
+  "staging": {
+    "branch": "thread17-arithmetic-overlay-graphics-v0-18",
+    "pull_request": 10,
+    "pull_request_role": "draft CI vehicle only; do not merge",
+    "final_exact_tree_ci": "pending_after_final_artifact_sync",
+    "pull_request_closed_unmerged": "pending"
+  },
+  "canonicalization": {
+    "exact_verified_tree_replay_as_single_child": "pending",
+    "main_fast_forward": "pending",
+    "exact_main_formal_verification": "pending",
+    "exact_sha_pages": "pending",
+    "seal_authority": "external Git object identity plus exact-SHA workflow evidence"
+  },
+  "thread17_sealed": false
+}
