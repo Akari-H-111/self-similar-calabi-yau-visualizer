@@ -123,6 +123,8 @@
     depths.add(0);
     depths.add(snapshot.selectedDepth);
     depths.add(snapshot.focusedDepth);
+    if (snapshot.selectedDepth > 0) depths.add(snapshot.selectedDepth - 1);
+    if (snapshot.focusedDepth > 0) depths.add(snapshot.focusedDepth - 1);
     return Object.freeze(Array.from(depths).sort((left, right) => left - right));
   }
 
@@ -179,7 +181,7 @@
       snapshot.presentationVisibleDepth + 1,
       policy.viewportLevelCapacity + 2 * policy.overscanLevels
     );
-    return contiguousCapacity + 3;
+    return contiguousCapacity + 5;
   }
 
   function createStateFromSnapshot(snapshotInput, previousState = null, options = {}) {

@@ -40,6 +40,7 @@ let pullbackModel = null;
 let interactionModel = null;
 let structuralCameraModel = null;
 let structuralLayoutDescriptor = null;
+let infiniteNavigationRenderState = null;
 let arithmeticOverlayPresentationState = initialArithmeticOverlayRequest;
 const activeCameraPointers = new Map();
 let cameraGesture = null;
@@ -72,6 +73,7 @@ function resetRenderedState() {
   interactionModel = null;
   structuralCameraModel = null;
   structuralLayoutDescriptor = null;
+  infiniteNavigationRenderState = null;
   arithmeticOverlayPresentationState = initialArithmeticOverlayRequest;
   canonicalScene = null;
   baseModel = null;
@@ -84,7 +86,7 @@ function resetRenderedState() {
 
   interactionElement.hidden = true;
   interactionElement.innerHTML = "";
-  clearDataset(interactionElement, ["state", "selectedDepth", "focusedDepth", "materializedDepth", "requestedDepth", "sourceRequestedDepth", "visibleDepth", "collapsedDepth", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied"]);
+  clearDataset(interactionElement, ["state", "selectedDepth", "focusedDepth", "materializedDepth", "requestedDepth", "sourceRequestedDepth", "visibleDepth", "collapsedDepth", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied", "renderVirtualized", "renderWindowStartDepth", "renderWindowEndDepth", "activeRenderedDepthCount"]);
 
   structuralCameraElement.hidden = true;
   clearDataset(structuralCameraElement, ["state", "cameraScale", "cameraTransformApplied", "geometricZoomApplied", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed"]);
@@ -92,7 +94,7 @@ function resetRenderedState() {
 
   structuralVisualizationElement.hidden = true;
   structuralVisualizationElement.innerHTML = "";
-  clearDataset(structuralVisualizationElement, ["state", "representationKind", "structuralOnly", "materializedDepth", "focusedDepth", "selectedDepth", "visibleDepth", "collapsedDepth", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied", "materializationTriggered", "cameraDragging", "arithmeticOverlayGraphicsState", "arithmeticOverlayGraphicsRepresentation", "arithmeticOverlayGraphicsEnabled", "arithmeticOverlayGraphicsAnnotationCount"]);
+  clearDataset(structuralVisualizationElement, ["state", "representationKind", "structuralOnly", "materializedDepth", "focusedDepth", "selectedDepth", "visibleDepth", "collapsedDepth", "geometryRendered", "sheetsMaterialized", "coveringStructureClaimed", "geometricZoomApplied", "cameraTransformApplied", "materializationTriggered", "cameraDragging", "arithmeticOverlayGraphicsState", "arithmeticOverlayGraphicsRepresentation", "arithmeticOverlayGraphicsEnabled", "arithmeticOverlayGraphicsAnnotationCount", "renderVirtualized", "renderWindowStartDepth", "renderWindowEndDepth", "activeRenderedDepthCount", "infiniteNavigationRenderer", "semanticMaterializedDepth", "presentationVisibleDepth", "virtualAnchorDepth", "presentationPoolSize"]);
 
   rendererElement.hidden = true;
   rendererElement.textContent = "";
@@ -273,7 +275,7 @@ function handleArithmeticOverlayToggle(event) {
   }
 }
 
-function renderInteractionState() {
+function renderInteractionState(anchorDepth = undefined) {
   if (!canonicalScene || !baseModel || !pullbackModel || !interactionModel) {
     throw new TypeError("Interactive pullback rendering requires initialized canonical and interaction models.");
   }
@@ -282,11 +284,23 @@ function renderInteractionState() {
   const recursiveModel = interactionModel.recursiveModel;
   const zoomModel = interactionModel.zoomModel;
   const organizationModel = interactionModel.organizationModel;
+  const rendererOptions = anchorDepth === undefined ? {} : {anchorDepth};
+  infiniteNavigationRenderState = InfiniteNavigationRenderer.createInfiniteNavigationRendererState(
+    interactionModel,
+    infiniteNavigationRenderState,
+    rendererOptions
+  );
+  const interactionPresentationOptions = InfiniteNavigationRenderer.createInteractionPresentationOptions(infiniteNavigationRenderState);
+  const structuralPresentationOptions = InfiniteNavigationRenderer.createStructuralPresentationOptions(infiniteNavigationRenderState);
 
   RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement);
   ZoomSemantics.renderZoomSemantics(zoomModel, zoomElement);
   SheetBranchOrganization.renderSheetBranchOrganization(organizationModel, sheetBranchElement);
-  InteractivePullbackTower.renderInteractivePullbackTower(interactionModel, interactionElement);
+  InteractivePullbackTower.renderInteractivePullbackTower(
+    interactionModel,
+    interactionElement,
+    interactionPresentationOptions
+  );
 
   const structuralVisualizationModel = StructuralVisualization.createStructuralVisualizationModel(
     scene,
@@ -294,11 +308,17 @@ function renderInteractionState() {
     recursiveModel,
     zoomModel,
     organizationModel,
-    interactionModel
+    interactionModel,
+    structuralPresentationOptions
   );
   StructuralVisualization.renderStructuralVisualization(structuralVisualizationModel, structuralVisualizationElement);
   reconcileStructuralCamera(StructuralVisualization.createStructuralLayoutDescriptor(structuralVisualizationModel));
+  InfiniteNavigationRenderer.applyRendererStateToTarget(infiniteNavigationRenderState, structuralVisualizationElement);
 
+  BranchOrganizationGraphics.projectRenderedOrganization(
+    sheetBranchElement,
+    structuralVisualizationElement
+  );
   renderArithmeticOverlayPresentation(scene, recursiveModel, zoomModel, organizationModel);
 
   statusElement.dataset.state = "ready";
@@ -306,6 +326,7 @@ function renderInteractionState() {
     `Interactive structural tower ready: selected X_${String(interactionModel.selectedDepth)}, ` +
     `focused X_${String(interactionModel.focusedDepth)}, materialized depth ${String(interactionModel.materializedDepth)}, ` +
     `interaction-requested depth ${String(interactionModel.requestedDepth)}. ` +
+    `Active render depths ${String(infiniteNavigationRenderState.activeRenderedDepthCount)} / semantic ${String(interactionModel.materializedDepth + 1)}. ` +
     `Structural camera scale ${structuralCameraModel.cameraScale.toFixed(3)}× is presentation-only. ` +
     "No geometric zoom, genuine sheets, or Calabi–Yau geometry is materialized."
   );
@@ -314,24 +335,29 @@ function renderInteractionState() {
 function applyInteraction(action, depth = null) {
   if (!interactionModel) throw new TypeError("Interactive pullback state is not initialized.");
 
+  let nextAnchorDepth;
   switch (action) {
     case "expand-or-reveal":
       interactionModel = InteractivePullbackTower.expandOrReveal(interactionModel);
+      nextAnchorDepth = interactionModel.presentation.visibleDepth;
       break;
     case "collapse-selected":
       interactionModel = InteractivePullbackTower.collapseSelected(interactionModel);
+      nextAnchorDepth = interactionModel.selectedDepth;
       break;
     case "select":
       interactionModel = InteractivePullbackTower.selectDepth(interactionModel, depth);
+      nextAnchorDepth = depth;
       break;
     case "refocus":
       interactionModel = InteractivePullbackTower.refocusDepth(interactionModel, depth);
+      nextAnchorDepth = depth;
       break;
     default:
       throw new TypeError(`Unknown interaction action: ${String(action)}`);
   }
 
-  renderInteractionState();
+  renderInteractionState(nextAnchorDepth);
 }
 
 function handleInteractionClick(event) {

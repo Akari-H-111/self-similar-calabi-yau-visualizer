@@ -125,19 +125,60 @@
     });
   }
 
-  function createStructuralVisualizationModel(scene, baseModel, recursiveModel, zoomModel, organizationModel, interactionModel = null) {
+  function normalizePresentationRenderDepths(renderDepths, visibleDepth, selectedDepth, focusedDepth) {
+    if (renderDepths === null || renderDepths === undefined) return null;
+    if (!Array.isArray(renderDepths) || renderDepths.length === 0) {
+      throw new TypeError("Virtualized structural rendering requires a non-empty renderDepths array.");
+    }
+
+    const normalized = Array.from(new Set(renderDepths.map((depth) => {
+      if (!Number.isSafeInteger(depth) || depth < 0 || depth > visibleDepth) {
+        throw new RangeError("Each structural render depth must be a presentation-visible nonnegative safe integer.");
+      }
+      return depth;
+    }))).sort((left, right) => left - right);
+
+    if (!normalized.includes(0)) {
+      throw new RangeError("Virtualized structural rendering must retain the base structural level X_0.");
+    }
+    if (selectedDepth !== null && !normalized.includes(selectedDepth)) {
+      throw new RangeError("Virtualized structural rendering must retain the selected depth.");
+    }
+    if (focusedDepth !== null && !normalized.includes(focusedDepth)) {
+      throw new RangeError("Virtualized structural rendering must retain the focused depth.");
+    }
+    return Object.freeze(normalized);
+  }
+
+  function createStructuralVisualizationModel(scene, baseModel, recursiveModel, zoomModel, organizationModel, interactionModel = null, presentationOptions = null) {
     assertCompatibleInputs(scene, baseModel, recursiveModel, zoomModel, organizationModel, interactionModel);
 
     const selectedDepth = interactionModel ? interactionModel.selectedDepth : null;
     const visibleDepth = interactionModel ? interactionModel.presentation.visibleDepth : recursiveModel.materializedDepth;
     const collapsedDepth = interactionModel ? interactionModel.presentation.collapsedDepth : null;
     const visibleLevels = recursiveModel.levels.filter((level) => level.depth <= visibleDepth);
+    const presentationRenderDepths = normalizePresentationRenderDepths(
+      presentationOptions?.renderDepths ?? null,
+      visibleDepth,
+      selectedDepth,
+      zoomModel.focusedDepth
+    );
+    const renderedDepthSet = presentationRenderDepths === null ? null : new Set(presentationRenderDepths);
+    const renderedLevels = renderedDepthSet === null
+      ? visibleLevels
+      : visibleLevels.filter((level) => renderedDepthSet.has(level.depth));
+    const includeBase = renderedDepthSet === null || renderedDepthSet.has(0);
 
     const nodes = Object.freeze([
-      createNode(0, zoomModel.focusedDepth, selectedDepth),
-      ...visibleLevels.map((level) => createNode(level.depth, zoomModel.focusedDepth, selectedDepth))
+      ...(includeBase ? [createNode(0, zoomModel.focusedDepth, selectedDepth)] : []),
+      ...renderedLevels.map((level) => createNode(level.depth, zoomModel.focusedDepth, selectedDepth))
     ]);
-    const edges = Object.freeze(visibleLevels.map(createEdge));
+    const nodeDepthSet = new Set(nodes.map((node) => node.depth));
+    const edges = Object.freeze(
+      renderedLevels
+        .filter((level) => nodeDepthSet.has(level.sourceDepth))
+        .map(createEdge)
+    );
 
     let continuation;
     if (collapsedDepth !== null && visibleDepth < recursiveModel.materializedDepth) {
@@ -179,6 +220,13 @@
       nodes,
       edges,
       continuation,
+      renderState: Object.freeze({
+        virtualized: presentationRenderDepths !== null,
+        renderDepths: Object.freeze(nodes.map((node) => node.depth)),
+        virtualAnchorDepth: presentationOptions?.virtualAnchorDepth ?? null,
+        renderWindowStartDepth: presentationOptions?.renderWindowStartDepth ?? null,
+        renderWindowEndDepth: presentationOptions?.renderWindowEndDepth ?? null
+      }),
       rule: Object.freeze({
         recurrence: "Xₙ = P_D⁻¹(Xₙ₋₁)",
         closedForm: "Xₙ = (P_Dⁿ)⁻¹(X)",
@@ -231,6 +279,7 @@
         x: ruleX,
         width: ruleWidth
       }),
+      virtualization: model.renderState,
       levelBounds: Object.freeze(model.nodes.map((node, index) => Object.freeze({
         depth: node.depth,
         x: nodeX,
@@ -264,7 +313,12 @@
       if (node.selected) annotations.push("selected");
       if (node.focused) annotations.push("focused");
       const annotationText = annotations.length > 0 ? ` · ${annotations.join(" · ")}` : "";
+      const previousDepth = index === 0 ? null : model.nodes[index - 1].depth;
+      const gapMarkup = previousDepth !== null && node.depth > previousDepth + 1
+        ? `<text class="structural-virtual-gap" x="${String(nodeX)}" y="${String(y - 18)}">… ${String(node.depth - previousDepth - 1)} materialized structural levels view-pruned …</text>`
+        : "";
       return [
+        gapMarkup,
         `<g class="structural-node${stateClasses}" data-structural-node-depth="${String(node.depth)}" data-selected="${String(node.selected)}" data-focused="${String(node.focused)}">`,
         `<rect x="${String(nodeX)}" y="${String(y)}" width="${String(nodeWidth)}" height="${String(nodeHeight)}" rx="18" />`,
         `<text class="structural-node__label" x="${String(nodeX + 24)}" y="${String(y + 31)}">${escapeXml(node.label)}</text>`,
@@ -273,9 +327,15 @@
       ].join("");
     }).join("");
 
-    const edgeMarkup = model.edges.map((edge, index) => {
-      const sourceY = firstNodeY + index * nodeStep + nodeHeight;
-      const targetY = firstNodeY + (index + 1) * nodeStep;
+    const nodeIndexByDepth = new Map(model.nodes.map((node, index) => [node.depth, index]));
+    const edgeMarkup = model.edges.map((edge) => {
+      const sourceIndex = nodeIndexByDepth.get(edge.sourceDepth);
+      const targetIndex = nodeIndexByDepth.get(edge.targetDepth);
+      if (sourceIndex === undefined || targetIndex === undefined) {
+        throw new RangeError("Structural edge endpoints must both be active rendered nodes.");
+      }
+      const sourceY = firstNodeY + sourceIndex * nodeStep + nodeHeight;
+      const targetY = firstNodeY + targetIndex * nodeStep;
       const centerX = nodeX + nodeWidth / 2;
       const labelY = sourceY + (targetY - sourceY) / 2 - 6;
       return [
@@ -352,6 +412,10 @@
     target.dataset.geometricZoomApplied = String(model.truthfulness.geometricZoomApplied);
     target.dataset.cameraTransformApplied = String(model.truthfulness.cameraTransformApplied);
     target.dataset.materializationTriggered = String(model.truthfulness.materializationTriggered);
+    target.dataset.renderVirtualized = String(model.renderState.virtualized);
+    target.dataset.renderWindowStartDepth = model.renderState.renderWindowStartDepth === null ? "" : String(model.renderState.renderWindowStartDepth);
+    target.dataset.renderWindowEndDepth = model.renderState.renderWindowEndDepth === null ? "" : String(model.renderState.renderWindowEndDepth);
+    target.dataset.activeRenderedDepthCount = String(model.renderState.renderDepths.length);
     target.innerHTML = buildSvgMarkup(model);
 
     return model;

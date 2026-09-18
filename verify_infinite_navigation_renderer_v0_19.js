@@ -5,6 +5,17 @@ const path = require("node:path");
 const crypto = require("node:crypto");
 const assert = require("node:assert/strict");
 
+const SceneSpec = require("./scene-spec.js");
+const BaseRenderer = require("./base-renderer.js");
+const OneStepPullback = require("./one-step-pullback.js");
+require("./recursive-lazy-expansion.js");
+require("./zoom-semantics.js");
+require("./sheet-branch-organization.js");
+const InteractivePullbackTower = require("./interactive-pullback-tower.js");
+const StructuralVisualization = require("./structural-visualization.js");
+const BranchOrganizationGraphics = require("./branch-organization-graphics.js");
+const ArithmeticOverlays = require("./arithmetic-overlays.js");
+const ArithmeticOverlayGraphics = require("./arithmetic-overlay-graphics.js");
 const InfiniteNavigationRenderer = require("./infinite-navigation-renderer.js");
 const canonicalScene = require("./data/system.json");
 
@@ -133,5 +144,124 @@ assert.equal(target.dataset.activeRenderedDepthCount, String(deepState.activeRen
 const source = read("infinite-navigation-renderer.js");
 assert.doesNotMatch(source, /depth\s*>\s*(1000|10000)/, "Production renderer must not impose a shallow hard-coded maximum depth.");
 assert.doesNotMatch(source, /Math\.pow\s*\(/, "Renderer must not expand deep symbolic degree powers.");
+
+const runtimeScene = SceneSpec.validateAndNormalizeScene(canonicalScene);
+const baseModel = BaseRenderer.createBaseRenderModel(runtimeScene);
+const oneStepModel = OneStepPullback.createOneStepPullbackModel(runtimeScene, baseModel);
+let interactionModel = InteractivePullbackTower.createInteractivePullbackTowerModel(
+  runtimeScene,
+  baseModel,
+  oneStepModel
+);
+for (let index = 0; index < 64; index += 1) {
+  interactionModel = InteractivePullbackTower.expandOrReveal(interactionModel);
+}
+assert.equal(interactionModel.materializedDepth, 64);
+assert.equal(interactionModel.recursiveModel.levels.length, 64);
+
+let integratedState = InfiniteNavigationRenderer.createInfiniteNavigationRendererState(
+  interactionModel,
+  null,
+  {anchorDepth: 64}
+);
+const structuralOptions = InfiniteNavigationRenderer.createStructuralPresentationOptions(integratedState);
+const interactionOptions = InfiniteNavigationRenderer.createInteractionPresentationOptions(integratedState);
+
+const structuralModel = StructuralVisualization.createStructuralVisualizationModel(
+  runtimeScene,
+  baseModel,
+  interactionModel.recursiveModel,
+  interactionModel.zoomModel,
+  interactionModel.organizationModel,
+  interactionModel,
+  structuralOptions
+);
+assert.deepEqual(
+  structuralModel.nodes.map((node) => node.depth),
+  integratedState.activeRenderedDepths,
+  "Structural SVG model must materialize only the deterministic active render set."
+);
+assert.ok(structuralModel.nodes.length <= integratedState.configuredActiveBound);
+assert.equal(structuralModel.renderState.virtualized, true);
+assert.equal(structuralModel.sceneState.materializedDepth, 64);
+assert.equal(interactionModel.recursiveModel.levels.length, 64, "Viewport pruning must not mutate retained semantic levels.");
+
+const layout = StructuralVisualization.createStructuralLayoutDescriptor(structuralModel);
+assert.equal(layout.levelBounds.length, integratedState.activeRenderedDepthCount);
+assert.ok(layout.levelBounds.some((level) => level.depth === interactionModel.focusedDepth));
+assert.ok(layout.levelBounds.some((level) => level.depth === 0));
+
+const structuralTarget = {dataset: {}, hidden: true, innerHTML: ""};
+StructuralVisualization.renderStructuralVisualization(structuralModel, structuralTarget);
+InfiniteNavigationRenderer.applyRendererStateToTarget(integratedState, structuralTarget);
+assert.equal((structuralTarget.innerHTML.match(/data-structural-node-depth=/g) || []).length, integratedState.activeRenderedDepthCount);
+assert.equal(structuralTarget.dataset.renderVirtualized, "true");
+
+const interactionTarget = {dataset: {}, hidden: true, innerHTML: ""};
+InteractivePullbackTower.renderInteractivePullbackTower(
+  interactionModel,
+  interactionTarget,
+  interactionOptions
+);
+assert.equal((interactionTarget.innerHTML.match(/data-level-depth=/g) || []).length, integratedState.activeRenderedDepthCount);
+assert.equal(interactionTarget.dataset.renderVirtualized, "true");
+
+const branchGraphics = BranchOrganizationGraphics.createBranchOrganizationGraphicsModel(
+  interactionModel.organizationModel,
+  layout.levelBounds
+);
+for (const badge of branchGraphics.badges) {
+  assert.ok(integratedState.activeRenderedDepths.includes(badge.sourceDepth));
+  assert.ok(integratedState.activeRenderedDepths.includes(badge.targetDepth));
+  assert.equal(badge.targetDepth, badge.sourceDepth + 1);
+}
+assert.equal(branchGraphics.truthfulness.geometryRendered, false);
+assert.equal(branchGraphics.truthfulness.sheetsMaterialized, false);
+assert.equal(branchGraphics.truthfulness.coveringStructureClaimed, false);
+
+const overlayModel = ArithmeticOverlays.createArithmeticOverlayModel(
+  runtimeScene,
+  interactionModel.recursiveModel,
+  interactionModel.zoomModel,
+  interactionModel.organizationModel,
+  [
+    ArithmeticOverlays.OVERLAY_IDS.COORDINATE_CHANNELS,
+    ArithmeticOverlays.OVERLAY_IDS.COORDINATE_ITERATE_RULE
+  ]
+);
+const overlayGraphics = ArithmeticOverlayGraphics.createArithmeticOverlayGraphicsModel(
+  overlayModel,
+  layout
+);
+assert.equal(overlayGraphics.truthfulness.geometryRendered, false);
+assert.equal(overlayGraphics.truthfulness.sheetsMaterialized, false);
+assert.equal(overlayGraphics.truthfulness.coveringStructureClaimed, false);
+assert.equal(overlayGraphics.truthfulness.geometricZoomApplied, false);
+
+interactionModel = InteractivePullbackTower.selectDepth(interactionModel, 60);
+interactionModel = InteractivePullbackTower.refocusDepth(interactionModel, 60);
+integratedState = InfiniteNavigationRenderer.createInfiniteNavigationRendererState(
+  interactionModel,
+  integratedState,
+  {anchorDepth: 60}
+);
+assert.ok(integratedState.activeRenderedDepths.includes(60));
+assert.ok(integratedState.activeRenderedDepths.includes(59), "Focused/selected predecessor must be retained for aligned D4 branch graphics.");
+assert.ok(integratedState.presentationPool.recycledCount > 0);
+assert.equal(interactionModel.selectedDepth, 60);
+assert.equal(interactionModel.focusedDepth, 60);
+
+interactionModel = InteractivePullbackTower.collapseSelected(interactionModel);
+assert.equal(interactionModel.materializedDepth, 64);
+assert.equal(interactionModel.recursiveModel.levels.length, 64);
+assert.equal(interactionModel.presentation.visibleDepth, 60);
+integratedState = InfiniteNavigationRenderer.createInfiniteNavigationRendererState(
+  interactionModel,
+  integratedState,
+  {anchorDepth: 60}
+);
+assert.equal(integratedState.semanticMaterializedDepth, 64);
+assert.equal(integratedState.presentationVisibleDepth, 60);
+assert.ok(integratedState.activeRenderedDepthCount <= integratedState.configuredActiveBound);
 
 console.log("Infinite-navigation renderer v0.19 verifier: passed");
