@@ -290,16 +290,15 @@ function renderInteractionState(anchorDepth = undefined) {
     infiniteNavigationRenderState,
     rendererOptions
   );
-  const interactionPresentationOptions = InfiniteNavigationRenderer.createInteractionPresentationOptions(infiniteNavigationRenderState);
   const structuralPresentationOptions = InfiniteNavigationRenderer.createStructuralPresentationOptions(infiniteNavigationRenderState);
 
   RecursiveLazyExpansion.renderRecursiveLazyExpansion(recursiveModel, recursiveElement);
   ZoomSemantics.renderZoomSemantics(zoomModel, zoomElement);
   SheetBranchOrganization.renderSheetBranchOrganization(organizationModel, sheetBranchElement);
-  InteractivePullbackTower.renderInteractivePullbackTower(
+  InfiniteNavigationRenderer.renderVirtualizedInteractionPresentation(
     interactionModel,
-    interactionElement,
-    interactionPresentationOptions
+    infiniteNavigationRenderState,
+    interactionElement
   );
 
   const structuralVisualizationModel = StructuralVisualization.createStructuralVisualizationModel(

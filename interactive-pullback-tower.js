@@ -393,61 +393,20 @@
     });
   }
 
-  function normalizePresentationRenderDepths(model, presentationOptions) {
-    const renderDepths = presentationOptions?.renderDepths ?? null;
-    if (renderDepths === null) return null;
-    if (!Array.isArray(renderDepths) || renderDepths.length === 0) {
-      throw new TypeError("Virtualized interaction rendering requires a non-empty renderDepths array.");
-    }
-    const normalized = Array.from(new Set(renderDepths.map((depth) => {
-      assertDepth(depth, "Interaction render depth");
-      if (depth > model.presentation.visibleDepth) {
-        throw new RangeError("Interaction render depth must remain presentation-visible.");
-      }
-      return depth;
-    }))).sort((left, right) => left - right);
-    if (!normalized.includes(0) || !normalized.includes(model.selectedDepth) || !normalized.includes(model.focusedDepth)) {
-      throw new RangeError("Virtualized interaction rendering must retain base, selected, and focused depths.");
-    }
-    return Object.freeze(normalized);
-  }
-
-  function buildBreadcrumbMarkup(model, presentationOptions = null) {
-    const renderDepths = normalizePresentationRenderDepths(model, presentationOptions);
-    const renderDepthSet = renderDepths === null ? null : new Set(renderDepths);
-    const items = renderDepthSet === null
-      ? model.breadcrumb
-      : model.breadcrumb.filter((item) => renderDepthSet.has(item.depth));
-    const markup = [];
-    let previousDepth = null;
-
-    for (const item of items) {
-      if (previousDepth !== null && item.depth > previousDepth + 1) {
-        markup.push(`<li class="interaction-breadcrumb__gap" aria-hidden="true">… ${String(item.depth - previousDepth - 1)} view-pruned levels …</li>`);
-      }
+  function buildBreadcrumbMarkup(model) {
+    return model.breadcrumb.map((item) => {
       const annotations = [];
       if (item.selected) annotations.push("selected");
       if (item.focused) annotations.push("focused");
       const suffix = annotations.length > 0 ? ` <span>(${annotations.join(", ")})</span>` : "";
       const current = item.selected ? ' aria-current="page"' : "";
-      markup.push(`<li${current}><span class="interaction-breadcrumb__level">${item.label}</span>${suffix}</li>`);
-      previousDepth = item.depth;
-    }
-    return markup.join("");
+      return `<li${current}><span class="interaction-breadcrumb__level">${item.label}</span>${suffix}</li>`;
+    }).join("");
   }
 
-  function buildLevelControlMarkup(model, presentationOptions = null) {
-    const renderDepths = normalizePresentationRenderDepths(model, presentationOptions);
-    const depths = renderDepths === null
-      ? Array.from({length: model.presentation.visibleDepth + 1}, (_, depth) => depth)
-      : renderDepths;
+  function buildLevelControlMarkup(model) {
     const rows = [];
-    let previousDepth = null;
-
-    for (const depth of depths) {
-      if (previousDepth !== null && depth > previousDepth + 1) {
-        rows.push(`<div class="interaction-level-gap" aria-hidden="true">… ${String(depth - previousDepth - 1)} materialized levels view-pruned …</div>`);
-      }
+    for (let depth = 0; depth <= model.presentation.visibleDepth; depth += 1) {
       const label = formatLevel(depth);
       rows.push([
         `<div class="interaction-level-row" data-level-depth="${String(depth)}">`,
@@ -456,12 +415,11 @@
         `<button type="button" data-interaction-action="refocus" data-depth="${String(depth)}" aria-pressed="${String(depth === model.focusedDepth)}">Refocus ${label}</button>`,
         "</div>"
       ].join(""));
-      previousDepth = depth;
     }
     return rows.join("");
   }
 
-  function renderInteractivePullbackTower(model, target, presentationOptions = null) {
+  function renderInteractivePullbackTower(model, target) {
     if (!model || model.kind !== MODEL_KIND) {
       throw new TypeError("Interactive pullback renderer requires an interactive_pullback_tower model.");
     }
@@ -472,7 +430,6 @@
     const expandLabel = model.presentation.collapsed ? "Reveal collapsed levels" : "Expand next level";
     const canCollapse = model.selectedDepth >= model.focusedDepth && model.selectedDepth < model.materializedDepth;
     const collapsedText = model.presentation.collapsedDepth === null ? "none" : formatLevel(model.presentation.collapsedDepth);
-    const presentationRenderDepths = normalizePresentationRenderDepths(model, presentationOptions);
 
     target.hidden = false;
     target.dataset.state = "ready";
@@ -488,10 +445,6 @@
     target.dataset.coveringStructureClaimed = "false";
     target.dataset.geometricZoomApplied = "false";
     target.dataset.cameraTransformApplied = "false";
-    target.dataset.renderVirtualized = String(presentationRenderDepths !== null);
-    target.dataset.renderWindowStartDepth = presentationOptions?.renderWindowStartDepth === undefined ? "" : String(presentationOptions.renderWindowStartDepth);
-    target.dataset.renderWindowEndDepth = presentationOptions?.renderWindowEndDepth === undefined ? "" : String(presentationOptions.renderWindowEndDepth);
-    target.dataset.activeRenderedDepthCount = String(presentationRenderDepths === null ? model.presentation.visibleDepth + 1 : presentationRenderDepths.length);
 
     target.innerHTML = [
       '<div class="interaction-toolbar">',
@@ -500,10 +453,10 @@
       "</div>",
       `<p class="interaction-summary">Selected ${formatLevel(model.selectedDepth)} · focused ${formatLevel(model.focusedDepth)} · materialized ${String(model.materializedDepth)} · interaction requested ${String(model.requestedDepth)} · visible ${String(model.presentation.visibleDepth)} · collapsed at ${collapsedText}</p>`,
       '<nav class="interaction-breadcrumb" aria-label="Structural pullback breadcrumb"><ol>',
-      buildBreadcrumbMarkup(model, presentationOptions),
+      buildBreadcrumbMarkup(model),
       "</ol></nav>",
       '<div class="interaction-level-controls" aria-label="Materialized structural level controls">',
-      buildLevelControlMarkup(model, presentationOptions),
+      buildLevelControlMarkup(model),
       "</div>",
       `<p class="interaction-transition" role="status">Last transition: ${model.transition.action} · ${model.transition.outcome} · structural descriptor materialization=${String(model.transition.structuralDescriptorMaterializationTriggered)} · geometric materialization=false · sheet materialization=false</p>`
     ].join("");

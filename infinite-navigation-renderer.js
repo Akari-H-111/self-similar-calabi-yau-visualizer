@@ -8,6 +8,30 @@
   const DEFAULT_OVERSCAN_LEVELS = 2;
   const VIRTUAL_NODE_STEP = 116;
 
+  const SUBSCRIPT_DIGITS = Object.freeze({
+    "0": "₀",
+    "1": "₁",
+    "2": "₂",
+    "3": "₃",
+    "4": "₄",
+    "5": "₅",
+    "6": "₆",
+    "7": "₇",
+    "8": "₈",
+    "9": "₉"
+  });
+
+  function formatSubscriptNumber(value) {
+    return String(value)
+      .split("")
+      .map((digit) => SUBSCRIPT_DIGITS[digit] ?? digit)
+      .join("");
+  }
+
+  function formatLevel(depth) {
+    return "X" + formatSubscriptNumber(depth);
+  }
+
   function assertDepth(value, label) {
     if (!Number.isSafeInteger(value) || value < 0) {
       throw new TypeError(label + " must be a nonnegative safe integer.");
@@ -300,6 +324,134 @@
     });
   }
 
+
+  function renderVirtualizedInteractionPresentation(interactionModel, state, target) {
+    if (!interactionModel || typeof interactionModel !== "object" || !interactionModel.presentation) {
+      throw new TypeError("Virtualized interaction rendering requires the sealed interaction model.");
+    }
+    if (!state || state.kind !== MODEL_KIND) {
+      throw new TypeError("Virtualized interaction rendering requires an infinite navigation renderer state.");
+    }
+    if (!target || typeof target !== "object" || !target.dataset || !("innerHTML" in target)) {
+      throw new TypeError("Virtualized interaction target must expose dataset and innerHTML.");
+    }
+    if (
+      interactionModel.materializedDepth !== state.semanticMaterializedDepth ||
+      interactionModel.presentation.visibleDepth !== state.presentationVisibleDepth ||
+      interactionModel.selectedDepth !== state.selectedDepth ||
+      interactionModel.focusedDepth !== state.focusedDepth
+    ) {
+      throw new TypeError("Renderer state must match the current sealed interaction model.");
+    }
+
+    const activeDepths = state.activeRenderedDepths;
+    const activeSet = new Set(activeDepths);
+    const canCollapse = (
+      interactionModel.selectedDepth >= interactionModel.focusedDepth &&
+      interactionModel.selectedDepth < interactionModel.materializedDepth
+    );
+    const expandLabel = interactionModel.presentation.collapsed ? "Reveal collapsed levels" : "Expand next level";
+    const collapsedText = interactionModel.presentation.collapsedDepth === null
+      ? "none"
+      : formatLevel(interactionModel.presentation.collapsedDepth);
+
+    const breadcrumbMarkup = [];
+    let previousBreadcrumbDepth = null;
+    for (const item of interactionModel.breadcrumb.filter((candidate) => activeSet.has(candidate.depth))) {
+      if (previousBreadcrumbDepth !== null && item.depth > previousBreadcrumbDepth + 1) {
+        breadcrumbMarkup.push(
+          '<li class="interaction-breadcrumb__gap" aria-hidden="true">… ' +
+          String(item.depth - previousBreadcrumbDepth - 1) +
+          " view-pruned levels …</li>"
+        );
+      }
+      const annotations = [];
+      if (item.selected) annotations.push("selected");
+      if (item.focused) annotations.push("focused");
+      const suffix = annotations.length > 0 ? " <span>(" + annotations.join(", ") + ")</span>" : "";
+      const current = item.selected ? ' aria-current="page"' : "";
+      breadcrumbMarkup.push(
+        "<li" + current + '><span class="interaction-breadcrumb__level">' +
+        item.label +
+        "</span>" +
+        suffix +
+        "</li>"
+      );
+      previousBreadcrumbDepth = item.depth;
+    }
+
+    const levelRows = [];
+    let previousDepth = null;
+    for (const depth of activeDepths) {
+      if (previousDepth !== null && depth > previousDepth + 1) {
+        levelRows.push(
+          '<div class="interaction-level-gap" aria-hidden="true">… ' +
+          String(depth - previousDepth - 1) +
+          " materialized levels view-pruned …</div>"
+        );
+      }
+      const label = formatLevel(depth);
+      levelRows.push([
+        '<div class="interaction-level-row" data-level-depth="' + String(depth) + '">',
+        '<span class="interaction-level-row__label">' + label + "</span>",
+        '<button type="button" data-interaction-action="select" data-depth="' + String(depth) + '" aria-pressed="' + String(depth === interactionModel.selectedDepth) + '">Select ' + label + "</button>",
+        '<button type="button" data-interaction-action="refocus" data-depth="' + String(depth) + '" aria-pressed="' + String(depth === interactionModel.focusedDepth) + '">Refocus ' + label + "</button>",
+        "</div>"
+      ].join(""));
+      previousDepth = depth;
+    }
+
+    target.hidden = false;
+    target.dataset.state = "ready";
+    target.dataset.selectedDepth = String(interactionModel.selectedDepth);
+    target.dataset.focusedDepth = String(interactionModel.focusedDepth);
+    target.dataset.materializedDepth = String(interactionModel.materializedDepth);
+    target.dataset.requestedDepth = String(interactionModel.requestedDepth);
+    target.dataset.sourceRequestedDepth = String(interactionModel.sourceRequestedDepth);
+    target.dataset.visibleDepth = String(interactionModel.presentation.visibleDepth);
+    target.dataset.collapsedDepth = interactionModel.presentation.collapsedDepth === null
+      ? ""
+      : String(interactionModel.presentation.collapsedDepth);
+    target.dataset.geometryRendered = "false";
+    target.dataset.sheetsMaterialized = "false";
+    target.dataset.coveringStructureClaimed = "false";
+    target.dataset.geometricZoomApplied = "false";
+    target.dataset.cameraTransformApplied = "false";
+    target.dataset.renderVirtualized = "true";
+    target.dataset.renderWindowStartDepth = String(state.renderWindowStartDepth);
+    target.dataset.renderWindowEndDepth = String(state.renderWindowEndDepth);
+    target.dataset.activeRenderedDepthCount = String(state.activeRenderedDepthCount);
+
+    target.innerHTML = [
+      '<div class="interaction-toolbar">',
+      '<button type="button" data-interaction-action="expand-or-reveal">' + expandLabel + "</button>",
+      '<button type="button" data-interaction-action="collapse-selected"' + (canCollapse ? "" : " disabled") + ">Collapse descendants of selected level</button>",
+      "</div>",
+      '<p class="interaction-summary">Selected ' + formatLevel(interactionModel.selectedDepth) +
+        " · focused " + formatLevel(interactionModel.focusedDepth) +
+        " · materialized " + String(interactionModel.materializedDepth) +
+        " · interaction requested " + String(interactionModel.requestedDepth) +
+        " · visible " + String(interactionModel.presentation.visibleDepth) +
+        " · active render objects " + String(state.activeRenderedDepthCount) +
+        " · collapsed at " + collapsedText + "</p>",
+      '<nav class="interaction-breadcrumb" aria-label="Structural pullback breadcrumb"><ol>',
+      breadcrumbMarkup.join(""),
+      "</ol></nav>",
+      '<div class="interaction-level-controls" aria-label="Materialized structural level controls">',
+      levelRows.join(""),
+      "</div>",
+      '<p class="interaction-transition" role="status">Last transition: ' +
+        interactionModel.transition.action +
+        " · " +
+        interactionModel.transition.outcome +
+        " · structural descriptor materialization=" +
+        String(interactionModel.transition.structuralDescriptorMaterializationTriggered) +
+        " · geometric materialization=false · sheet materialization=false</p>"
+    ].join("");
+
+    return state;
+  }
+
   function applyRendererStateToTarget(state, target) {
     if (!state || state.kind !== MODEL_KIND) {
       throw new TypeError("Renderer target projection requires an infinite navigation renderer state.");
@@ -339,6 +491,7 @@
     createStructuralPresentationOptions,
     createInteractionPresentationOptions,
     describeVirtualDepth,
+    renderVirtualizedInteractionPresentation,
     applyRendererStateToTarget
   });
 

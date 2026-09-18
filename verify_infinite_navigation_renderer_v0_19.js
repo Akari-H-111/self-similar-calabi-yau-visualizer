@@ -50,7 +50,8 @@ const sealedSemanticBlobs = {
   "recursive-lazy-expansion.js": "0978c7a96fb007cefa683d48974f8dc401d23916",
   "zoom-semantics.js": "9ff9eccba33a82f094074e6bf41fdff93547b3be",
   "sheet-branch-organization.js": "cecf0f06aa23404a65a6093f705a4fe56be65029",
-  "arithmetic-overlays.js": "bfc7331e07b8e12d4b14790ae5a4bc096042544c"
+  "arithmetic-overlays.js": "bfc7331e07b8e12d4b14790ae5a4bc096042544c",
+  "interactive-pullback-tower.js": "657262aab1db8e49e903e3e83d4a033586e2f8bd"
 };
 
 for (const [relativePath, expectedSha] of Object.entries(sealedSemanticBlobs)) {
@@ -176,8 +177,6 @@ let integratedState = InfiniteNavigationRenderer.createInfiniteNavigationRendere
   {anchorDepth: 64}
 );
 const structuralOptions = InfiniteNavigationRenderer.createStructuralPresentationOptions(integratedState);
-const interactionOptions = InfiniteNavigationRenderer.createInteractionPresentationOptions(integratedState);
-
 const structuralModel = StructuralVisualization.createStructuralVisualizationModel(
   runtimeScene,
   baseModel,
@@ -210,10 +209,10 @@ assert.equal(structuralTarget.dataset.renderVirtualized, "true");
 assert.match(structuralTarget.innerHTML, /data-frontier-status="view_pruned"|requested structural frontier reached/, "Virtualized SVG must distinguish view-pruned continuation from semantic frontier completion.");
 
 const interactionTarget = {dataset: {}, hidden: true, innerHTML: ""};
-InteractivePullbackTower.renderInteractivePullbackTower(
+InfiniteNavigationRenderer.renderVirtualizedInteractionPresentation(
   interactionModel,
-  interactionTarget,
-  interactionOptions
+  integratedState,
+  interactionTarget
 );
 assert.equal((interactionTarget.innerHTML.match(/data-level-depth=/g) || []).length, integratedState.activeRenderedDepthCount);
 assert.equal(interactionTarget.dataset.renderVirtualized, "true");
