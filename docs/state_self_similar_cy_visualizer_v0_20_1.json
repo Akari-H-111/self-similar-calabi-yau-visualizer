@@ -1,0 +1,82 @@
+{
+  "project": "Self-Similar Calabi-Yau Visualizer",
+  "thread": "19R",
+  "milestone": "Human Interaction Remediation",
+  "version": "v0.20.1",
+  "status": "implemented_browser_retested_pre_final_ci_verified_pending_final_exact_tree_seal",
+  "starting_canonical": {
+    "commit": "3b2c8e2119a44db069f77e8106145e35126ac7b1",
+    "tree": "f8778b982b70703e0791a3ec6d59896ae59a6db0",
+    "formal_verification": {
+      "run_number": 115,
+      "run_id": 35325887351,
+      "conclusion": "success"
+    },
+    "pages": {
+      "run_number": 8,
+      "run_id": 35325886754,
+      "conclusion": "success"
+    }
+  },
+  "findings": {
+    "HIA_01": {
+      "name": "Reset Camera focus loss",
+      "repair": "named-action camera focus restoration",
+      "browser_retest": "pass"
+    },
+    "HIA_02": {
+      "name": "Collapse stale enabled state",
+      "repair": "disable collapse while presentation.collapsed",
+      "browser_retest": "pass"
+    },
+    "HIA_03": {
+      "name": "duplicated virtual-gap AX text",
+      "disposition": "deferred pending real screen-reader evidence"
+    }
+  },
+  "production_blob_evidence": {
+    "app.js": "4b5767b5f5fae9fac25d042e777b150a2ef92c38",
+    "infinite-navigation-renderer.js": "b463a0bb230cde4fd78d26a9d754b83290caa8f0"
+  },
+  "browser_retest": {
+    "engine": "Chromium 144.0.7559.96",
+    "HIA_01": "pass",
+    "HIA_02": "pass",
+    "truth_boundary": "pass",
+    "console_or_page_errors": 0,
+    "actual_screen_reader": "not_tested"
+  },
+  "pre_final_ci": {
+    "head_commit": "c232e95bc813fac47a4679ad80f78a145de2fd20",
+    "tree": "610a03b54279e08ef346342539980561c43ac5a6",
+    "workflow_run_number": 119,
+    "workflow_run_id": 35328786702,
+    "runtime_contracts": "success",
+    "formal_lean": "success",
+    "publication_static_smoke": "success"
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "W": "unresolved"
+  },
+  "sealed_modules_modified": false,
+  "formal_modified": false,
+  "staging": {
+    "branch": "thread19r-human-interaction-remediation-v0-20-1",
+    "pull_request": 13,
+    "pull_request_state": "open_draft",
+    "role": "CI vehicle only; do not merge",
+    "final_exact_tree_ci": "pending_after_final_evidence_sync"
+  },
+  "canonicalization": {
+    "close_pr_unmerged": "pending",
+    "exact_tree_replay": "pending",
+    "main_fast_forward": "pending",
+    "exact_main_formal_verification": "pending",
+    "exact_sha_pages": "pending"
+  },
+  "thread19r_sealed": false
+}

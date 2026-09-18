@@ -1,6 +1,6 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.20 — Visual Semantics & Accessibility Audit
+**Current version:** v0.20.1 — Human Interaction Remediation
 
 **Published checkpoint:** v0.13 — Publication Checkpoint
 
@@ -279,6 +279,24 @@ Detailed contract:
 docs/VISUAL_SEMANTICS_ACCESSIBILITY_self_similar_cy_visualizer_v0_20.md
 ```
 
+
+## Thread 19R human interaction remediation
+
+A post-seal Chromium interaction audit of the exact v0.20 Pages artifact found two small presentation defects that static verification did not expose:
+
+- keyboard activation of `Reset camera` could disable the focused control and let browser focus fall to `body`;
+- after descendants were already collapsed, the Collapse control could remain enabled and repeat the same no-op transition/announcement.
+
+Thread 19R repairs only those presentation behaviors. Camera focus restoration uses semantic camera action names rather than DOM indices. If the activated camera control remains enabled it keeps focus; if it becomes disabled, focus moves deterministically to a named enabled camera control. The Collapse control is disabled whenever `interactionModel.presentation.collapsed` is already true.
+
+The remediation does not modify the sealed interaction controller, camera model, recursion engine, scene specification, arithmetic semantics, or `formal/*`. The lower-priority duplicated virtual-gap accessibility-tree wording remains unchanged pending real screen-reader evidence.
+
+Detailed contract:
+
+```text
+docs/HUMAN_INTERACTION_REMEDIATION_self_similar_cy_visualizer_v0_20_1.md
+```
+
 ## D=1 and representation safety
 
 The inherited scene validator currently accepts safe-integer `D >= 2`. Therefore `D=1` is rejected by the current runtime schema.
@@ -395,7 +413,7 @@ Lean: leanprover/lean4:v4.34.0
 mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
 ```
 
-v0.20 adds no Lean theorem and changes no formal file, toolchain pin, or mathlib pin.
+v0.20.1 adds no Lean theorem and changes no formal file, toolchain pin, or mathlib pin.
 
 ## Verification
 
@@ -421,19 +439,22 @@ node verify_arithmetic_overlay_graphics_v0_18.js
 node verify_infinite_navigation_renderer_v0_19.js
 node benchmark_infinite_navigation_renderer_v0_19.js
 node verify_visual_semantics_accessibility_v0_20.js
+node verify_human_interaction_remediation_v0_20_1.js
 ```
 
 The v0.19 verifier checks sealed semantic blob identity, deterministic render-window construction, bounded active render count, presentation-slot recycling, bounded recomputable cache behavior, deep floating-origin descriptors, off-window selection and camera targeting, structural/interaction virtualization, explicit D⁴ reprojection, arithmetic coexistence, truthfulness flags, source discipline, and CI wiring.
 
 The v0.20 verifier additionally checks semantic-focus/DOM-focus separation, deterministic focus restoration without DOM indices or presentation-slot identity, bounded virtualized assistive text, native-control preservation, browser-zoom-safe camera guards, single-live-region discipline, forced-colors/reduced-motion hooks, responsive structural-canvas policy, truthfulness invariants, and full v0.03-v0.20 workflow wiring.
 
-The current Thread 19 staging CI evidence is recorded in the v0.20 state/progress artifacts. Those artifacts intentionally do not self-certify the final seal.
+The v0.20.1 remediation verifier checks named-action camera focus restoration, the collapsed-presentation control predicate, retained semantic level continuity across collapse, sealed module identity, and workflow wiring. Chromium 144 browser evidence separately exercises the two browser-observed defect paths against production blobs whose Git blob identities match the staging branch.
+
+The current Thread 19R staging CI and browser evidence are recorded in the v0.20.1 state/progress/retest artifacts. Those artifacts intentionally do not self-certify the final seal.
 
 ## What green CI means
 
 A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
 
-A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.20, all earlier runtime verifiers, and the v0.19 benchmark execution.
+A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.20.1, v0.20, all earlier runtime verifiers, and the v0.19 benchmark execution.
 
 A green `publication-static-smoke` job means the static repository paths can be served and fetched successfully from a clean GitHub-hosted runner.
 
@@ -472,3 +493,31 @@ It repairs presentation accessibility without changing mathematical/runtime auth
 It does not add a second recursion engine, new mathematics, concrete `W`, Calabi–Yau geometry, genuine sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision/divisor geometry, geometric zoom, metric scaling, or a new Lean theorem. It also does not claim WCAG certification, full screen-reader support, quantitative contrast certification, 200%/400% browser-zoom certification, or all-browser support; those evidence classes remain explicitly `not_tested` where no reliable browser/AT evidence exists.
 
 The final v0.20 state/progress artifacts are intentionally non-self-certifying. Thread 19 is sealed only after the exact final staging tree passes CI, PR #12 is closed unmerged, that exact tree is replayed as exactly one child of the Thread 18 canonical commit `5c45dd74e53cde06e30ae70ecd97171f7012cf0d`, `main` is fast-forwarded without force, and exact-main Formal Verification plus exact-SHA Pages both succeed.
+
+
+## Scope of v0.20.1
+
+v0.20.1 is **Thread 19R — Human Interaction Remediation**.
+
+It fixes two browser-observed presentation defects without changing mathematical/runtime authority:
+
+```text
+Reset camera disables itself
+-> browser focus is restored to a named enabled camera control
+
+presentation.collapsed = true
+-> Collapse descendants is disabled
+```
+
+The exact production JavaScript blobs exercised by Chromium 144 are:
+
+```text
+app.js                         4b5767b5f5fae9fac25d042e777b150a2ef92c38
+infinite-navigation-renderer.js b463a0bb230cde4fd78d26a9d754b83290caa8f0
+```
+
+The Chromium retest records HIA-01, HIA-02, and the frozen truth boundary as passing with no console/page errors. This is browser evidence for those exercised paths, not WCAG certification or screen-reader certification.
+
+HIA-03, duplicated bounded virtual-gap wording in the Chromium accessibility tree, remains intentionally unchanged pending direct VoiceOver/NVDA/JAWS evidence.
+
+Thread 19R is sealed only after the exact final staging tree passes CI, PR #13 is closed unmerged, that exact tree is replayed as exactly one child of the v0.20 canonical commit `3b2c8e2119a44db069f77e8106145e35126ac7b1`, `main` is fast-forwarded without force, and exact-main Formal Verification plus exact-SHA Pages both succeed.

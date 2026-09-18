@@ -499,6 +499,7 @@
     const activeDepths = state.activeRenderedDepths;
     const activeSet = new Set(activeDepths);
     const canCollapse = (
+      !interactionModel.presentation.collapsed &&
       interactionModel.selectedDepth >= interactionModel.focusedDepth &&
       interactionModel.selectedDepth < interactionModel.materializedDepth
     );
