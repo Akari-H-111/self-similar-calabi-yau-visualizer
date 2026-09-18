@@ -395,6 +395,88 @@
   }
 
 
+
+  const INTERACTION_ACTIONS = Object.freeze([
+    "expand-or-reveal",
+    "collapse-selected",
+    "select",
+    "refocus"
+  ]);
+
+  function createInteractionFocusDescriptor(action, depth, interactionModel) {
+    if (!INTERACTION_ACTIONS.includes(action)) {
+      throw new TypeError("Interaction focus descriptor requires a supported interaction action.");
+    }
+    if (!interactionModel || typeof interactionModel !== "object") {
+      throw new TypeError("Interaction focus descriptor requires the sealed interaction model.");
+    }
+
+    let semanticDepth;
+    if (action === "select" || action === "refocus") {
+      semanticDepth = assertDepth(depth, "interaction focus depth");
+    } else if (action === "collapse-selected") {
+      semanticDepth = assertDepth(interactionModel.selectedDepth, "selectedDepth");
+    } else {
+      semanticDepth = assertDepth(interactionModel.presentation.visibleDepth, "visibleDepth");
+    }
+
+    return Object.freeze({
+      controlRole: "interaction-control",
+      actionKind: action,
+      semanticDepth
+    });
+  }
+
+  function focusSelectorForDescriptor(descriptor) {
+    if (!descriptor || descriptor.controlRole !== "interaction-control") return null;
+    if (descriptor.actionKind === "select" || descriptor.actionKind === "refocus") {
+      return '[data-interaction-action="' + descriptor.actionKind + '"][data-depth="' + String(descriptor.semanticDepth) + '"]';
+    }
+    return '[data-interaction-action="' + descriptor.actionKind + '"]';
+  }
+
+  function restoreInteractionFocus(target, descriptor, interactionModel) {
+    if (!target || typeof target.querySelector !== "function" || !descriptor) return false;
+    if (!interactionModel || typeof interactionModel !== "object") {
+      throw new TypeError("Interaction focus restoration requires the sealed interaction model.");
+    }
+
+    const primarySelector = focusSelectorForDescriptor(descriptor);
+    const primary = primarySelector ? target.querySelector(primarySelector) : null;
+    if (primary && !primary.disabled && typeof primary.focus === "function") {
+      primary.focus();
+      return true;
+    }
+
+    const depthFallback = target.querySelector(
+      '[data-interaction-action="select"][data-depth="' + String(interactionModel.selectedDepth) + '"]'
+    );
+    if (depthFallback && !depthFallback.disabled && typeof depthFallback.focus === "function") {
+      depthFallback.focus();
+      return true;
+    }
+
+    const expandFallback = target.querySelector('[data-interaction-action="expand-or-reveal"]');
+    if (expandFallback && !expandFallback.disabled && typeof expandFallback.focus === "function") {
+      expandFallback.focus();
+      return true;
+    }
+
+    return false;
+  }
+
+  function createInteractionAnnouncement(interactionModel, state) {
+    if (!interactionModel || !interactionModel.transition || !state || state.kind !== MODEL_KIND) {
+      throw new TypeError("Interaction announcement requires current interaction and renderer state.");
+    }
+    const transition = interactionModel.transition;
+    return (
+      "Structural interaction " + transition.action + ": " + transition.outcome + ". " +
+      "Selected " + formatLevel(interactionModel.selectedDepth) + ", focused " + formatLevel(interactionModel.focusedDepth) + ". " +
+      String(state.activeRenderedDepthCount) + " active render levels; geometry, sheets, and geometric zoom remain unmaterialized."
+    );
+  }
+
   function renderVirtualizedInteractionPresentation(interactionModel, state, target) {
     if (!interactionModel || typeof interactionModel !== "object" || !interactionModel.presentation) {
       throw new TypeError("Virtualized interaction rendering requires the sealed interaction model.");
@@ -430,9 +512,9 @@
     for (const item of interactionModel.breadcrumb.filter((candidate) => activeSet.has(candidate.depth))) {
       if (previousBreadcrumbDepth !== null && item.depth > previousBreadcrumbDepth + 1) {
         breadcrumbMarkup.push(
-          '<li class="interaction-breadcrumb__gap" aria-hidden="true">… ' +
+          '<li class="interaction-breadcrumb__gap">… ' +
           String(item.depth - previousBreadcrumbDepth - 1) +
-          " view-pruned levels …</li>"
+          " intermediate materialized levels omitted from the active render window …</li>"
         );
       }
       const annotations = [];
@@ -455,9 +537,9 @@
     for (const depth of activeDepths) {
       if (previousDepth !== null && depth > previousDepth + 1) {
         levelRows.push(
-          '<div class="interaction-level-gap" aria-hidden="true">… ' +
+          '<div class="interaction-level-gap">… ' +
           String(depth - previousDepth - 1) +
-          " materialized levels view-pruned …</div>"
+          " intermediate materialized levels omitted from the active render window …</div>"
         );
       }
       const label = formatLevel(depth);
@@ -503,14 +585,15 @@
         " · interaction requested " + String(interactionModel.requestedDepth) +
         " · visible " + String(interactionModel.presentation.visibleDepth) +
         " · active render objects " + String(state.activeRenderedDepthCount) +
+        " · omitted from active render window " + String(interactionModel.materializedDepth + 1 - state.activeRenderedDepthCount) +
         " · collapsed at " + collapsedText + "</p>",
       '<nav class="interaction-breadcrumb" aria-label="Structural pullback breadcrumb"><ol>',
       breadcrumbMarkup.join(""),
       "</ol></nav>",
-      '<div class="interaction-level-controls" aria-label="Materialized structural level controls">',
+      '<div class="interaction-level-controls" role="group" aria-label="Materialized structural level controls">',
       levelRows.join(""),
       "</div>",
-      '<p class="interaction-transition" role="status">Last transition: ' +
+      '<p class="interaction-transition">Last transition: ' +
         interactionModel.transition.action +
         " · " +
         interactionModel.transition.outcome +
@@ -577,6 +660,9 @@
     createStructuralPresentationOptions,
     createInteractionPresentationOptions,
     describeVirtualDepth,
+    createInteractionFocusDescriptor,
+    restoreInteractionFocus,
+    createInteractionAnnouncement,
     renderVirtualizedInteractionPresentation,
     projectOrganizationBadges,
     applyRendererStateToTarget

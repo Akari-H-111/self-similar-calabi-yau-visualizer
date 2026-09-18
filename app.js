@@ -267,6 +267,9 @@ function handleArithmeticOverlayToggle(event) {
 
   try {
     setArithmeticOverlayPresentation(control.dataset.arithmeticOverlayId, control.checked);
+    statusElement.dataset.state = "ready";
+    statusElement.textContent =
+      `Arithmetic overlay ${control.dataset.arithmeticOverlayId} ${control.checked ? "enabled" : "disabled"}. Structural, recursion, and camera state are unchanged.`;
   } catch (error) {
     console.error("Arithmetic overlay presentation transition rejected:", error);
     control.checked = arithmeticOverlayPresentationState.includes(control.dataset.arithmeticOverlayId);
@@ -321,13 +324,9 @@ function renderInteractionState(anchorDepth = undefined) {
   renderArithmeticOverlayPresentation(scene, recursiveModel, zoomModel, organizationModel);
 
   statusElement.dataset.state = "ready";
-  statusElement.textContent = (
-    `Interactive structural tower ready: selected X_${String(interactionModel.selectedDepth)}, ` +
-    `focused X_${String(interactionModel.focusedDepth)}, materialized depth ${String(interactionModel.materializedDepth)}, ` +
-    `interaction-requested depth ${String(interactionModel.requestedDepth)}. ` +
-    `Active render depths ${String(infiniteNavigationRenderState.activeRenderedDepthCount)} / semantic ${String(interactionModel.materializedDepth + 1)}. ` +
-    `Structural camera scale ${structuralCameraModel.cameraScale.toFixed(3)}× is presentation-only. ` +
-    "No geometric zoom, genuine sheets, or Calabi–Yau geometry is materialized."
+  statusElement.textContent = InfiniteNavigationRenderer.createInteractionAnnouncement(
+    interactionModel,
+    infiniteNavigationRenderState
   );
 }
 
@@ -365,9 +364,19 @@ function handleInteractionClick(event) {
 
   const action = control.dataset.interactionAction;
   const depth = Object.hasOwn(control.dataset, "depth") ? Number(control.dataset.depth) : null;
+  const focusDescriptor = InfiniteNavigationRenderer.createInteractionFocusDescriptor(
+    action,
+    depth,
+    interactionModel
+  );
 
   try {
     applyInteraction(action, depth);
+    InfiniteNavigationRenderer.restoreInteractionFocus(
+      interactionElement,
+      focusDescriptor,
+      interactionModel
+    );
   } catch (error) {
     console.error("Interactive structural transition rejected:", error);
     statusElement.dataset.state = "error";
@@ -422,6 +431,9 @@ function handleCameraControlClick(event) {
 
   try {
     applyCameraAction(control.dataset.cameraAction);
+    statusElement.dataset.state = "ready";
+    statusElement.textContent =
+      `Structural camera action ${control.dataset.cameraAction} applied. Camera scale ${structuralCameraModel.cameraScale.toFixed(3)}×; geometric zoom remains false.`;
   } catch (error) {
     console.error("Structural camera transition rejected:", error);
     structuralCameraStatusElement.textContent = `Structural camera transition rejected: ${error.message}`;
@@ -445,6 +457,11 @@ function clientPointToCameraWorld(camera, clientX, clientY) {
 
 function handleStructuralCameraWheel(event) {
   if (!structuralCameraModel) return;
+
+  // Browser / OS accessibility zoom and ordinary page scrolling outrank the presentation camera.
+  if (event.ctrlKey || event.metaKey) return;
+  if (!event.altKey) return;
+
   const anchor = clientPointToCameraWorld(structuralCameraModel, event.clientX, event.clientY);
   if (!anchor) return;
 
@@ -492,7 +509,7 @@ function beginPinchGesture() {
 }
 
 function handleStructuralCameraPointerDown(event) {
-  if (!structuralCameraModel || event.button !== 0) return;
+  if (!structuralCameraModel || event.button !== 0 || event.pointerType === "touch") return;
   activeCameraPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
   structuralVisualizationElement.setPointerCapture?.(event.pointerId);
   event.preventDefault();

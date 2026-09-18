@@ -1,12 +1,12 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.19 — Infinite-Navigation Rendering Engine
+**Current version:** v0.20 — Visual Semantics & Accessibility Audit
 
 **Published checkpoint:** v0.13 — Publication Checkpoint
 
 **Runtime scene contract:** v0.12
 
-This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.19 adds a presentation-only infinite-navigation rendering engine above the sealed semantic recursion: deterministic viewport/render-window virtualization, overscan, floating-origin deep-depth handling, bounded presentation-slot recycling, and a bounded recomputable virtual-layout cache. The v0.18 arithmetic graphics, v0.17 D⁴ branch graphics, v0.16 camera, and v0.15 interaction semantics remain beneath that adapter.
+This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.20 adds a presentation-only visual-semantics and accessibility audit above v0.19, including deterministic DOM focus restoration after virtualized interaction rerenders, bounded textual semantics for omitted render-window gaps, browser-zoom-safe camera input policy, single-live-region announcement discipline, forced-colors hooks, and narrow-viewport structural-canvas readability. v0.19 adds a presentation-only infinite-navigation rendering engine above the sealed semantic recursion: deterministic viewport/render-window virtualization, overscan, floating-origin deep-depth handling, bounded presentation-slot recycling, and a bounded recomputable virtual-layout cache. The v0.18 arithmetic graphics, v0.17 D⁴ branch graphics, v0.16 camera, and v0.15 interaction semantics remain beneath that adapter.
 
 The interface is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric zoom.
 
@@ -249,6 +249,34 @@ Detailed contract:
 
 ```text
 docs/INFINITE_NAVIGATION_RENDERING_ENGINE_self_similar_cy_visualizer_v0_19.md
+```
+
+
+## v0.20 visual semantics and accessibility
+
+Thread 19 preserves four independent domains:
+
+```text
+semantic selected/focused state
+!= DOM keyboard focus
+!= structural camera state
+!= geometric zoom
+```
+
+Interaction focus restoration uses a presentation-only descriptor made from the interaction action, semantic depth, and control role. It does not use DOM child indices or presentation slot ids, and it never writes `selectedDepth` or `focusedDepth`.
+
+The v0.20 camera event policy reserves ordinary wheel/trackpad scrolling, touch pinch, and Ctrl/Cmd + wheel for browser/page behavior. Structural wheel zoom is opt-in with Alt + wheel, while the existing native camera buttons remain the keyboard-accessible equivalent controls.
+
+Virtualized gaps expose bounded text such as “N intermediate materialized levels omitted from the active render window”. The implementation does not rebuild the full semantic tower in hidden DOM.
+
+Only `#system-status` remains a polite live region. Interaction and camera diagnostic text stay visible but are not independent live regions, preventing per-frame camera movement from becoming an announcement stream.
+
+Static contracts include reduced-motion, forced-colors hooks, non-color selected/focused encodings, and narrow-viewport internal structural-canvas scrolling. Quantitative contrast, 200%/400% browser zoom, and real assistive-technology behavior remain browser/AT evidence tasks and are not certified by static verification.
+
+Detailed contract:
+
+```text
+docs/VISUAL_SEMANTICS_ACCESSIBILITY_self_similar_cy_visualizer_v0_20.md
 ```
 
 ## D=1 and representation safety

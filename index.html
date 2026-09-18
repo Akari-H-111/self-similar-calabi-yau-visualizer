@@ -24,10 +24,10 @@
 <body>
   <main class="shell">
     <header class="hero">
-      <p class="eyebrow">v0.19 · Infinite-Navigation Rendering Engine</p>
+      <p class="eyebrow">v0.20 · Visual Semantics &amp; Accessibility Audit</p>
       <h1>Self-Similar Calabi–Yau Visualizer</h1>
       <p class="lede">A structural explorer for the coordinate-power pullback system. The semantic pullback tower remains lazily materialized, while v0.19 projects only a bounded active render window with overscan, floating-origin deep navigation, presentation-slot recycling, and a bounded recomputable layout cache. Camera, aggregated multiplicity badges for D⁴ organization metadata, and source-backed arithmetic annotations remain presentation layers over that structural state.</p>
-      <p class="section-note">v0.19 is a presentation virtualization layer above the sealed v0.18 Arithmetic Overlay Graphics, v0.17 D⁴ Branch Organization Graphics, the v0.16 presentation-only structural camera (Structural Camera / Zoom Layer), v0.15 Interactive Pullback Tower, v0.14 Structural Visualization Layer, v0.12 UX / Exposition Layer, and the v0.11 Mathematical Fidelity Audit boundary. Semantic materialization, virtual layout, and render materialization remain distinct domains.</p>
+      <p class="section-note">v0.20 audits visual semantics and accessibility above the sealed v0.19 · Infinite-Navigation Rendering Engine and the sealed v0.18 Arithmetic Overlay Graphics, v0.17 D⁴ Branch Organization Graphics, the v0.16 presentation-only structural camera (Structural Camera / Zoom Layer), v0.15 Interactive Pullback Tower, v0.14 Structural Visualization Layer, v0.12 UX / Exposition Layer, and the v0.11 Mathematical Fidelity Audit boundary. Semantic materialization, virtual layout, and render materialization remain distinct domains.</p>
       <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. Thread 14 interaction semantics alone do not perform a camera transform or geometric zoom. Thread 15 camera operations change only the SVG viewport. Thread 16 adds aggregate graphical badges for D⁴ structural organization multiplicity; the badges do not enumerate concrete sheets, claim covering geometry, or promote D⁴ runtime metadata into a map-degree theorem. Thread 17 adds symbolic/runtime arithmetic annotations only; it does not draw arithmetic loci, fibers, divisors, torsion sets, collision sets, or geometric preimages. Thread 18 bounds presentation objects and derived layout cache entries only; it does not prune retained semantic levels or turn virtual coordinates into geometric claims.</p>
     </header>
 
@@ -49,7 +49,8 @@
           <button type="button" data-camera-action="fit-focused">Fit focused level</button>
           <button type="button" data-camera-action="reset">Reset camera</button>
         </div>
-        <p id="structural-camera-status" class="structural-camera-status" aria-live="polite"></p>
+        <p id="structural-camera-status" class="structural-camera-status"></p>
+        <p id="structural-camera-help" class="structural-camera-help">Keyboard users can use the camera buttons directly. Plain wheel/trackpad scrolling and touch pinch remain reserved for page/browser behavior; hold Alt while wheeling over the structural diagram to zoom the presentation camera. Ctrl/Cmd + wheel is never intercepted by the structural camera.</p>
         <fieldset id="arithmetic-overlay-controls" class="arithmetic-overlay-controls">
           <legend>Symbolic arithmetic overlays</legend>
           <label>
@@ -61,9 +62,9 @@
             <span><strong>Coordinate iterate rule</strong><small>Lean formalized symbolic rule · focused structural level only</small></span>
           </label>
         </fieldset>
-        <div id="structural-visualization" class="structural-visualization" data-camera-dragging="false" hidden></div>
+        <div id="structural-visualization" class="structural-visualization" data-camera-dragging="false" aria-describedby="structural-camera-help structural-boundary-caption" hidden></div>
       </div>
-      <p class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. D⁴ badges denote exact aggregate structural organization multiplicity only. At D=2 this can communicate 16-fold structural organization with one badge per visible transition, not sixteen fake geometric sheets. Arithmetic markers are symbolic annotations with explicit evidence/provenance, not geometric arithmetic loci. Selection, focus, collapse, arithmetic overlay toggles, and camera state remain separate presentation/runtime domains. Camera scale is presentation-only viewport state.</p>
+      <p id="structural-boundary-caption" class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. D⁴ badges denote exact aggregate structural organization multiplicity only. At D=2 this can communicate 16-fold structural organization with one badge per visible transition, not sixteen fake geometric sheets. Arithmetic markers are symbolic annotations with explicit evidence/provenance, not geometric arithmetic loci. Selection, focus, collapse, arithmetic overlay toggles, and camera state remain separate presentation/runtime domains. Camera scale is presentation-only viewport state.</p>
     </section>
 
     <section aria-labelledby="current-state-title" class="primary-section">

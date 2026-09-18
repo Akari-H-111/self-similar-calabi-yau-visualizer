@@ -1,0 +1,77 @@
+{
+  "project": "Self-Similar Calabi-Yau Visualizer",
+  "thread": 19,
+  "milestone": "Visual Semantics & Accessibility Audit",
+  "version": "v0.20",
+  "status": "initial_accessibility_repairs_implemented_pending_staging_ci_and_browser_evidence",
+  "starting_canonical": {
+    "commit": "5c45dd74e53cde06e30ae70ecd97171f7012cf0d",
+    "tree": "9e054355f97c957939127b934a0b9605b3f1378e",
+    "sole_parent": "f1b2a0a43aae609574be795f5e3a89fe3e53fcc0",
+    "commit_message": "visualization: seal Thread 18 infinite navigation rendering engine v0.19"
+  },
+  "inherited_thread18_seal_evidence": {
+    "formal_verification": {
+      "run_number": 110,
+      "run_id": 35322442148,
+      "head_sha": "5c45dd74e53cde06e30ae70ecd97171f7012cf0d",
+      "conclusion": "success"
+    },
+    "pages": {
+      "run_number": 7,
+      "run_id": 35322441335,
+      "head_sha": "5c45dd74e53cde06e30ae70ecd97171f7012cf0d",
+      "conclusion": "success"
+    },
+    "staging_pr_11": {
+      "state": "closed",
+      "merged": false,
+      "role": "CI vehicle only"
+    }
+  },
+  "implementation": {
+    "semantic_focus_separate_from_dom_focus": true,
+    "deterministic_focus_descriptor": true,
+    "focus_descriptor_uses": [
+      "control_role",
+      "interaction_action",
+      "semantic_depth"
+    ],
+    "fragile_dom_index_used": false,
+    "presentation_slot_identity_used_for_focus": false,
+    "single_polite_live_region": true,
+    "bounded_gap_text_semantics": true,
+    "hidden_full_semantic_tower": false,
+    "ctrl_meta_wheel_reserved_for_browser": true,
+    "plain_wheel_reserved_for_page": true,
+    "alt_wheel_structural_camera_zoom": true,
+    "touch_pan_pinch_reserved_for_browser": true,
+    "native_camera_buttons_preserved": true,
+    "forced_colors_hook": true,
+    "reduced_motion_preserved": true,
+    "narrow_structural_canvas_internal_scroll": true,
+    "new_lean_theorem": false
+  },
+  "evidence": {
+    "static_contract": "implemented_pending_ci",
+    "browser_smoke": "not_tested",
+    "screen_reader": "not_tested",
+    "quantitative_contrast": "not_tested",
+    "browser_zoom_200_400": "not_tested",
+    "responsive_320_400_760": "not_tested",
+    "forced_colors_rendered": "not_tested"
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "W": "unresolved"
+  },
+  "staging": {
+    "branch": "thread19-visual-semantics-accessibility-v0-20",
+    "pull_request": "pending_first_diff",
+    "role": "draft CI vehicle only; do not merge"
+  },
+  "thread19_sealed": false
+}
