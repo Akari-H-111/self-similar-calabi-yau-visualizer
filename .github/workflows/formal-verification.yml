@@ -78,6 +78,9 @@ jobs:
       - name: Compile TorusPowerFibers directly
         run: lake env lean SelfSimilarCY/TorusPowerFibers.lean
 
+      - name: Compile LaurentCritical directly
+        run: lake env lean SelfSimilarCY/LaurentCritical.lean
+
       - name: Verify sealed parent Lean blobs
         run: |
           set -euo pipefail
@@ -90,6 +93,8 @@ jobs:
           test "$(git hash-object SelfSimilarCY/BaseFiber.lean)" = "4561545d5a7443a9d307b9d6f6acc81aa02f9b8a"
           test "$(git hash-object SelfSimilarCY/StationaryFamily.lean)" = "aa80176d0ad05d18b8e39c426fded1e8b24eab8f"
           test "$(git hash-object SelfSimilarCY/ConcretePullbackTower.lean)" = "32a231cdcd50cbfbcc5f2cd5ce0f86588d2d9984"
+          test "$(git hash-object SelfSimilarCY/TorusPowerKernel.lean)" = "2ebffc127658cd6bda8464425bac1154c4fbf8c1"
+          test "$(git hash-object SelfSimilarCY/TorusPowerFibers.lean)" = "0df2e2aa373ef47653793bc2d0c3abcb79f1bd03"
           echo "Sealed parent Lean blob guard: passed"
 
       - name: Reject Lean placeholders
