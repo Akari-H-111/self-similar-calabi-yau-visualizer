@@ -140,7 +140,7 @@ const structuralModel = StructuralVisualization.createStructuralVisualizationMod
   interaction,
   InfiniteNavigationRenderer.createStructuralPresentationOptions(rendererState)
 );
-const structuralMarkup = StructuralVisualization.buildStructuralVisualizationMarkup(structuralModel);
+const structuralMarkup = StructuralVisualization.buildSvgMarkup(structuralModel);
 assert.match(structuralMarkup, /P_D⁻¹ · structural relation/);
 assert.match(structuralMarkup, /STRUCTURAL PROJECTION · NOT GEOMETRY/);
 assert.match(structuralMarkup, /No covering structure is claimed/);
