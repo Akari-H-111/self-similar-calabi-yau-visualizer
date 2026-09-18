@@ -1,12 +1,12 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.20.1 — Human Interaction Remediation
+**Current version:** v0.21 — Mathematical / Visual Fidelity Audit II
 
 **Published checkpoint:** v0.13 — Publication Checkpoint
 
 **Runtime scene contract:** v0.12
 
-This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.20 adds a presentation-only visual-semantics and accessibility audit above v0.19, including deterministic DOM focus restoration after virtualized interaction rerenders, bounded textual semantics for omitted render-window gaps, browser-zoom-safe camera input policy, single-live-region announcement discipline, forced-colors hooks, and narrow-viewport structural-canvas readability. v0.19 adds a presentation-only infinite-navigation rendering engine above the sealed semantic recursion: deterministic viewport/render-window virtualization, overscan, floating-origin deep-depth handling, bounded presentation-slot recycling, and a bounded recomputable virtual-layout cache. The v0.18 arithmetic graphics, v0.17 D⁴ branch graphics, v0.16 camera, and v0.15 interaction semantics remain beneath that adapter.
+This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.21 adds a durable visual provenance matrix and a presentation-only provenance adapter that labels admitted graphical classes without changing sealed mathematical/runtime authority. v0.20 adds a presentation-only visual-semantics and accessibility audit above v0.19, including deterministic DOM focus restoration after virtualized interaction rerenders, bounded textual semantics for omitted render-window gaps, browser-zoom-safe camera input policy, single-live-region announcement discipline, forced-colors hooks, and narrow-viewport structural-canvas readability. v0.19 adds a presentation-only infinite-navigation rendering engine above the sealed semantic recursion: deterministic viewport/render-window virtualization, overscan, floating-origin deep-depth handling, bounded presentation-slot recycling, and a bounded recomputable virtual-layout cache. The v0.18 arithmetic graphics, v0.17 D⁴ branch graphics, v0.16 camera, and v0.15 interaction semantics remain beneath that adapter.
 
 The interface is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric zoom.
 
@@ -297,6 +297,67 @@ Detailed contract:
 docs/HUMAN_INTERACTION_REMEDIATION_self_similar_cy_visualizer_v0_20_1.md
 ```
 
+## Thread 20 mathematical / visual fidelity audit II
+
+v0.21 is **Thread 20 — Mathematical / Visual Fidelity Audit II**.
+
+The central durable artifact is the visual provenance matrix:
+
+```text
+docs/visual_provenance_matrix_self_similar_cy_visualizer_v0_21.json
+```
+
+It classifies every admitted major visual object by producing module, runtime/source input, canonical source artifact, evidence class, rendered wording, machine-readable evidence, truthfulness flags, explicit non-claims, and verification coverage.
+
+Thread 20 repairs two demonstrated presentation/provenance gaps without changing sealed runtime semantics:
+
+```text
+public audit label
+-> updated to v0.21
+
+requested structural frontier reached
+-> presentation-only data-frontier-status=requested_frontier_reached
+-> visual provenance id / evidence class / explicit non-claim
+```
+
+The second repair is implemented by `visual-provenance.js`, a DOM metadata adapter. The historical `structural-visualization.js` blob remains byte-identical because v0.20/v0.20.1 verifiers intentionally seal it.
+
+Evidence classes remain explicit and non-interchangeable:
+
+```text
+Lean formalized
+runtime metadata
+structural representation
+formal-theorem-backed symbolic
+source-backed structural representation
+interaction metadata
+presentation virtualization
+presentation camera state
+unresolved
+not materialized
+engineering
+```
+
+The v0.21 verifier keeps `app.js`, `infinite-navigation-renderer.js`, the sealed semantic modules, and `formal/*` byte-identical. Therefore HIA-01 Reset-camera focus continuity and HIA-02 collapse/reveal production code are not rewritten. HIA-03 duplicated virtual-gap accessibility-tree wording remains intentionally unchanged pending direct screen-reader evidence.
+
+The frozen truth boundary remains:
+
+```text
+geometryRendered = false
+sheetsMaterialized = false
+coveringStructureClaimed = false
+geometricZoomApplied = false
+W = unresolved
+```
+
+Thread 20 does not add concrete W, Calabi–Yau geometry, genuine sheets, covering/étale/fiber geometry, metric scaling, arithmetic loci, or a new Lean theorem.
+
+Detailed contract:
+
+```text
+docs/MATHEMATICAL_VISUAL_FIDELITY_AUDIT_II_self_similar_cy_visualizer_v0_21.md
+```
+
 ## D=1 and representation safety
 
 The inherited scene validator currently accepts safe-integer `D >= 2`. Therefore `D=1` is rejected by the current runtime schema.
@@ -446,7 +507,7 @@ The v0.19 verifier checks sealed semantic blob identity, deterministic render-wi
 
 The v0.20 verifier additionally checks semantic-focus/DOM-focus separation, deterministic focus restoration without DOM indices or presentation-slot identity, bounded virtualized assistive text, native-control preservation, browser-zoom-safe camera guards, single-live-region discipline, forced-colors/reduced-motion hooks, responsive structural-canvas policy, truthfulness invariants, and full v0.03-v0.20 workflow wiring.
 
-The v0.20.1 remediation verifier checks named-action camera focus restoration, the collapsed-presentation control predicate, retained semantic level continuity across collapse, sealed module identity, and workflow wiring. Chromium 144 browser evidence separately exercises the two browser-observed defect paths against production blobs whose Git blob identities match the staging branch.
+The v0.20.1 remediation verifier checks named-action camera focus restoration, the collapsed-presentation control predicate, retained semantic level continuity across collapse, sealed module identity, and workflow wiring. Chromium 144 browser evidence separately exercises the two browser-observed defect paths against production blobs whose Git blob identities match the staging branch.\n\nThe v0.21 verifier checks the visual provenance matrix, evidence-class separation, explicit non-claims, requested-frontier machine-readable provenance, D²/D⁴/camera separation, deferred arithmetic exclusion, and byte identity of the sealed runtime/formal/HIA production sources.
 
 The current Thread 19R staging CI and browser evidence are recorded in the v0.20.1 state/progress/retest artifacts. Those artifacts intentionally do not self-certify the final seal.
 
