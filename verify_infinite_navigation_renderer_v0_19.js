@@ -207,6 +207,7 @@ StructuralVisualization.renderStructuralVisualization(structuralModel, structura
 InfiniteNavigationRenderer.applyRendererStateToTarget(integratedState, structuralTarget);
 assert.equal((structuralTarget.innerHTML.match(/data-structural-node-depth=/g) || []).length, integratedState.activeRenderedDepthCount);
 assert.equal(structuralTarget.dataset.renderVirtualized, "true");
+assert.match(structuralTarget.innerHTML, /data-frontier-status="view_pruned"|requested structural frontier reached/, "Virtualized SVG must distinguish view-pruned continuation from semantic frontier completion.");
 
 const interactionTarget = {dataset: {}, hidden: true, innerHTML: ""};
 InteractivePullbackTower.renderInteractivePullbackTower(

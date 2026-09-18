@@ -347,8 +347,23 @@
     }).join("");
 
     const frontierY = firstNodeY + model.nodes.length * nodeStep;
+    const lastRenderedDepth = model.nodes.length === 0 ? null : model.nodes[model.nodes.length - 1].depth;
+    const hasViewPrunedContinuation = Boolean(
+      model.renderState.virtualized &&
+      lastRenderedDepth !== null &&
+      lastRenderedDepth < model.sceneState.visibleDepth
+    );
     let frontierMarkup;
-    if (!model.continuation.present) {
+    if (hasViewPrunedContinuation) {
+      const nextRenderedDepth = lastRenderedDepth + 1;
+      const hiddenCount = model.sceneState.visibleDepth - lastRenderedDepth;
+      frontierMarkup = [
+        `<g class="structural-frontier" data-frontier-depth="${String(nextRenderedDepth)}" data-frontier-status="view_pruned">`,
+        `<rect x="${String(nodeX)}" y="${String(frontierY)}" width="${String(nodeWidth)}" height="58" rx="16" />`,
+        `<text x="${String(nodeX + 24)}" y="${String(frontierY + 35)}">${escapeXml(String(hiddenCount) + " presentation-visible structural levels continue outside the active render window")}</text>`,
+        "</g>"
+      ].join("");
+    } else if (!model.continuation.present) {
       frontierMarkup = `<text class="structural-frontier__text" x="${String(nodeX)}" y="${String(frontierY + 20)}">${escapeXml(model.continuation.label)}</text>`;
     } else {
       const frontierLabel = model.continuation.status === "presentation_collapsed"

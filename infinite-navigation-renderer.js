@@ -30,9 +30,15 @@
       ? DEFAULT_OVERSCAN_LEVELS
       : assertDepth(options.overscanLevels, "overscanLevels");
 
+    const configuredSpan = viewportLevelCapacity + 2 * overscanLevels;
+    if (!Number.isSafeInteger(configuredSpan) || configuredSpan < 1) {
+      throw new RangeError("Viewport capacity plus overscan must remain a positive safe-integer presentation span.");
+    }
+
     return Object.freeze({
       viewportLevelCapacity,
-      overscanLevels
+      overscanLevels,
+      configuredSpan
     });
   }
 
@@ -133,7 +139,8 @@
       left &&
       right &&
       left.viewportLevelCapacity === right.viewportLevelCapacity &&
-      left.overscanLevels === right.overscanLevels
+      left.overscanLevels === right.overscanLevels &&
+      left.configuredSpan === right.configuredSpan
     );
   }
 
@@ -177,10 +184,9 @@
   }
 
   function configuredActiveBound(snapshot, policy) {
-    const contiguousCapacity = Math.min(
-      snapshot.presentationVisibleDepth + 1,
-      policy.viewportLevelCapacity + 2 * policy.overscanLevels
-    );
+    const contiguousCapacity = snapshot.presentationVisibleDepth >= policy.configuredSpan - 1
+      ? policy.configuredSpan
+      : snapshot.presentationVisibleDepth + 1;
     return contiguousCapacity + 5;
   }
 
