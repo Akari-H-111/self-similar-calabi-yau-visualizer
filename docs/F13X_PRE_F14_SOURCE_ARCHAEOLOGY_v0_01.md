@@ -260,7 +260,7 @@ F14 new work:
 5. only then decide whether to package a local graph / regular-level / submanifold theorem.
 ```
 
-This archaeology pass does **not** close any of steps 1–5.
+The isolated F13x feasibility probe demonstrates that steps 1–3 are implementable against the exact pinned project API. It does **not** promote those helpers into canonical F14 theorem semantics, and steps 4–5 remain genuinely new F14 work.
 
 ## 8. Decision matrix
 
@@ -284,39 +284,94 @@ This archaeology pass does **not** close any of steps 1–5.
 | 16 | ambient Point4 IFT route viable? | PASS | pinned finite-dimensional codomain IFT exists |
 | 17 | log-coordinate route viable? | PARTIAL | mathematically possible, branch-heavy |
 | 18 | generic submersion route viable? | PARTIAL | infrastructure exists, desired finite-dimensional bridge is TODO |
-| 19 | pinned mathlib exact API sufficient? | PARTIAL | signatures verified; project-specific compile probe not yet performed |
+| 19 | pinned mathlib exact API sufficient? | PASS | project-specific probe compiled under pinned Lean/mathlib; implicit-function and open-partial-homeomorph instantiations typecheck |
 | 20 | precise missing hypotheses identified? | PASS | strict/ContDiff + range conversion + local level identification |
 | 21 | regression harness worth preserving? | PARTIAL | worthwhile if historical verifier is recovered or a new isolated oracle is justified |
-| 22 | anything worth merging from F13x? | DEFERRED | archaeology docs are candidates; no theorem merge authorized |
+| 22 | anything worth merging from F13x? | PARTIAL | archaeology/provenance docs are preservable candidates; feasibility probe itself remains exception-branch evidence and is not recommended for canonical merge |
 | 23 | repository ready to open formal F14? | PASS | after F13x documentation/provenance closure; no F13 repair needed |
 
 ## 9. Verdict
 
 ```text
-PASS WITH CONDITIONS —
-F14 may begin after this F13x provenance matrix is sealed and the isolated pinned-API feasibility
-probe is completed.
+PASS — F14 may begin with reusable source/regression components.
+
+The executable historical verifier package remains NOT FOUND, so historical symbolic material stays
+regression/provenance-only. This does not block F14 because the preferred analytic landing zone has
+now been project-compiled against the exact pinned Lean/mathlib environment.
 
 No F13 theorem repair is required.
 No historical smoothness theorem was recovered.
-No recovered symbolic verifier may be promoted into a smoothness proof.
+No symbolic verifier is promoted into a smoothness proof.
 ```
 
-## 10. Next action
+## 10. F13x feasibility probe receipt
 
-After this documentation-only commit, perform one isolated feasibility probe on the archaeology
-branch. The probe must not modify sealed F13 files. It should test only the chain:
+The isolated probe is:
+
+```text
+formal/SelfSimilarCY/F13xImplicitFeasibility.lean
+blob: 66efbaab636840ffd3e57df2b10ea2fecfbc1e16
+probe commit: 56672f6865a5ff97331c57b2abe9b01b31ea29b9
+probe tree: edcd7732d2e7727a10c7e020330d500368e957d0
+```
+
+It is deliberately **not imported** by `formal/SelfSimilarCY.lean`.
+
+The probe successfully typechecks all of the following against the repository-pinned environment:
 
 ```text
 laurentWPoint
-→ ContDiffAt / HasStrictFDerivAt
-→ range = ⊤ from existing surjectivity
-→ pinned HasStrictFDerivAt.implicitFunction
+→ ContDiffAt ℂ 1 at torus points
+→ HasStrictFDerivAt with the sealed F13 laurentTotalDifferential
+→ Function.Surjective differential ⇒ differential.range = ⊤
+→ HasStrictFDerivAt.implicitFunction
+→ HasStrictFDerivAt.implicitToOpenPartialHomeomorph
 ```
 
-The probe is a feasibility check, not a canonical theorem advancement.
+Staging receipt:
 
-Until that probe exists and compiles, item 19 remains **PARTIAL**.
+```text
+draft PR: #24
+policy: DO NOT MERGE
+Formal Verification: run #167
+run id: 35386660141
+head: 56672f6865a5ff97331c57b2abe9b01b31ea29b9
+conclusion: success
+```
+
+The run passed `lake build`, all sealed direct Lean compiles, the sealed-parent blob guard, and the
+no-`axiom` / no-`sorry` / no-`admit` gate. Runtime contracts, publication static smoke, and
+browser RC jobs also passed.
+
+This receipt proves **API/project feasibility only**. It does not prove that the Laurent base fiber has
+already been packaged as a local graph, regular level set, smooth submanifold, or manifold submersion.
+
+## 11. Next action
+
+F14 may now open from the exact F13 canonical parent:
+
+```text
+c64443eff3eae8853cbdcae972d7e6772c10f701
+```
+
+The preferred route is:
+
+```text
+ambient Point4 finite-dimensional IFT
+
+canonicalize the C¹ / strict-derivative bridge
+→ reuse F13 surjectivity
+→ instantiate pinned implicit-function machinery
+→ identify the local implicit parametrization with baseFiber
+→ only then package local graph / regular-level semantics
+```
+
+The F13x exception branch is evidence, not the canonical parent for F14. The feasibility module should
+not be merged merely to save retyping; F14 should integrate only the minimum theorem content that its
+own semantic target requires.
+
+No regression harness is added at this stage because the historical executable verifier remains
+unrecovered.
 
 ---
 
