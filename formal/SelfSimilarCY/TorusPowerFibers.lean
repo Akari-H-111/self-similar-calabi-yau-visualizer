@@ -25,6 +25,7 @@ def torusPowerKernelEquivFiberOfPreimage
         (mem_torusCoordinatePowerKernel_iff D k.1).1 k.2 i
       have hxi := congrFun hx i
       simp only [torusCoordinatePower_apply] at hxi ⊢
+      change (k.1 i * x i) ^ D = y i
       rw [mul_pow, hk, one_mul, hxi]⟩
   invFun z :=
     ⟨z.1 * x⁻¹, by
@@ -56,7 +57,7 @@ The nonzero exponent hypothesis is exactly what is needed for
 `Complex.cpow_nat_inv_pow`.
 -/
 noncomputable def complexUnitNthRoot
-    (D : ℕ) (hD : D ≠ 0) (u : ℂˣ) : ℂˣ :=
+    (D : ℕ) (u : ℂˣ) : ℂˣ :=
   Units.mk0 ((u : ℂ) ^ ((D : ℂ)⁻¹)) <| by
     apply (Complex.cpow_ne_zero_iff).2
     exact Or.inl u.ne_zero
@@ -64,20 +65,20 @@ noncomputable def complexUnitNthRoot
 @[simp]
 theorem complexUnitNthRoot_pow
     (D : ℕ) (hD : D ≠ 0) (u : ℂˣ) :
-    complexUnitNthRoot D hD u ^ D = u := by
+    complexUnitNthRoot D u ^ D = u := by
   apply Units.ext
   change (((u : ℂ) ^ ((D : ℂ)⁻¹)) ^ D) = (u : ℂ)
   exact Complex.cpow_nat_inv_pow (u : ℂ) hD
 
 /-- Coordinatewise chosen `D`-th root of a torus point. -/
 noncomputable def torusCoordinatePowerRoot
-    (D : ℕ) (hD : D ≠ 0) (y : Torus4) : Torus4 :=
-  fun i => complexUnitNthRoot D hD (y i)
+    (D : ℕ) (y : Torus4) : Torus4 :=
+  fun i => complexUnitNthRoot D (y i)
 
 @[simp]
 theorem torusCoordinatePower_root
     (D : ℕ) (hD : D ≠ 0) (y : Torus4) :
-    torusCoordinatePower D (torusCoordinatePowerRoot D hD y) = y := by
+    torusCoordinatePower D (torusCoordinatePowerRoot D y) = y := by
   funext i
   simp [torusCoordinatePowerRoot, torusCoordinatePower]
 
@@ -87,7 +88,7 @@ theorem torusCoordinatePower_surjective
     Function.Surjective (torusCoordinatePower D) := by
   intro y
   have hD0 : D ≠ 0 := Nat.ne_of_gt hD
-  exact ⟨torusCoordinatePowerRoot D hD0 y,
+  exact ⟨torusCoordinatePowerRoot D y,
     torusCoordinatePower_root D hD0 y⟩
 
 /-- Every positive-exponent ambient torus fiber is a finite type. -/
