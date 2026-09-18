@@ -229,6 +229,16 @@ for (const badge of branchGraphics.badges) {
 assert.equal(branchGraphics.truthfulness.geometryRendered, false);
 assert.equal(branchGraphics.truthfulness.sheetsMaterialized, false);
 assert.equal(branchGraphics.truthfulness.coveringStructureClaimed, false);
+assert.match(
+  read("infinite-navigation-renderer.js"),
+  /projectRenderedOrganization/,
+  "v0.19 renderer must own an explicit branch-graphics projection lifecycle."
+);
+assert.equal(
+  read("app.js").includes("BranchOrganizationGraphics"),
+  false,
+  "Thread 18 app integration must preserve the v0.17 sibling-layer decoupling contract."
+);
 
 const overlayModel = ArithmeticOverlays.createArithmeticOverlayModel(
   runtimeScene,

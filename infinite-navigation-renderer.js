@@ -452,6 +452,14 @@
     return state;
   }
 
+  function projectBranchOrganizationGraphics(organizationTarget, structuralTarget) {
+    const api = globalObject.BranchOrganizationGraphics;
+    if (!api || typeof api.projectRenderedOrganization !== "function") {
+      throw new TypeError("Infinite navigation renderer requires the sealed BranchOrganizationGraphics projection API.");
+    }
+    return api.projectRenderedOrganization(organizationTarget, structuralTarget);
+  }
+
   function applyRendererStateToTarget(state, target) {
     if (!state || state.kind !== MODEL_KIND) {
       throw new TypeError("Renderer target projection requires an infinite navigation renderer state.");
@@ -492,6 +500,7 @@
     createInteractionPresentationOptions,
     describeVirtualDepth,
     renderVirtualizedInteractionPresentation,
+    projectBranchOrganizationGraphics,
     applyRendererStateToTarget
   });
 
