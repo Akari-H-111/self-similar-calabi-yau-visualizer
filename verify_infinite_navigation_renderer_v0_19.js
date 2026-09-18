@@ -79,6 +79,12 @@ assert.ok(first.activeRenderedDepths.includes(0));
 assert.ok(first.activeRenderedDepths.includes(10000));
 assert.equal(first.presentationPool.activeBindingCount, first.activeRenderedDepthCount);
 assert.ok(first.presentationPool.poolSize <= first.configuredActiveBound);
+assert.equal(first.virtualLayoutCache.kind, InfiniteNavigationRenderer.CACHE_KIND);
+assert.ok(first.virtualLayoutCache.entryCount <= first.virtualLayoutCache.capacity);
+assert.equal(first.virtualLayoutCache.hitCount, 0);
+assert.equal(first.virtualLayoutCache.missCount, first.activeRenderedDepthCount);
+assert.equal(first.virtualLayoutCache.canonical, false);
+assert.equal(first.virtualLayoutCache.recomputable, true);
 assertTruthfulness(first);
 
 const deterministic = InfiniteNavigationRenderer.createStateFromSnapshot(snapshot, null, {
@@ -103,6 +109,9 @@ assert.equal(
   shifted.presentationPool.poolSize,
   "Repeated navigation after reaching the bounded high-water mark must not monotonically grow the pool."
 );
+assert.ok(roundTripMiddle.virtualLayoutCache.hitCount > 0, "Returning to a recent virtual anchor must reuse bounded derived layout cache entries.");
+assert.ok(roundTripMiddle.virtualLayoutCache.entryCount <= roundTripMiddle.virtualLayoutCache.capacity);
+assert.ok(roundTripMiddle.virtualLayoutCache.evictedCount >= 0);
 for (const binding of shifted.presentationPool.bindings) {
   assert.deepEqual(Object.keys(binding).sort(), ["boundDepth", "slotId"], "Recycled bindings must be rebuilt without stale presentation metadata.");
 }
@@ -153,6 +162,8 @@ assert.equal(target.dataset.sheetsMaterialized, "false");
 assert.equal(target.dataset.coveringStructureClaimed, "false");
 assert.equal(target.dataset.geometricZoomApplied, "false");
 assert.equal(target.dataset.activeRenderedDepthCount, String(deepState.activeRenderedDepthCount));
+assert.equal(target.dataset.virtualLayoutCacheEntries, String(deepState.virtualLayoutCache.entryCount));
+assert.equal(target.dataset.virtualLayoutCacheCapacity, String(deepState.virtualLayoutCache.capacity));
 
 const source = read("infinite-navigation-renderer.js");
 assert.doesNotMatch(source, /depth\s*>\s*(1000|10000)/, "Production renderer must not impose a shallow hard-coded maximum depth.");
@@ -337,5 +348,7 @@ integratedState = InfiniteNavigationRenderer.createInfiniteNavigationRendererSta
 assert.equal(integratedState.semanticMaterializedDepth, 64);
 assert.equal(integratedState.presentationVisibleDepth, 60);
 assert.ok(integratedState.activeRenderedDepthCount <= integratedState.configuredActiveBound);
+assert.ok(integratedState.virtualLayoutCache.entryCount <= integratedState.virtualLayoutCache.capacity);
+assert.equal(interactionModel.recursiveModel.levels.length, 64, "Derived cache eviction must never alter retained semantic levels.");
 
 console.log("Infinite-navigation renderer v0.19 verifier: passed");

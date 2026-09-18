@@ -24,6 +24,10 @@ for (const horizon of HORIZONS) {
   let maximumActive = 0;
   let maximumPool = 0;
   let recycled = 0;
+  let cacheHits = 0;
+  let cacheMisses = 0;
+  let cacheEvictions = 0;
+  let maximumCacheEntries = 0;
   const start = performance.now();
 
   for (const ratio of TRANSITIONS) {
@@ -32,6 +36,10 @@ for (const horizon of HORIZONS) {
     maximumActive = Math.max(maximumActive, state.activeRenderedDepthCount);
     maximumPool = Math.max(maximumPool, state.presentationPool.poolSize);
     recycled += state.presentationPool.recycledCount;
+    cacheHits += state.virtualLayoutCache.hitCount;
+    cacheMisses += state.virtualLayoutCache.missCount;
+    cacheEvictions += state.virtualLayoutCache.evictedCount;
+    maximumCacheEntries = Math.max(maximumCacheEntries, state.virtualLayoutCache.entryCount);
   }
 
   const elapsedMs = performance.now() - start;
@@ -42,6 +50,11 @@ for (const horizon of HORIZONS) {
     maximumPresentationPoolSize: maximumPool,
     configuredActiveBound: state.configuredActiveBound,
     recycledBindingCount: recycled,
+    virtualLayoutCacheHits: cacheHits,
+    virtualLayoutCacheMisses: cacheMisses,
+    virtualLayoutCacheEvictions: cacheEvictions,
+    maximumVirtualLayoutCacheEntries: maximumCacheEntries,
+    virtualLayoutCacheCapacity: state.virtualLayoutCache.capacity,
     transitionElapsedMs: round(elapsedMs),
     activeCountDependsOnSemanticDepth: false,
     geometryRendered: false,

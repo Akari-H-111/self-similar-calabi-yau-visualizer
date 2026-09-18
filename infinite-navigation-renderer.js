@@ -4,6 +4,7 @@
   const MODEL_KIND = "infinite_navigation_renderer";
   const WINDOW_KIND = "viewport_render_window";
   const POOL_KIND = "presentation_render_slot_pool";
+  const CACHE_KIND = "derived_virtual_layout_cache";
   const DEFAULT_VIEWPORT_LEVEL_CAPACITY = 9;
   const DEFAULT_OVERSCAN_LEVELS = 2;
   const VIRTUAL_NODE_STEP = 116;
@@ -211,7 +212,70 @@
     const contiguousCapacity = snapshot.presentationVisibleDepth >= policy.configuredSpan - 1
       ? policy.configuredSpan
       : snapshot.presentationVisibleDepth + 1;
-    return contiguousCapacity + 5;
+    const bound = contiguousCapacity + 5;
+    if (!Number.isSafeInteger(bound) || bound < 1) {
+      throw new RangeError("Configured active-render bound must remain a positive safe integer.");
+    }
+    return bound;
+  }
+
+  function createVirtualLayoutCacheEntry(anchorDepth, depth, nodeStep = VIRTUAL_NODE_STEP) {
+    assertDepth(anchorDepth, "cache anchorDepth");
+    assertDepth(depth, "cache depth");
+    const step = assertPositiveSafeInteger(nodeStep, "cache nodeStep");
+    const relativeExact = BigInt(depth) - BigInt(anchorDepth);
+    const maximumExactRelative = BigInt(Math.floor(Number.MAX_SAFE_INTEGER / step));
+    const absoluteRelative = relativeExact < 0n ? -relativeExact : relativeExact;
+    const localCoordinateAvailable = absoluteRelative <= maximumExactRelative;
+
+    return Object.freeze({
+      key: String(anchorDepth) + ":" + String(depth) + ":" + String(step),
+      anchorDepth,
+      depth,
+      nodeStep: step,
+      relativeDepthExact: relativeExact.toString(),
+      localCoordinateAvailable,
+      localOffset: localCoordinateAvailable ? Number(relativeExact) * step : null
+    });
+  }
+
+  function createVirtualLayoutCache(previousState, activeDepths, anchorDepth, activeBound) {
+    const previousEntries = previousState?.virtualLayoutCache?.entries ?? [];
+    const capacity = activeBound * 2;
+    if (!Number.isSafeInteger(capacity) || capacity < activeBound) {
+      throw new RangeError("Virtual layout cache capacity must remain a safe-integer bounded multiple of the active render bound.");
+    }
+
+    const working = previousEntries.slice();
+    let hitCount = 0;
+    let missCount = 0;
+
+    for (const depth of activeDepths) {
+      const candidate = createVirtualLayoutCacheEntry(anchorDepth, depth);
+      const hitIndex = working.findIndex((entry) => entry.key === candidate.key);
+      if (hitIndex >= 0) {
+        const [hit] = working.splice(hitIndex, 1);
+        working.push(hit);
+        hitCount += 1;
+      } else {
+        working.push(candidate);
+        missCount += 1;
+      }
+    }
+
+    const evictedCount = Math.max(0, working.length - capacity);
+    const entries = Object.freeze(working.slice(evictedCount));
+    return Object.freeze({
+      kind: CACHE_KIND,
+      capacity,
+      entries,
+      entryCount: entries.length,
+      hitCount,
+      missCount,
+      evictedCount,
+      recomputable: true,
+      canonical: false
+    });
   }
 
   function createStateFromSnapshot(snapshotInput, previousState = null, options = {}) {
@@ -232,6 +296,15 @@
     if (presentationPool.poolSize > activeBound) {
       throw new Error("Presentation pool exceeded the deterministic viewport bound.");
     }
+    const virtualLayoutCache = createVirtualLayoutCache(
+      previousState,
+      activeRenderedDepths,
+      windowDescriptor.virtualAnchorDepth,
+      activeBound
+    );
+    if (virtualLayoutCache.entryCount > virtualLayoutCache.capacity) {
+      throw new Error("Virtual layout cache exceeded its deterministic capacity.");
+    }
 
     return Object.freeze({
       kind: MODEL_KIND,
@@ -250,6 +323,7 @@
       configuredActiveBound: activeBound,
       policy,
       presentationPool,
+      virtualLayoutCache,
       truthfulness: Object.freeze({
         geometryRendered: false,
         sheetsMaterialized: false,
@@ -306,11 +380,7 @@
       throw new TypeError("Virtual depth description requires an infinite navigation renderer state.");
     }
     const targetDepth = assertDepth(depth, "virtual depth");
-    const step = assertPositiveSafeInteger(nodeStep, "nodeStep");
-    const relativeExact = BigInt(targetDepth) - BigInt(state.virtualAnchorDepth);
-    const maximumExactRelative = BigInt(Math.floor(Number.MAX_SAFE_INTEGER / step));
-    const absoluteRelative = relativeExact < 0n ? -relativeExact : relativeExact;
-    const localCoordinateAvailable = absoluteRelative <= maximumExactRelative;
+    const entry = createVirtualLayoutCacheEntry(state.virtualAnchorDepth, targetDepth, nodeStep);
 
     return Object.freeze({
       depth: targetDepth,
@@ -318,9 +388,9 @@
       presentationVisible: targetDepth <= state.presentationVisibleDepth,
       currentlyRendered: state.activeRenderedDepths.includes(targetDepth),
       anchorDepth: state.virtualAnchorDepth,
-      relativeDepthExact: relativeExact.toString(),
-      localCoordinateAvailable,
-      localOffset: localCoordinateAvailable ? Number(relativeExact) * step : null
+      relativeDepthExact: entry.relativeDepthExact,
+      localCoordinateAvailable: entry.localCoordinateAvailable,
+      localOffset: entry.localOffset
     });
   }
 
@@ -476,6 +546,11 @@
     target.dataset.renderWindowEndDepth = String(state.renderWindowEndDepth);
     target.dataset.activeRenderedDepthCount = String(state.activeRenderedDepthCount);
     target.dataset.presentationPoolSize = String(state.presentationPool.poolSize);
+    target.dataset.virtualLayoutCacheEntries = String(state.virtualLayoutCache.entryCount);
+    target.dataset.virtualLayoutCacheCapacity = String(state.virtualLayoutCache.capacity);
+    target.dataset.virtualLayoutCacheHits = String(state.virtualLayoutCache.hitCount);
+    target.dataset.virtualLayoutCacheMisses = String(state.virtualLayoutCache.missCount);
+    target.dataset.virtualLayoutCacheEvictions = String(state.virtualLayoutCache.evictedCount);
     target.dataset.geometryRendered = "false";
     target.dataset.sheetsMaterialized = "false";
     target.dataset.coveringStructureClaimed = "false";
@@ -487,11 +562,14 @@
     MODEL_KIND,
     WINDOW_KIND,
     POOL_KIND,
+    CACHE_KIND,
     DEFAULT_VIEWPORT_LEVEL_CAPACITY,
     DEFAULT_OVERSCAN_LEVELS,
     VIRTUAL_NODE_STEP,
     createPolicy,
     createSnapshot,
+    createVirtualLayoutCacheEntry,
+    createVirtualLayoutCache,
     snapshotFromInteraction,
     createStateFromSnapshot,
     createInfiniteNavigationRendererState,
