@@ -133,6 +133,9 @@ jobs:
       - name: Benchmark infinite-navigation renderer v0.19
         run: node benchmark_infinite_navigation_renderer_v0_19.js
 
+      - name: Verify visual semantics and accessibility v0.20
+        run: node verify_visual_semantics_accessibility_v0_20.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -162,6 +165,7 @@ jobs:
           node --check verify_arithmetic_overlay_graphics_v0_18.js
           node --check verify_infinite_navigation_renderer_v0_19.js
           node --check benchmark_infinite_navigation_renderer_v0_19.js
+          node --check verify_visual_semantics_accessibility_v0_20.js
           node --check app.js
 
   publication-static-smoke:
@@ -224,6 +228,7 @@ jobs:
           grep -Fq 'presentation-only structural camera' /tmp/publication-index.html
           grep -Fq 'D⁴ Branch Organization Graphics' /tmp/publication-index.html
           grep -Fq '16-fold structural organization' /tmp/publication-index.html
+          grep -Fq 'v0.20 · Visual Semantics &amp; Accessibility Audit' /tmp/publication-index.html
           grep -Fq 'v0.19 · Infinite-Navigation Rendering Engine' /tmp/publication-index.html
           grep -Fq 'Symbolic arithmetic overlays' /tmp/publication-index.html
           grep -Fq 'Coordinate iterate rule' /tmp/publication-index.html

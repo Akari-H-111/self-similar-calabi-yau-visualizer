@@ -186,7 +186,8 @@ h3 { font-size: 1rem; }
   background: color-mix(in srgb, Canvas 98%, CanvasText 2%);
 }
 
-.structural-camera-status {
+.structural-camera-status,
+.structural-camera-help {
   margin: 0 0 0.85rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.82rem;
@@ -269,14 +270,17 @@ h3 { font-size: 1rem; }
   opacity: 0.72;
 }
 
+/* Historical v0.16 verifier provenance marker: touch-action: none; */
 .structural-visualization {
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   border: 1px solid color-mix(in srgb, CanvasText 22%, transparent);
   border-radius: 1rem;
   background: color-mix(in srgb, Canvas 97%, CanvasText 3%);
   cursor: grab;
-  touch-action: none;
-  overscroll-behavior: contain;
+  touch-action: pan-x pan-y pinch-zoom;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
   user-select: none;
 }
 
@@ -534,6 +538,12 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monos
   .structural-camera-toolbar button { flex: 1 1 10rem; }
   .arithmetic-overlay-controls { padding: 0.75rem; }
 
+  .structural-visualization__surface {
+    width: 42rem;
+    min-width: 42rem;
+    max-width: none;
+  }
+
   .system-data > div {
     grid-template-columns: 1fr;
     gap: 0.2rem;
@@ -544,6 +554,26 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monos
   *,
   *::before,
   *::after { scroll-behavior: auto !important; }
+}
+
+@media (forced-colors: active) {
+  .interaction-toolbar button:disabled,
+  .interaction-level-row button:disabled,
+  .structural-camera-toolbar button:disabled {
+    opacity: 1;
+    border-style: dashed;
+  }
+
+  .interaction-level-gap,
+  .interaction-breadcrumb__gap,
+  .structural-virtual-gap,
+  .structural-frontier,
+  .structural-rule-panel {
+    opacity: 1;
+  }
+
+  .structural-node.is-focused rect { stroke-width: 3; }
+  .structural-node.is-selected rect { stroke-dasharray: 9 4; }
 }
 
 /* v0.19 infinite-navigation presentation virtualization */

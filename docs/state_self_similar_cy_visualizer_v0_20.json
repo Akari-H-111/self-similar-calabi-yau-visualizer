@@ -1,0 +1,101 @@
+{
+  "project": "Self-Similar Calabi-Yau Visualizer",
+  "thread": 19,
+  "milestone": "Visual Semantics & Accessibility Audit",
+  "version": "v0.20",
+  "status": "implemented_and_pre_final_ci_verified_pending_final_exact_tree_seal",
+  "starting_canonical": {
+    "commit": "5c45dd74e53cde06e30ae70ecd97171f7012cf0d",
+    "tree": "9e054355f97c957939127b934a0b9605b3f1378e",
+    "sole_parent": "f1b2a0a43aae609574be795f5e3a89fe3e53fcc0",
+    "commit_message": "visualization: seal Thread 18 infinite navigation rendering engine v0.19"
+  },
+  "inherited_thread18_seal_evidence": {
+    "formal_verification": {
+      "run_number": 110,
+      "run_id": 35322442148,
+      "head_sha": "5c45dd74e53cde06e30ae70ecd97171f7012cf0d",
+      "conclusion": "success"
+    },
+    "pages": {
+      "run_number": 7,
+      "run_id": 35322441335,
+      "head_sha": "5c45dd74e53cde06e30ae70ecd97171f7012cf0d",
+      "conclusion": "success"
+    },
+    "staging_pr_11": {
+      "state": "closed",
+      "merged": false,
+      "draft": true,
+      "role": "CI vehicle only"
+    }
+  },
+  "implementation": {
+    "semantic_focus_separate_from_dom_focus": true,
+    "deterministic_focus_descriptor": true,
+    "focus_descriptor_uses": [
+      "control_role",
+      "interaction_action",
+      "semantic_depth"
+    ],
+    "fragile_dom_index_used": false,
+    "presentation_slot_identity_used_for_focus": false,
+    "single_polite_live_region": true,
+    "bounded_gap_text_semantics": true,
+    "hidden_full_semantic_tower": false,
+    "ctrl_meta_wheel_reserved_for_browser": true,
+    "plain_wheel_reserved_for_page": true,
+    "alt_wheel_structural_camera_zoom": true,
+    "touch_pan_pinch_reserved_for_browser": true,
+    "native_camera_buttons_preserved": true,
+    "forced_colors_hook": true,
+    "reduced_motion_preserved": true,
+    "narrow_structural_canvas_internal_scroll": true,
+    "sealed_semantic_modules_modified": false,
+    "structural_camera_model_modified": false,
+    "formal_modified": false,
+    "new_lean_theorem": false
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "W": "unresolved"
+  },
+  "evidence": {
+    "static_contract": "success",
+    "browser_smoke": "not_tested",
+    "screen_reader": "not_tested",
+    "quantitative_contrast": "not_tested",
+    "browser_zoom_200_400": "not_tested",
+    "responsive_320_400_760": "not_tested",
+    "forced_colors_rendered": "not_tested"
+  },
+  "pre_final_artifact_ci": {
+    "head_commit": "dcc3bb1871e926ca45fbcd9897c3cd23c5ecbdf3",
+    "tree": "f262f6cf07f5506df6ee0ec6c898ccde0cc7445d",
+    "workflow_run_number": 113,
+    "workflow_run_id": 35325277713,
+    "runtime_contracts": "success",
+    "formal_lean": "success",
+    "publication_static_smoke": "success",
+    "v0_03_through_v0_20": "success"
+  },
+  "staging": {
+    "branch": "thread19-visual-semantics-accessibility-v0-20",
+    "pull_request": 12,
+    "pull_request_state": "open_draft",
+    "pull_request_role": "CI vehicle only; do not merge",
+    "final_exact_tree_ci": "pending_after_final_artifact_sync",
+    "pull_request_closed_unmerged": "pending"
+  },
+  "canonicalization": {
+    "exact_verified_tree_replay_as_single_child": "pending",
+    "main_fast_forward": "pending",
+    "exact_main_formal_verification": "pending",
+    "exact_sha_pages": "pending",
+    "seal_authority": "external Git object identity plus exact-SHA workflow evidence"
+  },
+  "thread19_sealed": false
+}
