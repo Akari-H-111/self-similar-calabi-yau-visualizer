@@ -64,7 +64,7 @@ theorem laurentWPoint_update_eq_coordinateSlice
   rw [Finset.sum_update_of_mem (Finset.mem_univ i)]
   rw [Finset.prod_update_of_mem (Finset.mem_univ i)]
   simp only [Finset.sdiff_singleton_eq_erase]
-  simp [Torus4.toPoint4, div_eq_mul_inv, mul_inv_rev, mul_comm, mul_left_comm, mul_assoc]
+  simp [Torus4.toPoint4, div_eq_mul_inv, mul_inv_rev, mul_comm]
 
 /--
 The total Fréchet derivative evaluated on the `i`-th standard basis direction
@@ -77,28 +77,27 @@ theorem laurentTotalDifferential_apply_single
   have hupdate :
       Function.update z.toPoint4 i (z i : ℂ) = z.toPoint4 := by
     simpa [Torus4.toPoint4] using (Function.update_eq_self i z.toPoint4)
-  have houter :
-      HasFDerivAt
-        (laurentWPoint κ)
-        (laurentTotalDifferential κ z)
-        (Function.update z.toPoint4 i (z i : ℂ)) := by
+  have hchain :
+      deriv
+          (fun t : ℂ => laurentWPoint κ (Function.update z.toPoint4 i t))
+          (z i : ℂ) =
+        laurentTotalDifferential κ z (Pi.single i (1 : ℂ)) := by
+    rw [fderiv_comp_deriv
+      (z i : ℂ)
+      (by
+        rw [hupdate]
+        exact differentiableAt_laurentWPoint_toPoint4 κ z)
+      (hasDerivAt_update z.toPoint4 i (z i : ℂ)).differentiableAt]
+    rw [deriv_update]
     rw [hupdate]
-    exact hasFDerivAt_laurentWPoint_toPoint4 κ z
-  have hcomp :
-      HasDerivAt
-        (fun t : ℂ => laurentWPoint κ (Function.update z.toPoint4 i t))
-        (laurentTotalDifferential κ z (Pi.single i (1 : ℂ)))
-        (z i : ℂ) := by
-    simpa using
-      houter.comp_hasDerivAt
-        (z i : ℂ) (hasDerivAt_update z.toPoint4 i (z i : ℂ))
-  have hcomp' :
-      HasDerivAt
-        (laurentCoordinateSlice κ z i)
-        (laurentTotalDifferential κ z (Pi.single i (1 : ℂ)))
-        (z i : ℂ) := by
-    simpa [laurentWPoint_update_eq_coordinateSlice κ z i] using hcomp
-  exact hcomp'.unique (hasDerivAt_laurentCoordinateSlice κ z i)
+    rfl
+  have hfun :
+      (fun t : ℂ => laurentWPoint κ (Function.update z.toPoint4 i t)) =
+        laurentCoordinateSlice κ z i := by
+    funext t
+    exact laurentWPoint_update_eq_coordinateSlice κ z i t
+  rw [hfun] at hchain
+  exact hchain.symm.trans (hasDerivAt_laurentCoordinateSlice κ z i).deriv
 
 /--
 F12's coordinate critical predicate is equivalent to vanishing of the genuine
