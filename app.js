@@ -40,7 +40,7 @@ let pullbackModel = null;
 let interactionModel = null;
 let structuralCameraModel = null;
 let structuralLayoutDescriptor = null;
-let arithmeticOverlayPresentationState = Object.freeze([...initialArithmeticOverlayRequest]);
+let arithmeticOverlayPresentationState = initialArithmeticOverlayRequest;
 const activeCameraPointers = new Map();
 let cameraGesture = null;
 
@@ -72,7 +72,7 @@ function resetRenderedState() {
   interactionModel = null;
   structuralCameraModel = null;
   structuralLayoutDescriptor = null;
-  arithmeticOverlayPresentationState = Object.freeze([...initialArithmeticOverlayRequest]);
+  arithmeticOverlayPresentationState = initialArithmeticOverlayRequest;
   canonicalScene = null;
   baseModel = null;
   pullbackModel = null;
@@ -191,20 +191,29 @@ function updateArithmeticOverlayControlState() {
   }
 }
 
-function renderArithmeticOverlayPresentation() {
-  if (!canonicalScene || !baseModel || !interactionModel || !structuralLayoutDescriptor) {
-    throw new TypeError("Arithmetic overlay presentation requires initialized runtime and structural layout state.");
+function createCurrentArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel) {
+  if (arithmeticOverlayPresentationState === initialArithmeticOverlayRequest) {
+    return ArithmeticOverlays.createArithmeticOverlayModel(scene, recursiveModel, zoomModel, organizationModel, initialArithmeticOverlayRequest);
   }
-
-  const recursiveModel = interactionModel.recursiveModel;
-  const zoomModel = interactionModel.zoomModel;
-  const organizationModel = interactionModel.organizationModel;
-  const arithmeticOverlayModel = ArithmeticOverlays.createArithmeticOverlayModel(
-    canonicalScene,
+  return ArithmeticOverlays.createArithmeticOverlayModel(
+    scene,
     recursiveModel,
     zoomModel,
     organizationModel,
     arithmeticOverlayPresentationState
+  );
+}
+
+function renderArithmeticOverlayPresentation(scene, recursiveModel, zoomModel, organizationModel) {
+  if (!scene || !baseModel || !interactionModel || !structuralLayoutDescriptor) {
+    throw new TypeError("Arithmetic overlay presentation requires initialized runtime and structural layout state.");
+  }
+
+  const arithmeticOverlayModel = createCurrentArithmeticOverlayModel(
+    scene,
+    recursiveModel,
+    zoomModel,
+    organizationModel
   );
 
   ArithmeticOverlays.renderArithmeticOverlays(arithmeticOverlayModel, arithmeticOverlayElement);
@@ -215,7 +224,7 @@ function renderArithmeticOverlayPresentation() {
   );
 
   const expositionModel = ExpositionLayer.createExpositionModel(
-    canonicalScene,
+    scene,
     baseModel,
     recursiveModel,
     zoomModel,
@@ -242,7 +251,12 @@ function setArithmeticOverlayPresentation(overlayId, enabled) {
   arithmeticOverlayPresentationState = Object.freeze(
     initialArithmeticOverlayRequest.filter((candidate) => enabledSet.has(candidate))
   );
-  renderArithmeticOverlayPresentation();
+  renderArithmeticOverlayPresentation(
+    canonicalScene,
+    interactionModel.recursiveModel,
+    interactionModel.zoomModel,
+    interactionModel.organizationModel
+  );
 }
 
 function handleArithmeticOverlayToggle(event) {
@@ -285,7 +299,7 @@ function renderInteractionState() {
   StructuralVisualization.renderStructuralVisualization(structuralVisualizationModel, structuralVisualizationElement);
   reconcileStructuralCamera(StructuralVisualization.createStructuralLayoutDescriptor(structuralVisualizationModel));
 
-  renderArithmeticOverlayPresentation();
+  renderArithmeticOverlayPresentation(scene, recursiveModel, zoomModel, organizationModel);
 
   statusElement.dataset.state = "ready";
   statusElement.textContent = (
