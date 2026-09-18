@@ -142,6 +142,9 @@ jobs:
       - name: Verify mathematical / visual fidelity audit II v0.21
         run: node verify_mathematical_visual_fidelity_v0_21.js
 
+      - name: Verify public structural visualizer RC v1.0-rc1
+        run: node verify_public_structural_visualizer_rc_v1_0_rc1.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -175,6 +178,8 @@ jobs:
           node --check verify_visual_semantics_accessibility_v0_20.js
           node --check verify_human_interaction_remediation_v0_20_1.js
           node --check verify_mathematical_visual_fidelity_v0_21.js
+          node --check verify_public_structural_visualizer_rc_v1_0_rc1.js
+          node --check verify_public_structural_visualizer_browser_rc_v1_0_rc1.js
           node --check app.js
 
   publication-static-smoke:
@@ -238,6 +243,7 @@ jobs:
           grep -Fq 'presentation-only structural camera' /tmp/publication-index.html
           grep -Fq 'D⁴ Branch Organization Graphics' /tmp/publication-index.html
           grep -Fq '16-fold structural organization' /tmp/publication-index.html
+          grep -Fq 'v1.0-rc1 · Public Structural Visualizer Release Candidate' /tmp/publication-index.html
           grep -Fq 'v0.21 · Mathematical / Visual Fidelity Audit II' /tmp/publication-index.html
           grep -Fq 'visual_provenance_matrix_self_similar_cy_visualizer_v0_21.json' /tmp/publication-index.html
           grep -Fq 'v0.19 · Infinite-Navigation Rendering Engine' /tmp/publication-index.html
@@ -247,3 +253,35 @@ jobs:
           grep -Fq 'Canonical requested depth' /tmp/publication-index.html
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"
+
+  browser-rc:
+    name: browser-rc
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
+      - name: Install pinned Playwright package
+        run: npm install --no-save --package-lock=false playwright@1.63.0
+
+      - name: Install Chromium, Firefox, and WebKit
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Exercise RC browser initialization and capture structural screenshots
+        run: node verify_public_structural_visualizer_browser_rc_v1_0_rc1.js
+
+      - name: Upload exact-candidate browser evidence
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: public-structural-visualizer-rc-v1.0-rc1-browser-evidence-${{ github.sha }}
+          path: rc-browser-artifacts/
+          if-no-files-found: error
+          retention-days: 30

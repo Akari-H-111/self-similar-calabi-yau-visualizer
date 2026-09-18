@@ -1,0 +1,51 @@
+{
+  "project": "Self-Similar Calabi-Yau Visualizer",
+  "thread": "21",
+  "milestone": "Public Structural Visualizer Release Candidate",
+  "version": "v1.0-rc1",
+  "status": "implementation_candidate_pending_ci_browser_exact_tree_seal",
+  "startingCanonical": {
+    "commit": "fab790ba49cdf9e7bf511e2d2b0df4aec1941b7d",
+    "tree": "bf381e519850a136d641ff3c985fcd0b6daf6d67"
+  },
+  "truthfulnessInvariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "W": "unresolved"
+  },
+  "productionBoundary": {
+    "semanticCoreModified": false,
+    "productionJavaScriptModified": false,
+    "styleCssModified": false,
+    "formalModified": false,
+    "dataSystemModified": false,
+    "geometryAdmission": false
+  },
+  "browserEvidence": {
+    "status": "pending_github_actions_browser_rc",
+    "engines": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "screenshots": "pending_github_actions_artifact",
+    "actualScreenReader": "not_tested",
+    "WCAGCertification": false,
+    "HIA03": "deferred_pending_direct_AT_evidence"
+  },
+  "sealing": {
+    "draftPr": "pending",
+    "finalStagingTree": "pending",
+    "exactTreeCI": "pending",
+    "prClosedUnmerged": "pending",
+    "exactTreeReplay": "pending",
+    "exactMainFormal": "pending",
+    "exactShaPages": "pending",
+    "tag": "pending",
+    "release": "pending"
+  },
+  "thread21Sealed": false,
+  "note": "Historical pre-seal snapshot. Do not rewrite after external canonical seal merely to self-certify completion."
+}

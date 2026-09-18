@@ -1,6 +1,10 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.21 — Mathematical / Visual Fidelity Audit II
+**Current version:** v1.0-rc1 — Public Structural Visualizer Release Candidate
+
+**Sealed provenance baseline:** v0.21 — Mathematical / Visual Fidelity Audit II
+
+<!-- Historical marker retained for the sealed v0.21 verifier: **Current version:** v0.21 — Mathematical / Visual Fidelity Audit II -->
 
 **Published checkpoint:** v0.13 — Publication Checkpoint
 
@@ -23,6 +27,18 @@ runtime representation
 The v0.11 claim-discipline vocabulary remains binding: **D² and D⁴ explicitly as runtime/organization metadata**. Exact parent-project mathematical artifacts remain **not source-verified in this thread**, so unavailable parent results are not promoted.
 
 D⁴ runtime organization metadata is **not a map-degree theorem** in the current sealed formal scope. Benchmark horizons are **not mathematical limits**, and JavaScript safe-integer checks are **representation-safety / engineering constraints** rather than mathematical theorems.
+
+## v1.0-rc1 public structural visualizer release candidate
+
+v1.0-rc1 is Thread 21 — Public Structural Visualizer Release Candidate. It hardens the already-interactive structural graphical layer for public release without admitting concrete geometry.
+
+This release candidate provides an interactive structural visualizer. The rendered graphics are structural and symbolic. No concrete Calabi–Yau hypersurface geometry is currently rendered. W remains unresolved.
+
+The RC preserves the frozen truth boundary: geometryRendered=false, sheetsMaterialized=false, coveringStructureClaimed=false, geometricZoomApplied=false, and W=unresolved. D² remains runtime numeric metadata. D⁴ remains runtime numeric / organizational metadata. The immutable v0.13 Publication Checkpoint remains a separate historical release identity.
+
+Thread 21 adds release-candidate reproducibility checks and a cross-browser browser-evidence job. Browser evidence is generated on a clean GitHub Actions checkout and is bound externally to the exact candidate commit and tree. Screenshots are evidence artifacts, not mathematical or runtime authority.
+
+Known limitations remain explicit: no concrete W, no Calabi–Yau geometric renderer, no genuine sheets or covering geometry, no D² metric theorem, no D⁴ map-degree theorem, deferred arithmetic geometry remains unavailable, HIA-03 remains unresolved pending direct assistive-technology evidence, and no WCAG or screen-reader certification is claimed.
 
 ## Published v0.13 checkpoint
 
@@ -501,21 +517,27 @@ node verify_infinite_navigation_renderer_v0_19.js
 node benchmark_infinite_navigation_renderer_v0_19.js
 node verify_visual_semantics_accessibility_v0_20.js
 node verify_human_interaction_remediation_v0_20_1.js
+node verify_mathematical_visual_fidelity_v0_21.js
+node verify_public_structural_visualizer_rc_v1_0_rc1.js
 ```
 
 The v0.19 verifier checks sealed semantic blob identity, deterministic render-window construction, bounded active render count, presentation-slot recycling, bounded recomputable cache behavior, deep floating-origin descriptors, off-window selection and camera targeting, structural/interaction virtualization, explicit D⁴ reprojection, arithmetic coexistence, truthfulness flags, source discipline, and CI wiring.
 
 The v0.20 verifier additionally checks semantic-focus/DOM-focus separation, deterministic focus restoration without DOM indices or presentation-slot identity, bounded virtualized assistive text, native-control preservation, browser-zoom-safe camera guards, single-live-region discipline, forced-colors/reduced-motion hooks, responsive structural-canvas policy, truthfulness invariants, and full v0.03-v0.20 workflow wiring.
 
-The v0.20.1 remediation verifier checks named-action camera focus restoration, the collapsed-presentation control predicate, retained semantic level continuity across collapse, sealed module identity, and workflow wiring. Chromium 144 browser evidence separately exercises the two browser-observed defect paths against production blobs whose Git blob identities match the staging branch.\n\nThe v0.21 verifier checks the visual provenance matrix, evidence-class separation, explicit non-claims, requested-frontier machine-readable provenance, D²/D⁴/camera separation, deferred arithmetic exclusion, and byte identity of the sealed runtime/formal/HIA production sources.
+The v0.20.1 remediation verifier checks named-action camera focus restoration, the collapsed-presentation control predicate, retained semantic level continuity across collapse, sealed module identity, and workflow wiring. Chromium 144 browser evidence separately exercises the two browser-observed defect paths against production blobs whose Git blob identities match the staging branch.
 
-The current Thread 19R staging CI and browser evidence are recorded in the v0.20.1 state/progress/retest artifacts. Those artifacts intentionally do not self-certify the final seal.
+The v0.21 verifier checks the visual provenance matrix, evidence-class separation, explicit non-claims, requested-frontier machine-readable provenance, D²/D⁴/camera separation, deferred arithmetic exclusion, and byte identity of the sealed runtime/formal/HIA production sources.
+
+The v1.0-rc1 verifier checks the public RC identity, structural-only release boundary, publication/reproducibility documentation, frozen truth flags, historical v0.21 provenance preservation, sealed production blobs, workflow wiring, and browser-evidence contract.
+
+The historical Thread 19R staging CI and browser evidence are recorded in the v0.20.1 state/progress/retest artifacts. Those artifacts intentionally do not self-certify the final seal.
 
 ## What green CI means
 
 A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
 
-A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.20.1, v0.20, all earlier runtime verifiers, and the v0.19 benchmark execution.
+A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v1.0-rc1, v0.21, v0.20.1, v0.20, all earlier runtime verifiers, and the v0.19 benchmark execution.
 
 A green `publication-static-smoke` job means the static repository paths can be served and fetched successfully from a clean GitHub-hosted runner.
 
@@ -544,6 +566,8 @@ python3 -m http.server 8000
 ```
 
 Then open `http://localhost:8000/`.
+
+For the release-candidate cross-browser evidence job, CI installs the pinned Playwright package and browser engines, runs `verify_public_structural_visualizer_browser_rc_v1_0_rc1.js`, and uploads exact-SHA/tree-bound JSON plus screenshots for Chromium, Firefox, and WebKit. Those screenshots demonstrate the structural visualizer only; they are not geometry evidence or accessibility certification.
 
 ## Scope of v0.20
 
