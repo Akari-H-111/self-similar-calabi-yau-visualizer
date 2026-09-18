@@ -23,7 +23,7 @@ This auxiliary function is defined on all of `ℂ`; the torus point itself
 supplies a nonzero evaluation point.  It is used only as the analytic bridge
 for the coordinate partial derivative.
 -/
-def laurentCoordinateSlice (κ : ℂ) (z : Torus4) (i : Fin 4) (t : ℂ) : ℂ :=
+noncomputable def laurentCoordinateSlice (κ : ℂ) (z : Torus4) (i : Fin 4) (t : ℂ) : ℂ :=
   t + laurentComplementSum z i +
     κ * (t * laurentComplementProduct z i)⁻¹
 
@@ -32,7 +32,7 @@ The derivative value produced directly by the one-variable derivative API.
 A later theorem rewrites it into the source formula
 `1 - κ / (z_i * ∏_j z_j)`.
 -/
-def laurentCoordinateDerivativeValue
+noncomputable def laurentCoordinateDerivativeValue
     (κ : ℂ) (z : Torus4) (i : Fin 4) : ℂ :=
   1 + κ *
     (-(laurentComplementProduct z i) /
@@ -98,9 +98,10 @@ theorem hasDerivAt_laurentCoordinateSlice
         (fun t : ℂ => (t * laurentComplementProduct z i)⁻¹)
         (-(laurentComplementProduct z i) /
           (((z i : ℂ) * laurentComplementProduct z i) ^ 2))
-        (z i : ℂ) :=
-    ((hasDerivAt_id' (x := (z i : ℂ))).mul_const
-      (laurentComplementProduct z i)).inv hden
+        (z i : ℂ) := by
+    simpa only [one_mul] using
+      ((hasDerivAt_id' (x := (z i : ℂ))).mul_const
+        (laurentComplementProduct z i)).inv hden
   have hreciprocal :
       HasDerivAt
         (fun t : ℂ =>
@@ -110,8 +111,15 @@ theorem hasDerivAt_laurentCoordinateSlice
             (((z i : ℂ) * laurentComplementProduct z i) ^ 2)))
         (z i : ℂ) :=
     HasDerivAt.const_mul κ hinv
-  simpa [laurentCoordinateSlice, laurentCoordinateDerivativeValue] using
-    hlinear.add hreciprocal
+  change HasDerivAt
+    (fun t : ℂ =>
+      (t + laurentComplementSum z i) +
+        κ * (t * laurentComplementProduct z i)⁻¹)
+    (1 + κ *
+      (-(laurentComplementProduct z i) /
+        (((z i : ℂ) * laurentComplementProduct z i) ^ 2)))
+    (z i : ℂ)
+  exact hlinear.add hreciprocal
 
 /--
 The genuine one-coordinate derivative is algebraically identical to the
@@ -213,7 +221,12 @@ theorem isLaurentCritical_pow_five_eq
     (z 0 : ℂ) *
       ((z 0 : ℂ) * (z 1 : ℂ) * (z 2 : ℂ) * (z 3 : ℂ)) = κ at h0
   rw [h1, h2, h3] at h0
-  simpa [pow_succ, pow_two] using h0
+  calc
+    (z 0 : ℂ) ^ 5 =
+        (z 0 : ℂ) *
+          ((z 0 : ℂ) * (z 0 : ℂ) * (z 0 : ℂ) * (z 0 : ℂ)) := by
+      ring
+    _ = κ := h0
 
 /-- The constant diagonal torus point with value `a`. -/
 def diagonalTorus (a : ℂˣ) : Torus4 := fun _ => a
@@ -265,25 +278,25 @@ theorem laurentW_eq_five_mul_of_isLaurentCritical
     (isLaurentCritical_pow_five_eq hcrit)
 
 /--
-A critical point lying on the level `λ` satisfies `λ = 5a`.
+A critical point lying on the level `lambda` satisfies `lambda = 5a`.
 -/
 theorem level_eq_five_mul_of_isLaurentCritical
-    {κ λ : ℂ} {z : Torus4}
-    (hlevel : laurentW κ z = λ)
+    {κ lambda : ℂ} {z : Torus4}
+    (hlevel : laurentW κ z = lambda)
     (hcrit : IsLaurentCritical κ z) :
-    λ = 5 * (z 0 : ℂ) := by
+    lambda = 5 * (z 0 : ℂ) := by
   rw [← hlevel]
   exact laurentW_eq_five_mul_of_isLaurentCritical hcrit
 
 /--
 Forward critical-value discriminant equation:
-a critical point on level `λ` forces `λ^5 = 5^5 κ`.
+a critical point on level `lambda` forces `lambda^5 = 5^5 κ`.
 -/
 theorem critical_on_level_implies_discriminant
-    {κ λ : ℂ} {z : Torus4}
-    (hlevel : laurentW κ z = λ)
+    {κ lambda : ℂ} {z : Torus4}
+    (hlevel : laurentW κ z = lambda)
     (hcrit : IsLaurentCritical κ z) :
-    λ ^ 5 = (5 : ℂ) ^ 5 * κ := by
+    lambda ^ 5 = (5 : ℂ) ^ 5 * κ := by
   have hlambda := level_eq_five_mul_of_isLaurentCritical hlevel hcrit
   have hpow := isLaurentCritical_pow_five_eq hcrit
   rw [hlambda, mul_pow, hpow]
@@ -304,42 +317,42 @@ theorem no_laurentCritical_zero (z : Torus4) :
 
 /--
 Converse in the nonzero regime: the critical-value equation constructs a
-diagonal torus critical point on level `λ`.
+diagonal torus critical point on level `lambda`.
 -/
 theorem exists_critical_on_level_of_discriminant
-    {κ λ : ℂ}
+    {κ lambda : ℂ}
     (hκ : κ ≠ 0)
-    (hdisc : λ ^ 5 = (5 : ℂ) ^ 5 * κ) :
-    ∃ z : Torus4, laurentW κ z = λ ∧ IsLaurentCritical κ z := by
+    (hdisc : lambda ^ 5 = (5 : ℂ) ^ 5 * κ) :
+    ∃ z : Torus4, laurentW κ z = lambda ∧ IsLaurentCritical κ z := by
   have h5 : (5 : ℂ) ≠ 0 := by norm_num
-  have haPow : (λ / 5) ^ 5 = κ := by
+  have haPow : (lambda / 5) ^ 5 = κ := by
     rw [div_pow, hdisc]
     field_simp [h5]
-  have ha0 : λ / 5 ≠ 0 := by
+  have ha0 : lambda / 5 ≠ 0 := by
     intro ha
     apply hκ
     rw [← haPow, ha]
     norm_num
-  let a : ℂˣ := Units.mk0 (λ / 5) ha0
+  let a : ℂˣ := Units.mk0 (lambda / 5) ha0
   refine ⟨diagonalTorus a, ?_, ?_⟩
   · rw [laurentW_diagonal_of_pow_five_eq κ a]
-    · change 5 * (λ / 5) = λ
+    · change 5 * (lambda / 5) = lambda
       field_simp [h5]
     · exact haPow
   · exact isLaurentCritical_diagonal_of_pow_five_eq κ a haPow
 
 /--
-For `κ ≠ 0`, a critical point occurs on level `λ` exactly when the
+For `κ ≠ 0`, a critical point occurs on level `lambda` exactly when the
 critical-value discriminant equation holds.
 
 This is a critical-value criterion only.  It is not a scheme-theoretic
 smoothness or Jacobian-criterion theorem.
 -/
 theorem exists_critical_on_level_iff_discriminant
-    {κ λ : ℂ}
+    {κ lambda : ℂ}
     (hκ : κ ≠ 0) :
-    (∃ z : Torus4, laurentW κ z = λ ∧ IsLaurentCritical κ z) ↔
-      λ ^ 5 = (5 : ℂ) ^ 5 * κ := by
+    (∃ z : Torus4, laurentW κ z = lambda ∧ IsLaurentCritical κ z) ↔
+      lambda ^ 5 = (5 : ℂ) ^ 5 * κ := by
   constructor
   · rintro ⟨z, hlevel, hcrit⟩
     exact critical_on_level_implies_discriminant hlevel hcrit
@@ -353,12 +366,12 @@ there is no Laurent critical point on the base fiber.
 No scheme-theoretic smoothness claim is made.
 -/
 theorem noCriticalPointOnBaseFiber
-    {κ λ : ℂ}
-    (hdisc : λ ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
-    ¬ ∃ z : Torus4, z ∈ baseFiber κ λ ∧ IsLaurentCritical κ z := by
+    {κ lambda : ℂ}
+    (hdisc : lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    ¬ ∃ z : Torus4, z ∈ baseFiber κ lambda ∧ IsLaurentCritical κ z := by
   rintro ⟨z, hlevel, hcrit⟩
   apply hdisc
   exact critical_on_level_implies_discriminant
-    ((mem_baseFiber_iff κ λ z).1 hlevel) hcrit
+    ((mem_baseFiber_iff κ lambda z).1 hlevel) hcrit
 
 end SelfSimilarCY
