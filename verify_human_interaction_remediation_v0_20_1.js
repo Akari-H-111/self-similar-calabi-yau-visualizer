@@ -50,7 +50,7 @@ for (const [relativePath, sha] of Object.entries(sealed)) {
 const appSource = read("app.js");
 assert.match(appSource, /const CAMERA_FOCUS_FALLBACK_ACTIONS = Object\.freeze/);
 assert.match(appSource, /function restoreCameraControlFocus\(action\)/);
-assert.match(appSource, /data-camera-action=.*String\\(action\\)/s);
+assert.ok(appSource.includes('`[data-camera-action="${String(action)}"]`'));
 assert.match(appSource, /restoreCameraControlFocus\(action\)/);
 assert.match(appSource, /"zoom-in",\s*"zoom-out",\s*"fit-visible",\s*"fit-selected",\s*"fit-focused"/s);
 assert.doesNotMatch(appSource, /camera.*(?:children|childNodes|nth-child)/i, "Camera focus restoration must not depend on DOM index.");
