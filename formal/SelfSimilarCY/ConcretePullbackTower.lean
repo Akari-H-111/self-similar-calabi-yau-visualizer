@@ -27,7 +27,8 @@ theorem concreteLevel_zero
     (D : ℕ) (κ lambda : ℂ) :
     concreteLevel D κ lambda 0 = baseFiber κ lambda := by
   ext z
-  simp [concreteLevel, baseFiber]
+  change stationaryLaurent κ lambda (D ^ 0) z = 0 ↔ laurentW κ z = lambda
+  simp only [pow_zero, stationaryLaurent_one, sub_eq_zero]
 
 /--
 Concrete pullback recurrence:
@@ -42,7 +43,7 @@ theorem concreteLevel_succ
     concreteLevel D κ lambda n.succ =
       torusCoordinatePower D ⁻¹' concreteLevel D κ lambda n := by
   ext z
-  simp only [concreteLevel, Set.mem_setOf_eq, Set.mem_preimage]
+  simp only [concreteLevel, Set.mem_ofPred_eq, Set.mem_preimage]
   rw [stationaryLaurent_torusCoordinatePower, pow_succ, Nat.mul_comm (D ^ n) D]
 
 end SelfSimilarCY
