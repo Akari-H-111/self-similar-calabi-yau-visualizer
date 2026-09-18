@@ -1,0 +1,50 @@
+{
+  "project": "Self-Similar Calabi-Yau Visualizer",
+  "thread": "19R",
+  "milestone": "Human Interaction Remediation",
+  "version": "v0.20.1",
+  "status": "implementation_candidate_pending_ci_and_browser_retest",
+  "starting_canonical": {
+    "commit": "3b2c8e2119a44db069f77e8106145e35126ac7b1",
+    "tree": "f8778b982b70703e0791a3ec6d59896ae59a6db0",
+    "formal_verification": {
+      "run_number": 115,
+      "run_id": 35325887351,
+      "conclusion": "success"
+    },
+    "pages": {
+      "run_number": 8,
+      "run_id": 35325886754,
+      "conclusion": "success"
+    }
+  },
+  "findings": {
+    "HIA_01": {
+      "name": "Reset Camera focus loss",
+      "repair": "named-action camera focus restoration"
+    },
+    "HIA_02": {
+      "name": "Collapse stale enabled state",
+      "repair": "disable collapse while presentation.collapsed"
+    },
+    "HIA_03": {
+      "name": "duplicated virtual-gap AX text",
+      "disposition": "deferred pending real screen-reader evidence"
+    }
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "W": "unresolved"
+  },
+  "sealed_modules_modified": false,
+  "formal_modified": false,
+  "browser_retest": "pending",
+  "staging": {
+    "branch": "thread19r-human-interaction-remediation-v0-20-1",
+    "pull_request": "pending_first_diff"
+  },
+  "thread19r_sealed": false
+}

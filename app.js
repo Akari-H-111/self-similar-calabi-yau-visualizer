@@ -425,15 +425,47 @@ function applyCameraAction(action) {
   applyStructuralCameraState();
 }
 
+const CAMERA_FOCUS_FALLBACK_ACTIONS = Object.freeze([
+  "zoom-in",
+  "zoom-out",
+  "fit-visible",
+  "fit-selected",
+  "fit-focused"
+]);
+
+function restoreCameraControlFocus(action) {
+  const primary = structuralCameraControlsElement.querySelector(
+    `[data-camera-action="${String(action)}"]`
+  );
+  if (primary && !primary.disabled && typeof primary.focus === "function") {
+    primary.focus();
+    return true;
+  }
+
+  for (const fallbackAction of CAMERA_FOCUS_FALLBACK_ACTIONS) {
+    const fallback = structuralCameraControlsElement.querySelector(
+      `[data-camera-action="${fallbackAction}"]`
+    );
+    if (fallback && !fallback.disabled && typeof fallback.focus === "function") {
+      fallback.focus();
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function handleCameraControlClick(event) {
   const control = event.target?.closest?.("[data-camera-action]");
   if (!control || !structuralCameraControlsElement.contains(control) || control.disabled) return;
 
+  const action = control.dataset.cameraAction;
   try {
-    applyCameraAction(control.dataset.cameraAction);
+    applyCameraAction(action);
+    restoreCameraControlFocus(action);
     statusElement.dataset.state = "ready";
     statusElement.textContent =
-      `Structural camera action ${control.dataset.cameraAction} applied. Camera scale ${structuralCameraModel.cameraScale.toFixed(3)}×; geometric zoom remains false.`;
+      `Structural camera action ${action} applied. Camera scale ${structuralCameraModel.cameraScale.toFixed(3)}×; geometric zoom remains false.`;
   } catch (error) {
     console.error("Structural camera transition rejected:", error);
     structuralCameraStatusElement.textContent = `Structural camera transition rejected: ${error.message}`;

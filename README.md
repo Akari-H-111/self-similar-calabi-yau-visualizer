@@ -279,6 +279,24 @@ Detailed contract:
 docs/VISUAL_SEMANTICS_ACCESSIBILITY_self_similar_cy_visualizer_v0_20.md
 ```
 
+
+## Thread 19R human interaction remediation
+
+A post-seal Chromium interaction audit of the exact v0.20 Pages artifact found two small presentation defects that static verification did not expose:
+
+- keyboard activation of `Reset camera` could disable the focused control and let browser focus fall to `body`;
+- after descendants were already collapsed, the Collapse control could remain enabled and repeat the same no-op transition/announcement.
+
+Thread 19R repairs only those presentation behaviors. Camera focus restoration uses semantic camera action names rather than DOM indices. If the activated camera control remains enabled it keeps focus; if it becomes disabled, focus moves deterministically to a named enabled camera control. The Collapse control is disabled whenever `interactionModel.presentation.collapsed` is already true.
+
+The remediation does not modify the sealed interaction controller, camera model, recursion engine, scene specification, arithmetic semantics, or `formal/*`. The lower-priority duplicated virtual-gap accessibility-tree wording remains unchanged pending real screen-reader evidence.
+
+Detailed contract:
+
+```text
+docs/HUMAN_INTERACTION_REMEDIATION_self_similar_cy_visualizer_v0_20_1.md
+```
+
 ## D=1 and representation safety
 
 The inherited scene validator currently accepts safe-integer `D >= 2`. Therefore `D=1` is rejected by the current runtime schema.

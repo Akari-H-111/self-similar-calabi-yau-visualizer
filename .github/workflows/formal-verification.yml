@@ -136,6 +136,9 @@ jobs:
       - name: Verify visual semantics and accessibility v0.20
         run: node verify_visual_semantics_accessibility_v0_20.js
 
+      - name: Verify human interaction remediation v0.20.1
+        run: node verify_human_interaction_remediation_v0_20_1.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -166,6 +169,7 @@ jobs:
           node --check verify_infinite_navigation_renderer_v0_19.js
           node --check benchmark_infinite_navigation_renderer_v0_19.js
           node --check verify_visual_semantics_accessibility_v0_20.js
+          node --check verify_human_interaction_remediation_v0_20_1.js
           node --check app.js
 
   publication-static-smoke:
