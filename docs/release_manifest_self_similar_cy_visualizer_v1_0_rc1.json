@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "project": "Self-Similar Calabi-Yau Visualizer",
+  "thread": "21",
+  "milestone": "Public Structural Visualizer Release Candidate",
+  "version": "v1.0-rc1",
+  "artifactRole": "pre-seal release-candidate manifest; live Git/GitHub objects are final authority",
+  "startingCanonical": {
+    "commit": "fab790ba49cdf9e7bf511e2d2b0df4aec1941b7d",
+    "tree": "bf381e519850a136d641ff3c985fcd0b6daf6d67",
+    "soleParent": "874a80f7702f85996eb893690cc34e7d8869161c",
+    "formalVerification": {
+      "runNumber": 136,
+      "runId": 35338164006,
+      "conclusion": "success"
+    },
+    "pages": {
+      "runNumber": 10,
+      "runId": 35338163353,
+      "conclusion": "success"
+    },
+    "openPullRequestCount": 0,
+    "thread20StagingPullRequest": {
+      "number": 14,
+      "state": "closed",
+      "merged": false
+    },
+    "immutableCheckpoint": {
+      "tag": "v0.13",
+      "commit": "e83ed17a5ce8e45e67ef326042a21ec51ba24222",
+      "immutable": true
+    }
+  },
+  "truthBoundary": {
+    "requestedDepth": 0,
+    "D": 2,
+    "W": "unresolved",
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  },
+  "releaseIdentity": {
+    "tag": "v1.0-rc1",
+    "prerelease": true,
+    "candidateCommit": "pending_external_exact_tree_freeze",
+    "candidateTree": "pending_external_exact_tree_freeze",
+    "canonicalCommit": "pending_external_exact_tree_replay",
+    "tagStatus": "pending_exact_main_ci_and_pages",
+    "githubReleaseStatus": "pending_exact_main_ci_and_pages"
+  },
+  "verification": {
+    "historicalVerifiers": "v0.03 through v0.21 retained",
+    "benchmark": "benchmark_infinite_navigation_renderer_v0_19.js",
+    "rcVerifier": "verify_public_structural_visualizer_rc_v1_0_rc1.js",
+    "browserVerifier": "verify_public_structural_visualizer_browser_rc_v1_0_rc1.js",
+    "browserEngines": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "browserEvidenceArtifact": "public-structural-visualizer-rc-v1.0-rc1-browser-evidence-<exact-sha>",
+    "screenshotAuthority": "release evidence only; not mathematical/runtime authority",
+    "freshHostedCheckout": "pending final candidate CI",
+    "formalLean": "pending final candidate CI",
+    "publicationStaticSmoke": "pending final candidate CI"
+  },
+  "knownLimitations": [
+    "W unresolved",
+    "no concrete geometry",
+    "no genuine sheets",
+    "no covering geometry",
+    "D2 not a sealed metric theorem",
+    "D4 not a sealed map-degree theorem",
+    "deferred arithmetic geometry unavailable",
+    "HIA-03 unresolved pending direct AT evidence",
+    "screen-reader certification absent unless directly tested",
+    "WCAG certification absent",
+    "browser support claims limited to exact engines actually exercised",
+    "benchmark horizons are engineering observations, not mathematical limits"
+  ],
+  "explicitNonClaims": [
+    "no geometry admission",
+    "no rendered Calabi-Yau hypersurface",
+    "no concrete inverse-image geometry",
+    "no geometric branches or fibers",
+    "no torsion/collision/divisor/cyclotomic locus rendering"
+  ]
+}
