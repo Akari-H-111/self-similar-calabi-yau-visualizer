@@ -88,8 +88,19 @@ const shifted = InfiniteNavigationRenderer.createStateFromSnapshot(snapshot, fir
   anchorDepth: 5000
 });
 assert.ok(shifted.presentationPool.recycledCount > 0, "Shifting the viewport must recycle presentation slots.");
-assert.equal(shifted.presentationPool.poolSize, first.presentationPool.poolSize, "Fixed viewport policy must not monotonically grow the pool.");
+assert.ok(shifted.presentationPool.poolSize <= shifted.configuredActiveBound, "Presentation pool high-water mark must remain viewport-policy bounded.");
 assert.ok(shifted.activeRenderedDepthCount <= shifted.configuredActiveBound);
+const roundTripEdge = InfiniteNavigationRenderer.createStateFromSnapshot(snapshot, shifted, {
+  anchorDepth: 10000
+});
+const roundTripMiddle = InfiniteNavigationRenderer.createStateFromSnapshot(snapshot, roundTripEdge, {
+  anchorDepth: 5000
+});
+assert.equal(
+  roundTripMiddle.presentationPool.poolSize,
+  shifted.presentationPool.poolSize,
+  "Repeated navigation after reaching the bounded high-water mark must not monotonically grow the pool."
+);
 for (const binding of shifted.presentationPool.bindings) {
   assert.deepEqual(Object.keys(binding).sort(), ["boundDepth", "slotId"], "Recycled bindings must be rebuilt without stale presentation metadata.");
 }
