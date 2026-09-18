@@ -308,7 +308,20 @@ integratedState = InfiniteNavigationRenderer.createInfiniteNavigationRendererSta
 );
 assert.ok(integratedState.activeRenderedDepths.includes(60));
 assert.ok(integratedState.activeRenderedDepths.includes(59), "Focused/selected predecessor must be retained for aligned D4 branch graphics.");
-assert.ok(integratedState.presentationPool.recycledCount > 0);
+assert.ok(
+  integratedState.presentationPool.poolSize <= integratedState.configuredActiveBound,
+  "Integrated renderer pool must remain bounded after deep selection/refocus."
+);
+assert.deepEqual(
+  integratedState.presentationPool.bindings.map((binding) => binding.boundDepth),
+  integratedState.activeRenderedDepths,
+  "Presentation slot bindings must exactly match the current active render depths without stale bindings."
+);
+assert.equal(
+  new Set(integratedState.presentationPool.bindings.map((binding) => binding.slotId)).size,
+  integratedState.presentationPool.bindings.length,
+  "Each active render binding must own a unique presentation slot."
+);
 assert.equal(interactionModel.selectedDepth, 60);
 assert.equal(interactionModel.focusedDepth, 60);
 
