@@ -86,64 +86,60 @@ theorem hasDerivAt_laurentCoordinateSlice
   have hden :
       (z i : ℂ) * laurentComplementProduct z i ≠ 0 :=
     mul_ne_zero hzi hP
-  have hlinear :
-      HasDerivAt
+  have hlinearDiff :
+      DifferentiableAt ℂ
         (fun t : ℂ => t + laurentComplementSum z i)
-        1
         (z i : ℂ) :=
-    (hasDerivAt_id' (x := (z i : ℂ))).add_const
-      (laurentComplementSum z i)
-  have hmul :
-      HasDerivAt
+    differentiableAt_id.add_const (laurentComplementSum z i)
+  have hmulDiff :
+      DifferentiableAt ℂ
         (fun t : ℂ => t * laurentComplementProduct z i)
-        (laurentComplementProduct z i)
         (z i : ℂ) :=
-    hasDerivAt_mul_const (x := (z i : ℂ))
-      (laurentComplementProduct z i)
-  have hinvRaw :
-      HasDerivAt
-        ((fun y : ℂ => y⁻¹) ∘
-          (fun t : ℂ => t * laurentComplementProduct z i))
-        (-( ((z i : ℂ) * laurentComplementProduct z i) ^ 2)⁻¹ *
-          laurentComplementProduct z i)
-        (z i : ℂ) :=
-    HasDerivAt.comp (𝕜 := ℂ) (z i : ℂ)
-      (hasDerivAt_inv hden) hmul
-  have hinv :
-      HasDerivAt
+    differentiableAt_id.mul_const (laurentComplementProduct z i)
+  have hinvDiff :
+      DifferentiableAt ℂ
         (fun t : ℂ => (t * laurentComplementProduct z i)⁻¹)
-        (-(laurentComplementProduct z i) /
-          (((z i : ℂ) * laurentComplementProduct z i) ^ 2))
-        (z i : ℂ) := by
-    convert hinvRaw using 1
-    · field_simp [hden]
-      ring
-  have hscale :
-      HasDerivAt
-        (fun y : ℂ => κ * y)
-        κ
-        (((z i : ℂ) * laurentComplementProduct z i)⁻¹) :=
-    hasDerivAt_const_mul (x :=
-      (((z i : ℂ) * laurentComplementProduct z i)⁻¹)) κ
-  have hreciprocal :
-      HasDerivAt
+        (z i : ℂ) :=
+    hmulDiff.inv hden
+  have hscaledDiff :
+      DifferentiableAt ℂ
         (fun t : ℂ =>
           κ * (t * laurentComplementProduct z i)⁻¹)
-        (κ *
+        (z i : ℂ) :=
+    hinvDiff.const_mul κ
+  have hdiff :
+      DifferentiableAt ℂ (laurentCoordinateSlice κ z i) (z i : ℂ) := by
+    unfold laurentCoordinateSlice
+    exact hlinearDiff.add hscaledDiff
+  have hderivInv :
+      deriv
+        (fun t : ℂ => (t * laurentComplementProduct z i)⁻¹)
+        (z i : ℂ) =
+        -(laurentComplementProduct z i) /
+          (((z i : ℂ) * laurentComplementProduct z i) ^ 2) := by
+    rw [deriv_fun_inv'' hmulDiff hden, deriv_mul_const_field]
+    simp
+  have hderivScaled :
+      deriv
+        (fun t : ℂ =>
+          κ * (t * laurentComplementProduct z i)⁻¹)
+        (z i : ℂ) =
+        κ *
           (-(laurentComplementProduct z i) /
-            (((z i : ℂ) * laurentComplementProduct z i) ^ 2)))
-        (z i : ℂ) := by
-    simpa only [Function.comp_apply] using
-      HasDerivAt.comp (𝕜 := ℂ) (z i : ℂ) hscale hinv
-  change HasDerivAt
-    (fun t : ℂ =>
-      (t + laurentComplementSum z i) +
-        κ * (t * laurentComplementProduct z i)⁻¹)
-    (1 + κ *
-      (-(laurentComplementProduct z i) /
-        (((z i : ℂ) * laurentComplementProduct z i) ^ 2)))
-    (z i : ℂ)
-  exact hlinear.add hreciprocal
+            (((z i : ℂ) * laurentComplementProduct z i) ^ 2)) := by
+    rw [deriv_const_mul_field, hderivInv]
+  have hderivLinear :
+      deriv
+        (fun t : ℂ => t + laurentComplementSum z i)
+        (z i : ℂ) = 1 := by
+    rw [deriv_add_const, deriv_id'']
+  have hderiv :
+      deriv (laurentCoordinateSlice κ z i) (z i : ℂ) =
+        laurentCoordinateDerivativeValue κ z i := by
+    unfold laurentCoordinateSlice laurentCoordinateDerivativeValue
+    rw [deriv_fun_add hlinearDiff hscaledDiff, hderivLinear, hderivScaled]
+  rw [← hderiv]
+  exact hdiff.hasDerivAt
 
 /--
 The genuine one-coordinate derivative is algebraically identical to the
