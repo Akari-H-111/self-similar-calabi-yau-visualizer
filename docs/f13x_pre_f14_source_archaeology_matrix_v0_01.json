@@ -212,11 +212,9 @@
     "genericManifoldSubmersion": "EXPENSIVE"
   },
   "missingF14Hypotheses": [
-    "ContDiffAt or HasStrictFDerivAt for laurentWPoint at torus points",
-    "conversion from existing Function.Surjective differential to differential.range = ⊤",
-    "project-specific instantiation of HasStrictFDerivAt.implicitFunction",
-    "local identification of implicit parametrization with the Laurent level set/baseFiber",
-    "optional packaging as local graph / regular-level / submanifold theorem only after the above"
+    "canonical F14 integration of the now-proven-feasible ContDiffAt / HasStrictFDerivAt bridge",
+    "local identification of the pinned implicit parametrization with the Laurent level set/baseFiber",
+    "optional packaging as local graph / regular-level / submanifold theorem only after local identification"
   ],
   "decisionMatrix": [
     {
@@ -312,7 +310,7 @@
     {
       "id": 19,
       "question": "pinned mathlib exact API sufficient?",
-      "status": "PARTIAL"
+      "status": "PASS"
     },
     {
       "id": 20,
@@ -327,7 +325,7 @@
     {
       "id": 22,
       "question": "anything worth merging from F13x?",
-      "status": "DEFERRED"
+      "status": "PARTIAL"
     },
     {
       "id": 23,
@@ -335,17 +333,50 @@
       "status": "PASS"
     }
   ],
-  "verdict": "PASS WITH CONDITIONS — F14 may begin after F13x provenance matrix is sealed and an isolated pinned-API feasibility probe is completed.",
-  "mergePolicy": "DO NOT MERGE by default; archaeology documentation may be proposed later as provenance-only material.",
+  "verdict": "PASS — F14 may begin with reusable source/regression components; the historical executable verifier remains NOT FOUND and regression-only.",
+  "mergePolicy": "DO NOT MERGE the feasibility probe into canonical main merely for convenience. Archaeology/provenance documentation may be proposed separately if desired.",
   "nextAction": {
-    "kind": "isolated feasibility probe",
-    "modifySealedF13Modules": false,
-    "addRegressionHarnessNow": false,
-    "chain": [
+    "kind": "open formal F14",
+    "canonicalBase": "c64443eff3eae8853cbdcae972d7e6772c10f701",
+    "useF13xBranchAsCanonicalParent": false,
+    "preferredRoute": "ambient Point4 finite-dimensional IFT",
+    "steps": [
+      "integrate the minimum C¹ / strict-derivative bridge required by F14",
+      "reuse sealed F13 surjectivity and range=top conversion",
+      "instantiate pinned implicit-function machinery",
+      "identify the implicit parametrization locally with baseFiber",
+      "package only the justified local graph / regular-level conclusion"
+    ],
+    "addRegressionHarnessNow": false
+  },
+  "feasibilityProbeReceipt": {
+    "branch": "formal-f13x-pre-f14-source-archaeology",
+    "probeCommit": "56672f6865a5ff97331c57b2abe9b01b31ea29b9",
+    "probeTree": "edcd7732d2e7727a10c7e020330d500368e957d0",
+    "module": "formal/SelfSimilarCY/F13xImplicitFeasibility.lean",
+    "moduleBlob": "66efbaab636840ffd3e57df2b10ea2fecfbc1e16",
+    "importedByCanonicalRoot": false,
+    "stagingPullRequest": 24,
+    "formalVerification": {
+      "runNumber": 167,
+      "runId": 35386660141,
+      "headSha": "56672f6865a5ff97331c57b2abe9b01b31ea29b9",
+      "conclusion": "success"
+    },
+    "compiledChain": [
       "laurentWPoint",
-      "ContDiffAt / HasStrictFDerivAt",
-      "range = ⊤ from existing surjectivity",
-      "HasStrictFDerivAt.implicitFunction"
+      "ContDiffAt ℂ 1 at torus points",
+      "HasStrictFDerivAt with laurentTotalDifferential",
+      "Function.Surjective ⇒ differential.range = ⊤",
+      "HasStrictFDerivAt.implicitFunction",
+      "HasStrictFDerivAt.implicitToOpenPartialHomeomorph"
+    ],
+    "semanticBoundary": [
+      "not a local-graph theorem",
+      "not a regular-value theorem",
+      "not a smooth-submanifold theorem",
+      "not a manifold-submersion theorem",
+      "not scheme-theoretic smoothness"
     ]
   }
 }
