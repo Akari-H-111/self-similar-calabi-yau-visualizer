@@ -12,7 +12,7 @@ The source-backed Laurent function on the four-dimensional complex torus:
 The level parameter `λ` is intentionally not part of this definition.
 No nonzero assumption on `κ` is required.
 -/
-def laurentW (κ : ℂ) (z : Torus4) : ℂ :=
+noncomputable def laurentW (κ : ℂ) (z : Torus4) : ℂ :=
   (∑ i, (z i : ℂ)) + κ / (∏ i, (z i : ℂ))
 
 @[simp]
