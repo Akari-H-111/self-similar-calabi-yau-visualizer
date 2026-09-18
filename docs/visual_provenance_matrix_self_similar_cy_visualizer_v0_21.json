@@ -1,0 +1,607 @@
+{
+  "schemaVersion": 1,
+  "project": "Self-Similar Calabi-Yau Visualizer",
+  "thread": "20",
+  "milestone": "Mathematical / Visual Fidelity Audit II",
+  "version": "v0.21",
+  "planningSource": "PLAN_self_similar_cy_visualizer_v0_02.md (external planning source; not repository canonical runtime authority)",
+  "startingCanonical": {
+    "commit": "874a80f7702f85996eb893690cc34e7d8869161c",
+    "tree": "d818e6a0c9aa04711fefc8f298140a0676c29f7a"
+  },
+  "truthBoundary": {
+    "requestedDepth": 0,
+    "D": 2,
+    "W": "unresolved",
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  },
+  "evidenceClasses": [
+    "lean_formalized",
+    "runtime_metadata",
+    "structural_representation",
+    "formal_theorem_backed_symbolic",
+    "source_backed_structural_representation",
+    "interaction_metadata",
+    "presentation_virtualization",
+    "presentation_camera_state",
+    "unresolved",
+    "not_materialized",
+    "engineering"
+  ],
+  "visuals": [
+    {
+      "id": "structural_level_node",
+      "visualElement": "X_n structural level node",
+      "module": "structural-visualization.js",
+      "runtimeSourceInput": "recursiveModel.levels plus selected/focused interaction metadata",
+      "canonicalSourceArtifacts": [
+        "recursive-lazy-expansion.js",
+        "formal/SelfSimilarCY/PullbackTower.lean"
+      ],
+      "evidenceClass": "structural_representation",
+      "renderedWording": [
+        "base structural level",
+        "materialized structural descriptor"
+      ],
+      "machineReadableEvidence": [
+        "data-structural-node-depth",
+        "data-selected",
+        "data-focused",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false,
+        "sheetsMaterialized": false
+      },
+      "explicitNonClaims": [
+        "rendered manifold",
+        "Calabi-Yau hypersurface copy",
+        "geometric component"
+      ],
+      "verificationCoverage": [
+        "verify_structural_visualization_v0_14.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "structural_pullback_edge",
+      "visualElement": "P_D^-1 structural edge",
+      "module": "structural-visualization.js",
+      "runtimeSourceInput": "recursive level inverse_image relation",
+      "canonicalSourceArtifacts": [
+        "recursive-lazy-expansion.js",
+        "formal/SelfSimilarCY/PullbackTower.lean"
+      ],
+      "evidenceClass": "formal_theorem_backed_symbolic",
+      "renderedWording": [
+        "P_D⁻¹ · structural relation"
+      ],
+      "machineReadableEvidence": [
+        "data-structural-edge",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false,
+        "sheetsMaterialized": false,
+        "coveringStructureClaimed": false
+      },
+      "explicitNonClaims": [
+        "literal rendered inverse image",
+        "covering map",
+        "etale morphism",
+        "fiber map",
+        "geometric branch"
+      ],
+      "verificationCoverage": [
+        "verify_structural_visualization_v0_14.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "structural_rule_panel",
+      "visualElement": "symbolic recurrence / closed-form rule panel",
+      "module": "structural-visualization.js",
+      "runtimeSourceInput": "structural visualization rule descriptor",
+      "canonicalSourceArtifacts": [
+        "formal/SelfSimilarCY/CoordinatePower.lean",
+        "formal/SelfSimilarCY/CoordinatePowerIteration.lean",
+        "formal/SelfSimilarCY/PullbackTower.lean"
+      ],
+      "evidenceClass": "formal_theorem_backed_symbolic",
+      "renderedWording": [
+        "Symbolic structural rule"
+      ],
+      "machineReadableEvidence": [
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false
+      },
+      "explicitNonClaims": [
+        "concrete W geometry",
+        "Calabi-Yau realization",
+        "geometric orbit"
+      ],
+      "verificationCoverage": [
+        "verify_structural_visualization_v0_14.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "d2_runtime_metadata",
+      "visualElement": "D² runtime metadata",
+      "module": "exposition-layer.js / index.html",
+      "runtimeSourceInput": "scene.derived.metricScale",
+      "canonicalSourceArtifacts": [
+        "scene-spec.js"
+      ],
+      "evidenceClass": "runtime_metadata",
+      "renderedWording": [
+        "D² runtime metadata",
+        "Not a sealed metric theorem"
+      ],
+      "machineReadableEvidence": [
+        "data-exposition-field=D2",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "geometricZoomApplied": false
+      },
+      "explicitNonClaims": [
+        "P_D pullback metric theorem",
+        "camera scale",
+        "geometric zoom"
+      ],
+      "verificationCoverage": [
+        "verify_mathematical_fidelity_v0_11.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "d4_organization_metadata",
+      "visualElement": "D⁴ organization metadata value",
+      "module": "exposition-layer.js / sheet-branch-organization.js",
+      "runtimeSourceInput": "scene.derived.sheetDegree",
+      "canonicalSourceArtifacts": [
+        "scene-spec.js",
+        "sheet-branch-organization.js"
+      ],
+      "evidenceClass": "runtime_metadata",
+      "renderedWording": [
+        "D⁴ organization metadata",
+        "Not a sealed map-degree theorem"
+      ],
+      "machineReadableEvidence": [
+        "data-exposition-field=D4",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "sheetsMaterialized": false,
+        "coveringStructureClaimed": false,
+        "geometryRendered": false
+      },
+      "explicitNonClaims": [
+        "genuine map-degree theorem",
+        "concrete sheets",
+        "fibers",
+        "covering geometry"
+      ],
+      "verificationCoverage": [
+        "verify_sheet_branch_organization_v0_08.js",
+        "verify_mathematical_fidelity_v0_11.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "d4_aggregate_badge",
+      "visualElement": "D⁴ org ×N aggregate badge",
+      "module": "branch-organization-graphics.js",
+      "runtimeSourceInput": "sheet_branch_organization renderer output / scene.derived.sheetDegree",
+      "canonicalSourceArtifacts": [
+        "sheet-branch-organization.js",
+        "branch-organization-graphics.js"
+      ],
+      "evidenceClass": "source_backed_structural_representation",
+      "renderedWording": [
+        "D⁴ org",
+        "Aggregate structural metadata only; no concrete sheets or geometry are materialized."
+      ],
+      "machineReadableEvidence": [
+        "data-branch-depth",
+        "data-branch-multiplicity",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "sheetsMaterialized": false,
+        "coveringStructureClaimed": false,
+        "geometryRendered": false
+      },
+      "explicitNonClaims": [
+        "multiplicity-sized sheet DOM enumeration",
+        "genuine sheets",
+        "covering geometry",
+        "degree proof"
+      ],
+      "verificationCoverage": [
+        "verify_branch_organization_graphics_v0_17.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "coordinate_channels_annotation",
+      "visualElement": "coordinate channels symbolic annotation",
+      "module": "arithmetic-overlay-graphics.js",
+      "runtimeSourceInput": "coordinate_channels descriptor",
+      "canonicalSourceArtifacts": [
+        "arithmetic-overlays.js",
+        "formal/SelfSimilarCY/CoordinatePower.lean"
+      ],
+      "evidenceClass": "source_backed_structural_representation",
+      "renderedWording": [
+        "coords",
+        "structural"
+      ],
+      "machineReadableEvidence": [
+        "data-arithmetic-overlay-id=coordinate_channels",
+        "data-evidence-class=source_backed_structural_representation",
+        "data-source-artifact"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false,
+        "sheetsMaterialized": false,
+        "coveringStructureClaimed": false
+      },
+      "explicitNonClaims": [
+        "four geometric fibers",
+        "arithmetic locus",
+        "materialized preimage"
+      ],
+      "verificationCoverage": [
+        "verify_arithmetic_overlays_v0_09.js",
+        "verify_arithmetic_overlay_graphics_v0_18.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "coordinate_iterate_rule_annotation",
+      "visualElement": "coordinate iterate rule symbolic annotation",
+      "module": "arithmetic-overlay-graphics.js",
+      "runtimeSourceInput": "coordinate_iterate_rule descriptor",
+      "canonicalSourceArtifacts": [
+        "arithmetic-overlays.js",
+        "formal/SelfSimilarCY/CoordinatePowerIteration.lean"
+      ],
+      "evidenceClass": "formal_theorem_backed_symbolic",
+      "renderedWording": [
+        "iterate",
+        "Lean rule"
+      ],
+      "machineReadableEvidence": [
+        "data-arithmetic-overlay-id=coordinate_iterate_rule",
+        "data-evidence-class=formal_theorem",
+        "data-theorem-identity=coordinatePower_iterate_apply",
+        "data-source-artifact"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false,
+        "sheetsMaterialized": false,
+        "coveringStructureClaimed": false
+      },
+      "explicitNonClaims": [
+        "orbit trajectory",
+        "geometric locus",
+        "materialized inverse image"
+      ],
+      "verificationCoverage": [
+        "verify_arithmetic_overlays_v0_09.js",
+        "verify_arithmetic_overlay_graphics_v0_18.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "deferred_arithmetic_candidates",
+      "visualElement": "cyclotomic / torsion / collision / delta_n candidate overlays",
+      "module": "arithmetic-overlays.js",
+      "runtimeSourceInput": "DEFERRED_CANDIDATES",
+      "canonicalSourceArtifacts": [
+        "arithmetic-overlays.js"
+      ],
+      "evidenceClass": "unresolved",
+      "renderedWording": [],
+      "machineReadableEvidence": [
+        "deferred candidate catalog; no graphical admission"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false
+      },
+      "explicitNonClaims": [
+        "placeholder point cloud",
+        "torsion marker",
+        "collision curve",
+        "divisor",
+        "cyclotomic geometric decoration"
+      ],
+      "verificationCoverage": [
+        "verify_arithmetic_overlays_v0_09.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "virtual_gap",
+      "visualElement": "bounded omitted-level gap text",
+      "module": "structural-visualization.js / infinite-navigation-renderer.js",
+      "runtimeSourceInput": "active render window",
+      "canonicalSourceArtifacts": [
+        "infinite-navigation-renderer.js"
+      ],
+      "evidenceClass": "presentation_virtualization",
+      "renderedWording": [
+        "materialized structural levels view-pruned",
+        "intermediate materialized levels omitted from the active render window"
+      ],
+      "machineReadableEvidence": [
+        "render-window datasets",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false
+      },
+      "explicitNonClaims": [
+        "missing mathematical levels",
+        "uncomputed recursion",
+        "broken pullback chain"
+      ],
+      "verificationCoverage": [
+        "verify_infinite_navigation_renderer_v0_19.js",
+        "verify_visual_semantics_accessibility_v0_20.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "frontier_view_pruned",
+      "visualElement": "view-pruned continuation frontier",
+      "module": "structural-visualization.js",
+      "runtimeSourceInput": "virtualized render window",
+      "canonicalSourceArtifacts": [
+        "infinite-navigation-renderer.js",
+        "structural-visualization.js"
+      ],
+      "evidenceClass": "presentation_virtualization",
+      "renderedWording": [
+        "presentation-visible structural levels continue outside the active render window"
+      ],
+      "machineReadableEvidence": [
+        "data-frontier-status=view_pruned",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false
+      },
+      "explicitNonClaims": [
+        "semantic frontier",
+        "nonexistent level"
+      ],
+      "verificationCoverage": [
+        "verify_infinite_navigation_renderer_v0_19.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "frontier_presentation_collapsed",
+      "visualElement": "presentation-collapsed continuation frontier",
+      "module": "structural-visualization.js",
+      "runtimeSourceInput": "interactionModel.presentation.collapsedDepth",
+      "canonicalSourceArtifacts": [
+        "interactive-pullback-tower.js",
+        "structural-visualization.js"
+      ],
+      "evidenceClass": "interaction_metadata",
+      "renderedWording": [
+        "materialized, hidden by presentation collapse"
+      ],
+      "machineReadableEvidence": [
+        "data-frontier-status=presentation_collapsed",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false
+      },
+      "explicitNonClaims": [
+        "deleted level",
+        "unmaterialized level"
+      ],
+      "verificationCoverage": [
+        "verify_interactive_pullback_tower_v0_15.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "frontier_not_materialized",
+      "visualElement": "not-materialized continuation frontier",
+      "module": "structural-visualization.js",
+      "runtimeSourceInput": "recursive materializedDepth < requestedDepth",
+      "canonicalSourceArtifacts": [
+        "recursive-lazy-expansion.js",
+        "structural-visualization.js"
+      ],
+      "evidenceClass": "not_materialized",
+      "renderedWording": [
+        "not materialized"
+      ],
+      "machineReadableEvidence": [
+        "data-frontier-status=not_materialized",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false,
+        "sheetsMaterialized": false
+      },
+      "explicitNonClaims": [
+        "mathematical nonexistence",
+        "geometric emptiness"
+      ],
+      "verificationCoverage": [
+        "verify_recursive_lazy_expansion_v0_06.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "frontier_requested_reached",
+      "visualElement": "requested structural frontier reached",
+      "module": "structural-visualization.js + visual-provenance.js",
+      "runtimeSourceInput": "continuation.status=requested_frontier_reached",
+      "canonicalSourceArtifacts": [
+        "recursive-lazy-expansion.js",
+        "structural-visualization.js"
+      ],
+      "evidenceClass": "engineering",
+      "renderedWording": [
+        "requested structural frontier reached"
+      ],
+      "machineReadableEvidence": [
+        "v0.21 data-frontier-status=requested_frontier_reached",
+        "data-visual-provenance-id=frontier_requested_reached"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false
+      },
+      "explicitNonClaims": [
+        "end of mathematical tower",
+        "literal infinity boundary"
+      ],
+      "verificationCoverage": [
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "selected_state",
+      "visualElement": "selected structural level styling",
+      "module": "interactive-pullback-tower.js / structural-visualization.js",
+      "runtimeSourceInput": "selectedDepth",
+      "canonicalSourceArtifacts": [
+        "interactive-pullback-tower.js"
+      ],
+      "evidenceClass": "interaction_metadata",
+      "renderedWording": [
+        "selected"
+      ],
+      "machineReadableEvidence": [
+        "data-selected",
+        "aria-pressed",
+        "v0.21 data-selection-evidence-class"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false
+      },
+      "explicitNonClaims": [
+        "distinguished mathematical component",
+        "preferred branch"
+      ],
+      "verificationCoverage": [
+        "verify_interactive_pullback_tower_v0_15.js",
+        "verify_visual_semantics_accessibility_v0_20.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "focused_state",
+      "visualElement": "focused structural level styling",
+      "module": "zoom-semantics.js / structural-visualization.js",
+      "runtimeSourceInput": "focusedDepth",
+      "canonicalSourceArtifacts": [
+        "zoom-semantics.js",
+        "interactive-pullback-tower.js"
+      ],
+      "evidenceClass": "interaction_metadata",
+      "renderedWording": [
+        "focused"
+      ],
+      "machineReadableEvidence": [
+        "data-focused",
+        "aria-pressed",
+        "v0.21 data-focus-evidence-class"
+      ],
+      "truthfulnessFlags": {
+        "geometricZoomApplied": false
+      },
+      "explicitNonClaims": [
+        "geometric focus",
+        "special fiber",
+        "metric zoom"
+      ],
+      "verificationCoverage": [
+        "verify_zoom_semantics_v0_07.js",
+        "verify_visual_semantics_accessibility_v0_20.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "camera_state",
+      "visualElement": "structural camera viewport state",
+      "module": "structural-camera.js",
+      "runtimeSourceInput": "cameraScale / SVG viewBox",
+      "canonicalSourceArtifacts": [
+        "structural-camera.js"
+      ],
+      "evidenceClass": "presentation_camera_state",
+      "renderedWording": [
+        "presentation-only viewport navigation",
+        "geometric zoom remains false"
+      ],
+      "machineReadableEvidence": [
+        "data-camera-scale",
+        "data-camera-transform-applied",
+        "data-geometric-zoom-applied=false",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "geometricZoomApplied": false,
+        "geometryRendered": false,
+        "sheetsMaterialized": false,
+        "coveringStructureClaimed": false
+      },
+      "explicitNonClaims": [
+        "D² metric scale",
+        "geometric zoom",
+        "mathematical deformation"
+      ],
+      "verificationCoverage": [
+        "verify_structural_camera_zoom_v0_16.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    },
+    {
+      "id": "w_status",
+      "visualElement": "W representation status",
+      "module": "index.html / app.js",
+      "runtimeSourceInput": "scene.mathematics.baseHypersurface.definingFunction.representation",
+      "canonicalSourceArtifacts": [
+        "data/system.json",
+        "scene-spec.js"
+      ],
+      "evidenceClass": "unresolved",
+      "renderedWording": [
+        "Unresolved by the current visualizer"
+      ],
+      "machineReadableEvidence": [
+        "data-exposition-field=W",
+        "v0.21 data-visual-provenance-id"
+      ],
+      "truthfulnessFlags": {
+        "geometryRendered": false
+      },
+      "explicitNonClaims": [
+        "placeholder W geometry",
+        "sampled hypersurface",
+        "invented contour or mesh"
+      ],
+      "verificationCoverage": [
+        "verify_scene_spec_v0_03.js",
+        "verify_mathematical_visual_fidelity_v0_21.js"
+      ]
+    }
+  ]
+}
