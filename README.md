@@ -395,7 +395,7 @@ Lean: leanprover/lean4:v4.34.0
 mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
 ```
 
-v0.19 adds no Lean theorem and changes no formal file, toolchain pin, or mathlib pin.
+v0.20 adds no Lean theorem and changes no formal file, toolchain pin, or mathlib pin.
 
 ## Verification
 
@@ -420,17 +420,20 @@ node verify_branch_organization_graphics_v0_17.js
 node verify_arithmetic_overlay_graphics_v0_18.js
 node verify_infinite_navigation_renderer_v0_19.js
 node benchmark_infinite_navigation_renderer_v0_19.js
+node verify_visual_semantics_accessibility_v0_20.js
 ```
 
 The v0.19 verifier checks sealed semantic blob identity, deterministic render-window construction, bounded active render count, presentation-slot recycling, bounded recomputable cache behavior, deep floating-origin descriptors, off-window selection and camera targeting, structural/interaction virtualization, explicit D⁴ reprojection, arithmetic coexistence, truthfulness flags, source discipline, and CI wiring.
 
-The current Thread 18 staging CI evidence is recorded in the v0.19 state/progress artifacts. Those artifacts intentionally do not self-certify the final seal.
+The v0.20 verifier additionally checks semantic-focus/DOM-focus separation, deterministic focus restoration without DOM indices or presentation-slot identity, bounded virtualized assistive text, native-control preservation, browser-zoom-safe camera guards, single-live-region discipline, forced-colors/reduced-motion hooks, responsive structural-canvas policy, truthfulness invariants, and full v0.03-v0.20 workflow wiring.
+
+The current Thread 19 staging CI evidence is recorded in the v0.20 state/progress artifacts. Those artifacts intentionally do not self-certify the final seal.
 
 ## What green CI means
 
 A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
 
-A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.19 and all earlier runtime verifiers plus the v0.19 benchmark execution.
+A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.20, all earlier runtime verifiers, and the v0.19 benchmark execution.
 
 A green `publication-static-smoke` job means the static repository paths can be served and fetched successfully from a clean GitHub-hosted runner.
 
@@ -460,12 +463,12 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000/`.
 
-## Scope of v0.19
+## Scope of v0.20
 
-v0.19 is **Thread 18 — Infinite-Navigation Rendering Engine**.
+v0.20 is **Thread 19 — Visual Semantics & Accessibility Audit**.
 
-It adds presentation virtualization, floating-origin deep navigation, bounded presentation pooling/recycling, bounded derived-layout caching, and deterministic reprojection orchestration above the existing sealed semantic/runtime layers.
+It repairs presentation accessibility without changing mathematical/runtime authority: deterministic focus continuity across virtualized rerenders, bounded assistive text for omitted render-window gaps, browser/page-priority zoom and scroll handling, native keyboard camera alternatives, single-live-region announcement discipline, forced-colors/reduced-motion hooks, and narrow-viewport structural-canvas readability.
 
-It does not add a second recursion engine, new mathematics, concrete `W`, Calabi–Yau geometry, genuine sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision/divisor geometry, geometric zoom, metric scaling, or a new Lean theorem.
+It does not add a second recursion engine, new mathematics, concrete `W`, Calabi–Yau geometry, genuine sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision/divisor geometry, geometric zoom, metric scaling, or a new Lean theorem. It also does not claim WCAG certification, full screen-reader support, quantitative contrast certification, 200%/400% browser-zoom certification, or all-browser support; those evidence classes remain explicitly `not_tested` where no reliable browser/AT evidence exists.
 
-The final v0.19 state/progress artifacts are intentionally non-self-certifying. Thread 18 is sealed only after the exact final staging tree passes CI, PR #11 is closed unmerged, that exact tree is replayed as exactly one child of the Thread 17 canonical commit `f1b2a0a43aae609574be795f5e3a89fe3e53fcc0`, `main` is fast-forwarded without force, and exact-main Formal Verification plus exact-SHA Pages both succeed.
+The final v0.20 state/progress artifacts are intentionally non-self-certifying. Thread 19 is sealed only after the exact final staging tree passes CI, PR #12 is closed unmerged, that exact tree is replayed as exactly one child of the Thread 18 canonical commit `5c45dd74e53cde06e30ae70ecd97171f7012cf0d`, `main` is fast-forwarded without force, and exact-main Formal Verification plus exact-SHA Pages both succeed.

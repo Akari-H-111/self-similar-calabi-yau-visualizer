@@ -206,7 +206,24 @@ Thread 19 does not claim WCAG certification, full screen-reader support, or all-
 
 All earlier v0.03-v0.19 verifiers remain authoritative and are not weakened.
 
-## 17. Seal authority
+## 17. Pre-final staging evidence
+
+The implementation candidate before final artifact synchronization is:
+
+```text
+head: dcc3bb1871e926ca45fbcd9897c3cd23c5ecbdf3
+tree: f262f6cf07f5506df6ee0ec6c898ccde0cc7445d
+Formal Verification run #113 / 35325277713
+
+runtime-contracts        = success
+formal-lean              = success
+publication-static-smoke = success
+v0.03 through v0.20      = success
+```
+
+This evidence predates the final documentation synchronization and therefore does not certify the final staging tree.
+
+## 18. Seal authority
 
 This document does not self-certify Thread 19.
 
