@@ -93,15 +93,38 @@ theorem hasDerivAt_laurentCoordinateSlice
         (z i : ℂ) :=
     (hasDerivAt_id' (x := (z i : ℂ))).add_const
       (laurentComplementSum z i)
+  have hmul :
+      HasDerivAt
+        (fun t : ℂ => t * laurentComplementProduct z i)
+        (laurentComplementProduct z i)
+        (z i : ℂ) :=
+    hasDerivAt_mul_const (x := (z i : ℂ))
+      (laurentComplementProduct z i)
+  have hinvRaw :
+      HasDerivAt
+        ((fun y : ℂ => y⁻¹) ∘
+          (fun t : ℂ => t * laurentComplementProduct z i))
+        (-( ((z i : ℂ) * laurentComplementProduct z i) ^ 2)⁻¹ *
+          laurentComplementProduct z i)
+        (z i : ℂ) :=
+    HasDerivAt.comp (𝕜 := ℂ) (z i : ℂ)
+      (hasDerivAt_inv hden) hmul
   have hinv :
       HasDerivAt
         (fun t : ℂ => (t * laurentComplementProduct z i)⁻¹)
         (-(laurentComplementProduct z i) /
           (((z i : ℂ) * laurentComplementProduct z i) ^ 2))
         (z i : ℂ) := by
-    simpa only [one_mul] using
-      ((hasDerivAt_id' (x := (z i : ℂ))).mul_const
-        (laurentComplementProduct z i)).inv hden
+    convert hinvRaw using 1
+    · field_simp [hden]
+      ring
+  have hscale :
+      HasDerivAt
+        (fun y : ℂ => κ * y)
+        κ
+        (((z i : ℂ) * laurentComplementProduct z i)⁻¹) :=
+    hasDerivAt_const_mul (x :=
+      (((z i : ℂ) * laurentComplementProduct z i)⁻¹)) κ
   have hreciprocal :
       HasDerivAt
         (fun t : ℂ =>
@@ -109,8 +132,9 @@ theorem hasDerivAt_laurentCoordinateSlice
         (κ *
           (-(laurentComplementProduct z i) /
             (((z i : ℂ) * laurentComplementProduct z i) ^ 2)))
-        (z i : ℂ) :=
-    HasDerivAt.const_mul κ hinv
+        (z i : ℂ) := by
+    simpa only [Function.comp_apply] using
+      HasDerivAt.comp (𝕜 := ℂ) (z i : ℂ) hscale hinv
   change HasDerivAt
     (fun t : ℂ =>
       (t + laurentComplementSum z i) +
