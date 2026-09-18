@@ -1,0 +1,72 @@
+{
+  "project": "Self-Similar Calabi-Yau Visualizer",
+  "thread": "20",
+  "milestone": "Mathematical / Visual Fidelity Audit II",
+  "version": "v0.21",
+  "status": "implemented_pending_staging_ci_and_final_evidence",
+  "starting_canonical": {
+    "commit": "874a80f7702f85996eb893690cc34e7d8869161c",
+    "tree": "d818e6a0c9aa04711fefc8f298140a0676c29f7a",
+    "formal_verification": {
+      "run_number": 121,
+      "run_id": 35329509282,
+      "conclusion": "success"
+    },
+    "pages": {
+      "run_number": 9,
+      "run_id": 35329508086,
+      "conclusion": "success"
+    },
+    "open_pr_count": 0
+  },
+  "findings": {
+    "MVF_01": {
+      "name": "visible version drift",
+      "disposition": "repaired in index.html as v0.21 audit label"
+    },
+    "MVF_02": {
+      "name": "requested_frontier_reached lacked symmetric machine-readable frontier status",
+      "disposition": "repaired by presentation-only visual-provenance.js adapter"
+    },
+    "MVF_03": {
+      "name": "no centralized durable visual provenance matrix",
+      "disposition": "repaired by docs/visual_provenance_matrix_self_similar_cy_visualizer_v0_21.json"
+    }
+  },
+  "truthfulness_invariants": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "W": "unresolved"
+  },
+  "production_boundary": {
+    "new_adapter": "visual-provenance.js",
+    "app_blob_unchanged": "4b5767b5f5fae9fac25d042e777b150a2ef92c38",
+    "infinite_navigation_renderer_blob_unchanged": "b463a0bb230cde4fd78d26a9d754b83290caa8f0",
+    "sealed_semantic_modules_modified": false,
+    "formal_modified": false,
+    "geometry_admission": false
+  },
+  "browser_evidence": {
+    "v0_21_spot_check": "not_tested",
+    "actual_screen_reader": "not_tested",
+    "WCAG_certification": false,
+    "all_browser_support": "not_tested"
+  },
+  "staging": {
+    "branch": "thread20-mathematical-visual-fidelity-audit-ii-v0-21",
+    "pull_request": 14,
+    "pull_request_state": "open_draft",
+    "role": "CI vehicle only; do not merge",
+    "final_exact_tree_ci": "pending"
+  },
+  "canonicalization": {
+    "close_pr_unmerged": "pending",
+    "exact_tree_replay": "pending",
+    "main_fast_forward": "pending",
+    "exact_main_formal_verification": "pending",
+    "exact_sha_pages": "pending"
+  },
+  "thread20_sealed": false
+}
