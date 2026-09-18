@@ -194,6 +194,81 @@ h3 { font-size: 1rem; }
   overflow-wrap: anywhere;
 }
 
+.arithmetic-overlay-controls {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0 0 0.9rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, CanvasText 20%, transparent);
+  border-radius: 0.85rem;
+}
+
+.arithmetic-overlay-controls legend {
+  padding: 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.arithmetic-overlay-controls label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: start;
+  cursor: pointer;
+}
+
+.arithmetic-overlay-controls input {
+  margin-top: 0.22rem;
+}
+
+.arithmetic-overlay-controls input:focus-visible {
+  outline: 0.18rem solid currentColor;
+  outline-offset: 0.2rem;
+}
+
+.arithmetic-overlay-controls span {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.arithmetic-overlay-controls small {
+  color: color-mix(in srgb, CanvasText 72%, transparent);
+  line-height: 1.35;
+}
+
+.arithmetic-overlay-annotation rect {
+  fill: Canvas;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.arithmetic-overlay-annotation__primary,
+.arithmetic-overlay-annotation__secondary,
+.arithmetic-overlay-annotation__status {
+  fill: currentColor;
+}
+
+.arithmetic-overlay-annotation__primary {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.arithmetic-overlay-annotation__secondary {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.arithmetic-overlay-annotation__status {
+  font-size: 8.5px;
+  font-weight: 700;
+  opacity: 0.72;
+}
+
 .structural-visualization {
   overflow: hidden;
   border: 1px solid color-mix(in srgb, CanvasText 22%, transparent);
@@ -457,6 +532,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monos
   .interaction-level-row { grid-template-columns: 1fr; }
   .structural-camera { padding: 0.7rem; }
   .structural-camera-toolbar button { flex: 1 1 10rem; }
+  .arithmetic-overlay-controls { padding: 0.75rem; }
 
   .system-data > div {
     grid-template-columns: 1fr;
