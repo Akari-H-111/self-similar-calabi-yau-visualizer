@@ -49,5 +49,6 @@ theorem stationaryLaurent_torusCoordinatePower
           κ / ((∏ i, (z i : ℂ)) ^ (D * N)) - lambda
   rw [← Finset.prod_pow]
   simp only [← pow_mul]
+  rw [Finset.prod_pow]
 
 end SelfSimilarCY
