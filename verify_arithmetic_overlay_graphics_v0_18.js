@@ -29,6 +29,9 @@ const appSource = fs.readFileSync(path.join(repositoryRoot, "app.js"), "utf8");
 const indexSource = fs.readFileSync(path.join(repositoryRoot, "index.html"), "utf8");
 const styleSource = fs.readFileSync(path.join(repositoryRoot, "style.css"), "utf8");
 const workflowSource = fs.readFileSync(path.join(repositoryRoot, ".github", "workflows", "formal-verification.yml"), "utf8");
+const contractSource = fs.readFileSync(path.join(repositoryRoot, "docs", "ARITHMETIC_OVERLAY_GRAPHICS_self_similar_cy_visualizer_v0_18.md"), "utf8");
+const progressSource = fs.readFileSync(path.join(repositoryRoot, "docs", "progress_self_similar_cy_visualizer_v0_18.md"), "utf8");
+const stateArtifact = JSON.parse(fs.readFileSync(path.join(repositoryRoot, "docs", "state_self_similar_cy_visualizer_v0_18.json"), "utf8"));
 
 function cloneScene(scene = canonicalScene) {
   return JSON.parse(JSON.stringify(scene));
@@ -509,6 +512,58 @@ assert.ok(workflowSource.includes("node verify_arithmetic_overlay_graphics_v0_18
 assert.ok(workflowSource.includes("node --check arithmetic-overlay-graphics.js"));
 assert.ok(workflowSource.includes("node --check verify_arithmetic_overlay_graphics_v0_18.js"));
 assert.ok(workflowSource.includes("arithmetic-overlay-graphics.js"));
+
+assert.equal(stateArtifact.version, "v0.18");
+assert.equal(stateArtifact.thread, 17);
+assert.equal(stateArtifact.milestone, "Arithmetic Overlay Graphics");
+assert.equal(stateArtifact.starting_canonical.commit, "10a315458b7321ee0f48e553d533c3519fd99916");
+assert.equal(stateArtifact.starting_canonical.tree, "c9917ee4cf6ce750c5320f94e42f3ef33b0506f6");
+assert.deepEqual(stateArtifact.implementation.supported_overlay_ids, [
+  "coordinate_channels",
+  "coordinate_iterate_rule"
+]);
+assert.equal(stateArtifact.implementation.second_arithmetic_engine_added, false);
+assert.equal(stateArtifact.implementation.new_lean_theorem, false);
+assert.equal(stateArtifact.sealed_semantic_modules_modified, false);
+assert.equal(stateArtifact.canonical_scene.requestedDepth, 0);
+assert.equal(stateArtifact.canonical_scene.D, 2);
+assert.equal(stateArtifact.canonical_scene.W, "unresolved");
+assert.equal(stateArtifact.staging.pull_request, 10);
+assert.equal(stateArtifact.staging.final_exact_tree_ci, "pending_after_final_artifact_sync");
+assert.equal(stateArtifact.staging.pull_request_closed_unmerged, "pending");
+assert.equal(stateArtifact.canonicalization.exact_verified_tree_replay_as_single_child, "pending");
+assert.equal(stateArtifact.canonicalization.main_fast_forward, "pending");
+assert.equal(stateArtifact.canonicalization.exact_main_formal_verification, "pending");
+assert.equal(stateArtifact.canonicalization.exact_sha_pages, "pending");
+assert.equal(stateArtifact.thread17_sealed, false);
+assert.equal(stateArtifact.pre_final_artifact_ci.workflow_run_number, 89);
+assert.equal(stateArtifact.pre_final_artifact_ci.runtime_contracts, "success");
+assert.equal(stateArtifact.pre_final_artifact_ci.formal_lean, "success");
+assert.equal(stateArtifact.pre_final_artifact_ci.publication_static_smoke, "success");
+
+for (const marker of [
+  "Starting canonical provenance",
+  "Reused arithmetic semantics",
+  "Deferred candidates remain deferred",
+  "Independent toggle state",
+  "Camera and lifecycle integration",
+  "Truthfulness invariants",
+  "Seal authority"
+]) {
+  assert.ok(contractSource.includes(marker), `v0.18 contract must include ${marker}.`);
+}
+
+for (const marker of [
+  "Pre-final-artifact CI",
+  "Regression found and repaired",
+  "Final artifact sync status",
+  "Thread 17 is not sealed"
+]) {
+  assert.ok(progressSource.includes(marker), `v0.18 progress must include ${marker}.`);
+}
+assert.ok(progressSource.includes("final exact staging tree CI = pending"));
+assert.ok(progressSource.includes("exact-main Formal Verification = pending"));
+assert.ok(progressSource.includes("exact-SHA Pages = pending"));
 
 assert.equal(canonicalScene.request.requestedDepth, 0);
 assert.equal(canonicalScene.mathematics.parameters.D, 2);
