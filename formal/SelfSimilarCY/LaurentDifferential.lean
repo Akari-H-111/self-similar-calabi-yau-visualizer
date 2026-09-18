@@ -82,6 +82,9 @@ theorem laurentTotalDifferential_apply_single
           (fun t : ℂ => laurentWPoint κ (Function.update z.toPoint4 i t))
           (z i : ℂ) =
         laurentTotalDifferential κ z (Pi.single i (1 : ℂ)) := by
+    change
+      deriv (laurentWPoint κ ∘ Function.update z.toPoint4 i) (z i : ℂ) =
+        laurentTotalDifferential κ z (Pi.single i (1 : ℂ))
     rw [fderiv_comp_deriv
       (z i : ℂ)
       (by
