@@ -2,3 +2,5 @@ import SelfSimilarCY.Basic
 import SelfSimilarCY.CoordinatePower
 import SelfSimilarCY.CoordinatePowerIteration
 import SelfSimilarCY.PullbackTower
+import SelfSimilarCY.Torus4
+import SelfSimilarCY.TorusCoordinatePower
