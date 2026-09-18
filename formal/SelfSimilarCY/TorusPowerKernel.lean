@@ -60,7 +60,7 @@ def torusPowerKernelMulEquivRootsOfUnity (D : ℕ) :
   invFun r :=
     ⟨fun i => (r i : ℂˣ),
       (mem_torusCoordinatePowerKernel_iff D _).2 fun i =>
-        (mem_rootsOfUnity D (r i)).1 (r i).2⟩
+        (r i).2⟩
   left_inv z := by
     apply Subtype.ext
     funext i
