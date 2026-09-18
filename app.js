@@ -314,7 +314,7 @@ function renderInteractionState(anchorDepth = undefined) {
   reconcileStructuralCamera(StructuralVisualization.createStructuralLayoutDescriptor(structuralVisualizationModel));
   InfiniteNavigationRenderer.applyRendererStateToTarget(infiniteNavigationRenderState, structuralVisualizationElement);
 
-  InfiniteNavigationRenderer.projectBranchOrganizationGraphics(
+  InfiniteNavigationRenderer.projectOrganizationBadges(
     sheetBranchElement,
     structuralVisualizationElement
   );

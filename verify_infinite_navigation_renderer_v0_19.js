@@ -239,6 +239,10 @@ assert.equal(
   false,
   "Thread 18 app integration must preserve the v0.17 sibling-layer decoupling contract."
 );
+assert.ok(
+  read("app.js").includes("InfiniteNavigationRenderer.projectOrganizationBadges("),
+  "app.js must use the neutral v0.19 renderer lifecycle entry point for D4 badge reprojection."
+);
 
 const overlayModel = ArithmeticOverlays.createArithmeticOverlayModel(
   runtimeScene,

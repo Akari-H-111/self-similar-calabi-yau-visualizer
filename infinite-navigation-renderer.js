@@ -452,7 +452,7 @@
     return state;
   }
 
-  function projectBranchOrganizationGraphics(organizationTarget, structuralTarget) {
+  function projectOrganizationBadges(organizationTarget, structuralTarget) {
     const api = globalObject.BranchOrganizationGraphics;
     if (!api || typeof api.projectRenderedOrganization !== "function") {
       throw new TypeError("Infinite navigation renderer requires the sealed BranchOrganizationGraphics projection API.");
@@ -500,7 +500,7 @@
     createInteractionPresentationOptions,
     describeVirtualDepth,
     renderVirtualizedInteractionPresentation,
-    projectBranchOrganizationGraphics,
+    projectOrganizationBadges,
     applyRendererStateToTarget
   });
 
