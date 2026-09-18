@@ -139,6 +139,9 @@ jobs:
       - name: Verify human interaction remediation v0.20.1
         run: node verify_human_interaction_remediation_v0_20_1.js
 
+      - name: Verify mathematical / visual fidelity audit II v0.21
+        run: node verify_mathematical_visual_fidelity_v0_21.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -156,6 +159,7 @@ jobs:
           node --check arithmetic-overlays.js
           node --check arithmetic-overlay-graphics.js
           node --check exposition-layer.js
+          node --check visual-provenance.js
           node --check verify_performance_infinite_navigation_v0_10.js
           node --check benchmark_performance_infinite_navigation_v0_10.js
           node --check verify_mathematical_fidelity_v0_11.js
@@ -170,6 +174,7 @@ jobs:
           node --check benchmark_infinite_navigation_renderer_v0_19.js
           node --check verify_visual_semantics_accessibility_v0_20.js
           node --check verify_human_interaction_remediation_v0_20_1.js
+          node --check verify_mathematical_visual_fidelity_v0_21.js
           node --check app.js
 
   publication-static-smoke:
@@ -216,6 +221,7 @@ jobs:
             arithmetic-overlays.js \
             arithmetic-overlay-graphics.js \
             exposition-layer.js \
+            visual-provenance.js \
             app.js; do
             curl -fsS "http://127.0.0.1:8000/${resource}" >/dev/null
           done
@@ -232,7 +238,8 @@ jobs:
           grep -Fq 'presentation-only structural camera' /tmp/publication-index.html
           grep -Fq 'D⁴ Branch Organization Graphics' /tmp/publication-index.html
           grep -Fq '16-fold structural organization' /tmp/publication-index.html
-          grep -Fq 'v0.20 · Visual Semantics &amp; Accessibility Audit' /tmp/publication-index.html
+          grep -Fq 'v0.21 · Mathematical / Visual Fidelity Audit II' /tmp/publication-index.html
+          grep -Fq 'visual_provenance_matrix_self_similar_cy_visualizer_v0_21.json' /tmp/publication-index.html
           grep -Fq 'v0.19 · Infinite-Navigation Rendering Engine' /tmp/publication-index.html
           grep -Fq 'Symbolic arithmetic overlays' /tmp/publication-index.html
           grep -Fq 'Coordinate iterate rule' /tmp/publication-index.html
