@@ -1,12 +1,12 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v0.17 — D⁴ Branch Organization Graphics
+**Current version:** v0.18 — Arithmetic Overlay Graphics
 
 **Published checkpoint:** v0.13 — Publication Checkpoint
 
 **Runtime scene contract:** v0.12
 
-This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.17 adds a presentation-only aggregate graphical encoding for the already-existing D⁴ organizational multiplicity metadata, layered over the sealed v0.16 structural camera and v0.15 interactive pullback tower.
+This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.18 adds presentation-only, source-backed symbolic arithmetic annotations for the already-supported v0.09 arithmetic overlay semantics, layered over the sealed v0.17 D⁴ branch graphics, v0.16 structural camera, and v0.15 interactive pullback tower.
 
 The interface is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric zoom.
 
@@ -42,36 +42,36 @@ published / immutable / not prerelease
 
 The repository is licensed under the **Apache License, Version 2.0** (`Apache-2.0`). The `LICENSE` file remains the operative grant.
 
-## Thread 16 starting canonical baseline
+## Thread 17 starting canonical baseline
 
-Thread 16 starts from sealed Thread 15 canonical `main`:
+Thread 17 starts from sealed Thread 16 canonical `main`:
 
 ```text
 commit:
-49ece02ada3a3f4aba2077fa86fd494df3c8188a
+10a315458b7321ee0f48e553d533c3519fd99916
 
 tree:
-9a9f1ea776789fb4f9a02b0c43b59f2ac6c3cbf2
+c9917ee4cf6ce750c5320f94e42f3ef33b0506f6
 
 sole parent:
-d40e938c318a8389baccb58223c9f057217ba018
+49ece02ada3a3f4aba2077fa86fd494df3c8188a
 
 commit message:
-visualization: seal Thread 15 structural camera zoom v0.16
+visualization: seal Thread 16 D4 branch organization graphics v0.17
 ```
 
 Inherited external evidence rechecked before implementation:
 
 ```text
-Formal Verification run #76 / 35253648915
-head SHA 49ece02ada3a3f4aba2077fa86fd494df3c8188a
+Formal Verification run #82 / 35257740985
+head SHA 10a315458b7321ee0f48e553d533c3519fd99916
 conclusion = success
 
-Pages run 35253643964
-head SHA 49ece02ada3a3f4aba2077fa86fd494df3c8188a
+Pages run 35257739889
+head SHA 10a315458b7321ee0f48e553d533c3519fd99916
 conclusion = success
 
-Thread 15 staging PR #8
+Thread 16 staging PR #9
 closed / merged=false / draft CI vehicle only
 ```
 
@@ -124,6 +124,67 @@ Detailed contract:
 
 ```text
 docs/D4_BRANCH_ORGANIZATION_GRAPHICS_self_similar_cy_visualizer_v0_17.md
+```
+
+## v0.18 arithmetic overlay graphics
+
+The new presentation-only adapter is:
+
+```text
+arithmetic-overlay-graphics.js
+```
+
+It consumes the already-verified `arithmetic_overlays` model output and the existing structural layout descriptor:
+
+```text
+sealed arithmetic overlay semantics
+  -> read-only v0.18 graphical projection
+  -> structural layout anchors
+  -> symbolic SVG annotations
+  -> existing structural SVG
+  -> existing structural camera viewBox
+```
+
+The only admitted graphical overlays are the two identifiers already implemented by v0.09:
+
+```text
+coordinate_channels
+coordinate_iterate_rule
+```
+
+`coordinate_channels` is rendered as source-backed structural coordinate-channel annotation metadata. `coordinate_iterate_rule` is rendered as a symbolic focused-level annotation backed by the sealed `coordinatePower_iterate_apply` Lean theorem identity.
+
+Each graphical annotation exposes machine-readable evidence/provenance, including overlay id, evidence class, source artifact/version, attachment kind/depth, and false geometry/sheet/covering flags.
+
+The controls are independently toggleable. Their state is presentation/view-request state only:
+
+```text
+arithmetic overlay presentation state
+!= recursive depth
+!= structural focus
+!= selected/collapsed state
+!= camera state
+!= D⁴ organization
+!= geometric zoom
+```
+
+The v0.18 graphics layer does not recalculate `D`, `D^n`, `D²`, or `D⁴`; it consumes the structured v0.09 descriptors. Camera actions do not mutate arithmetic payloads, and arithmetic toggles do not move the camera or materialize recursion.
+
+The deferred v0.09 candidates remain unavailable to the graphical allow-list:
+
+```text
+cyclotomic_refinement
+torsion_labels
+collision_classes
+delta_n_divisor
+```
+
+No placeholder locus or speculative geometry is drawn for them.
+
+Detailed contract:
+
+```text
+docs/ARITHMETIC_OVERLAY_GRAPHICS_self_similar_cy_visualizer_v0_18.md
 ```
 
 ## D=1 and representation safety
@@ -242,7 +303,7 @@ Lean: leanprover/lean4:v4.34.0
 mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
 ```
 
-v0.17 adds no Lean theorem and changes no formal file, toolchain pin, or mathlib pin.
+v0.18 adds no Lean theorem and changes no formal file, toolchain pin, or mathlib pin.
 
 ## Verification
 
@@ -264,25 +325,18 @@ node verify_structural_visualization_v0_14.js
 node verify_interactive_pullback_tower_v0_15.js
 node verify_structural_camera_zoom_v0_16.js
 node verify_branch_organization_graphics_v0_17.js
+node verify_arithmetic_overlay_graphics_v0_18.js
 ```
 
-The v0.17 verifier checks exact multiplicity reuse, aggregate-only DOM encoding, no second D⁴ engine, deterministic output, D=1 schema handling, interaction isolation, camera isolation, truthfulness flags, browser integration, source discipline, and CI wiring.
+The v0.18 verifier checks canonical semantic reuse, the four independent-toggle combinations, provenance/evidence exposure, runtime and camera isolation, deterministic markup, rerender replacement without duplicate accumulation, structural attachment, D⁴ badge coexistence, deferred-overlay admission discipline, truthfulness flags, browser integration contracts, source discipline, and CI wiring.
 
-Pre-final-artifact staging run #79 (`35256652594`) passed:
-
-```text
-runtime-contracts        = success
-formal-lean              = success
-publication-static-smoke = success
-```
-
-All runtime verifiers v0.03 through v0.17 passed in that run.
+The current Thread 17 staging CI evidence is recorded in the v0.18 state/progress artifacts. Those artifacts intentionally do not self-certify the final seal.
 
 ## What green CI means
 
 A green `formal-lean` job means the explicitly scoped Lean modules build, direct compilation succeeds, and the placeholder gate passes.
 
-A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.17 and all earlier runtime verifiers.
+A green `runtime-contracts` job means the JavaScript contracts and claim-discipline verifiers pass, including v0.18 and all earlier runtime verifiers.
 
 A green `publication-static-smoke` job means the static repository paths can be served and fetched successfully from a clean GitHub-hosted runner.
 
@@ -312,10 +366,10 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000/`.
 
-## Scope of v0.17
+## Scope of v0.18
 
-v0.17 is **Thread 16 — D⁴ Branch Organization Graphics**.
+v0.18 is **Thread 17 — Arithmetic Overlay Graphics**.
 
-It adds truthful aggregate organization graphics only. It does not implement concrete `W`, Calabi–Yau geometry, genuine D⁴ sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision geometry, metric scaling, Canvas/WebGL/Three.js geometry, an infinite-navigation rendering engine, or a new Lean theorem.
+It adds graphical projection only for arithmetic overlay semantics already admitted and provenance-backed in the canonical repository. It does not add new arithmetic semantics, concrete `W`, Calabi–Yau geometry, genuine sheets, covering/étale/fiber geometry, cyclotomic/torsion/collision/divisor geometry, metric scaling, an infinite-navigation rendering engine, or a new Lean theorem.
 
-The final v0.17 state/progress artifacts are intentionally non-self-certifying. Thread 16 is sealed only after the exact final staging tree passes CI, PR #9 is closed unmerged, that exact tree is replayed as one child of the Thread 15 canonical commit, `main` is fast-forwarded, and exact-main Formal Verification plus exact-SHA Pages both succeed.
+The final v0.18 state/progress artifacts are intentionally non-self-certifying. Thread 17 is sealed only after the exact final staging tree passes CI, PR #10 is closed unmerged, that exact tree is replayed as one child of the Thread 16 canonical commit `10a315458b7321ee0f48e553d533c3519fd99916`, `main` is fast-forwarded, and exact-main Formal Verification plus exact-SHA Pages both succeed.
