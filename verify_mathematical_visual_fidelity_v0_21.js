@@ -155,7 +155,7 @@ assert.equal(branchGraphics.sheetDegreePerStep, 16);
 assert.equal(branchGraphics.truthfulness.geometryRendered, false);
 assert.equal(branchGraphics.truthfulness.sheetsMaterialized, false);
 assert.equal(branchGraphics.truthfulness.coveringStructureClaimed, false);
-assert.equal(branchGraphics.representationPolicy.badgeCountDependsOnMultiplicity, false);
+assert.equal(branchGraphics.domEncoding.badgeCountDependsOnMultiplicity, false);
 const branchMarkup = BranchOrganizationGraphics.buildBadgeMarkup(branchGraphics);
 assert.match(branchMarkup, /Aggregate structural metadata only; no concrete sheets or geometry are materialized/);
 assert.ok(branchGraphics.badgeCount < branchGraphics.sheetDegreePerStep || branchGraphics.badgeCount === 0);
