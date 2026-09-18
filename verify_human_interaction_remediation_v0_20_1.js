@@ -71,6 +71,7 @@ for (let index = 0; index < 24; index += 1) {
 }
 interaction = InteractivePullbackTower.selectDepth(interaction, 20);
 interaction = InteractivePullbackTower.refocusDepth(interaction, 20);
+const retainedSemanticLevelCountBeforeCollapse = interaction.recursiveModel.levels.length;
 
 let rendererState = InfiniteNavigationRenderer.createInfiniteNavigationRendererState(
   interaction,
@@ -102,7 +103,11 @@ assert.match(target.innerHTML, />Reveal collapsed levels<\/button>/);
 assert.equal(interaction.presentation.collapsed, true);
 assert.equal(interaction.presentation.visibleDepth, 20);
 assert.equal(interaction.materializedDepth, 24);
-assert.equal(interaction.recursiveModel.levels.length, 25);
+assert.equal(
+  interaction.recursiveModel.levels.length,
+  retainedSemanticLevelCountBeforeCollapse,
+  "Presentation collapse must not delete retained semantic levels."
+);
 
 for (const truth of [
   'geometryRendered = false',
