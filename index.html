@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="base-geometric-renderer.css">
   <link rel="stylesheet" href="geometric-pullback-renderer.css">
+  <link rel="stylesheet" href="hybrid-navigation.css">
   <script src="scene-spec.js" defer></script>
   <script src="base-renderer.js" defer></script>
   <script src="one-step-pullback.js" defer></script>
@@ -35,6 +36,8 @@
   <script src="geometric-pullback-renderer.js" defer></script>
   <script src="geometric-pullback-runtime.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="hybrid-navigation-semantics.js" defer></script>
+  <script src="hybrid-navigation-runtime.js" defer></script>
 </head>
 <body>
   <main class="shell">
@@ -46,9 +49,36 @@
       <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. Thread 14 interaction semantics alone do not perform a camera transform or geometric zoom. Thread 15 camera operations change only the SVG viewport. Thread 16 adds aggregate graphical badges for D⁴ structural organization multiplicity; the badges do not enumerate concrete sheets, claim covering geometry, or promote D⁴ runtime metadata into a map-degree theorem. Thread 17 adds symbolic/runtime arithmetic annotations only; it does not draw arithmetic loci, fibers, divisors, torsion sets, collision sets, or geometric preimages. Thread 18 bounds presentation objects and derived layout cache entries only; it does not prune retained semantic levels or turn virtual coordinates into geometric claims.</p>
       <p class="section-note"><strong>Historical v1.0-rc1 release boundary:</strong> This release candidate provides an interactive structural visualizer. The rendered graphics are structural and symbolic. No concrete Calabi–Yau hypersurface geometry is currently rendered. <code>W</code> remains unresolved. Browser screenshots are release evidence for the structural UI, not mathematical authority.</p>
       <p class="boundary-note"><strong>Thread 24 geometric admission:</strong> The new independent panel below evaluates the admitted <code>W_kappa_torus4_v1</code>, deterministically constructs validated finite <code>X_0</code> samples, and renders only the sealed Thread 23 projection <code>(Re(z1), Im(z1))</code>. It does not materialize sheets, claim a covering, apply geometric zoom, or render any <code>X_n</code> with positive depth.</p>
+      <p class="boundary-note"><strong>Thread 26 hybrid navigation:</strong> Structural and finite geometric representations now share an explicit navigation surface at the tower-stage level only. Structural depth and geometric rendered depth remain independent. No structural node is identified with a geometric point, no root tuple is promoted to a sheet, projected overlap does not identify source objects, and navigation remains distinct from geometric zoom.</p>
     </header>
 
-    <section aria-labelledby="structural-visualization-title" class="structural-section">
+    <section aria-labelledby="hybrid-navigation-title" id="hybrid-navigation" class="hybrid-navigation" data-state="loading" data-representation-mode="structural" data-sheets-materialized="false" data-covering-structure-claimed="false" data-geometric-zoom-applied="false">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Thread 26 · composition / orchestration</p>
+          <h2 id="hybrid-navigation-title">Hybrid structural / geometric navigation</h2>
+        </div>
+        <p class="section-note">Choose an active navigation context without reinterpreting either representation. Shared correspondence is limited to an admitted tower-stage index. Structural descriptors are not geometric points, and finite geometric points are not structural nodes or sheets.</p>
+      </div>
+      <div class="hybrid-navigation__toolbar" role="group" aria-label="Representation mode">
+        <button type="button" data-hybrid-mode="structural" aria-pressed="true">Structural</button>
+        <button type="button" data-hybrid-mode="geometric" aria-pressed="false">Geometric</button>
+      </div>
+      <div class="hybrid-navigation__state">
+        <p><strong>Representation:</strong> <span data-hybrid-field="representation">Loading…</span></p>
+        <p><strong>Structural depth:</strong> <span data-hybrid-field="structural-depth">Loading…</span></p>
+        <p><strong>Geometric depth:</strong> <span data-hybrid-field="geometric-depth">Loading…</span></p>
+        <p><strong>Correspondence:</strong> <span data-hybrid-field="correspondence">Loading…</span></p>
+      </div>
+      <div class="hybrid-navigation__stage-actions" role="group" aria-label="Explicit same-stage navigation">
+        <button type="button" data-hybrid-action="structural-to-geometric" disabled>Locate geometric stage</button>
+        <button type="button" data-hybrid-action="geometric-to-structural" disabled>Locate structural stage</button>
+      </div>
+      <p id="hybrid-geometric-selection" class="hybrid-navigation__selection">No geometric point selected. Stage correspondence does not create point identity.</p>
+      <p class="structural-boundary-caption">Representation switching, stage locating, selection, and highlighting are navigation/presentation operations only. They do not trigger geometric generation, do not bypass the exact 10,000-point cap, do not materialize sheets or covering structure, and do not set <code>geometricZoomApplied=true</code>.</p>
+    </section>
+
+    <section aria-labelledby="structural-visualization-title" class="structural-section" data-hybrid-panel="structural" data-hybrid-active="true">
       <div class="section-heading">
         <div>
           <p class="section-kicker">Interactive structure</p>
@@ -84,7 +114,7 @@
       <p id="structural-boundary-caption" class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. D⁴ badges denote exact aggregate structural organization multiplicity only. At D=2 this can communicate 16-fold structural organization with one badge per visible transition, not sixteen fake geometric sheets. Arithmetic markers are symbolic annotations with explicit evidence/provenance, not geometric arithmetic loci. Selection, focus, collapse, arithmetic overlay toggles, and camera state remain separate presentation/runtime domains. Camera scale is presentation-only viewport state.</p>
     </section>
 
-    <section aria-labelledby="base-geometric-label" class="base-geometric-section">
+    <section aria-labelledby="base-geometric-label" class="base-geometric-section" data-hybrid-panel="geometric" data-hybrid-active="false">
       <div class="section-heading">
         <div>
           <p class="section-kicker">Thread 24 · admitted base geometry</p>
@@ -98,7 +128,7 @@
       <p class="structural-boundary-caption">Each rendered mark means one validated finite sample <code>z ∈ X_0</code>, displayed at <code>(Re(z1), Im(z1))</code>. A finite sample is not the complete <code>X_0</code>; projection overlap is not a source self-intersection; two quadratic roots are not sheets; viewport fitting is presentation-only and is not D² metric scaling or geometric zoom.</p>
     </section>
 
-    <section aria-labelledby="geometric-pullback-label" class="geometric-pullback-section">
+    <section aria-labelledby="geometric-pullback-label" class="geometric-pullback-section" data-hybrid-panel="geometric" data-hybrid-active="false">
       <div class="section-heading">
         <div>
           <p class="section-kicker">Thread 25 · admitted finite pullback geometry</p>

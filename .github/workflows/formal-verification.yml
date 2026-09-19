@@ -211,6 +211,9 @@ jobs:
       - name: Verify geometric pullback visualization v0.01
         run: node verify_geometric_pullback_visualization_v0_01.js
 
+      - name: Verify hybrid structural / geometric navigation v0.01
+        run: node verify_hybrid_navigation_v0_01.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -265,6 +268,10 @@ jobs:
           node --check geometric-pullback-runtime.js
           node --check verify_geometric_pullback_visualization_v0_01.js
           node --check verify_geometric_pullback_browser_v0_01.js
+          node --check hybrid-navigation-semantics.js
+          node --check hybrid-navigation-runtime.js
+          node --check verify_hybrid_navigation_v0_01.js
+          node --check verify_hybrid_navigation_browser_v0_01.js
           node --check app.js
 
   publication-static-smoke:
@@ -326,6 +333,9 @@ jobs:
             geometric-pullback-renderer.js \
             geometric-pullback-runtime.js \
             geometric-pullback-renderer.css \
+            hybrid-navigation-semantics.js \
+            hybrid-navigation-runtime.js \
+            hybrid-navigation.css \
             app.js; do
             curl -fsS "http://127.0.0.1:8000/${resource}" >/dev/null
           done
@@ -336,12 +346,14 @@ jobs:
           curl -fsS http://127.0.0.1:8000/data/base-geometric-render-config.v1.json >/tmp/publication-geometric-config.json
           curl -fsS http://127.0.0.1:8000/data/geometric-pullback-view.v1.json >/tmp/publication-geometric-pullback-view.json
           curl -fsS http://127.0.0.1:8000/data/geometric-pullback-config.v1.json >/tmp/publication-geometric-pullback-config.json
+          curl -fsS http://127.0.0.1:8000/data/hybrid-navigation.v1.json >/tmp/publication-hybrid-navigation.json
           python3 -m json.tool /tmp/publication-system.json >/dev/null
           python3 -m json.tool /tmp/publication-system-v2.json >/dev/null
           python3 -m json.tool /tmp/publication-geometric-view.json >/dev/null
           python3 -m json.tool /tmp/publication-geometric-config.json >/dev/null
           python3 -m json.tool /tmp/publication-geometric-pullback-view.json >/dev/null
           python3 -m json.tool /tmp/publication-geometric-pullback-config.json >/dev/null
+          python3 -m json.tool /tmp/publication-hybrid-navigation.json >/dev/null
           grep -Fq '"version": "v0.12"' /tmp/publication-system.json
           grep -Fq '"requestedDepth": 0' /tmp/publication-system.json
           grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html
@@ -369,6 +381,9 @@ jobs:
           grep -Fq '"pullbackId": "finite_sampled_geometric_pullback_v1"' /tmp/publication-geometric-pullback-config.json
           grep -Fq 'Finite sampled pullback of X_1 induced from admitted X_0 samples' /tmp/publication-index.html
           grep -Fq 'geometric-pullback-runtime.js' /tmp/publication-index.html
+          grep -Fq '"navigationId": "hybrid_structural_geometric_navigation_v1"' /tmp/publication-hybrid-navigation.json
+          grep -Fq 'Hybrid structural / geometric navigation' /tmp/publication-index.html
+          grep -Fq 'hybrid-navigation-runtime.js' /tmp/publication-index.html
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"
 
@@ -401,6 +416,9 @@ jobs:
       - name: Verify Thread 25 geometric pullback scene in Chromium
         run: node verify_geometric_pullback_browser_v0_01.js
 
+      - name: Verify Thread 26 hybrid navigation in Chromium
+        run: node verify_hybrid_navigation_browser_v0_01.js
+
       - name: Upload Thread 24 base geometric browser evidence
         if: always()
         uses: actions/upload-artifact@v5
@@ -416,6 +434,15 @@ jobs:
         with:
           name: thread25-geometric-pullback-browser-evidence-${{ github.sha }}
           path: thread25-browser-artifacts/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload Thread 26 hybrid navigation browser evidence
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: thread26-hybrid-navigation-browser-evidence-${{ github.sha }}
+          path: thread26-browser-artifacts/
           if-no-files-found: error
           retention-days: 30
 

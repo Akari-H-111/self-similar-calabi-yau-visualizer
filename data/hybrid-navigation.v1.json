@@ -1,0 +1,26 @@
+{
+  "contractVersion": 1,
+  "descriptorVersion": "v0.01",
+  "navigationId": "hybrid_structural_geometric_navigation_v1",
+  "defaultRepresentationMode": "structural",
+  "representationModes": ["structural", "geometric"],
+  "correspondenceClasses": {
+    "A": "A_canonical_mathematical_correspondence",
+    "B": "B_deterministic_implementation_correspondence",
+    "C": "C_presentation_ui_only_correspondence",
+    "D": "D_unsupported_forbidden_correspondence"
+  },
+  "policies": {
+    "structuralDepthControlsGeometricDepth": false,
+    "geometricDepthControlsStructuralDepth": false,
+    "modeSwitchTriggersGeometricGeneration": false,
+    "projectedLocationDefinesSourceIdentity": false,
+    "structuralNodeDefinesGeometricPoint": false,
+    "rootTupleDefinesSheetIdentity": false
+  },
+  "truthFlags": {
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  }
+}
