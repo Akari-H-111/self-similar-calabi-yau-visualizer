@@ -1,0 +1,31 @@
+.hybrid-scoped-bridge {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+}
+.hybrid-scoped-bridge__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 0.65rem 0 0.8rem;
+}
+.hybrid-scoped-bridge__state {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.65rem 0;
+}
+.hybrid-scoped-bridge__state p {
+  margin: 0;
+}
+[data-thread31-panel][data-thread31-active="true"] {
+  outline: 3px solid currentColor;
+  outline-offset: 0.4rem;
+}
+[data-thread31-panel][data-thread31-active="false"][data-hybrid-active="true"] {
+  outline-style: dotted;
+  outline-width: 1px;
+  opacity: 0.82;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-thread31-panel] { scroll-behavior: auto; }
+}
