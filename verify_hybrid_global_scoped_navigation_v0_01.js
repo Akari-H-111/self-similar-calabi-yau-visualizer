@@ -83,6 +83,8 @@ assert.deepEqual(initial.independentDepths,{
 });
 assert.equal(initial.navigationProvenance.contextSwitchTriggersScopedGeneration,false);
 assert.equal(initial.navigationProvenance.scopedGenerationTriggered,false);
+assert.equal(initial.correspondence.canonicalStageIndex.class,HybridScopedBridgeSemantics.CLASS_A);
+assert.equal(initial.correspondence.canonicalStageIndex.supported,true);
 assert.equal(initial.correspondence.contextNavigation.class,HybridScopedBridgeSemantics.CLASS_C);
 assert.equal(initial.correspondence.forbiddenIdentity.class,HybridScopedBridgeSemantics.CLASS_D);
 
@@ -123,6 +125,9 @@ const independentStructural=HybridScopedBridgeSemantics.createBridgeState(
 assert.equal(independentStructural.independentDepths.structuralRequestedDepth,2);
 assert.equal(independentStructural.independentDepths.globalGeometricDepth,1);
 assert.equal(independentStructural.independentDepths.scopedMaterializedDepth,2);
+assert.equal(independentStructural.thread26.stageCorrespondenceClass,HybridScopedBridgeSemantics.CLASS_D);
+assert.equal(independentStructural.correspondence.canonicalStageIndex.class,HybridScopedBridgeSemantics.CLASS_D);
+assert.equal(independentStructural.correspondence.canonicalStageIndex.supported,false);
 
 const geometric0=HybridNavigationSemantics.createGeometricSnapshot({
   renderedDepth:0,
@@ -148,6 +153,9 @@ const independentGlobal=HybridScopedBridgeSemantics.createBridgeState(
 assert.equal(independentGlobal.independentDepths.structuralRequestedDepth,2);
 assert.equal(independentGlobal.independentDepths.globalGeometricDepth,0);
 assert.equal(independentGlobal.independentDepths.scopedMaterializedDepth,2);
+assert.equal(independentGlobal.thread26.stageCorrespondenceClass,HybridScopedBridgeSemantics.CLASS_D);
+assert.equal(independentGlobal.correspondence.canonicalStageIndex.class,HybridScopedBridgeSemantics.CLASS_D);
+assert.equal(independentGlobal.correspondence.canonicalStageIndex.supported,false);
 
 const controlsChanged=HybridScopedBridgeSemantics.createScopedSnapshot({
   controlAncestorId:"x0:000002",
@@ -217,6 +225,9 @@ assert.ok(scopedSection.includes('data-thread31-panel="scoped-geometric"'));
 assert.ok(!scopedSection.includes("data-hybrid-panel"),"Thread 30 scoped panel must remain outside Thread 26 data-hybrid-panel authority.");
 
 assert.equal(matrix.depthIndependence.automaticDepthSynchronization,false);
+assert.equal(matrix.correspondence.stageClassDelegatesToThread26,true);
+assert.equal(matrix.correspondence.supportedCanonicalStageIndexClass,HybridScopedBridgeSemantics.CLASS_A);
+assert.equal(matrix.correspondence.unsupportedCanonicalStageIndexClass,HybridScopedBridgeSemantics.CLASS_D);
 assert.equal(matrix.generationBoundary.contextSwitchTriggersScopedGeneration,false);
 assert.equal(matrix.generationBoundary.thread31CallsThread29Generation,false);
 assert.equal(matrix.generationBoundary.thread31CallsThread25Generation,false);
