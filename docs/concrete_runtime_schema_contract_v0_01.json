@@ -1,0 +1,468 @@
+{
+  "schemaVersion": 1,
+  "artifact": "Concrete Runtime Schema Contract",
+  "proposalVersion": "v0.01",
+  "gate": "Thread 22 - Gate 2-B",
+  "status": "CONTRACT_CANDIDATE",
+  "canonicalBaseline": {
+    "commit": "d7bc212d51e9800aa743b06a58bf69b0267c8569",
+    "tree": "c36109db4df7adc5f52385ea98a981e183c7ed26",
+    "soleParent": "6c368a3083fa1b6e6ca7c016a362df12f06304ab",
+    "gate2AArtifacts": {
+      "human": {
+        "path": "docs/CONCRETE_GEOMETRY_ADMISSION_CONTRACT_v0_01.md",
+        "blob": "ff859e2fc1c1648bb189cd491ab27d04532e3b83"
+      },
+      "machine": {
+        "path": "docs/concrete_geometry_admission_matrix_v0_01.json",
+        "blob": "a0462a88a1c0027d898374330af6b0e719b0b654"
+      }
+    },
+    "formalVerification": {
+      "runNumber": 181,
+      "runId": 35418769387,
+      "conclusion": "success"
+    },
+    "pages": {
+      "runNumber": 19,
+      "runId": 35418769114,
+      "conclusion": "success"
+    },
+    "issue16": "OPEN"
+  },
+  "currentSchemaVersion": 1,
+  "targetSchemaVersion": 2,
+  "chosenRoute": {
+    "schemaRoute": "C",
+    "name": "builtin_mathematical_family_contract",
+    "parameterRoute": "R",
+    "parameterPolicy": "real_slice_of_complex_family",
+    "rationale": [
+      "A formulaId-only instance is too opaque unless its semantics are fixed in a registry.",
+      "A stored canonical AST duplicates formula authority and requires consistency checks against formulaId.",
+      "A builtin formula registry gives one stable machine identity, deterministic validation, and a derivable AST without storing duplicate authority.",
+      "The current numeric runtime can safely remain a real slice; full complex-object runtime support is deferred to a later breaking schema."
+    ]
+  },
+  "routeComparison": [
+    {
+      "id": "A",
+      "name": "minimal_named_formula",
+      "advantages": [
+        "small instance shape",
+        "low migration cost"
+      ],
+      "disadvantages": [
+        "formula semantics live out of band",
+        "weaker inspectability"
+      ],
+      "verificationCost": "low",
+      "migrationCost": "low",
+      "verdict": "NOT_CHOSEN"
+    },
+    {
+      "id": "B",
+      "name": "canonical_ast",
+      "advantages": [
+        "fully explicit expression tree",
+        "generic future formula support"
+      ],
+      "disadvantages": [
+        "duplicates formula identity when formulaId is also stored",
+        "larger validator surface",
+        "higher drift risk"
+      ],
+      "verificationCost": "high",
+      "migrationCost": "high",
+      "verdict": "NOT_CHOSEN"
+    },
+    {
+      "id": "C",
+      "name": "builtin_mathematical_family",
+      "advantages": [
+        "single normative formula registry",
+        "deterministic validation",
+        "no stored AST duplication",
+        "renderer independent"
+      ],
+      "disadvantages": [
+        "requires versioned builtin registry",
+        "new formulas require registry entries or a later generic expression route"
+      ],
+      "verificationCost": "medium",
+      "migrationCost": "medium",
+      "verdict": "CHOSEN"
+    }
+  ],
+  "compatibilityPolicy": {
+    "changeClass": "BREAKING",
+    "reason": [
+      "schema v1 exact-key validation rejects new mathematics fields",
+      "schema v1 requires definingFunction.representation to equal the string unresolved",
+      "schema v1 rejects schemaVersion 2",
+      "historical verifiers explicitly assert unresolved W"
+    ],
+    "v1Policy": "immutable_legacy_contract",
+    "v2Policy": "new_concrete_non_rendering_contract",
+    "dispatchPolicy": "version_dispatch_without_reinterpreting_v1",
+    "historicalFixtures": "must_remain_reproducible_without_auto_migration"
+  },
+  "ambientRepresentation": {
+    "stored": {
+      "kind": "algebraic_torus",
+      "coordinateCount": 4,
+      "baseField": "complex"
+    },
+    "derived": {
+      "nonzeroCoordinates": true
+    },
+    "authorityPolicy": "kind=algebraic_torus normatively implies all coordinates are nonzero; do not store a redundant nonzeroCoordinates input.",
+    "claimIds": [
+      "ambient.torus4"
+    ]
+  },
+  "parameterRepresentation": {
+    "values": {
+      "D": {
+        "storage": "finite JavaScript safe integer",
+        "constraints": [
+          "integer",
+          ">=2"
+        ]
+      },
+      "lambda": {
+        "storage": "finite JavaScript number",
+        "mathematicalInterpretation": "real_to_complex(lambda)"
+      },
+      "kappa": {
+        "storage": "finite JavaScript number",
+        "mathematicalInterpretation": "real_to_complex(kappa)"
+      }
+    },
+    "domainDescriptor": {
+      "appliesTo": [
+        "lambda",
+        "kappa"
+      ],
+      "sourceField": "complex",
+      "runtimeRepresentation": "real_slice",
+      "embedding": "real_to_complex"
+    },
+    "sourceParameterDomain": "complex",
+    "runtimeParameterDomain": "finite_JavaScript_real_numbers",
+    "embeddingPolicy": "real_to_complex",
+    "fullComplexRuntimeSupport": false,
+    "claimIds": [
+      "parameter.lambda",
+      "parameter.kappa"
+    ]
+  },
+  "functionRepresentation": {
+    "kind": "builtin_formula",
+    "formulaId": "W_kappa_torus4_v1",
+    "coefficientParameter": "kappa",
+    "expressionRepresentation": "derived_from_versioned_builtin_registry",
+    "storedAst": false,
+    "authorityPolicy": "formulaId is the sole stored machine identity; the registry entry is normative and any AST is derived, never a second stored authority.",
+    "formulaRegistry": {
+      "W_kappa_torus4_v1": {
+        "semanticKind": "coordinate_sum_plus_scaled_reciprocal_coordinate_product",
+        "ambientKind": "algebraic_torus",
+        "coordinateCount": 4,
+        "coefficientParameter": "kappa",
+        "mathematicalExpansion": "sum_i(z_i) + kappa / product_i(z_i)",
+        "claimIds": [
+          "function.W_kappa"
+        ]
+      }
+    }
+  },
+  "baseFiberRepresentation": {
+    "kind": "level_set",
+    "ambientPolicy": "uses the unique mathematics.ambient object",
+    "definingFunctionPolicy": "uses definingFunction.representation.formulaId",
+    "levelParameter": "lambda",
+    "claimIds": [
+      "base.X0"
+    ]
+  },
+  "pullbackMapRepresentation": {
+    "kind": "coordinate_power",
+    "exponentParameter": "D",
+    "coordinateCountPolicy": "derived from mathematics.ambient.coordinateCount; not stored a second time in schema v2",
+    "claimIds": [
+      "map.P_D"
+    ]
+  },
+  "parameterRegimeRepresentation": {
+    "storedInSystemJson": false,
+    "validatorClaimsSmoothness": false,
+    "policy": "source-regime membership is verifier-derived evidence, not mutable runtime input and not a scheme-smoothness assertion",
+    "availableSourcePredicates": {
+      "principalRegime": "kappa != 0 AND lambda^5 != 5^5*kappa",
+      "fullSmoothRegime": "kappa == 0 OR lambda^5 != 5^5*kappa",
+      "singularRegime": "kappa != 0 AND lambda^5 == 5^5*kappa"
+    },
+    "numericalCaution": "generic floating-point equality must not be promoted to theorem authority; exact fixture checks may be recorded as verifier evidence."
+  },
+  "provenanceBinding": {
+    "placement": "schema_contract_registry",
+    "storedInlineInSystemJson": false,
+    "reason": "avoid copying claim matrices into mutable runtime instances",
+    "bindings": [
+      {
+        "path": "/mathematics/ambient",
+        "claimIds": [
+          "ambient.torus4"
+        ]
+      },
+      {
+        "path": "/mathematics/parameters/lambda",
+        "claimIds": [
+          "parameter.lambda"
+        ]
+      },
+      {
+        "path": "/mathematics/parameters/kappa",
+        "claimIds": [
+          "parameter.kappa"
+        ]
+      },
+      {
+        "path": "/mathematics/pullbackMap",
+        "claimIds": [
+          "map.P_D"
+        ]
+      },
+      {
+        "path": "/mathematics/baseHypersurface/definingFunction",
+        "claimIds": [
+          "function.W_kappa"
+        ]
+      },
+      {
+        "path": "/mathematics/baseHypersurface",
+        "claimIds": [
+          "base.X0"
+        ]
+      }
+    ],
+    "formulaBindings": [
+      {
+        "formulaId": "W_kappa_torus4_v1",
+        "claimIds": [
+          "function.W_kappa"
+        ]
+      }
+    ],
+    "existenceCheckAgainst": "docs/concrete_geometry_admission_matrix_v0_01.json"
+  },
+  "derivedVsStoredPolicy": {
+    "canonicalStoredInput": [
+      "schemaVersion",
+      "project",
+      "version",
+      "mathematics.parameters.D",
+      "mathematics.parameters.lambda",
+      "mathematics.parameters.kappa",
+      "mathematics.parameterDomain",
+      "mathematics.ambient",
+      "mathematics.pullbackMap",
+      "mathematics.baseHypersurface",
+      "request.requestedDepth"
+    ],
+    "derived": [
+      "ambient.nonzeroCoordinates",
+      "pullbackMap.coordinateCount",
+      "D^2 numeric metadata",
+      "D^4 numeric metadata",
+      "canonical expression AST for W_kappa_torus4_v1"
+    ],
+    "verifierDerivedEvidence": [
+      "source principal-regime membership",
+      "source full-smooth-regime membership",
+      "provenance resolution"
+    ],
+    "historicalMetadata": [
+      "derived.metricScale compatibility alias",
+      "derived.sheetDegree compatibility alias"
+    ],
+    "notAllowed": [
+      "stored smooth=true/false theorem flag",
+      "stored mapDegree theorem field",
+      "stored rendered sheet count as mathematical authority",
+      "stored geometryRendered=true caused only by schema representation",
+      "stored duplicate AST plus formulaId authority"
+    ]
+  },
+  "normalizedCompatibilityAliases": {
+    "derived.metricScale": {
+      "source": "D^2",
+      "semanticStatus": "legacy_numeric_metadata_alias",
+      "theoremPromotion": false
+    },
+    "derived.sheetDegree": {
+      "source": "D^4",
+      "semanticStatus": "legacy_numeric_organizational_metadata_alias",
+      "theoremPromotion": false
+    },
+    "mathematics.pullbackMap.coordinateCount": {
+      "source": "mathematics.ambient.coordinateCount",
+      "semanticStatus": "derived_compatibility_field",
+      "storedInV2": false
+    }
+  },
+  "migrationPolicy": {
+    "direction": "v1_to_v2_explicit_one_way",
+    "automaticMigrationOfHistoricalFixtures": false,
+    "preserve": [
+      "project",
+      "version",
+      "parameters.D",
+      "parameters.lambda",
+      "parameters.kappa",
+      "request.requestedDepth"
+    ],
+    "add": [
+      "mathematics.parameterDomain",
+      "mathematics.ambient",
+      "concrete builtin definingFunction representation"
+    ],
+    "replace": [
+      "definingFunction.representation string unresolved -> builtin_formula descriptor"
+    ],
+    "removeFromStoredV2": [
+      "pullbackMap.coordinateCount"
+    ],
+    "normalizationMayRestoreCompatibilityField": true,
+    "v1MeaningMustNotChange": true
+  },
+  "targetSchemaShape": {
+    "schemaVersion": 2,
+    "project": "Self-Similar Calabi–Yau Visualizer",
+    "version": "v0.12",
+    "mathematics": {
+      "parameters": {
+        "D": 2,
+        "lambda": 1,
+        "kappa": 1
+      },
+      "parameterDomain": {
+        "appliesTo": [
+          "lambda",
+          "kappa"
+        ],
+        "sourceField": "complex",
+        "runtimeRepresentation": "real_slice",
+        "embedding": "real_to_complex"
+      },
+      "ambient": {
+        "kind": "algebraic_torus",
+        "coordinateCount": 4,
+        "baseField": "complex"
+      },
+      "pullbackMap": {
+        "kind": "coordinate_power",
+        "exponentParameter": "D"
+      },
+      "baseHypersurface": {
+        "kind": "level_set",
+        "definingFunction": {
+          "symbol": "W",
+          "representation": {
+            "kind": "builtin_formula",
+            "formulaId": "W_kappa_torus4_v1",
+            "coefficientParameter": "kappa"
+          }
+        },
+        "levelParameter": "lambda"
+      }
+    },
+    "request": {
+      "requestedDepth": 0
+    }
+  },
+  "validationRules": [
+    "v2 top-level and nested keys are exact and version-specific",
+    "D is a safe integer >= 2",
+    "lambda and kappa are finite JavaScript numbers and are interpreted only through the declared real_to_complex embedding",
+    "parameterDomain exactly declares complex source field, real_slice runtime representation, and real_to_complex embedding for lambda and kappa",
+    "ambient kind is algebraic_torus with coordinateCount=4 and baseField=complex",
+    "pullbackMap kind is coordinate_power and exponentParameter references D",
+    "definingFunction representation kind is builtin_formula and formulaId resolves to W_kappa_torus4_v1",
+    "W registry ambient and coordinate count agree with mathematics.ambient",
+    "coefficientParameter references kappa and levelParameter references lambda",
+    "derived D^2 and D^4 remain safe integers in the current Number-based runtime",
+    "all provenance claim IDs resolve in the Gate 2-A matrix",
+    "no validator result is described as proof of scheme smoothness, finite etaleness, map degree, deck action, or rendering"
+  ],
+  "consumerImpact": {
+    "unchangedConsumersCanContinueUsing": [
+      "mathematics.parameters.D",
+      "mathematics.parameters.lambda",
+      "mathematics.parameters.kappa",
+      "derived.metricScale compatibility alias",
+      "derived.sheetDegree compatibility alias",
+      "request.requestedDepth"
+    ],
+    "requiresVersionAwareChange": [
+      "scene-spec.js",
+      "base-renderer.js only when Gate 2-D runtime admission is implemented",
+      "UI wording that currently prints unresolved W"
+    ],
+    "historicalVerifiersPinnedToV1": true,
+    "gate2BChangesRuntimeConsumers": false
+  },
+  "truthFlagPolicy": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "rule": "schema representability does not transition any renderer or geometry truth flag"
+  },
+  "forbiddenSemanticPromotions": [
+    "schema can represent W != runtime currently implements W",
+    "runtime can represent W != runtime evaluates W",
+    "runtime evaluates W != geometry rendered",
+    "D^4 numeric metadata != kernel theorem != fiber theorem != map degree != rendered sheets",
+    "D^2 numeric metadata != logarithmic metric theorem != geometric zoom",
+    "real-slice runtime != full complex family",
+    "parameter regime metadata != scheme smoothness theorem",
+    "provenance reference != proof",
+    "formula registry identity != mathematical theorem authority"
+  ],
+  "gate2CVerifierSpecification": {
+    "requiredChecks": [
+      "Gate 2-A baseline, artifact blobs, CI, Pages, and Issue #16 state remain canonical",
+      "proposal JSON parses and all required contract sections exist",
+      "target schema version is 2 and v1 meaning is frozen",
+      "formulaId resolves to exactly one builtin registry entry",
+      "builtin W registry agrees with Torus4 ambient, coordinateCount=4, and coefficient parameter kappa",
+      "parameter references D, lambda, and kappa exist and have the required domains",
+      "real-slice declaration is explicit and no full-complex runtime support is claimed",
+      "base fiber uses admitted W formula identity plus lambda level reference",
+      "all provenance claim IDs exist in Gate 2-A matrix",
+      "D^2 and D^4 remain derived numeric metadata with unchanged non-theorem semantics",
+      "all four truth flags remain false",
+      "historical v1 fixtures and verifiers remain reproducible without migration",
+      "formal, runtime, renderer, README, and historical provenance snapshots are unchanged by Gate 2-B"
+    ]
+  },
+  "explicitNonChanges": [
+    "formal/*",
+    "data/system.json",
+    "scene-spec.js",
+    "app.js",
+    "base-renderer.js",
+    "one-step-pullback.js",
+    "recursive-lazy-expansion.js",
+    "zoom-semantics.js",
+    "sheet-branch-organization.js",
+    "arithmetic-overlays.js",
+    "structural-camera.js",
+    "README.md",
+    "historical F05 audit",
+    "historical v0.21 provenance"
+  ],
+  "verdict": "READY_FOR_SCHEMA_VERIFIER"
+}
