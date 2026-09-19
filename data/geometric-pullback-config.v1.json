@@ -1,0 +1,37 @@
+{
+  "configVersion": "v0.01",
+  "pullbackId": "finite_sampled_geometric_pullback_v1",
+  "mapId": "torus_coordinate_power_v1",
+  "sourceSamplerId": "x0_quadratic_z4_gaussian_lattice_v1",
+  "sourceFormulaId": "W_kappa_torus4_v1",
+  "rootEnumeration": {
+    "argumentConvention": "atan2_signed_zero_normalized_principal_minus_pi_to_pi",
+    "coordinateRootIndexOrder": "ascending_integer_k",
+    "multiIndexOrder": "lexicographic_k1_k2_k3_k4",
+    "globalAnalyticBranchClaim": false
+  },
+  "powerResidualTolerance": {
+    "kind": "combined_absolute_relative",
+    "absolute": 5e-13,
+    "relative": 5e-13,
+    "version": "v0.01",
+    "scaleFunction": "max(1,abs(parentCoordinate))"
+  },
+  "rootDistinctnessTolerance": {
+    "kind": "relative_distance",
+    "value": 1e-12
+  },
+  "materialization": {
+    "policy": "exact_hard_cap",
+    "maxGeneratedPoints": 10000,
+    "canonicalRenderedDepth": 1,
+    "beyondCap": "reject_without_partial_materialization"
+  },
+  "truthFlags": {
+    "geometryRendered": true,
+    "pullbackGeometryRendered": true,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  }
+}
