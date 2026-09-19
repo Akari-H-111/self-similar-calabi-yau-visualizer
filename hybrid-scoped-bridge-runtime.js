@@ -105,9 +105,12 @@
     ancestorField.textContent = nextState.scoped.materializedAncestorId
       ? nextState.scoped.controlAncestorId + " · rendered ancestor " + nextState.scoped.materializedAncestorId
       : nextState.scoped.controlAncestorId + " · no scoped geometry materialized";
+    const stageCorrespondence = nextState.correspondence.canonicalStageIndex;
     correspondenceField.textContent =
-      "Stage correspondence remains limited to Thread 26's admitted stage index; scoped ancestry is deterministic provenance only. " +
-      "No structural node, connected component, sheet, or source identity is created.";
+      (stageCorrespondence.supported
+        ? "Selected structural stage has Class A tower-stage correspondence in the currently materialized global geometric stages. "
+        : "Selected structural stage has Class D correspondence because that global geometric stage is not materialized. ") +
+      "Scoped ancestry is deterministic provenance only. No structural node, connected component, sheet, or source identity is created.";
 
     for (const button of contextButtons) {
       button.setAttribute("aria-pressed", String(button.dataset.thread31Context === nextState.contextMode));
