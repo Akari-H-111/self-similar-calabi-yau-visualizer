@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "thread": 29,
   "milestone": "Ancestor-Scoped Pullback Runtime",
-  "status": "implementation_candidate",
+  "status": "canonical_sealed",
   "canonicalParent": {
     "commit": "b186705ab0bd6090c9c6ab043b69cf91b692a34b",
     "tree": "1b40f39b162eed7d0a01d5a23bd2300e941f7fa8",
