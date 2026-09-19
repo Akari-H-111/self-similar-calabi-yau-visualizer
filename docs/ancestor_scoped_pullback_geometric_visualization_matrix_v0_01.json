@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "thread": 30,
   "milestone": "Ancestor-Scoped Geometric Visualization",
-  "status": "implementation_candidate",
+  "status": "canonical_sealed",
   "canonicalParent": {
     "commit": "3944d6d18ae0a0d7b55b6e1e9fe8a7653c21b37a",
     "tree": "705944b76b5c78aeb355b3029f945e2a55652399",
