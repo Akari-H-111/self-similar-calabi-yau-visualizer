@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "thread": 28,
   "milestone": "Ancestor-Scoped Pullback Feasibility / Semantics Contract",
-  "status": "implementation_candidate",
-  "decision": "ADMITTED_CANDIDATE",
+  "status": "canonical_sealed",
+  "decision": "ADMITTED",
   "canonicalParent": {
     "commit": "b3054826148f6f0c02091bbb800cfc2b3fc1db13",
     "tree": "0165dda521f990f1a35526646f364d621bea1609",

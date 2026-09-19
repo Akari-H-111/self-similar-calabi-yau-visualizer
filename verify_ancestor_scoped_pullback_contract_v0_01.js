@@ -51,8 +51,8 @@ function preflight(seedCount,D,depth,cap){
 }
 
 assert.equal(matrix.thread,28);
-assert.equal(matrix.status,"implementation_candidate");
-assert.equal(matrix.decision,"ADMITTED_CANDIDATE");
+assert.equal(matrix.status,"canonical_sealed");
+assert.equal(matrix.decision,"ADMITTED");
 assert.equal(matrix.canonicalParent.commit,"b3054826148f6f0c02091bbb800cfc2b3fc1db13");
 assert.equal(matrix.canonicalParent.tree,"0165dda521f990f1a35526646f364d621bea1609");
 assert.equal(matrix.productionChangesAuthorizedByThread28,false);
@@ -175,7 +175,7 @@ for(const [relativePath,expected] of Object.entries(matrix.protectedBlobs)){
 }
 
 console.log("Thread 28 ancestor-scoped pullback feasibility verifier: PASS");
-console.log("decision candidate: ADMITTED_CANDIDATE");
+console.log("decision: ADMITTED");
 console.log("one ancestor: 1 -> 16 -> 256 -> 4096; depth 4 requires 65536 and is rejected");
 console.log("two ancestors at depth 3: 8192 admitted; three ancestors: 12288 rejected");
 console.log("production pullback engine/runtime unchanged; no sheets/covering/geometric zoom promoted");
