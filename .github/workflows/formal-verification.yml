@@ -214,6 +214,9 @@ jobs:
       - name: Verify hybrid structural / geometric navigation v0.01
         run: node verify_hybrid_navigation_v0_01.js
 
+      - name: Verify Thread 27R current-state provenance synchronization
+        run: node verify_current_state_provenance_sync_v0_01.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -272,6 +275,7 @@ jobs:
           node --check hybrid-navigation-runtime.js
           node --check verify_hybrid_navigation_v0_01.js
           node --check verify_hybrid_navigation_browser_v0_01.js
+          node --check verify_current_state_provenance_sync_v0_01.js
           node --check app.js
 
   publication-static-smoke:
@@ -356,7 +360,13 @@ jobs:
           python3 -m json.tool /tmp/publication-hybrid-navigation.json >/dev/null
           grep -Fq '"version": "v0.12"' /tmp/publication-system.json
           grep -Fq '"requestedDepth": 0' /tmp/publication-system.json
-          grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html
+          grep -Fq 'The legacy schema-v1 structural pipeline remains non-geometric' /tmp/publication-index.html
+          grep -Fq 'Threads 24–26 admit and render finite sampled geometry through schema v2' /tmp/publication-index.html
+          grep -Fq 'schema-v2 geometric pipeline admits <code>W_kappa_torus4_v1</code>' /tmp/publication-index.html
+          if grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html; then
+            echo 'stale global geometry claim detected in index.html' >&2
+            exit 1
+          fi
           grep -Fq 'D² runtime metadata' /tmp/publication-index.html
           grep -Fq 'D⁴ organization metadata' /tmp/publication-index.html
           grep -Fq 'Interactive pullback tower' /tmp/publication-index.html
