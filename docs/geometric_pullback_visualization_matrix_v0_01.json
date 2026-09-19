@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "thread": 25,
+  "milestone": "Geometric Pullback Visualization",
+  "status": "implementation_candidate",
+  "sourceSeed": {
+    "sourceObject": "X_0",
+    "samplerId": "x0_quadratic_z4_gaussian_lattice_v1",
+    "expectedCanonicalCountFromCurrentConfig": 512,
+    "completenessClaim": false
+  },
+  "map": {
+    "id": "torus_coordinate_power_v1",
+    "formula": "P_D(z1,z2,z3,z4)=(z1^D,z2^D,z3^D,z4^D)",
+    "DSource": "data/system.v2.json",
+    "canonicalD": 2
+  },
+  "formalAuthority": {
+    "coordinatePower": "formal/SelfSimilarCY/TorusCoordinatePower.lean",
+    "pullbackRecurrence": "formal/SelfSimilarCY/ConcretePullbackTower.lean",
+    "kernelCardinality": "formal/SelfSimilarCY/TorusPowerKernel.lean",
+    "fiberCardinality": "formal/SelfSimilarCY/TorusPowerFibers.lean",
+    "fiberCardinalityClaim": "positive-D Torus4 set-theoretic fiber has D^4 points",
+    "coveringClaim": false,
+    "finiteEtaleClaim": false,
+    "mapDegreeClaim": false
+  },
+  "rootEnumeration": {
+    "argumentConvention": "atan2_signed_zero_normalized_principal_minus_pi_to_pi",
+    "coordinateRootIndexOrder": "ascending_integer_k",
+    "multiIndexOrder": "lexicographic_k1_k2_k3_k4",
+    "globalAnalyticBranchClaim": false,
+    "sheetIdentityClaim": false
+  },
+  "materialization": {
+    "policy": "exact_hard_cap",
+    "maxGeneratedPoints": 10000,
+    "canonicalRenderedDepth": 1,
+    "canonicalDepth0Count": 512,
+    "canonicalDepth1DerivedCount": 8192,
+    "canonicalDepth2DerivedCount": 131072,
+    "beyondCap": "reject_without_partial_materialization",
+    "depth2RecursiveVerification": "one-seed fixture 1 -> 16 -> 256"
+  },
+  "projection": {
+    "descriptor": "data/geometric-pullback-view.v1.json",
+    "inheritedRule": "(Re(z1), Im(z1))",
+    "thread23ArtifactModified": false,
+    "overlapMeaning": "projected_pullback_point_overlap_count_only"
+  },
+  "renderer": {
+    "technology": "SVG",
+    "modelToMarkMapping": "1:1 for every materialized source point",
+    "depthsAvailableInCanonicalBrowser": [0, 1]
+  },
+  "truthFlags": {
+    "geometryRendered": true,
+    "pullbackGeometryRendered": true,
+    "renderedGeometricDepth": 1,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  },
+  "forbiddenPromotions": [
+    "finite sampled X_n pullback -> complete X_n",
+    "D^4 point fiber -> D^4 sheets",
+    "root multi-index -> global sheet identity",
+    "constant fiber cardinality -> covering UI claim",
+    "projection overlap -> source self-intersection",
+    "projection overlap -> covering multiplicity",
+    "viewport scale -> D^2 geometric scale",
+    "structural requestedDepth -> geometric rendered depth"
+  ]
+}
