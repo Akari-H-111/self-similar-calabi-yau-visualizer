@@ -12,7 +12,7 @@
 
 This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.21 adds a durable visual provenance matrix and a presentation-only provenance adapter that labels admitted graphical classes without changing sealed mathematical/runtime authority. v0.20 adds a presentation-only visual-semantics and accessibility audit above v0.19, including deterministic DOM focus restoration after virtualized interaction rerenders, bounded textual semantics for omitted render-window gaps, browser-zoom-safe camera input policy, single-live-region announcement discipline, forced-colors hooks, and narrow-viewport structural-canvas readability. v0.19 adds a presentation-only infinite-navigation rendering engine above the sealed semantic recursion: deterministic viewport/render-window virtualization, overscan, floating-origin deep-depth handling, bounded presentation-slot recycling, and a bounded recomputable virtual-layout cache. The v0.18 arithmetic graphics, v0.17 D⁴ branch graphics, v0.16 camera, and v0.15 interaction semantics remain beneath that adapter.
 
-The interface is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric zoom.
+The legacy schema-v1 interface remains **structural, not geometric**. The current repository also contains a separate schema-v2 geometry pipeline admitted by Threads 22–26: it implements `W_kappa_torus4_v1`, renders deterministic finite sampled projections of `X_0` and the finite sampled `X_1` pullback, and keeps genuine sheets, covering geometry, complete/global hypersurface rendering, and geometric zoom explicitly unclaimed.
 
 The evidence rule remains:
 
@@ -28,13 +28,46 @@ The v0.11 claim-discipline vocabulary remains binding: **D² and D⁴ explicitly
 
 D⁴ runtime organization metadata is **not a map-degree theorem** in the current sealed formal scope. Benchmark horizons are **not mathematical limits**, and JavaScript safe-integer checks are **representation-safety / engineering constraints** rather than mathematical theorems.
 
+## Current post-Thread-26 development state
+
+The repository intentionally carries two non-interchangeable runtime contexts:
+
+```text
+legacy structural pipeline
+  data/system.json
+  schemaVersion = 1
+  W representation = unresolved
+  structural truth flags remain non-geometric
+
+separate admitted geometric pipeline
+  data/system.v2.json
+  schemaVersion = 2
+  formulaId = W_kappa_torus4_v1
+  Thread 24 finite sampled X_0 projection
+  Thread 25 finite sampled X_1 pullback
+  Thread 26 explicit same-stage hybrid navigation
+```
+
+For the current geometric surfaces:
+
+```text
+geometryRendered = true
+sheetsMaterialized = false
+coveringStructureClaimed = false
+geometricZoomApplied = false
+```
+
+The finite sampled views are not the complete `X_0` or `X_n`, projected overlap is not source self-intersection or covering multiplicity, root tuples are enumeration metadata rather than sheet identities, and structural requested depth remains independent from geometric rendered depth. The exact Thread 25 materialization cap remains 10,000 generated points: canonical `X_0 = 512`, `X_1 = 8192`, while the full canonical `X_2 = 131072` request is rejected before partial materialization.
+
+The v1.0-rc1 material below is retained as historical release provenance. Its structural-only statements describe that checkpoint and the schema-v1 structural pipeline, not the later Thread 24–26 geometric surfaces.
+
 ## v1.0-rc1 public structural visualizer release candidate
 
 v1.0-rc1 is Thread 21 — Public Structural Visualizer Release Candidate. It hardens the already-interactive structural graphical layer for public release without admitting concrete geometry.
 
-This release candidate provides an interactive structural visualizer. The rendered graphics are structural and symbolic. No concrete Calabi–Yau hypersurface geometry is currently rendered. W remains unresolved.
+At the v1.0-rc1 checkpoint, this release candidate provided an interactive structural visualizer. Its rendered graphics were structural and symbolic; no concrete Calabi–Yau hypersurface geometry was rendered, and the schema-v1 W representation was unresolved.
 
-The RC preserves the frozen truth boundary: geometryRendered=false, sheetsMaterialized=false, coveringStructureClaimed=false, geometricZoomApplied=false, and W=unresolved. D² remains runtime numeric metadata. D⁴ remains runtime numeric / organizational metadata. The immutable v0.13 Publication Checkpoint remains a separate historical release identity.
+At that historical RC checkpoint, the frozen structural truth boundary was geometryRendered=false, sheetsMaterialized=false, coveringStructureClaimed=false, geometricZoomApplied=false, and W=unresolved. D² remained runtime numeric metadata and D⁴ runtime numeric / organizational metadata. The immutable v0.13 Publication Checkpoint remains a separate historical release identity.
 
 Thread 21 adds release-candidate reproducibility checks and a cross-browser browser-evidence job. Browser evidence is generated on a clean GitHub Actions checkout and is bound externally to the exact candidate commit and tree. Screenshots are evidence artifacts, not mathematical or runtime authority.
 
@@ -471,7 +504,7 @@ The sealed Lean core formalizes the four-coordinate coordinate-power map, its it
 
 It does not define `W` or Calabi–Yau geometry. Runtime `W` remains `unresolved`.
 
-Therefore no geometric Calabi–Yau hypersurface is currently rendered.
+Therefore the sealed schema-v1 structural pipeline does not render geometric Calabi–Yau hypersurface geometry. The later Thread 24–26 schema-v2 pipeline is separate and renders only the admitted finite sampled projections described in the current-state section above.
 
 ## Lean-formalized scope
 
