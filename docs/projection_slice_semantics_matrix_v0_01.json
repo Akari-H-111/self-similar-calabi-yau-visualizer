@@ -1,0 +1,278 @@
+{
+  "schemaVersion": 1,
+  "artifact": "Projection / Slice Semantics Contract",
+  "proposalVersion": "v0.01",
+  "thread": "Thread 23",
+  "milestone": "Projection / Slice Semantics",
+  "status": "IMPLEMENTED_CONTRACT_CANDIDATE",
+  "canonicalBaseline": {
+    "commit": "05c646151a5ec882691d6cddc76cda0a74d76068",
+    "tree": "e66d0f5c654b02173f6ffa0bdb25231bc7bd4739",
+    "soleParent": "0428982cb90bbcc0cbc97349f9fd65d8a2a5c9df",
+    "gate2DArtifacts": {
+      "concreteRuntimeSchema": {
+        "path": "concrete-runtime-schema.js",
+        "blob": "23cc1d78afa287162107a1b9e8742d74cbf09d0d"
+      },
+      "systemV2": {
+        "path": "data/system.v2.json",
+        "blob": "0d598560134e45bd3ed2edec62120fa45649883c"
+      },
+      "admissionVerifier": {
+        "path": "verify_concrete_runtime_schema_admission_v0_01.js",
+        "blob": "39c925d93919615279165eabed027170f41f3f38"
+      },
+      "workflow": {
+        "path": ".github/workflows/formal-verification.yml",
+        "blob": "e11db63a8582ef422e79b28832c7eec1ddc3219a"
+      }
+    },
+    "pr29": {
+      "merged": true,
+      "squashMergeSha": "05c646151a5ec882691d6cddc76cda0a74d76068"
+    },
+    "prHeadCi": {
+      "runNumber": 186,
+      "runId": 35422936354,
+      "conclusion": "success"
+    },
+    "exactMainCi": {
+      "runNumber": 187,
+      "runId": 35423117295,
+      "conclusion": "success"
+    },
+    "pages": {
+      "runNumber": 22,
+      "runId": 35423116803,
+      "conclusion": "success"
+    },
+    "issue16": {
+      "state": "closed",
+      "stateReason": "completed",
+      "receiptCommentId": 5739567654
+    }
+  },
+  "preflight": {
+    "verdict": "PASS",
+    "existingGeometricProjectionModule": false,
+    "existingGeometricSliceModule": false,
+    "existingSamplingModule": false,
+    "existingThread23BranchAtPreflight": false,
+    "existingOpenThread23PrAtPreflight": false,
+    "existingRelevantSemantics": [
+      "structural-camera.js defines presentation-only structural viewBox semantics",
+      "Gate 2-D real_slice applies only to lambda and kappa",
+      "F14 LaurentImplicit proves neighborhood-scoped local regular-level chart slices only"
+    ],
+    "protectedRendererPolicy": "untouched"
+  },
+  "routeComparison": [
+    {
+      "id": "P",
+      "route": "projection",
+      "verdict": "CHOSEN",
+      "notes": [
+        "global on every torus point",
+        "explicit complex-to-real map",
+        "many-to-one ambiguity can be stated honestly",
+        "no branch convention required"
+      ]
+    },
+    {
+      "id": "S",
+      "route": "slice",
+      "verdict": "DEFERRED",
+      "notes": [
+        "requires explicit fixed-coordinate constraints and separate transversality analysis",
+        "F14 local implicit-chart slices are not a global browser slice"
+      ]
+    },
+    {
+      "id": "R",
+      "route": "real_coordinate_slice",
+      "verdict": "NOT_CHOSEN",
+      "notes": [
+        "parameter real_slice does not imply z_i are real",
+        "real locus can be empty or topologically different from the complex fiber"
+      ]
+    },
+    {
+      "id": "L",
+      "route": "log_modulus_or_phase",
+      "verdict": "DEFERRED",
+      "notes": [
+        "log modulus is branch-free but discards all phases",
+        "phase and arg require explicit periodicity and branch-cut display policy"
+      ]
+    },
+    {
+      "id": "Q",
+      "route": "parameterization",
+      "verdict": "DEFERRED",
+      "notes": [
+        "no global parameterization theorem is admitted",
+        "local F14 kernel parametrization must remain local"
+      ]
+    },
+    {
+      "id": "M",
+      "route": "sample_semantics",
+      "verdict": "COMPOSED_WITH_P",
+      "notes": [
+        "future renderer input is an ordered finite validated subset of X_0",
+        "Thread 23 does not implement sample generation",
+        "future sample generation must be deterministic and non-random unless this contract is revised"
+      ]
+    }
+  ],
+  "selectedView": {
+    "descriptorPath": "data/geometric-view.v1.json",
+    "viewId": "x0_z1_complex_plane_sampled_projection_v1",
+    "semanticComposition": [
+      "finite_validated_sample",
+      "coordinate_projection"
+    ],
+    "sourceObject": "X_0",
+    "sourceDomain": "(C^x)^4 with W_kappa(z)=lambda",
+    "displayCodomain": "R^2",
+    "map": "pi(z1,z2,z3,z4)=(Re(z1),Im(z1))",
+    "sliceConstraints": "none",
+    "fixedCoordinates": [],
+    "discardedCoordinates": [
+      "z2",
+      "z3",
+      "z4"
+    ],
+    "manyToOnePossible": true,
+    "requiredUiLabel": "Sampled projection of X_0 onto the z_1 complex plane"
+  },
+  "dimensionBookkeeping": {
+    "ambientComplexDimension": 4,
+    "baseFiberExpectedComplexDimensionUnderRegularLevelHypotheses": 3,
+    "baseFiberExpectedRealDimensionUnderRegularLevelHypotheses": 6,
+    "displayRealDimension": 2,
+    "dimensionClaimPolicy": "the 3-complex/6-real dimension statement is conditional on the regular-level hypotheses; the projection contract itself does not promote smoothness"
+  },
+  "complexToRealConvention": {
+    "selected": "cartesian_real_imaginary_parts_of_z1",
+    "x": "Re(z1)",
+    "y": "Im(z1)",
+    "branchConvention": "none",
+    "periodicity": "none",
+    "implicitComplexToRealCoercionAllowed": false
+  },
+  "informationLossPolicy": {
+    "preserved": [
+      "z1 as a complex coordinate via its real and imaginary parts"
+    ],
+    "discarded": [
+      "z2",
+      "z3",
+      "z4"
+    ],
+    "injectivityClaim": false,
+    "reconstructionClaim": false,
+    "fullGeometryClaim": false
+  },
+  "samplingPolicy": {
+    "semanticKind": "ordered_finite_validated_subset",
+    "generationImplementedInThread23": false,
+    "randomnessAllowed": false,
+    "futureGenerationRequirement": "deterministic_no_randomness",
+    "seedPolicy": "not_applicable",
+    "numericTolerancePolicy": "must be explicitly versioned if numeric membership testing is introduced",
+    "completenessClaim": false
+  },
+  "projectionArtifactClassification": {
+    "sourceSingularity": "source_geometry_only_if_independently_established",
+    "sliceSingularity": "not_applicable_for_selected_no_slice_route",
+    "projectionCriticalValue": "projection_artifact_unless_independently_lifted",
+    "projectionOverlap": "projection_artifact",
+    "displayOcclusion": "presentation_artifact",
+    "samplingArtifact": "sampling_artifact",
+    "branchCutArtifact": "not_applicable_selected_route_has_no_branch",
+    "numericalApproximationArtifact": "numerical_artifact"
+  },
+  "forbiddenPromotions": [
+    "projection image = X_0",
+    "sample = complete X_0",
+    "parameter real_slice = ambient real locus",
+    "projection overlap = source self-intersection",
+    "display discontinuity = source singularity",
+    "D^2 metadata = geometric zoom",
+    "D^4 metadata = visible sheet count",
+    "ambient X_0 regularity = arbitrary slice transversality",
+    "view contract admitted = geometryRendered true"
+  ],
+  "requiredRejections": [
+    "full-geometry view kind",
+    "injective projection claim",
+    "complete-sample claim",
+    "ambient real-locus promotion",
+    "projection-overlap self-intersection promotion",
+    "branch-cut geometry promotion",
+    "D^2 display-scale promotion",
+    "D^4 visible-sheet promotion",
+    "slice smoothness promotion",
+    "undefined complex-to-real mapping",
+    "ambiguous coordinate order",
+    "unstated fixed-coordinate constraints",
+    "random or unstated sampling determinism",
+    "any true geometry/sheet/covering/geometric-zoom truth flag"
+  ],
+  "formalAuthorityBoundary": {
+    "definitions": [
+      "formal/SelfSimilarCY/Torus4.lean",
+      "formal/SelfSimilarCY/LaurentW.lean",
+      "formal/SelfSimilarCY/BaseFiber.lean"
+    ],
+    "regularityEvidence": [
+      "formal/SelfSimilarCY/LaurentDifferential.lean",
+      "formal/SelfSimilarCY/LaurentImplicit.lean"
+    ],
+    "explicitNonPromotion": "LaurentImplicit local regular-level charts do not define the selected global browser projection and do not prove arbitrary display-slice transversality"
+  },
+  "protectedFiles": [
+    "README.md",
+    "data/system.json",
+    "data/system.v2.json",
+    "scene-spec.js",
+    "concrete-runtime-schema.js",
+    "app.js",
+    "base-renderer.js",
+    "one-step-pullback.js",
+    "recursive-lazy-expansion.js",
+    "zoom-semantics.js",
+    "sheet-branch-organization.js",
+    "arithmetic-overlays.js",
+    "structural-camera.js",
+    "structural-visualization.js",
+    "visual-provenance.js",
+    "formal/*"
+  ],
+  "truthFlags": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  },
+  "rendererAuthorization": {
+    "allowedAfterThread23": [
+      "consume schema v2 concrete X_0 definition",
+      "consume data/geometric-view.v1.json",
+      "accept an ordered finite validated sample subset of X_0",
+      "display only the declared R^2 sampled projection with required labeling"
+    ],
+    "stillForbiddenInThread23": [
+      "W numerical evaluator",
+      "sample generator",
+      "mesh",
+      "contour",
+      "point-cloud renderer",
+      "geometric renderer",
+      "geometric pullback"
+    ]
+  },
+  "exitCriterion": "Projection/slice semantics are deterministic, documented, and testable before any geometric renderer consumes them.",
+  "verdict": "READY_FOR_THREAD_24_BASE_GEOMETRIC_RENDERER_IF_CI_AND_CANONICAL_SEAL_PASS"
+}

@@ -202,6 +202,9 @@ jobs:
       - name: Verify concrete runtime schema admission v0.01
         run: node verify_concrete_runtime_schema_admission_v0_01.js
 
+      - name: Verify projection / slice semantics v0.01
+        run: node verify_projection_slice_semantics_v0_01.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -240,6 +243,8 @@ jobs:
           node --check verify_concrete_runtime_schema_contract_v0_01.js
           node --check concrete-runtime-schema.js
           node --check verify_concrete_runtime_schema_admission_v0_01.js
+          node --check projection-slice-semantics.js
+          node --check verify_projection_slice_semantics_v0_01.js
           node --check app.js
 
   publication-static-smoke:

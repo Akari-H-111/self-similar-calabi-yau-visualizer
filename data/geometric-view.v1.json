@@ -1,0 +1,97 @@
+{
+  "contractVersion": 1,
+  "descriptorVersion": "v0.01",
+  "viewId": "x0_z1_complex_plane_sampled_projection_v1",
+  "viewKind": "sampled_projection",
+  "sourceObject": "X_0",
+  "sourceDomain": {
+    "ambientKind": "algebraic_torus",
+    "coordinateCount": 4,
+    "baseField": "complex",
+    "formulaId": "W_kappa_torus4_v1",
+    "levelParameter": "lambda"
+  },
+  "parameterBoundary": {
+    "appliesTo": [
+      "lambda",
+      "kappa"
+    ],
+    "sourceField": "complex",
+    "runtimeRepresentation": "real_slice",
+    "embedding": "real_to_complex",
+    "ambientCoordinatesRestrictedToReal": false
+  },
+  "display": {
+    "dimension": 2,
+    "codomain": "R^2",
+    "coordinateOrder": [
+      "x",
+      "y"
+    ]
+  },
+  "projection": {
+    "kind": "complex_coordinate_cartesian",
+    "sourceCoordinate": "z1",
+    "sourceIndex": 0,
+    "complexToRealMap": [
+      {
+        "displayCoordinate": "x",
+        "component": "real_part",
+        "expression": "Re(z1)"
+      },
+      {
+        "displayCoordinate": "y",
+        "component": "imaginary_part",
+        "expression": "Im(z1)"
+      }
+    ],
+    "informationDiscarded": [
+      "z2",
+      "z3",
+      "z4"
+    ],
+    "injectiveClaim": false,
+    "branchConvention": "none",
+    "periodicity": "none"
+  },
+  "slice": {
+    "kind": "none",
+    "constraints": [],
+    "fixedCoordinates": []
+  },
+  "sampleSemantics": {
+    "kind": "ordered_finite_validated_subset",
+    "sourceMembership": "z in X_0",
+    "generationImplementation": "not_implemented_in_thread23",
+    "requiredFutureGenerationPolicy": "deterministic_no_randomness",
+    "randomnessAllowed": false,
+    "seedPolicy": "not_applicable",
+    "tolerancePolicy": "must_be_explicitly_versioned_if_numeric_membership_is_introduced",
+    "completenessClaim": false
+  },
+  "ambiguity": {
+    "manyToOnePossible": true,
+    "projectionOverlapImpliesSourceSelfIntersection": false
+  },
+  "artifactPolicy": {
+    "sourceSingularity": "source_geometry_only_if_independently_established",
+    "sliceSingularity": "not_applicable_for_selected_no_slice_route",
+    "projectionCriticalValue": "projection_artifact_unless_independently_lifted",
+    "projectionOverlap": "projection_artifact",
+    "displayOcclusion": "presentation_artifact",
+    "samplingArtifact": "sampling_artifact",
+    "branchCutArtifact": "not_applicable_selected_route_has_no_branch",
+    "numericalApproximationArtifact": "numerical_artifact"
+  },
+  "uiWording": {
+    "requiredLabel": "Sampled projection of X_0 onto the z_1 complex plane",
+    "pointMeaning": "Each displayed point is (Re(z_1), Im(z_1)) for one validated finite sample z in X_0.",
+    "fullGeometryClaimAllowed": false
+  },
+  "truthFlags": {
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  }
+}
