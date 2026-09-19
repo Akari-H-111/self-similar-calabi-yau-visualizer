@@ -4,6 +4,7 @@ import Mathlib.Analysis.Calculus.Implicit
 namespace SelfSimilarCY
 
 open scoped BigOperators Topology
+open Filter
 
 /--
 The ambient Laurent function is C¹ at every point coming from the concrete torus.
@@ -289,7 +290,8 @@ theorem eventually_laurentRegularImplicitFunction_reconstruct
           (laurentRegularImplicitChart κ lambda z hz hreg x).snd = x := by
   let hsurj :=
     laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime hz hreg
-  simpa [laurentRegularImplicitFunction, laurentRegularImplicitChart, hsurj] using
+  simpa [laurentRegularImplicitFunction, laurentRegularImplicitChart,
+    laurentImplicitFunction, laurentImplicitChart, hsurj] using
     (laurentWPoint_hasStrictFDerivAt κ z).eq_implicitFunction
       (laurentTotalDifferential_range_eq_top hsurj)
 
@@ -342,7 +344,7 @@ theorem eventually_laurentWPoint_regularImplicitFunction_eq_level
             (𝓝 0) (𝓝 lambda)).prodMk_nhds tendsto_id)
   have hpull := htend.eventually hmap
   filter_upwards [hpull] with y hy
-  simpa [laurentRegularImplicitFunction, hsurj] using hy
+  simpa [laurentRegularImplicitFunction, laurentImplicitFunction, hsurj] using hy
 
 /--
 The fixed-level implicit function tends to the regular base point as the kernel
@@ -361,7 +363,7 @@ theorem tendsto_laurentRegularImplicitFunction_level
     laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime hz hreg
   have hbase : laurentWPoint κ z.toPoint4 = lambda :=
     laurentWPoint_eq_level_of_mem_baseFiber κ lambda z hz
-  simpa [laurentRegularImplicitFunction, hsurj, hbase] using
+  simpa [laurentRegularImplicitFunction, laurentImplicitFunction, hsurj, hbase] using
     (laurentWPoint_hasStrictFDerivAt κ z).tendsto_implicitFunction
       (laurentTotalDifferential_range_eq_top hsurj)
       (tendsto_const_nhds :
