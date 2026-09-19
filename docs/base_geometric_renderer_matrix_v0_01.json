@@ -1,0 +1,70 @@
+{
+  "contractVersion": 1,
+  "thread": "24",
+  "milestone": "Base Geometric Renderer",
+  "rendererTechnology": "svg",
+  "sourceObject": "X_0",
+  "formulaId": "W_kappa_torus4_v1",
+  "viewId": "x0_z1_complex_plane_sampled_projection_v1",
+  "projection": {
+    "kind": "complex_coordinate_cartesian",
+    "sourceCoordinate": "z1",
+    "x": "Re(z1)",
+    "y": "Im(z1)",
+    "slice": "none"
+  },
+  "sampler": {
+    "samplerId": "x0_quadratic_z4_gaussian_lattice_v1",
+    "construction": "solve_z4_quadratic_from_z1_z2_z3",
+    "inputDomain": "gaussian_rational_square_shells",
+    "denominator": 4,
+    "maxShell": 8,
+    "coordinatePoolSize": 288,
+    "parameterTripleBudget": 256,
+    "sampleBudget": 512,
+    "rootOrdering": "lexicographic_real_then_imag",
+    "randomnessAllowed": false,
+    "completenessClaim": false
+  },
+  "numericMembership": {
+    "kind": "combined_absolute_relative",
+    "version": "v0.01",
+    "absolute": 5e-12,
+    "relative": 5e-12,
+    "scale": "max(1, |lambda|, sum_i |z_i| + |kappa/product_i(z_i)|)",
+    "formalEqualityClaim": false
+  },
+  "presentation": {
+    "kind": "uniform_fit_to_svg_viewport",
+    "semanticProjectionSeparate": true,
+    "metricClaim": false,
+    "geometricZoomClaim": false
+  },
+  "renderedMark": {
+    "meaning": "one validated finite X_0 sample projected to (Re(z1), Im(z1))",
+    "sourceIdRequired": true,
+    "semanticCoordinatesRequired": true,
+    "projectedOverlapMetadata": "projected_sample_overlap_count",
+    "sourceSelfIntersectionClaim": false,
+    "sheetClaim": false,
+    "coveringMultiplicityClaim": false
+  },
+  "truthFlags": {
+    "geometryRendered": true,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  },
+  "depthBoundary": {
+    "renderedDepth": 0,
+    "requestedDepthCanTriggerXnGeometry": false
+  },
+  "protected": {
+    "formal": true,
+    "thread22RuntimeSchema": true,
+    "thread23ProjectionContract": true,
+    "structuralSemanticModules": true,
+    "appJs": true,
+    "styleCss": true
+  }
+}

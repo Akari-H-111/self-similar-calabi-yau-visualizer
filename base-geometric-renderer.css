@@ -1,0 +1,63 @@
+.base-geometric-section {
+  padding-top: 0.25rem;
+}
+
+.base-geometric-status,
+.base-geometric-provenance {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+  color: color-mix(in srgb, CanvasText 76%, transparent);
+}
+
+.base-geometric-status[data-state="error"] {
+  font-weight: 750;
+  color: CanvasText;
+}
+
+.base-geometric-visualization {
+  overflow-x: auto;
+  border: 1px solid color-mix(in srgb, CanvasText 22%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, Canvas 97%, CanvasText 3%);
+}
+
+.base-geometric-renderer__surface {
+  display: block;
+  width: 100%;
+  min-width: 36rem;
+  height: auto;
+  color: CanvasText;
+}
+
+.base-geometric-frame {
+  fill: transparent;
+  stroke: color-mix(in srgb, CanvasText 22%, transparent);
+  vector-effect: non-scaling-stroke;
+}
+
+.base-geometric-axis {
+  stroke: color-mix(in srgb, CanvasText 30%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: 4 5;
+  vector-effect: non-scaling-stroke;
+}
+
+.base-geometric-mark {
+  fill: currentColor;
+  fill-opacity: 0.32;
+  stroke: none;
+}
+
+@media (max-width: 760px) {
+  .base-geometric-renderer__surface {
+    width: 42rem;
+    min-width: 42rem;
+    max-width: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .base-geometric-mark {
+    fill-opacity: 1;
+  }
+}

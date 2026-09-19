@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Self-Similar Calabi–Yau Visualizer</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="base-geometric-renderer.css">
   <script src="scene-spec.js" defer></script>
   <script src="base-renderer.js" defer></script>
   <script src="one-step-pullback.js" defer></script>
@@ -20,6 +21,12 @@
   <script src="arithmetic-overlay-graphics.js" defer></script>
   <script src="exposition-layer.js" defer></script>
   <script src="visual-provenance.js" defer></script>
+  <script src="concrete-runtime-schema.js" defer></script>
+  <script src="projection-slice-semantics.js" defer></script>
+  <script src="laurent-evaluator.js" defer></script>
+  <script src="base-geometric-sampler.js" defer></script>
+  <script src="base-geometric-renderer.js" defer></script>
+  <script src="base-geometric-runtime.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -30,7 +37,8 @@
       <p class="lede">A structural explorer for the coordinate-power pullback system. The semantic pullback tower remains lazily materialized, while v0.19 projects only a bounded active render window with overscan, floating-origin deep navigation, presentation-slot recycling, and a bounded recomputable layout cache. Camera, aggregated multiplicity badges for D⁴ organization metadata, and source-backed arithmetic annotations remain presentation layers over that structural state.</p>
       <p class="section-note">v1.0-rc1 packages the existing interactive graphical layer as a public structural visualizer release candidate. It inherits the sealed v0.21 · Mathematical / Visual Fidelity Audit II provenance boundary above the v0.20.1 human-interaction remediation, v0.20 Visual Semantics &amp; Accessibility Audit, v0.19 · Infinite-Navigation Rendering Engine, v0.18 Arithmetic Overlay Graphics, v0.17 D⁴ Branch Organization Graphics, v0.16 presentation-only structural camera (Structural Camera / Zoom Layer), v0.15 Interactive Pullback Tower, and v0.14 Structural Visualization Layer above the v0.13 Publication Checkpoint, v0.12 UX / Exposition Layer, and v0.11 Mathematical Fidelity Audit. Release hardening does not change recursion, camera, arithmetic, structural, or Lean authority.</p>
       <p class="boundary-note"><strong>Geometry boundary:</strong> No geometric Calabi–Yau hypersurface is currently rendered. Thread 14 interaction semantics alone do not perform a camera transform or geometric zoom. Thread 15 camera operations change only the SVG viewport. Thread 16 adds aggregate graphical badges for D⁴ structural organization multiplicity; the badges do not enumerate concrete sheets, claim covering geometry, or promote D⁴ runtime metadata into a map-degree theorem. Thread 17 adds symbolic/runtime arithmetic annotations only; it does not draw arithmetic loci, fibers, divisors, torsion sets, collision sets, or geometric preimages. Thread 18 bounds presentation objects and derived layout cache entries only; it does not prune retained semantic levels or turn virtual coordinates into geometric claims.</p>
-      <p class="section-note"><strong>Release-candidate boundary:</strong> This release candidate provides an interactive structural visualizer. The rendered graphics are structural and symbolic. No concrete Calabi–Yau hypersurface geometry is currently rendered. <code>W</code> remains unresolved. Browser screenshots are release evidence for the structural UI, not mathematical authority.</p>
+      <p class="section-note"><strong>Historical v1.0-rc1 release boundary:</strong> This release candidate provides an interactive structural visualizer. The rendered graphics are structural and symbolic. No concrete Calabi–Yau hypersurface geometry is currently rendered. <code>W</code> remains unresolved. Browser screenshots are release evidence for the structural UI, not mathematical authority.</p>
+      <p class="boundary-note"><strong>Thread 24 geometric admission:</strong> The new independent panel below evaluates the admitted <code>W_kappa_torus4_v1</code>, deterministically constructs validated finite <code>X_0</code> samples, and renders only the sealed Thread 23 projection <code>(Re(z1), Im(z1))</code>. It does not materialize sheets, claim a covering, apply geometric zoom, or render any <code>X_n</code> with positive depth.</p>
     </header>
 
     <section aria-labelledby="structural-visualization-title" class="structural-section">
@@ -67,6 +75,20 @@
         <div id="structural-visualization" class="structural-visualization" data-camera-dragging="false" aria-describedby="structural-camera-help structural-boundary-caption" hidden></div>
       </div>
       <p id="structural-boundary-caption" class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. D⁴ badges denote exact aggregate structural organization multiplicity only. At D=2 this can communicate 16-fold structural organization with one badge per visible transition, not sixteen fake geometric sheets. Arithmetic markers are symbolic annotations with explicit evidence/provenance, not geometric arithmetic loci. Selection, focus, collapse, arithmetic overlay toggles, and camera state remain separate presentation/runtime domains. Camera scale is presentation-only viewport state.</p>
+    </section>
+
+    <section aria-labelledby="base-geometric-label" class="base-geometric-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Thread 24 · admitted base geometry</p>
+          <h2 id="base-geometric-label">Sampled projection of X_0 onto the z_1 complex plane</h2>
+        </div>
+        <p class="section-note">This surface is a deterministic finite sampled projection of the admitted base fiber only. The structural diagram remains a separate structural representation; neither surface is silently reinterpreted as the other.</p>
+      </div>
+      <p id="base-geometric-status" class="base-geometric-status" data-state="loading">Loading deterministic X_0 samples…</p>
+      <div id="base-geometric-visualization" class="base-geometric-visualization" hidden></div>
+      <p id="base-geometric-provenance" class="base-geometric-provenance"></p>
+      <p class="structural-boundary-caption">Each rendered mark means one validated finite sample <code>z ∈ X_0</code>, displayed at <code>(Re(z1), Im(z1))</code>. A finite sample is not the complete <code>X_0</code>; projection overlap is not a source self-intersection; two quadratic roots are not sheets; viewport fitting is presentation-only and is not D² metric scaling or geometric zoom.</p>
     </section>
 
     <section aria-labelledby="current-state-title" class="primary-section">

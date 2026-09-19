@@ -1,0 +1,35 @@
+{
+  "configVersion": "v0.01",
+  "samplerId": "x0_quadratic_z4_gaussian_lattice_v1",
+  "sourceObject": "X_0",
+  "formulaId": "W_kappa_torus4_v1",
+  "viewId": "x0_z1_complex_plane_sampled_projection_v1",
+  "construction": "solve_z4_quadratic_from_z1_z2_z3",
+  "randomnessAllowed": false,
+  "coordinateDomain": {
+    "kind": "gaussian_rational_square_shells",
+    "denominator": 4,
+    "maxShell": 8
+  },
+  "coordinateSelection": {
+    "z1Multiplier": 1,
+    "z1Offset": 0,
+    "z2Multiplier": 5,
+    "z2Offset": 1,
+    "z3Multiplier": 7,
+    "z3Offset": 3
+  },
+  "parameterTripleBudget": 256,
+  "sampleBudget": 512,
+  "rootOrdering": "lexicographic_real_then_imag",
+  "doubleRootDedup": {
+    "kind": "relative_distance",
+    "value": 1e-12
+  },
+  "membershipTolerance": {
+    "kind": "combined_absolute_relative",
+    "absolute": 5e-12,
+    "relative": 5e-12,
+    "version": "v0.01"
+  }
+}

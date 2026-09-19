@@ -205,6 +205,9 @@ jobs:
       - name: Verify projection / slice semantics v0.01
         run: node verify_projection_slice_semantics_v0_01.js
 
+      - name: Verify base geometric renderer v0.01
+        run: node verify_base_geometric_renderer_v0_01.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -245,6 +248,12 @@ jobs:
           node --check verify_concrete_runtime_schema_admission_v0_01.js
           node --check projection-slice-semantics.js
           node --check verify_projection_slice_semantics_v0_01.js
+          node --check laurent-evaluator.js
+          node --check base-geometric-sampler.js
+          node --check base-geometric-renderer.js
+          node --check base-geometric-runtime.js
+          node --check verify_base_geometric_renderer_v0_01.js
+          node --check verify_base_geometric_renderer_browser_v0_01.js
           node --check app.js
 
   publication-static-smoke:
@@ -292,12 +301,25 @@ jobs:
             arithmetic-overlay-graphics.js \
             exposition-layer.js \
             visual-provenance.js \
+            concrete-runtime-schema.js \
+            projection-slice-semantics.js \
+            laurent-evaluator.js \
+            base-geometric-sampler.js \
+            base-geometric-renderer.js \
+            base-geometric-runtime.js \
+            base-geometric-renderer.css \
             app.js; do
             curl -fsS "http://127.0.0.1:8000/${resource}" >/dev/null
           done
 
           curl -fsS http://127.0.0.1:8000/data/system.json >/tmp/publication-system.json
+          curl -fsS http://127.0.0.1:8000/data/system.v2.json >/tmp/publication-system-v2.json
+          curl -fsS http://127.0.0.1:8000/data/geometric-view.v1.json >/tmp/publication-geometric-view.json
+          curl -fsS http://127.0.0.1:8000/data/base-geometric-render-config.v1.json >/tmp/publication-geometric-config.json
           python3 -m json.tool /tmp/publication-system.json >/dev/null
+          python3 -m json.tool /tmp/publication-system-v2.json >/dev/null
+          python3 -m json.tool /tmp/publication-geometric-view.json >/dev/null
+          python3 -m json.tool /tmp/publication-geometric-config.json >/dev/null
           grep -Fq '"version": "v0.12"' /tmp/publication-system.json
           grep -Fq '"requestedDepth": 0' /tmp/publication-system.json
           grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html
@@ -316,6 +338,11 @@ jobs:
           grep -Fq 'Coordinate iterate rule' /tmp/publication-index.html
           grep -Fq 'bounded active render window' /tmp/publication-index.html
           grep -Fq 'Canonical requested depth' /tmp/publication-index.html
+          grep -Fq 'Sampled projection of X_0 onto the z_1 complex plane' /tmp/publication-index.html
+          grep -Fq 'base-geometric-runtime.js' /tmp/publication-index.html
+          grep -Fq '"formulaId": "W_kappa_torus4_v1"' /tmp/publication-system-v2.json
+          grep -Fq '"viewId": "x0_z1_complex_plane_sampled_projection_v1"' /tmp/publication-geometric-view.json
+          grep -Fq '"samplerId": "x0_quadratic_z4_gaussian_lattice_v1"' /tmp/publication-geometric-config.json
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"
 
@@ -341,6 +368,18 @@ jobs:
 
       - name: Exercise RC browser initialization and capture structural screenshots
         run: node verify_public_structural_visualizer_browser_rc_v1_0_rc1.js
+
+      - name: Verify Thread 24 base geometric scene in Chromium
+        run: node verify_base_geometric_renderer_browser_v0_01.js
+
+      - name: Upload Thread 24 base geometric browser evidence
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: thread24-base-geometric-renderer-browser-evidence-${{ github.sha }}
+          path: thread24-browser-artifacts/
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Upload exact-candidate browser evidence
         if: always()
