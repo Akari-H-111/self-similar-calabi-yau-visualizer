@@ -90,6 +90,13 @@ assert.ok(index.includes("Historical v1.0-rc1 release boundary"));
 const legacyGeometrySentence = "No geometric Calabi–Yau hypersurface is currently rendered.";
 assert.equal(index.split(legacyGeometrySentence).length - 1, 1);
 assert.ok(index.includes('<strong>Historical v1.0-rc1 release boundary:</strong> Historical checkpoint wording: “' + legacyGeometrySentence + '”'));
+const rcStructuralSentence = "The rendered graphics are structural and symbolic.";
+const rcConcreteGeometrySentence = "No concrete Calabi–Yau hypersurface geometry is currently rendered.";
+const rcWUnresolved = "<code>W</code> remains unresolved.";
+assert.equal(index.split(rcStructuralSentence).length - 1, 1);
+assert.equal(index.split(rcConcreteGeometrySentence).length - 1, 1);
+assert.equal(index.split(rcWUnresolved).length - 1, 1);
+assert.ok(index.includes('Historical RC wording: “' + rcStructuralSentence + ' ' + rcConcreteGeometrySentence + ' ' + rcWUnresolved + '”'));
 assert.ok(!index.includes("<code>W</code> has no concrete representation in this visualizer."));
 assert.ok(!index.includes("No Calabi–Yau hypersurface geometry, genuine sheets, covering geometry, or metric realization is rendered here."));
 
