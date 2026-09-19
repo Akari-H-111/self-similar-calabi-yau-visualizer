@@ -1,0 +1,48 @@
+{
+  "contractVersion": 1,
+  "descriptorVersion": "v0.01",
+  "viewId": "xn_z1_complex_plane_sampled_pullback_projection_v1",
+  "viewKind": "finite_sampled_pullback_projection",
+  "sourceObjectPolicy": {
+    "kind": "geometric_depth_indexed",
+    "pattern": "X_n",
+    "depthZero": "X_0",
+    "positiveDepth": "X_n"
+  },
+  "inheritedProjectionFrom": "x0_z1_complex_plane_sampled_projection_v1",
+  "projection": {
+    "kind": "complex_coordinate_cartesian",
+    "sourceCoordinate": "z1",
+    "sourceIndex": 0,
+    "mapping": "(Re(z1), Im(z1))",
+    "informationDiscarded": ["z2", "z3", "z4"],
+    "injectiveClaim": false
+  },
+  "sampleSemantics": {
+    "kind": "finite_geometric_pullback_induced_from_admitted_x0_sample",
+    "inducedFrom": "Thread24 ordered finite validated X_0 sample",
+    "fiberCompleteness": "complete_over_each_materialized_parent",
+    "sourceManifoldCompletenessClaim": false,
+    "rootTupleMeaning": "deterministic_fiber_enumeration_index_only",
+    "sheetIdentityClaim": false,
+    "projectionOverlapMeaning": "projected_pullback_point_overlap_count_only"
+  },
+  "ambiguity": {
+    "manyToOnePossible": true,
+    "overlapImpliesSourceSelfIntersection": false,
+    "overlapImpliesCoveringMultiplicity": false
+  },
+  "uiWording": {
+    "depthZeroLabel": "Admitted finite X_0 seed sample used for geometric pullback provenance",
+    "positiveDepthLabelTemplate": "Finite sampled pullback of X_{n} induced from admitted X_0 samples",
+    "pointMeaning": "One deterministic finite geometric preimage point, recursively generated from an admitted X_0 seed and validated against its declared parent.",
+    "fullGeometryClaimAllowed": false
+  },
+  "truthFlags": {
+    "geometryRendered": true,
+    "pullbackGeometryRendered": true,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  }
+}
