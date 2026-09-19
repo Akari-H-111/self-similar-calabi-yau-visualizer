@@ -500,20 +500,31 @@ X_n=(P_D^n)^{-1}(X),
 P_D(z_1,\ldots,z_4)=(z_1^D,\ldots,z_4^D).
 \]
 
-The sealed Lean core formalizes the four-coordinate coordinate-power map, its iteration law, and an abstract set-theoretic pullback tower for arbitrary `X : Set Point4`.
+The current Lean core formalizes the original coordinate-power / iteration / abstract pullback spine and extends it with the concrete torus model, `W_kappa`, the base fiber, torus coordinate power, concrete pullback recurrence, stationary Laurent family, set-theoretic kernel/fiber cardinality, Laurent critical-locus and differential results, and the local analytic implicit-function bridge.
 
-It does not define `W` or Calabi–Yau geometry. Runtime `W` remains `unresolved`.
+This does **not** promote the formal scope to the complete algebraic-geometric Calabi–Yau package: full finite-étale scheme geometry, algebraic map degree, canonical triviality, Oka-dependent connectedness, and the logarithmic metric-scaling theorem remain outside the current Lean claims. Runtime representation is also context-dependent: schema v1 keeps `W` unresolved for the structural pipeline, while schema v2 admits `W_kappa_torus4_v1` for the separate finite sampled geometry pipeline.
 
 Therefore the sealed schema-v1 structural pipeline does not render geometric Calabi–Yau hypersurface geometry. The later Thread 24–26 schema-v2 pipeline is separate and renders only the admitted finite sampled projections described in the current-state section above.
 
 ## Lean-formalized scope
 
-The sealed formal source remains unchanged:
+Current formal modules include:
 
 ```text
 formal/SelfSimilarCY/CoordinatePower.lean
 formal/SelfSimilarCY/CoordinatePowerIteration.lean
 formal/SelfSimilarCY/PullbackTower.lean
+formal/SelfSimilarCY/Torus4.lean
+formal/SelfSimilarCY/TorusCoordinatePower.lean
+formal/SelfSimilarCY/LaurentW.lean
+formal/SelfSimilarCY/BaseFiber.lean
+formal/SelfSimilarCY/ConcretePullbackTower.lean
+formal/SelfSimilarCY/StationaryFamily.lean
+formal/SelfSimilarCY/TorusPowerKernel.lean
+formal/SelfSimilarCY/TorusPowerFibers.lean
+formal/SelfSimilarCY/LaurentCritical.lean
+formal/SelfSimilarCY/LaurentDifferential.lean
+formal/SelfSimilarCY/LaurentImplicit.lean
 ```
 
 Pinned environment:
@@ -523,7 +534,7 @@ Lean: leanprover/lean4:v4.34.0
 mathlib: 7801e8406155c31b340d28e2762f754d02b5e9b0
 ```
 
-v0.20.1 adds no Lean theorem and changes no formal file, toolchain pin, or mathlib pin.
+Historically, v0.20.1 added no Lean theorem and changed no formal file, toolchain pin, or mathlib pin. The later F08–F14 sequence extended the formal module set listed above without rewriting that historical release fact.
 
 ## Verification
 
