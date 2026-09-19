@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "thread": 25,
   "milestone": "Geometric Pullback Visualization",
-  "status": "implementation_candidate",
+  "status": "canonical_sealed",
   "sourceSeed": {
     "sourceObject": "X_0",
     "samplerId": "x0_quadratic_z4_gaussian_lattice_v1",
