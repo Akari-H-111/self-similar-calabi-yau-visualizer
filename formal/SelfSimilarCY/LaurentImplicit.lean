@@ -117,6 +117,9 @@ theorem laurentImplicitFunction_apply_base
     (h : Function.Surjective (laurentTotalDifferential κ z)) :
     laurentImplicitFunction κ z h (laurentWPoint κ z.toPoint4)
       (0 : (laurentTotalDifferential κ z).ker) = z.toPoint4 := by
-  simp [laurentImplicitFunction]
+  unfold laurentImplicitFunction
+  exact
+    (laurentWPoint_hasStrictFDerivAt κ z).implicitFunction_apply_image
+      (laurentTotalDifferential_range_eq_top h)
 
 end SelfSimilarCY
