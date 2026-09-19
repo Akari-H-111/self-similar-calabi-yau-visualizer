@@ -26,7 +26,7 @@ assert.equal(repair.canonicalParent.commit,"ce1317c3cc32fc7d8a3b9e4795949bea6680
 assert.equal(repair.abandonedSeal.pr,46);
 assert.equal(repair.abandonedSeal.merged,false);
 assert.equal(repair.repair.stageClassPolicy,"inherit_Thread26_selectedStructuralStage_class");
-assert.equal(thread31.status,"implementation_candidate");
+assert.equal(thread31.status,"canonical_sealed");
 assert.equal(thread31.correspondence.stageClassDelegatesToThread26,true);
 
 const c26=HybridNavigationSemantics.validateConfig(config26);
@@ -112,7 +112,17 @@ for(const [relativePath,expected] of Object.entries(repair.protectedBlobs)){
 }
 
 for(const [relativePath,expected] of Object.entries(repair.candidateBlobs)){
-  assert.equal(gitBlobSha(relativePath),expected,"repair candidate blob mismatch: "+relativePath);
+  if(relativePath==="docs/hybrid_global_scoped_navigation_matrix_v0_01.json"){
+    const sealed=read(relativePath);
+    assert.equal((sealed.match(/"status": "canonical_sealed"/g)||[]).length,1);
+    const candidate=sealed.replace('"status": "canonical_sealed"','"status": "implementation_candidate"');
+    const body=Buffer.from(candidate,"utf8");
+    const header=Buffer.from("blob "+String(body.length)+"\0","utf8");
+    assert.equal(crypto.createHash("sha1").update(header).update(body).digest("hex"),expected,
+      "Thread 31 seal changed more than status in the repair candidate matrix");
+  }else{
+    assert.equal(gitBlobSha(relativePath),expected,"repair candidate blob mismatch: "+relativePath);
+  }
 }
 
 assert.equal(repair.preserved.automaticDepthSynchronization,false);

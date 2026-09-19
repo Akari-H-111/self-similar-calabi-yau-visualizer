@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "thread": 31,
   "milestone": "Hybrid Navigation II: Global / Scoped Geometry Bridge",
-  "status": "implementation_candidate",
+  "status": "canonical_sealed",
   "canonicalParent": {
     "commit": "1a5826de73d775ad818305d2b1f57c4c58d053de",
     "tree": "e6545c6d1f2b72cdb0409b1549db02bb03ed3f18",
