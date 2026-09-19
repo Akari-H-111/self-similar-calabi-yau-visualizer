@@ -208,6 +208,9 @@ jobs:
       - name: Verify base geometric renderer v0.01
         run: node verify_base_geometric_renderer_v0_01.js
 
+      - name: Verify geometric pullback visualization v0.01
+        run: node verify_geometric_pullback_visualization_v0_01.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -254,6 +257,14 @@ jobs:
           node --check base-geometric-runtime.js
           node --check verify_base_geometric_renderer_v0_01.js
           node --check verify_base_geometric_renderer_browser_v0_01.js
+          node --check torus-power-evaluator.js
+          node --check geometric-pullback-fibers.js
+          node --check geometric-pullback-engine.js
+          node --check geometric-pullback-view-semantics.js
+          node --check geometric-pullback-renderer.js
+          node --check geometric-pullback-runtime.js
+          node --check verify_geometric_pullback_visualization_v0_01.js
+          node --check verify_geometric_pullback_browser_v0_01.js
           node --check app.js
 
   publication-static-smoke:
@@ -308,6 +319,13 @@ jobs:
             base-geometric-renderer.js \
             base-geometric-runtime.js \
             base-geometric-renderer.css \
+            torus-power-evaluator.js \
+            geometric-pullback-fibers.js \
+            geometric-pullback-engine.js \
+            geometric-pullback-view-semantics.js \
+            geometric-pullback-renderer.js \
+            geometric-pullback-runtime.js \
+            geometric-pullback-renderer.css \
             app.js; do
             curl -fsS "http://127.0.0.1:8000/${resource}" >/dev/null
           done
@@ -316,10 +334,14 @@ jobs:
           curl -fsS http://127.0.0.1:8000/data/system.v2.json >/tmp/publication-system-v2.json
           curl -fsS http://127.0.0.1:8000/data/geometric-view.v1.json >/tmp/publication-geometric-view.json
           curl -fsS http://127.0.0.1:8000/data/base-geometric-render-config.v1.json >/tmp/publication-geometric-config.json
+          curl -fsS http://127.0.0.1:8000/data/geometric-pullback-view.v1.json >/tmp/publication-geometric-pullback-view.json
+          curl -fsS http://127.0.0.1:8000/data/geometric-pullback-config.v1.json >/tmp/publication-geometric-pullback-config.json
           python3 -m json.tool /tmp/publication-system.json >/dev/null
           python3 -m json.tool /tmp/publication-system-v2.json >/dev/null
           python3 -m json.tool /tmp/publication-geometric-view.json >/dev/null
           python3 -m json.tool /tmp/publication-geometric-config.json >/dev/null
+          python3 -m json.tool /tmp/publication-geometric-pullback-view.json >/dev/null
+          python3 -m json.tool /tmp/publication-geometric-pullback-config.json >/dev/null
           grep -Fq '"version": "v0.12"' /tmp/publication-system.json
           grep -Fq '"requestedDepth": 0' /tmp/publication-system.json
           grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html
@@ -343,6 +365,10 @@ jobs:
           grep -Fq '"formulaId": "W_kappa_torus4_v1"' /tmp/publication-system-v2.json
           grep -Fq '"viewId": "x0_z1_complex_plane_sampled_projection_v1"' /tmp/publication-geometric-view.json
           grep -Fq '"samplerId": "x0_quadratic_z4_gaussian_lattice_v1"' /tmp/publication-geometric-config.json
+          grep -Fq '"viewId": "xn_z1_complex_plane_sampled_pullback_projection_v1"' /tmp/publication-geometric-pullback-view.json
+          grep -Fq '"pullbackId": "finite_sampled_geometric_pullback_v1"' /tmp/publication-geometric-pullback-config.json
+          grep -Fq 'Finite sampled pullback of X_1 induced from admitted X_0 samples' /tmp/publication-index.html
+          grep -Fq 'geometric-pullback-runtime.js' /tmp/publication-index.html
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"
 
@@ -372,12 +398,24 @@ jobs:
       - name: Verify Thread 24 base geometric scene in Chromium
         run: node verify_base_geometric_renderer_browser_v0_01.js
 
+      - name: Verify Thread 25 geometric pullback scene in Chromium
+        run: node verify_geometric_pullback_browser_v0_01.js
+
       - name: Upload Thread 24 base geometric browser evidence
         if: always()
         uses: actions/upload-artifact@v5
         with:
           name: thread24-base-geometric-renderer-browser-evidence-${{ github.sha }}
           path: thread24-browser-artifacts/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload Thread 25 geometric pullback browser evidence
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: thread25-geometric-pullback-browser-evidence-${{ github.sha }}
+          path: thread25-browser-artifacts/
           if-no-files-found: error
           retention-days: 30
 
