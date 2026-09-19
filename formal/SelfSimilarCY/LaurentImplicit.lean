@@ -255,4 +255,145 @@ theorem eventually_exists_baseFiber_lift_iff_regularImplicitChart_fst_eq
   rw [← hx]
   exact (laurentRegularImplicitChart_fst_eq_lambda_iff κ lambda z hz hreg x).symm
 
+/--
+Canonical implicit function at a regular concrete base-fiber point, obtained from
+the same sealed F13 surjectivity theorem as `laurentRegularImplicitChart`.
+-/
+noncomputable def laurentRegularImplicitFunction
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    ℂ → (laurentTotalDifferential κ z).ker → Point4 :=
+  laurentImplicitFunction κ z
+    (laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime hz hreg)
+
+/-- At a concrete base-fiber point the ambient Laurent value is the level parameter. -/
+@[simp]
+theorem laurentWPoint_eq_level_of_mem_baseFiber
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda) :
+    laurentWPoint κ z.toPoint4 = lambda := by
+  simpa [baseFiber] using hz
+
+/--
+Every ambient point sufficiently near the regular base point is reconstructed
+from its Laurent value and its kernel coordinate in the F14 implicit chart.
+-/
+theorem eventually_laurentRegularImplicitFunction_reconstruct
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    ∀ᶠ x in 𝓝 z.toPoint4,
+      laurentRegularImplicitFunction κ lambda z hz hreg
+          (laurentWPoint κ x)
+          (laurentRegularImplicitChart κ lambda z hz hreg x).snd = x := by
+  let hsurj :=
+    laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime hz hreg
+  simpa [laurentRegularImplicitFunction, laurentRegularImplicitChart, hsurj] using
+    (laurentWPoint_hasStrictFDerivAt κ z).eq_implicitFunction
+      (laurentTotalDifferential_range_eq_top hsurj)
+
+/--
+On the local level set, the fixed-level implicit function reconstructs every
+nearby point from the kernel coordinate supplied by the chart.
+-/
+theorem eventually_regularLevel_reconstruct_from_kernelCoordinate
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    ∀ᶠ x in 𝓝 z.toPoint4,
+      laurentWPoint κ x = lambda →
+        laurentRegularImplicitFunction κ lambda z hz hreg lambda
+          (laurentRegularImplicitChart κ lambda z hz hreg x).snd = x := by
+  filter_upwards
+    [eventually_laurentRegularImplicitFunction_reconstruct κ lambda z hz hreg]
+      with x hx hlevel
+  simpa [hlevel] using hx
+
+/--
+For kernel parameters sufficiently near zero, the fixed-level implicit function
+lies on the ambient Laurent level `lambda`.
+-/
+theorem eventually_laurentWPoint_regularImplicitFunction_eq_level
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    ∀ᶠ y : (laurentTotalDifferential κ z).ker in 𝓝 0,
+      laurentWPoint κ
+          (laurentRegularImplicitFunction κ lambda z hz hreg lambda y) =
+        lambda := by
+  let hsurj :=
+    laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime hz hreg
+  have hbase : laurentWPoint κ z.toPoint4 = lambda :=
+    laurentWPoint_eq_level_of_mem_baseFiber κ lambda z hz
+  have hmap :=
+    (laurentWPoint_hasStrictFDerivAt κ z).map_implicitFunction_eq
+      (laurentTotalDifferential_range_eq_top hsurj)
+  have htend :
+      Tendsto
+        (fun y : (laurentTotalDifferential κ z).ker => (lambda, y))
+        (𝓝 0)
+        (𝓝 (laurentWPoint κ z.toPoint4,
+          (0 : (laurentTotalDifferential κ z).ker))) := by
+    simpa [hbase] using
+      ((tendsto_const_nhds :
+          Tendsto
+            (fun _ : (laurentTotalDifferential κ z).ker => lambda)
+            (𝓝 0) (𝓝 lambda)).prodMk_nhds tendsto_id)
+  have hpull := htend.eventually hmap
+  filter_upwards [hpull] with y hy
+  simpa [laurentRegularImplicitFunction, hsurj] using hy
+
+/--
+The fixed-level implicit function tends to the regular base point as the kernel
+parameter tends to zero.
+-/
+theorem tendsto_laurentRegularImplicitFunction_level
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    Tendsto
+      (fun y : (laurentTotalDifferential κ z).ker =>
+        laurentRegularImplicitFunction κ lambda z hz hreg lambda y)
+      (𝓝 0)
+      (𝓝 z.toPoint4) := by
+  let hsurj :=
+    laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime hz hreg
+  have hbase : laurentWPoint κ z.toPoint4 = lambda :=
+    laurentWPoint_eq_level_of_mem_baseFiber κ lambda z hz
+  simpa [laurentRegularImplicitFunction, hsurj, hbase] using
+    (laurentWPoint_hasStrictFDerivAt κ z).tendsto_implicitFunction
+      (laurentTotalDifferential_range_eq_top hsurj)
+      (tendsto_const_nhds :
+        Tendsto
+          (fun _ : (laurentTotalDifferential κ z).ker => lambda)
+          (𝓝 0) (𝓝 lambda))
+      tendsto_id
+
+/--
+For every sufficiently small kernel parameter, the fixed-level implicit point
+has a concrete lift lying in `baseFiber κ lambda`.
+
+Together with `eventually_regularLevel_reconstruct_from_kernelCoordinate`,
+this is the two-sided local kernel parametrization needed by F14. It is still
+only a local analytic statement, not a manifold or scheme smoothness theorem.
+-/
+theorem eventually_regularImplicitFunction_exists_baseFiber_lift
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    ∀ᶠ y : (laurentTotalDifferential κ z).ker in 𝓝 0,
+      ∃ w : Torus4,
+        w ∈ baseFiber κ lambda ∧
+          w.toPoint4 =
+            laurentRegularImplicitFunction κ lambda z hz hreg lambda y := by
+  have hlift :=
+    (tendsto_laurentRegularImplicitFunction_level κ lambda z hz hreg).eventually
+      (eventually_laurentWPoint_eq_iff_exists_baseFiber_lift κ lambda z)
+  filter_upwards
+    [hlift,
+      eventually_laurentWPoint_regularImplicitFunction_eq_level κ lambda z hz hreg]
+      with y hyLift hyLevel
+  exact hyLift.mp hyLevel
+
 end SelfSimilarCY
