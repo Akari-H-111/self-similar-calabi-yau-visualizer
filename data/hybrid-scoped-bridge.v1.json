@@ -1,0 +1,30 @@
+{
+  "contractVersion": 1,
+  "descriptorVersion": "v0.01",
+  "bridgeId": "hybrid_global_scoped_navigation_v1",
+  "defaultContextMode": "structural",
+  "contextModes": ["structural", "global-geometric", "scoped-geometric"],
+  "correspondenceClasses": {
+    "A": "A_canonical_mathematical_correspondence",
+    "B": "B_deterministic_implementation_correspondence",
+    "C": "C_presentation_ui_only_correspondence",
+    "D": "D_unsupported_forbidden_correspondence"
+  },
+  "policies": {
+    "contextSwitchTriggersScopedGeneration": false,
+    "structuralDepthControlsGlobalGeometricDepth": false,
+    "structuralDepthControlsScopedGeometricDepth": false,
+    "globalGeometricDepthControlsStructuralDepth": false,
+    "globalGeometricDepthControlsScopedGeometricDepth": false,
+    "scopedGeometricDepthControlsStructuralDepth": false,
+    "scopedGeometricDepthControlsGlobalGeometricDepth": false,
+    "selectedAncestorDefinesConnectedComponent": false,
+    "rootTupleDefinesSheetIdentity": false,
+    "projectedLocationDefinesSourceIdentity": false
+  },
+  "truthFlags": {
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  }
+}
