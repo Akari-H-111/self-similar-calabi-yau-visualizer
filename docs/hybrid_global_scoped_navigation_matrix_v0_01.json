@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "thread": 31,
+  "milestone": "Hybrid Navigation II: Global / Scoped Geometry Bridge",
+  "status": "implementation_candidate",
+  "canonicalParent": {
+    "commit": "1a5826de73d775ad818305d2b1f57c4c58d053de",
+    "tree": "e6545c6d1f2b72cdb0409b1549db02bb03ed3f18",
+    "soleParent": "d926283506a0e65dabb89be16e20882d66311b48"
+  },
+  "bridge": {
+    "bridgeId": "hybrid_global_scoped_navigation_v1",
+    "contextModes": ["structural", "global-geometric", "scoped-geometric"],
+    "defaultContextMode": "structural",
+    "additiveWrapperOverThread26AndThread30": true,
+    "thread26SemanticsModified": false,
+    "thread30GenerationSemanticsModified": false
+  },
+  "depthIndependence": {
+    "structuralRequestedDepthSeparate": true,
+    "structuralMaterializedDepthSeparate": true,
+    "structuralSelectedDepthSeparate": true,
+    "globalGeometricDepthSeparate": true,
+    "scopedRequestedDepthSeparate": true,
+    "scopedMaterializedDepthSeparate": true,
+    "automaticDepthSynchronization": false
+  },
+  "generationBoundary": {
+    "contextSwitchTriggersScopedGeneration": false,
+    "scopedContextEntryClicksRenderAction": false,
+    "thread31CallsThread29Generation": false,
+    "thread31CallsThread25Generation": false,
+    "explicitThread30RenderActionRemainsSoleScopedGenerationPath": true
+  },
+  "correspondence": {
+    "canonicalStageIndexClass": "A_canonical_mathematical_correspondence",
+    "scopedAncestorProvenanceClass": "B_deterministic_implementation_correspondence",
+    "contextNavigationClass": "C_presentation_ui_only_correspondence",
+    "forbiddenIdentityClass": "D_unsupported_forbidden_correspondence",
+    "selectedAncestorDefinesConnectedComponent": false,
+    "rootTupleDefinesSheetIdentity": false
+  },
+  "truthFlags": {
+    "completeGlobalHypersurfaceRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "selectedAncestorDefinesConnectedComponent": false,
+    "projectedLocationDefinesSourceIdentity": false
+  },
+  "thread32AuthorizedOnlyAfterCanonicalSeal": true,
+  "protectedBlobs": {
+    "hybrid-navigation-semantics.js": "4d31cf1d78aec046ed15916e08a185a0b401c650",
+    "hybrid-navigation-runtime.js": "e97fc72cbf38f45bda1b017e2a517258016c1c7d",
+    "data/hybrid-navigation.v1.json": "bd594dc507b91a23fc0d402e4c9f36b1c627b9c8",
+    "ancestor-scoped-pullback-visualization-runtime.js": "90d9b563b1735f8227441849374aa0e487525d4d",
+    "docs/ancestor_scoped_pullback_geometric_visualization_matrix_v0_01.json": "ac8b0e1ec481ecd5f0c72d5faa2f4d3be6e875d9",
+    "ancestor-scoped-pullback-runtime.js": "b95931eb6c4609d1111a9557b9c2fd90b969a713",
+    "geometric-pullback-runtime.js": "d9834da759b2485810cb73a9148d2bd87607751f",
+    "docs/PLAN_self_similar_cy_visualizer_v0_03.md": "1796ac612d48523ef9751e859ef1bdb860faad20"
+  }
+}
