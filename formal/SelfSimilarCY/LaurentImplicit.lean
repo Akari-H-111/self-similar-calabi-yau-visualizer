@@ -363,13 +363,20 @@ theorem tendsto_laurentRegularImplicitFunction_level
     laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime hz hreg
   have hbase : laurentWPoint κ z.toPoint4 = lambda :=
     laurentWPoint_eq_level_of_mem_baseFiber κ lambda z hz
-  simpa [laurentRegularImplicitFunction, laurentImplicitFunction, hsurj, hbase] using
-    (laurentWPoint_hasStrictFDerivAt κ z).tendsto_implicitFunction
-      (laurentTotalDifferential_range_eq_top hsurj)
+  have hlevelTend :
+      Tendsto
+        (fun _ : (laurentTotalDifferential κ z).ker => lambda)
+        (𝓝 0)
+        (𝓝 (laurentWPoint κ z.toPoint4)) := by
+    simpa [hbase] using
       (tendsto_const_nhds :
         Tendsto
           (fun _ : (laurentTotalDifferential κ z).ker => lambda)
           (𝓝 0) (𝓝 lambda))
+  simpa [laurentRegularImplicitFunction, laurentImplicitFunction, hsurj] using
+    (laurentWPoint_hasStrictFDerivAt κ z).tendsto_implicitFunction
+      (laurentTotalDifferential_range_eq_top hsurj)
+      hlevelTend
       tendsto_id
 
 /--
