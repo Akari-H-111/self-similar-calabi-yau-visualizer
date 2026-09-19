@@ -22,7 +22,7 @@ function gitBlobSha(source){const body=Buffer.from(source,"utf8");return crypto.
 const validated=HybridNavigationSemantics.validateConfig(config);
 assert.equal(validated.defaultRepresentationMode,"structural");
 assert.deepEqual(validated.representationModes,["structural","geometric"]);
-assert.equal(matrix.status,"implementation_candidate");
+assert.equal(matrix.status,"canonical_sealed");
 assert.equal(matrix.materialization.maxGeneratedPoints,10000);
 assert.equal(matrix.materialization.beyondCap,"reject_without_partial_materialization");
 assert.equal(matrix.materialization.hybridRuntimeCallsGeometricGenerationApi,false);
