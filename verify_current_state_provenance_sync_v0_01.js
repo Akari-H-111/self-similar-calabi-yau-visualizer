@@ -87,7 +87,9 @@ assert.ok(index.includes("schema-v2 geometric pipeline admits <code>W_kappa_toru
 assert.ok(index.includes("Legacy structural pipeline geometry"));
 assert.ok(index.includes("Legacy structural W representation"));
 assert.ok(index.includes("Historical v1.0-rc1 release boundary"));
-assert.ok(!index.includes("No geometric Calabi–Yau hypersurface is currently rendered."));
+const legacyGeometrySentence = "No geometric Calabi–Yau hypersurface is currently rendered.";
+assert.equal(index.split(legacyGeometrySentence).length - 1, 1);
+assert.ok(index.includes('<strong>Historical v1.0-rc1 release boundary:</strong> Historical checkpoint wording: “' + legacyGeometrySentence + '”'));
 assert.ok(!index.includes("<code>W</code> has no concrete representation in this visualizer."));
 assert.ok(!index.includes("No Calabi–Yau hypersurface geometry, genuine sheets, covering geometry, or metric realization is rendered here."));
 
@@ -104,7 +106,8 @@ assert.ok(!readme.includes("Therefore no geometric Calabi–Yau hypersurface is 
 
 assert.ok(workflow.includes("node verify_current_state_provenance_sync_v0_01.js"));
 assert.ok(workflow.includes("node --check verify_current_state_provenance_sync_v0_01.js"));
-assert.ok(workflow.includes("stale global geometry claim detected in index.html"));
+assert.ok(workflow.includes("<strong>Historical v1.0-rc1 release boundary:</strong> Historical checkpoint wording"));
+assert.ok(workflow.includes("grep -Fo 'No geometric Calabi–Yau hypersurface is currently rendered.'"));
 assert.ok(!workflow.split("\n").some((line) =>
   line.trim() === "grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html"
 ));
