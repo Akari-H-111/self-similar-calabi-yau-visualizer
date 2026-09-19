@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 2,
+  "project": "Self-Similar Calabi–Yau Visualizer",
+  "version": "v0.12",
+  "mathematics": {
+    "parameters": {
+      "D": 2,
+      "lambda": 1,
+      "kappa": 1
+    },
+    "parameterDomain": {
+      "appliesTo": ["lambda", "kappa"],
+      "sourceField": "complex",
+      "runtimeRepresentation": "real_slice",
+      "embedding": "real_to_complex"
+    },
+    "ambient": {
+      "kind": "algebraic_torus",
+      "coordinateCount": 4,
+      "baseField": "complex"
+    },
+    "pullbackMap": {
+      "kind": "coordinate_power",
+      "exponentParameter": "D"
+    },
+    "baseHypersurface": {
+      "kind": "level_set",
+      "definingFunction": {
+        "symbol": "W",
+        "representation": {
+          "kind": "builtin_formula",
+          "formulaId": "W_kappa_torus4_v1",
+          "coefficientParameter": "kappa"
+        }
+      },
+      "levelParameter": "lambda"
+    }
+  },
+  "request": {
+    "requestedDepth": 0
+  }
+}
