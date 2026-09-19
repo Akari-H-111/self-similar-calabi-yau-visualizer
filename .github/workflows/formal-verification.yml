@@ -196,6 +196,9 @@ jobs:
       - name: Verify public structural visualizer RC v1.0-rc1
         run: node verify_public_structural_visualizer_rc_v1_0_rc1.js
 
+      - name: Verify concrete runtime schema contract v0.01
+        run: node verify_concrete_runtime_schema_contract_v0_01.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -231,6 +234,7 @@ jobs:
           node --check verify_mathematical_visual_fidelity_v0_21.js
           node --check verify_public_structural_visualizer_rc_v1_0_rc1.js
           node --check verify_public_structural_visualizer_browser_rc_v1_0_rc1.js
+          node --check verify_concrete_runtime_schema_contract_v0_01.js
           node --check app.js
 
   publication-static-smoke:
