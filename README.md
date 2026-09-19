@@ -10,9 +10,9 @@
 
 **Runtime scene contract:** v0.12
 
-This repository is a static HTML/CSS/vanilla-JavaScript visualizer with two explicitly separated surfaces. The sealed v1.0-rc1 pipeline remains the structural coordinate-power pullback visualizer, while Thread 24 adds an independent source-backed base-geometric surface for one deterministic finite sampled projection of `X_0`. The structural surface remains structural; the new geometric surface does not materialize pullback sheets, covering geometry, or geometric zoom.
+This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.21 adds a durable visual provenance matrix and a presentation-only provenance adapter that labels admitted graphical classes without changing sealed mathematical/runtime authority. v0.20 adds a presentation-only visual-semantics and accessibility audit above v0.19, including deterministic DOM focus restoration after virtualized interaction rerenders, bounded textual semantics for omitted render-window gaps, browser-zoom-safe camera input policy, single-live-region announcement discipline, forced-colors hooks, and narrow-viewport structural-canvas readability. v0.19 adds a presentation-only infinite-navigation rendering engine above the sealed semantic recursion: deterministic viewport/render-window virtualization, overscan, floating-origin deep-depth handling, bounded presentation-slot recycling, and a bounded recomputable virtual-layout cache. The v0.18 arithmetic graphics, v0.17 D⁴ branch graphics, v0.16 camera, and v0.15 interaction semantics remain beneath that adapter.
 
-Thread 24 evaluates the admitted `W_kappa_torus4_v1`, deterministically constructs validated complex Torus4 samples of `X_0 = W_kappa^{-1}(lambda)`, consumes the sealed Thread 23 projection `z -> (Re(z1), Im(z1))`, and renders those samples as inspectable SVG marks. A finite sampled projection is not the complete `X_0`, and it is not an `X_1`/`X_n` renderer.
+The interface is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric zoom.
 
 The evidence rule remains:
 
@@ -27,43 +27,6 @@ runtime representation
 The v0.11 claim-discipline vocabulary remains binding: **D² and D⁴ explicitly as runtime/organization metadata**. Exact parent-project mathematical artifacts remain **not source-verified in this thread**, so unavailable parent results are not promoted.
 
 D⁴ runtime organization metadata is **not a map-degree theorem** in the current sealed formal scope. Benchmark horizons are **not mathematical limits**, and JavaScript safe-integer checks are **representation-safety / engineering constraints** rather than mathematical theorems.
-
-## Thread 24 — Base Geometric Renderer
-
-Thread 24 is the first milestone that permits `geometryRendered=true`, and only on the independent base-geometric surface backed by the concrete schema v2 and sealed Thread 23 view descriptor.
-
-Canonical runtime path:
-
-```text
-data/system.v2.json
-→ W_kappa_torus4_v1 evaluator
-→ deterministic quadratic z4 sampler
-→ validated ordered finite X_0 sample
-→ data/geometric-view.v1.json
-→ (Re(z1), Im(z1))
-→ SVG presentation transform
-```
-
-The canonical sampler uses a deterministic Gaussian-rational shell domain, solves the exact-in-form quadratic relation for `z4`, and validates floating-point membership with the explicit v0.01 combined tolerance `atol = rtol = 5e-12`. The canonical budget is 256 parameter triples and 512 rendered samples. Randomness and invented fallback geometry are forbidden.
-
-Thread 24 truth boundary:
-
-```text
-base geometric surface:
-geometryRendered = true
-sheetsMaterialized = false
-coveringStructureClaimed = false
-geometricZoomApplied = false
-
-sealed structural surface:
-historical structural truth flags remain unchanged
-```
-
-Detailed contract:
-
-```text
-docs/BASE_GEOMETRIC_RENDERER_v0_01.md
-```
 
 ## v1.0-rc1 public structural visualizer release candidate
 
