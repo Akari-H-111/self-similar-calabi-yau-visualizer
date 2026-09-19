@@ -72,13 +72,13 @@
   },
   "modifiedPaths": [
     "index.html",
-    "README.md",
     ".github/workflows/formal-verification.yml",
     "docs/CURRENT_STATE_PROVENANCE_SYNCHRONIZATION_v0_01.md",
     "docs/current_state_provenance_synchronization_matrix_v0_01.json",
     "verify_current_state_provenance_sync_v0_01.js"
   ],
   "protectedBlobs": {
+    "README.md": "89d62bcf111d4a3f7ad06ead47889ef2a38499b9",
     "data/system.json": "f131c94d6c05a5537f6832a690e593a56fc3af7d",
     "data/system.v2.json": "0d598560134e45bd3ed2edec62120fa45649883c",
     "concrete-runtime-schema.js": "23cc1d78afa287162107a1b9e8742d74cbf09d0d",
@@ -96,7 +96,7 @@
     "formal/SelfSimilarCY/ConcretePullbackTower.lean": "32a231cdcd50cbfbcc5f2cd5ce0f86588d2d9984"
   },
   "exitCriteria": [
-    "legacy structural state is explicitly scoped to schema v1",
+    "legacy structural state is explicitly scoped to schema v1 on the current public index while the sealed README remains historical",
     "current finite sampled geometry is explicitly acknowledged",
     "historical v1.0-rc1 wording remains historical rather than current-global",
     "legacy no-geometry sentence is accepted only once inside explicit historical checkpoint wording",
