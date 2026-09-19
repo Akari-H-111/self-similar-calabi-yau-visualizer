@@ -116,7 +116,6 @@ The new Thread 27R matrix records that interpretation explicitly.
 
 ```text
 index.html
-README.md
 .github/workflows/formal-verification.yml
 docs/CURRENT_STATE_PROVENANCE_SYNCHRONIZATION_v0_01.md
 docs/current_state_provenance_synchronization_matrix_v0_01.json
@@ -125,7 +124,7 @@ verify_current_state_provenance_sync_v0_01.js
 
 ## Production files intentionally protected
 
-No changes are permitted in this repair to the concrete schema, projection semantics, sampler, geometric engines/runtimes, hybrid semantics/runtime, app runtime, or formal geometry core. The verifier binds representative protected files to the exact Thread 26 parent blobs.
+No changes are permitted in this repair to the sealed README snapshot, concrete schema, projection semantics, sampler, geometric engines/runtimes, hybrid semantics/runtime, app runtime, or formal geometry core. Gate 2-C binds README byte-for-byte to the historical release/provenance snapshot, so Thread 27R deliberately leaves it unchanged instead of weakening or rewriting the historical verifier. Current-state authority is carried by the public index plus this new Thread 27R document/matrix. The verifier binds those protected files to the exact Thread 26 parent blobs.
 
 ## Verification obligations
 
@@ -137,7 +136,7 @@ The Thread 27R verifier checks:
 4. sheet/covering/geometric-zoom flags remain false;
 5. the 10,000-point cap and 512/8192/131072 cardinalities remain unchanged;
 6. the hybrid runtime remains generation-free;
-7. current public wording distinguishes structural and geometric contexts;
+7. current public index wording distinguishes structural and geometric contexts while README remains the sealed historical snapshot;
 8. the legacy no-geometry sentence appears only once and only inside the explicitly historical v1.0-rc1 checkpoint wording;
 9. historical v1.0-rc1 provenance remains explicitly labeled historical;
 10. CI itself contains the new anti-regression assertions;
