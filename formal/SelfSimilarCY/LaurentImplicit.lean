@@ -122,4 +122,137 @@ theorem laurentImplicitFunction_apply_base
     (laurentWPoint_hasStrictFDerivAt κ z).implicitFunction_apply_image
       (laurentTotalDifferential_range_eq_top h)
 
+/--
+The ambient nonzero-coordinate locus relevant to the Laurent expression.
+
+Using the coordinate product keeps this bridge definition minimal: for a finite
+product over `Fin 4`, membership is equivalent to every coordinate being
+nonzero. This is a representation bridge only, not a second definition of the
+torus or of the base fiber.
+-/
+def ambientTorusLocus : Set Point4 :=
+  {x | (∏ i, x i) ≠ 0}
+
+/-- Every concrete torus point lands in the ambient nonzero-coordinate locus. -/
+theorem Torus4.toPoint4_mem_ambientTorusLocus (z : Torus4) :
+    z.toPoint4 ∈ ambientTorusLocus := by
+  exact Finset.prod_ne_zero_iff.mpr fun i _ => z.toPoint4_ne_zero i
+
+/-- The ambient nonzero-coordinate locus is open in `Point4`. -/
+theorem isOpen_ambientTorusLocus : IsOpen ambientTorusLocus := by
+  unfold ambientTorusLocus
+  exact
+    (isOpen_ne : IsOpen {w : ℂ | w ≠ 0}).preimage
+      (by fun_prop)
+
+/-- The ambient torus locus is a neighborhood of every point coming from `Torus4`. -/
+theorem ambientTorusLocus_mem_nhds (z : Torus4) :
+    ambientTorusLocus ∈ 𝓝 z.toPoint4 :=
+  isOpen_ambientTorusLocus.mem_nhds z.toPoint4_mem_ambientTorusLocus
+
+/--
+Canonical lift of an ambient point with nonzero coordinate product back to the
+concrete torus. The proof argument only supplies the unit witnesses.
+-/
+def pointToTorus4 (x : Point4) (hx : x ∈ ambientTorusLocus) : Torus4 :=
+  fun i =>
+    Units.mk0 (x i)
+      (Finset.prod_ne_zero_iff.mp hx i (Finset.mem_univ i))
+
+/-- Forgetting the canonical ambient lift returns the original point. -/
+@[simp]
+theorem pointToTorus4_toPoint4 (x : Point4) (hx : x ∈ ambientTorusLocus) :
+    (pointToTorus4 x hx).toPoint4 = x := by
+  funext i
+  rfl
+
+/-- Exact representation bridge between the ambient torus locus and `Torus4.toPoint4`. -/
+theorem mem_ambientTorusLocus_iff_exists_toPoint4 (x : Point4) :
+    x ∈ ambientTorusLocus ↔ ∃ z : Torus4, z.toPoint4 = x := by
+  constructor
+  · intro hx
+    exact ⟨pointToTorus4 x hx, pointToTorus4_toPoint4 x hx⟩
+  · rintro ⟨z, rfl⟩
+    exact z.toPoint4_mem_ambientTorusLocus
+
+/--
+Near a concrete torus point, the ambient Laurent level equation is exactly the
+existence of a lift to the concrete `baseFiber`.
+
+This is a local representation theorem only. It makes no manifold or scheme
+smoothness claim.
+-/
+theorem eventually_laurentWPoint_eq_iff_exists_baseFiber_lift
+    (κ lambda : ℂ) (z : Torus4) :
+    ∀ᶠ x in 𝓝 z.toPoint4,
+      laurentWPoint κ x = lambda ↔
+        ∃ w : Torus4, w ∈ baseFiber κ lambda ∧ w.toPoint4 = x := by
+  filter_upwards [ambientTorusLocus_mem_nhds z] with x hx
+  constructor
+  · intro hlevel
+    let w : Torus4 := pointToTorus4 x hx
+    have hwpoint : w.toPoint4 = x := by
+      simpa [w] using pointToTorus4_toPoint4 x hx
+    refine ⟨w, ?_, hwpoint⟩
+    change laurentW κ w = lambda
+    rw [← laurentWPoint_toPoint4 κ w, hwpoint]
+    exact hlevel
+  · rintro ⟨w, hw, rfl⟩
+    simpa [baseFiber] using hw
+
+/--
+Canonical F14 chart at a regular concrete base-fiber point, using the sealed F13
+surjectivity theorem directly.
+-/
+noncomputable def laurentRegularImplicitChart
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    OpenPartialHomeomorph
+      Point4
+      (ℂ × (laurentTotalDifferential κ z).ker) :=
+  laurentImplicitChart κ z
+    (laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime hz hreg)
+
+/-- The first coordinate of the regular chart remains exactly `laurentWPoint`. -/
+@[simp]
+theorem laurentRegularImplicitChart_fst
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ)
+    (x : Point4) :
+    (laurentRegularImplicitChart κ lambda z hz hreg x).fst =
+      laurentWPoint κ x := by
+  simp [laurentRegularImplicitChart]
+
+/-- The chart first-coordinate level equation is exactly the ambient Laurent level equation. -/
+theorem laurentRegularImplicitChart_fst_eq_lambda_iff
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ)
+    (x : Point4) :
+    (laurentRegularImplicitChart κ lambda z hz hreg x).fst = lambda ↔
+      laurentWPoint κ x = lambda := by
+  simp [laurentRegularImplicitChart]
+
+/--
+Local base-fiber identification in the canonical F14 chart: near the regular
+base point, an ambient point is the image of a concrete base-fiber point iff
+the chart's complex coordinate is fixed at `lambda`.
+
+The second chart coordinate already has type `ker(dW_z)`, so this is precisely
+the neighborhood-scoped `{lambda} × ker(dW_z)` slice statement at the level
+of chart coordinates. It is not a global set equality.
+-/
+theorem eventually_exists_baseFiber_lift_iff_regularImplicitChart_fst_eq
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    ∀ᶠ x in 𝓝 z.toPoint4,
+      (∃ w : Torus4, w ∈ baseFiber κ lambda ∧ w.toPoint4 = x) ↔
+        (laurentRegularImplicitChart κ lambda z hz hreg x).fst = lambda := by
+  filter_upwards [eventually_laurentWPoint_eq_iff_exists_baseFiber_lift κ lambda z] with x hx
+  rw [← hx]
+  exact (laurentRegularImplicitChart_fst_eq_lambda_iff κ lambda z hz hreg x).symm
+
 end SelfSimilarCY
