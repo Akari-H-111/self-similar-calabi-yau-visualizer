@@ -71,9 +71,16 @@ A user may enter the scoped presentation context while no scoped geometry is mat
 
 Thread 31 preserves the existing A/B/C/D model.
 
-### Class A
+### Class A / Class D stage support
 
 Canonical mathematical correspondence remains limited to admitted tower-stage identity where Thread 26 already supports it.
+
+Thread 31 does not assign Class A independently. It inherits the current Thread 26 selected-stage verdict:
+
+- if the selected structural depth is among the materialized global geometric stages, the stage correspondence is Class A;
+- if that global geometric stage is not materialized, the stage correspondence is Class D.
+
+For example, structural selected depth 2 with global geometric availability [0, 1] is Class D even though the abstract tower index X_2 exists structurally.
 
 ### Class B
 

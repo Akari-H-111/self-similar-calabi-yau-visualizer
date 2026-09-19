@@ -58,6 +58,8 @@ async function bridgeState(page){
       scopedPointCount:state.scoped.pointCount,
       scopedGenerationTriggered:state.navigationProvenance.scopedGenerationTriggered,
       automaticDepthSynchronization:state.correspondence.contextNavigation.automaticDepthSynchronization,
+      stageCorrespondenceClass:state.correspondence.canonicalStageIndex.class,
+      stageCorrespondenceSupported:state.correspondence.canonicalStageIndex.supported,
       forbiddenIdentityClass:state.correspondence.forbiddenIdentity.class,
       sheetsMaterialized:state.truthFlags.sheetsMaterialized,
       coveringStructureClaimed:state.truthFlags.coveringStructureClaimed,
@@ -97,6 +99,8 @@ async function bridgeState(page){
     assert.equal(initial.scopedPointCount,0);
     assert.equal(initial.scopedGenerationTriggered,false);
     assert.equal(initial.automaticDepthSynchronization,false);
+    assert.equal(initial.stageCorrespondenceClass,"A_canonical_mathematical_correspondence");
+    assert.equal(initial.stageCorrespondenceSupported,true);
     assert.equal(initial.forbiddenIdentityClass,"D_unsupported_forbidden_correspondence");
     assert.equal(initial.sheetsMaterialized,false);
     assert.equal(initial.coveringStructureClaimed,false);
@@ -168,6 +172,9 @@ async function bridgeState(page){
     assert.equal(current.globalDepth,1);
     assert.equal(current.scopedMaterialized,2);
     assert.equal(current.scopedRequested,3);
+    assert.equal(current.stageCorrespondenceClass,"D_unsupported_forbidden_correspondence");
+    assert.equal(current.stageCorrespondenceSupported,false);
+    assert.ok((await page.locator('[data-thread31-field="correspondence"]').textContent()).includes("Class D"));
 
     await page.click('[data-thread31-context="global-geometric"]');
     await page.waitForFunction(()=>document.querySelector("#hybrid-scoped-bridge")?.dataset.contextMode==="global-geometric");
@@ -179,6 +186,9 @@ async function bridgeState(page){
     assert.equal(current.globalDepth,0);
     assert.equal(current.scopedMaterialized,2);
     assert.equal(current.scopedRequested,3);
+    assert.equal(current.stageCorrespondenceClass,"D_unsupported_forbidden_correspondence");
+    assert.equal(current.stageCorrespondenceSupported,false);
+    assert.ok((await page.locator('[data-thread31-field="correspondence"]').textContent()).includes("Class D"));
     assert.equal(await page.locator(scopedViz+" .geometric-pullback-mark").count(),256);
 
     await page.click('[data-thread31-context="scoped-geometric"]');
