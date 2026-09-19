@@ -115,6 +115,14 @@
     if (!Array.isArray(raw.geometric.availableDepths) || !raw.geometric.availableDepths.includes(globalGeometricDepth)) {
       throw new HybridScopedBridgeError("Thread 26 global geometric depth availability is invalid.");
     }
+    const stageCorrespondenceClass = raw.crossLayerCorrespondence?.selectedStructuralStage?.class ?? CLASS_D;
+    if (stageCorrespondenceClass !== CLASS_A && stageCorrespondenceClass !== CLASS_D) {
+      throw new HybridScopedBridgeError("Thread 26 selected-stage correspondence must be Class A or Class D.");
+    }
+    const objectIdentityClass = raw.crossLayerCorrespondence?.objectIdentity?.class ?? CLASS_D;
+    if (objectIdentityClass !== CLASS_D) {
+      throw new HybridScopedBridgeError("Thread 26 object identity must remain Class D.");
+    }
     return Object.freeze({
       thread26RepresentationMode: raw.representationMode,
       structuralRequestedDepth,
@@ -124,8 +132,8 @@
       globalGeometricAvailableDepths: Object.freeze([...raw.geometric.availableDepths]),
       globalGeometricSourceObject: raw.geometric.sourceObject,
       selectedGeometricPointId: raw.selectedGeometricObject ? raw.selectedGeometricObject.pointId : null,
-      stageCorrespondenceClass: raw.crossLayerCorrespondence?.selectedStructuralStage?.class ?? CLASS_D,
-      objectIdentityClass: raw.crossLayerCorrespondence?.objectIdentity?.class ?? CLASS_D,
+      stageCorrespondenceClass,
+      objectIdentityClass,
       automaticDepthSynchronization: raw.crossLayerCorrespondence?.presentationNavigation?.automaticDepthSynchronization === true,
       sheetsMaterialized: raw.truthFlags?.sheetsMaterialized === true,
       coveringStructureClaimed: raw.truthFlags?.coveringStructureClaimed === true,
@@ -216,7 +224,8 @@
       }),
       correspondence: Object.freeze({
         canonicalStageIndex: Object.freeze({
-          class: CLASS_A,
+          class: thread26Snapshot.stageCorrespondenceClass,
+          supported: thread26Snapshot.stageCorrespondenceClass === CLASS_A,
           supportedOnlyWhereThread26SupportsStage: true,
           structuralSelectedDepth: thread26Snapshot.structuralSelectedDepth,
           globalGeometricDepth: thread26Snapshot.globalGeometricDepth,
