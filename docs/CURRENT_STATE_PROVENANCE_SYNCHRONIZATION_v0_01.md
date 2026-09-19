@@ -138,7 +138,7 @@ The Thread 27R verifier checks:
 5. the 10,000-point cap and 512/8192/131072 cardinalities remain unchanged;
 6. the hybrid runtime remains generation-free;
 7. current public wording distinguishes structural and geometric contexts;
-8. the stale global sentence is absent;
+8. the legacy no-geometry sentence appears only once and only inside the explicitly historical v1.0-rc1 checkpoint wording;
 9. historical v1.0-rc1 provenance remains explicitly labeled historical;
 10. CI itself contains the new anti-regression assertions;
 11. protected runtime/formal blobs remain exact.
