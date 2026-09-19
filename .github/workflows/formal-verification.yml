@@ -223,6 +223,9 @@ jobs:
       - name: Verify Thread 29 ancestor-scoped pullback runtime
         run: node verify_ancestor_scoped_pullback_runtime_v0_01.js
 
+      - name: Verify Thread 30 ancestor-scoped geometric visualization
+        run: node verify_ancestor_scoped_pullback_geometric_visualization_v0_01.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -285,6 +288,9 @@ jobs:
           node --check verify_ancestor_scoped_pullback_contract_v0_01.js
           node --check ancestor-scoped-pullback-runtime.js
           node --check verify_ancestor_scoped_pullback_runtime_v0_01.js
+          node --check ancestor-scoped-pullback-visualization-runtime.js
+          node --check verify_ancestor_scoped_pullback_geometric_visualization_v0_01.js
+          node --check verify_ancestor_scoped_pullback_geometric_browser_v0_01.js
           node --check app.js
 
   publication-static-smoke:
@@ -346,6 +352,9 @@ jobs:
             geometric-pullback-renderer.js \
             geometric-pullback-runtime.js \
             geometric-pullback-renderer.css \
+            ancestor-scoped-pullback-runtime.js \
+            ancestor-scoped-pullback-visualization-runtime.js \
+            ancestor-scoped-pullback-visualization.css \
             hybrid-navigation-semantics.js \
             hybrid-navigation-runtime.js \
             hybrid-navigation.css \
@@ -398,6 +407,10 @@ jobs:
           grep -Fq '"pullbackId": "finite_sampled_geometric_pullback_v1"' /tmp/publication-geometric-pullback-config.json
           grep -Fq 'Finite sampled pullback of X_1 induced from admitted X_0 samples' /tmp/publication-index.html
           grep -Fq 'geometric-pullback-runtime.js' /tmp/publication-index.html
+          grep -Fq 'Ancestor-scoped recursive pullback projection' /tmp/publication-index.html
+          grep -Fq 'Render selected scope' /tmp/publication-index.html
+          grep -Fq 'ancestor-scoped-pullback-runtime.js' /tmp/publication-index.html
+          grep -Fq 'ancestor-scoped-pullback-visualization-runtime.js' /tmp/publication-index.html
           grep -Fq '"navigationId": "hybrid_structural_geometric_navigation_v1"' /tmp/publication-hybrid-navigation.json
           grep -Fq 'Hybrid structural / geometric navigation' /tmp/publication-index.html
           grep -Fq 'hybrid-navigation-runtime.js' /tmp/publication-index.html
@@ -436,6 +449,9 @@ jobs:
       - name: Verify Thread 26 hybrid navigation in Chromium
         run: node verify_hybrid_navigation_browser_v0_01.js
 
+      - name: Verify Thread 30 ancestor-scoped geometry in Chromium
+        run: node verify_ancestor_scoped_pullback_geometric_browser_v0_01.js
+
       - name: Upload Thread 24 base geometric browser evidence
         if: always()
         uses: actions/upload-artifact@v5
@@ -460,6 +476,15 @@ jobs:
         with:
           name: thread26-hybrid-navigation-browser-evidence-${{ github.sha }}
           path: thread26-browser-artifacts/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload Thread 30 ancestor-scoped browser evidence
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: thread30-ancestor-scoped-browser-evidence-${{ github.sha }}
+          path: thread30-browser-artifacts/
           if-no-files-found: error
           retention-days: 30
 
