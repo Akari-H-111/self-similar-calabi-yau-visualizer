@@ -99,7 +99,7 @@
     "legacy structural state is explicitly scoped to schema v1",
     "current finite sampled geometry is explicitly acknowledged",
     "historical v1.0-rc1 wording remains historical rather than current-global",
-    "stale global no-geometry sentence is rejected by CI",
+    "legacy no-geometry sentence is accepted only once inside explicit historical checkpoint wording",
     "Thread 25 cap/materialization contract remains unchanged",
     "Thread 26 correspondence/truth boundary remains unchanged",
     "protected runtime/formal blobs remain exact"
