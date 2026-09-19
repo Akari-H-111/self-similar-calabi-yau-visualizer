@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="base-geometric-renderer.css">
   <link rel="stylesheet" href="geometric-pullback-renderer.css">
+  <link rel="stylesheet" href="ancestor-scoped-pullback-visualization.css">
   <link rel="stylesheet" href="hybrid-navigation.css">
   <script src="scene-spec.js" defer></script>
   <script src="base-renderer.js" defer></script>
@@ -35,6 +36,8 @@
   <script src="geometric-pullback-view-semantics.js" defer></script>
   <script src="geometric-pullback-renderer.js" defer></script>
   <script src="geometric-pullback-runtime.js" defer></script>
+  <script src="ancestor-scoped-pullback-runtime.js" defer></script>
+  <script src="ancestor-scoped-pullback-visualization-runtime.js" defer></script>
   <script src="app.js" defer></script>
   <script src="hybrid-navigation-semantics.js" defer></script>
   <script src="hybrid-navigation-runtime.js" defer></script>
@@ -50,6 +53,7 @@
       <p class="section-note"><strong>Historical v1.0-rc1 release boundary:</strong> Historical checkpoint wording: “No geometric Calabi–Yau hypersurface is currently rendered.” Historical RC wording: “The rendered graphics are structural and symbolic. No concrete Calabi–Yau hypersurface geometry is currently rendered. <code>W</code> remains unresolved.” These quoted sentences are preserved only as release provenance and do not describe the later Thread 24–26 geometric surfaces. Browser screenshots from that checkpoint are release evidence for the structural UI, not mathematical authority.</p>
       <p class="boundary-note"><strong>Thread 24 geometric admission:</strong> The new independent panel below evaluates the admitted <code>W_kappa_torus4_v1</code>, deterministically constructs validated finite <code>X_0</code> samples, and renders only the sealed Thread 23 projection <code>(Re(z1), Im(z1))</code>. It does not materialize sheets, claim a covering, apply geometric zoom, or render any <code>X_n</code> with positive depth.</p>
       <p class="boundary-note"><strong>Thread 26 hybrid navigation:</strong> Structural and finite geometric representations now share an explicit navigation surface at the tower-stage level only. Structural depth and geometric rendered depth remain independent. No structural node is identified with a geometric point, no root tuple is promoted to a sheet, projected overlap does not identify source objects, and navigation remains distinct from geometric zoom.</p>
+      <p class="boundary-note"><strong>Thread 30 ancestor-scoped geometry:</strong> A separate explicit-render panel now exposes bounded recursive pullbacks of one selected admitted <code>X_0</code> ancestor through scoped depth 3 under the unchanged 10,000-point cap. The scoped result is complete over that selected finite ancestor scope, not complete global <code>X_n</code>. Depth 4 is refused before recursive generation, with no partial marks. The panel reuses the Thread 25 renderer and Thread 23 projection and does not join the Thread 26 hybrid state machine.</p>
     </header>
 
     <section aria-labelledby="hybrid-navigation-title" id="hybrid-navigation" class="hybrid-navigation" data-state="loading" data-representation-mode="structural" data-sheets-materialized="false" data-covering-structure-claimed="false" data-geometric-zoom-applied="false">
@@ -148,6 +152,41 @@
       <p id="geometric-pullback-boundary" class="structural-boundary-caption">Each positive-depth mark is one finite deterministic geometric preimage point with an ancestor X_0 sample id, declared parent id, and root multi-index. Root tuples are enumeration indices, not global sheet identities. Projected overlap is not source self-intersection or covering multiplicity. The production hard cap rejects a complete next level before generation rather than rendering partial fibers.</p>
     </section>
 
+    <section aria-labelledby="ancestor-scoped-pullback-label" id="ancestor-scoped-pullback" class="ancestor-scoped-pullback-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Thread 30 · bounded ancestor-scoped geometry</p>
+          <h2 id="ancestor-scoped-pullback-label">Ancestor-scoped recursive pullback projection</h2>
+        </div>
+        <p class="section-note">This separate panel renders the complete recursive pullback of the selected finite ancestor scope through an admitted scoped depth. It is not the complete global <code>X_n</code>, and it does not reinterpret the global Thread 24/25 panels.</p>
+      </div>
+      <div class="ancestor-scoped-pullback-toolbar">
+        <label for="ancestor-scoped-pullback-ancestor">Selected admitted X_0 ancestor
+          <select id="ancestor-scoped-pullback-ancestor" disabled aria-describedby="ancestor-scoped-pullback-boundary">
+            <option>Loading…</option>
+          </select>
+        </label>
+        <label for="ancestor-scoped-pullback-depth">Scoped depth
+          <select id="ancestor-scoped-pullback-depth" disabled aria-describedby="ancestor-scoped-pullback-boundary">
+            <option>Loading…</option>
+          </select>
+        </label>
+        <button type="button" id="ancestor-scoped-pullback-render" disabled>Render selected scope</button>
+      </div>
+      <p class="ancestor-scoped-pullback-selected"><strong>Selected ancestor:</strong> <output id="ancestor-scoped-pullback-selected" for="ancestor-scoped-pullback-ancestor">—</output></p>
+      <p id="ancestor-scoped-pullback-status" class="geometric-pullback-status" data-state="loading">Loading ancestor-scoped controls…</p>
+      <div id="ancestor-scoped-pullback-visualization" class="geometric-pullback-visualization ancestor-scoped-pullback-visualization" hidden></div>
+      <dl id="ancestor-scoped-pullback-inspector" class="ancestor-scoped-pullback-inspector" aria-label="Rendered point provenance">
+        <div><dt>Point</dt><dd data-scoped-inspector-field="point">—</dd></div>
+        <div><dt>Source ancestor</dt><dd data-scoped-inspector-field="ancestor">—</dd></div>
+        <div><dt>Declared parent</dt><dd data-scoped-inspector-field="parent">—</dd></div>
+        <div><dt>Root multi-index</dt><dd data-scoped-inspector-field="root">—</dd></div>
+        <div><dt>Projected overlap count</dt><dd data-scoped-inspector-field="overlap">—</dd></div>
+      </dl>
+      <p id="ancestor-scoped-pullback-provenance" class="geometric-pullback-provenance"></p>
+      <p id="ancestor-scoped-pullback-boundary" class="structural-boundary-caption">The scoped view is scope-complete only for the explicitly selected admitted finite ancestor and requested under-cap depth. It is not the complete global <code>X_n</code>. Source ancestor id, parent id, root multi-index, and projected-overlap count are provenance metadata. Root tuples are not sheets; overlap is not source self-intersection or covering multiplicity; viewport fitting is not geometric zoom. Changing controls alone does not generate recursive geometry.</p>
+    </section>
+
     <section aria-labelledby="current-state-title" class="primary-section">
       <div class="section-heading">
         <div>
@@ -190,7 +229,7 @@
       <div class="provenance-grid">
         <article class="provenance-card"><h3>Lean formalized</h3><ul><li>Four-coordinate coordinate-power map.</li><li>Coordinate-power iteration law.</li><li>Abstract set-theoretic pullback recurrence and its coordinate-power closed form.</li></ul></article>
         <article class="provenance-card"><h3>Runtime / structural</h3><ul><li>Validated parameters and finite depth state.</li><li>D² runtime metadata and D⁴ organization metadata.</li><li>Lazy level descriptors, structural selection/focus, presentation collapse, bounded active render-window virtualization, presentation-slot recycling, bounded recomputable virtual-layout caching, aggregate organization, D⁴ aggregate multiplicity badges, symbolic overlays, SVG structural projection, and presentation-only structural camera state.</li></ul></article>
-        <article class="provenance-card"><h3>Current geometry boundary</h3><ul><li>The legacy schema-v1 structural fixture keeps <code>W</code> unresolved; the separate schema-v2 geometric pipeline admits <code>W_kappa_torus4_v1</code>.</li><li>Finite sampled projections of admitted <code>X_0</code> and <code>X_1</code> geometry are rendered. Complete/global hypersurface geometry, genuine sheets, covering geometry, and metric realization are not rendered.</li><li>Cyclotomic, torsion, collision, and related parent-project overlays remain deferred unless exact canonical source evidence is available.</li></ul></article>
+        <article class="provenance-card"><h3>Current geometry boundary</h3><ul><li>The legacy schema-v1 structural fixture keeps <code>W</code> unresolved; the separate schema-v2 geometric pipeline admits <code>W_kappa_torus4_v1</code>.</li><li>Finite sampled projections of admitted <code>X_0</code> and <code>X_1</code> geometry are rendered. Complete/global hypersurface geometry, genuine sheets, covering geometry, and metric realization are not rendered.</li><li>Thread 30 additionally renders explicitly requested ancestor-scoped recursive pullbacks through bounded depth 3 when the exact selected-scope target fits the existing hard cap; these are scope-complete finite pullbacks, not complete global <code>X_n</code>.</li><li>Cyclotomic, torsion, collision, and related parent-project overlays remain deferred unless exact canonical source evidence is available.</li></ul></article>
       </div>
       <details class="explanation-panel"><summary>Formal, runtime, camera, and engineering boundaries</summary><div class="explanation-content"><p>A green <code>formal-lean</code> job means the scoped Lean modules build and pass their direct checks. A green <code>runtime-contracts</code> job means the JavaScript contracts and claim-discipline checks pass. Neither statement means that every mathematical idea named by the project has been formalized.</p><p>“Infinite navigation” means arbitrarily continued <em>finite</em> structural navigation. Structural camera scale is an SVG viewport parameter, distinct from <code>scene.derived.metricScale</code>. JavaScript safe-integer checks and benchmark horizons are engineering constraints or observations, not mathematical bounds.</p></div></details>
     </section>

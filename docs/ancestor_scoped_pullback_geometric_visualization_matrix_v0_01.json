@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "thread": 30,
+  "milestone": "Ancestor-Scoped Geometric Visualization",
+  "status": "implementation_candidate",
+  "canonicalParent": {
+    "commit": "3944d6d18ae0a0d7b55b6e1e9fe8a7653c21b37a",
+    "tree": "705944b76b5c78aeb355b3029f945e2a55652399",
+    "soleParent": "4fc98bd99af93aa7f5fdb1a7dd522040aa1e81a7"
+  },
+  "reuse": {
+    "scopedRuntime": "Thread 29 ancestor_scoped_pullback_runtime_v1",
+    "renderer": "Thread 25 svg_finite_sampled_geometric_pullback_projection",
+    "projection": "Thread 23 inherited (Re(z1), Im(z1))",
+    "newPullbackEngineIntroduced": false,
+    "newRootEnumeratorIntroduced": false,
+    "newProjectionIntroduced": false,
+    "newGeometricRendererIntroduced": false
+  },
+  "interaction": {
+    "generationTrigger": "explicit_render_selected_scope_button",
+    "selectorChangeGeneratesGeometry": false,
+    "initialRecursiveScopedGeometryGenerated": false,
+    "thread26HybridStateMutated": false
+  },
+  "canonicalBehavior": {
+    "D": 2,
+    "selectedAncestorCount": 1,
+    "maxGeneratedPoints": 10000,
+    "depth0Marks": 1,
+    "depth1Marks": 16,
+    "depth2Marks": 256,
+    "depth3Marks": 4096,
+    "depth4Required": 65536,
+    "depth4Behavior": "reject_before_recursive_generation_zero_partial_marks"
+  },
+  "visibleProvenance": {
+    "selectedAncestorId": true,
+    "sourcePointId": true,
+    "parentId": true,
+    "rootMultiIndex": true,
+    "projectedOverlapCount": true,
+    "scopedDepth": true,
+    "scopeCompletenessWording": true,
+    "globalCompletenessDenied": true
+  },
+  "truthFlags": {
+    "scopeCompleteFiniteGeometryRendered": true,
+    "completeGlobalHypersurfaceRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "analyticBranchClaimed": false,
+    "connectedComponentClaimed": false,
+    "geometricZoomApplied": false,
+    "projectionOverlapImpliesSourceSelfIntersection": false
+  },
+  "thread31AuthorizedOnlyAfterCanonicalSeal": true,
+  "protectedBlobs": {
+    "ancestor-scoped-pullback-runtime.js": "b95931eb6c4609d1111a9557b9c2fd90b969a713",
+    "docs/ancestor_scoped_pullback_runtime_matrix_v0_01.json": "69cf9e91ed4c5e6102deb84ed2e6be3ce9ed6c23",
+    "geometric-pullback-engine.js": "7e7c634b1feedc045fe7a82d477621cb293a955d",
+    "geometric-pullback-view-semantics.js": "a4e49d8d458a675ac1602d929a97226b6dd1c12b",
+    "data/geometric-pullback-view.v1.json": "02a3a2efe65e96cb81cf75ba4842e9a36ebfc438",
+    "geometric-pullback-renderer.js": "ea273810c186b0a56597dc9ca72c7317ce7a3d80",
+    "projection-slice-semantics.js": "96841a5ceeaebd09155d8ade7653057b76d65104",
+    "geometric-pullback-runtime.js": "d9834da759b2485810cb73a9148d2bd87607751f",
+    "hybrid-navigation-semantics.js": "4d31cf1d78aec046ed15916e08a185a0b401c650",
+    "hybrid-navigation-runtime.js": "e97fc72cbf38f45bda1b017e2a517258016c1c7d",
+    "docs/PLAN_self_similar_cy_visualizer_v0_03.md": "1796ac612d48523ef9751e859ef1bdb860faad20"
+  }
+}
