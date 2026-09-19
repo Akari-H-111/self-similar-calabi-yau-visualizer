@@ -68,7 +68,7 @@ Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex
 SHA-256: 55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047
 ```
 
-Current Lean gives exact definitions/bridges for `Torus4`, torus coordinate power, `laurentW`, `baseFiber`, stationary family, and `concreteLevel`.
+The v0.02 digest above is direct authority for the historical defining layer. The stationary `f_N` reformulation and identity `f_N(P_D z)=f_(DN)(z)` belong to the recovered final-closure lineage; Gate 2-A intentionally does not misattribute those statements to the v0.02 digest. Current Lean gives exact definitions/bridges for `Torus4`, torus coordinate power, `laurentW`, `baseFiber`, stationary family, and `concreteLevel`.
 
 Runtime does not yet implement this concrete geometry: `data/system.json` still records `W.representation = unresolved`.
 

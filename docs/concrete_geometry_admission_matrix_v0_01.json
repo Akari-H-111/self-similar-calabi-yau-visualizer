@@ -414,11 +414,12 @@
       "scope": "tower",
       "source": {
         "status": "SOURCE_PROVED",
-        "package": "Arithmetic Self-Similar Calabi-Yau",
-        "version": "v0.02",
-        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
-        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
-        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory. Historical v0.02 supplies X_n=(P_D^n)^-1(X_0); the final closure supplies the stationary V_T(f_(D^n)) reformulation."
       },
       "lean": {
         "status": "LEAN_FORMALIZED",
@@ -459,7 +460,8 @@
       ],
       "limitations": [],
       "provenanceRefs": [
-        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "Gate 1C recovered v0.02 pullback definition",
+        "Thread 22 Gate 1 final-closure stationary-family lineage",
         "formal/SelfSimilarCY/ConcretePullbackTower.lean"
       ]
     },
@@ -470,11 +472,12 @@
       "scope": "tower",
       "source": {
         "status": "SOURCE_PROVED",
-        "package": "Arithmetic Self-Similar Calabi-Yau",
-        "version": "v0.02",
-        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
-        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
-        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory. The stationary f_N notation and f_N(P_D z)=f_(DN)(z) belong to the final closure layer, not the historical v0.02 artifact digest."
       },
       "lean": {
         "status": "LEAN_FORMALIZED",
@@ -514,7 +517,7 @@
       ],
       "limitations": [],
       "provenanceRefs": [
-        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "Thread 22 Gate 1 final-closure stationary-family lineage",
         "formal/SelfSimilarCY/StationaryFamily.lean"
       ]
     },
