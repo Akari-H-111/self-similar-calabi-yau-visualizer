@@ -3,7 +3,7 @@ import Mathlib.Analysis.Calculus.Implicit
 
 namespace SelfSimilarCY
 
-open scoped BigOperators
+open scoped BigOperators Topology
 
 /--
 The ambient Laurent function is C¹ at every point coming from the concrete torus.
@@ -154,7 +154,7 @@ theorem ambientTorusLocus_mem_nhds (z : Torus4) :
 Canonical lift of an ambient point with nonzero coordinate product back to the
 concrete torus. The proof argument only supplies the unit witnesses.
 -/
-def pointToTorus4 (x : Point4) (hx : x ∈ ambientTorusLocus) : Torus4 :=
+noncomputable def pointToTorus4 (x : Point4) (hx : x ∈ ambientTorusLocus) : Torus4 :=
   fun i =>
     Units.mk0 (x i)
       (Finset.prod_ne_zero_iff.mp hx i (Finset.mem_univ i))
