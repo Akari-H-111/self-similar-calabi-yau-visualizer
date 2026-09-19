@@ -226,6 +226,9 @@ jobs:
       - name: Verify Thread 30 ancestor-scoped geometric visualization
         run: node verify_ancestor_scoped_pullback_geometric_visualization_v0_01.js
 
+      - name: Verify Thread 31 hybrid global / scoped navigation
+        run: node verify_hybrid_global_scoped_navigation_v0_01.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -291,6 +294,10 @@ jobs:
           node --check ancestor-scoped-pullback-visualization-runtime.js
           node --check verify_ancestor_scoped_pullback_geometric_visualization_v0_01.js
           node --check verify_ancestor_scoped_pullback_geometric_browser_v0_01.js
+          node --check hybrid-scoped-bridge-semantics.js
+          node --check hybrid-scoped-bridge-runtime.js
+          node --check verify_hybrid_global_scoped_navigation_v0_01.js
+          node --check verify_hybrid_global_scoped_navigation_browser_v0_01.js
           node --check app.js
 
   publication-static-smoke:
@@ -358,6 +365,9 @@ jobs:
             hybrid-navigation-semantics.js \
             hybrid-navigation-runtime.js \
             hybrid-navigation.css \
+            hybrid-scoped-bridge-semantics.js \
+            hybrid-scoped-bridge-runtime.js \
+            hybrid-scoped-bridge.css \
             app.js; do
             curl -fsS "http://127.0.0.1:8000/${resource}" >/dev/null
           done
@@ -369,6 +379,7 @@ jobs:
           curl -fsS http://127.0.0.1:8000/data/geometric-pullback-view.v1.json >/tmp/publication-geometric-pullback-view.json
           curl -fsS http://127.0.0.1:8000/data/geometric-pullback-config.v1.json >/tmp/publication-geometric-pullback-config.json
           curl -fsS http://127.0.0.1:8000/data/hybrid-navigation.v1.json >/tmp/publication-hybrid-navigation.json
+          curl -fsS http://127.0.0.1:8000/data/hybrid-scoped-bridge.v1.json >/tmp/publication-hybrid-scoped-bridge.json
           python3 -m json.tool /tmp/publication-system.json >/dev/null
           python3 -m json.tool /tmp/publication-system-v2.json >/dev/null
           python3 -m json.tool /tmp/publication-geometric-view.json >/dev/null
@@ -376,6 +387,7 @@ jobs:
           python3 -m json.tool /tmp/publication-geometric-pullback-view.json >/dev/null
           python3 -m json.tool /tmp/publication-geometric-pullback-config.json >/dev/null
           python3 -m json.tool /tmp/publication-hybrid-navigation.json >/dev/null
+          python3 -m json.tool /tmp/publication-hybrid-scoped-bridge.json >/dev/null
           grep -Fq '"version": "v0.12"' /tmp/publication-system.json
           grep -Fq '"requestedDepth": 0' /tmp/publication-system.json
           grep -Fq 'The legacy schema-v1 structural pipeline remains non-geometric' /tmp/publication-index.html
@@ -412,8 +424,12 @@ jobs:
           grep -Fq 'ancestor-scoped-pullback-runtime.js' /tmp/publication-index.html
           grep -Fq 'ancestor-scoped-pullback-visualization-runtime.js' /tmp/publication-index.html
           grep -Fq '"navigationId": "hybrid_structural_geometric_navigation_v1"' /tmp/publication-hybrid-navigation.json
+          grep -Fq '"bridgeId": "hybrid_global_scoped_navigation_v1"' /tmp/publication-hybrid-scoped-bridge.json
           grep -Fq 'Hybrid structural / geometric navigation' /tmp/publication-index.html
+          grep -Fq 'global / scoped presentation bridge' /tmp/publication-index.html
+          grep -Fq 'Ancestor-scoped geometry' /tmp/publication-index.html
           grep -Fq 'hybrid-navigation-runtime.js' /tmp/publication-index.html
+          grep -Fq 'hybrid-scoped-bridge-runtime.js' /tmp/publication-index.html
           test -f .nojekyll
           echo "Publication static HTTP smoke: passed"
 
@@ -452,6 +468,9 @@ jobs:
       - name: Verify Thread 30 ancestor-scoped geometry in Chromium
         run: node verify_ancestor_scoped_pullback_geometric_browser_v0_01.js
 
+      - name: Verify Thread 31 hybrid global / scoped navigation in Chromium
+        run: node verify_hybrid_global_scoped_navigation_browser_v0_01.js
+
       - name: Upload Thread 24 base geometric browser evidence
         if: always()
         uses: actions/upload-artifact@v5
@@ -485,6 +504,15 @@ jobs:
         with:
           name: thread30-ancestor-scoped-browser-evidence-${{ github.sha }}
           path: thread30-browser-artifacts/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload Thread 31 hybrid global / scoped browser evidence
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: thread31-hybrid-global-scoped-browser-evidence-${{ github.sha }}
+          path: thread31-browser-artifacts/
           if-no-files-found: error
           retention-days: 30
 
