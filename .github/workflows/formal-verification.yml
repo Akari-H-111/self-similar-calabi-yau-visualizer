@@ -229,6 +229,9 @@ jobs:
       - name: Verify Thread 31 hybrid global / scoped navigation
         run: node verify_hybrid_global_scoped_navigation_v0_01.js
 
+      - name: Verify Thread 31R stage correspondence classification repair
+        run: node verify_thread31r_stage_correspondence_repair_v0_01.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -298,6 +301,7 @@ jobs:
           node --check hybrid-scoped-bridge-runtime.js
           node --check verify_hybrid_global_scoped_navigation_v0_01.js
           node --check verify_hybrid_global_scoped_navigation_browser_v0_01.js
+          node --check verify_thread31r_stage_correspondence_repair_v0_01.js
           node --check app.js
 
   publication-static-smoke:
