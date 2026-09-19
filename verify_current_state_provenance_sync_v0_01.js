@@ -95,13 +95,19 @@ assert.ok(readme.includes("## Current post-Thread-26 development state"));
 assert.ok(readme.includes("The legacy schema-v1 interface remains **structural, not geometric**."));
 assert.ok(readme.includes("finite sampled projections of `X_0` and the finite sampled `X_1` pullback"));
 assert.ok(readme.includes("At the v1.0-rc1 checkpoint"));
+assert.ok(readme.includes("formal/SelfSimilarCY/LaurentW.lean"));
+assert.ok(readme.includes("formal/SelfSimilarCY/LaurentImplicit.lean"));
+assert.ok(readme.includes("schema v2 admits `W_kappa_torus4_v1`"));
+assert.ok(!readme.includes("It does not define `W` or Calabi–Yau geometry. Runtime `W` remains `unresolved`."));
 assert.ok(!readme.includes("No concrete Calabi–Yau hypersurface geometry is currently rendered. W remains unresolved."));
 assert.ok(!readme.includes("Therefore no geometric Calabi–Yau hypersurface is currently rendered."));
 
 assert.ok(workflow.includes("node verify_current_state_provenance_sync_v0_01.js"));
 assert.ok(workflow.includes("node --check verify_current_state_provenance_sync_v0_01.js"));
 assert.ok(workflow.includes("stale global geometry claim detected in index.html"));
-assert.ok(!workflow.includes("grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html"));
+assert.ok(!workflow.split("\n").some((line) =>
+  line.trim() === "grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html"
+));
 
 assert.ok(human.includes("legacy structural pipeline state"));
 assert.ok(human.includes("finite sampled geometry rendered"));
