@@ -108,3 +108,9 @@ Thread 31R may be sealed only after:
 - protected Thread 26 / Thread 30 authority blobs remain unchanged.
 
 Only after Thread 31R is canonically sealed may the original Thread 31 canonical seal be attempted again.
+
+## 7. Canonical verification receipt
+
+PR #47 was merged as the single-parent commit `fde4f05270dbe3d5620dfe5b6cc630cc0f51deff` on `main`. Its parent is the Thread 31 implementation commit `ce1317c3cc32fc7d8a3b9e4795949bea6680df96`.
+
+The PR-head Formal Verification run `35452523086` passed. Exact-main Formal Verification run `35455412304` passed all four jobs, including Lean, runtime contracts, publication smoke, and browser evidence. Exact-SHA Pages run `35455412127` succeeded. The dedicated Class D machine verifier also passed locally on the PR head. This receipt records the evidence for the metadata-only seal; it does not change the repair's protected authority blobs.
