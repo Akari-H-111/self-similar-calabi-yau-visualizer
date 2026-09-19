@@ -51,10 +51,7 @@
   "renderer": {
     "technology": "SVG",
     "modelToMarkMapping": "1:1 for every materialized source point",
-    "depthsAvailableInCanonicalBrowser": [
-      0,
-      1
-    ]
+    "depthsAvailableInCanonicalBrowser": [0, 1]
   },
   "truthFlags": {
     "geometryRendered": true,
