@@ -1,0 +1,1681 @@
+{
+  "schemaVersion": 1,
+  "artifact": "Concrete Geometry Admission Claim Matrix",
+  "version": "v0.01",
+  "gate": "Thread 22 — Gate 2-A",
+  "status": "AUTHORING CANDIDATE",
+  "canonicalBaseline": {
+    "commit": "6c368a3083fa1b6e6ca7c016a362df12f06304ab",
+    "tree": "d62c4b3449aab09a6f0884e28cc8561777808278",
+    "soleParent": "c64443eff3eae8853cbdcae972d7e6772c10f701",
+    "formalVerification": {
+      "runNumber": 178,
+      "runId": 35416828010,
+      "conclusion": "success"
+    },
+    "pages": {
+      "runNumber": 18,
+      "runId": 35416827465,
+      "conclusion": "success"
+    }
+  },
+  "historicalSnapshots": {
+    "immutable": [
+      "docs/CONTRACT_BRIDGE_AUDIT_self_similar_cy_visualizer_v0_05.md",
+      "docs/contract_bridge_matrix_self_similar_cy_visualizer_v0_05.json",
+      "docs/MATHEMATICAL_VISUAL_FIDELITY_AUDIT_II_self_similar_cy_visualizer_v0_21.md",
+      "docs/visual_provenance_matrix_self_similar_cy_visualizer_v0_21.json"
+    ],
+    "rule": "Do not retroactively rewrite historical verdicts. Current authority is recorded here instead."
+  },
+  "evidenceStatusVocabulary": [
+    "SOURCE_BACKED_DEFINITION",
+    "SOURCE_PROVED",
+    "SOURCE_COMPATIBLE",
+    "DERIVED_FORMAL_BRIDGE",
+    "LEAN_FORMALIZED",
+    "LEAN_PARTIAL_BRIDGE",
+    "RUNTIME_REPRESENTED",
+    "RUNTIME_PARTIAL_REAL_SLICE",
+    "RENDERED_STRUCTURAL_ONLY",
+    "RENDERED_PRESENTATION_ONLY",
+    "UNRESOLVED",
+    "NOT_IMPLEMENTED",
+    "NOT_ESTABLISHED",
+    "NOT_ADMITTED",
+    "HISTORICAL_ONLY",
+    "NOT_APPLICABLE",
+    "NOT_REQUIRED"
+  ],
+  "semanticSeparations": [
+    "historical origin != source theorem != Lean theorem != runtime contract != rendered geometry",
+    "finite fiber cardinality D^4 != algebraic map degree D^4 != D^4 rendered sheets",
+    "critical-locus freedom != scheme smoothness",
+    "surjective differential != scheme smoothness",
+    "local IFT chart != scheme smoothness",
+    "camera zoom != geometric metric scaling"
+  ],
+  "runtimeDomainPolicy": {
+    "sourceAndLeanParameterDomain": "complex",
+    "currentRuntimeParameterDomain": "finite JavaScript real numbers",
+    "compatibility": "real_slice_of_complex_family",
+    "prohibition": "Do not describe current runtime as supporting the full complex parameter family."
+  },
+  "truthBoundary": {
+    "WRepresentation": "unresolved",
+    "geometryRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  },
+  "claims": [
+    {
+      "id": "ambient.torus4",
+      "claimName": "Torus4 ambient",
+      "mathematicalStatement": "T = (C^×)^4 with four nonzero complex coordinates.",
+      "scope": "ambient",
+      "source": {
+        "status": "SOURCE_BACKED_DEFINITION",
+        "package": "Arithmetic Self-Similar Calabi-Yau",
+        "version": "v0.02",
+        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
+        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
+        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/Torus4.lean",
+        "blob": "53a8f04018b5f452b05f08c755c7d6ee99978275",
+        "theorems": [
+          "Torus4",
+          "Torus4.toPoint4",
+          "Torus4.toPoint4_ne_zero",
+          "Torus4.toPoint4_injective"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "UNRESOLVED",
+        "path": "data/system.json#mathematics",
+        "representation": null,
+        "implemented": false,
+        "compatibility": "Runtime has coordinateCount=4 but no admitted algebraic-torus ambient object."
+      },
+      "renderer": {
+        "status": "NOT_ADMITTED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_CONTRACT",
+        "allowedWording": [
+          "ambient algebraic torus (C^×)^4",
+          "Lean Torus4 = Fin 4 → Cˣ"
+        ],
+        "forbiddenWording": [
+          "runtime currently materializes the algebraic torus",
+          "rendered torus geometry"
+        ]
+      },
+      "dependencies": [],
+      "limitations": [
+        "Runtime ambient representation is not yet admitted."
+      ],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "formal/SelfSimilarCY/Torus4.lean"
+      ]
+    },
+    {
+      "id": "function.W_kappa",
+      "claimName": "Laurent function W_kappa",
+      "mathematicalStatement": "W_kappa(z1,z2,z3,z4)=z1+z2+z3+z4+kappa/(z1 z2 z3 z4), on T=(C^×)^4.",
+      "scope": "base_function",
+      "source": {
+        "status": "SOURCE_BACKED_DEFINITION",
+        "package": "Arithmetic Self-Similar Calabi-Yau",
+        "version": "v0.02",
+        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
+        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
+        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/LaurentW.lean",
+        "blob": "ea6f3ae0b63967b8d9c52428cf825dc53821e781",
+        "theorems": [
+          "laurentW",
+          "laurentW_apply",
+          "laurentW_eq_source_formula"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "UNRESOLVED",
+        "path": "data/system.json#mathematics.baseHypersurface.definingFunction",
+        "representation": "symbol=W; representation=unresolved",
+        "implemented": false,
+        "compatibility": "Exact mathematical meaning exists, but schema v1 deliberately rejects concrete W representation."
+      },
+      "renderer": {
+        "status": "NOT_ADMITTED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_CONTRACT_NOT_RUNTIME",
+        "allowedWording": [
+          "W_kappa has an exact recovered source definition",
+          "W_kappa is Lean-formalized"
+        ],
+        "forbiddenWording": [
+          "runtime W is implemented",
+          "concrete W geometry is rendered"
+        ]
+      },
+      "dependencies": [
+        "ambient.torus4"
+      ],
+      "limitations": [
+        "Runtime representation remains unresolved."
+      ],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "formal/SelfSimilarCY/LaurentW.lean",
+        "data/system.json"
+      ]
+    },
+    {
+      "id": "parameter.lambda",
+      "claimName": "lambda level parameter",
+      "mathematicalStatement": "lambda ∈ C is the fiber/level value; it is not part of W_kappa itself.",
+      "scope": "parameters",
+      "source": {
+        "status": "SOURCE_BACKED_DEFINITION",
+        "package": "Arithmetic Self-Similar Calabi-Yau",
+        "version": "v0.02",
+        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
+        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
+        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/BaseFiber.lean",
+        "blob": "4561545d5a7443a9d307b9d6f6acc81aa02f9b8a",
+        "theorems": [
+          "baseFiber",
+          "mem_baseFiber_iff"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "RUNTIME_PARTIAL_REAL_SLICE",
+        "path": "data/system.json#mathematics.parameters.lambda",
+        "representation": "finite JavaScript number",
+        "implemented": true,
+        "compatibility": "Current runtime supports only the real finite-number slice embedded into the source/Lean complex family."
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_WITH_DOMAIN_RESTRICTION",
+        "allowedWording": [
+          "runtime lambda is a real-slice instance of the complex source parameter"
+        ],
+        "forbiddenWording": [
+          "runtime supports arbitrary complex lambda"
+        ]
+      },
+      "dependencies": [],
+      "limitations": [
+        "No complex-number runtime schema yet."
+      ],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "data/system.json",
+        "scene-spec.js"
+      ]
+    },
+    {
+      "id": "parameter.kappa",
+      "claimName": "kappa Laurent coefficient parameter",
+      "mathematicalStatement": "kappa ∈ C is the coefficient of the reciprocal monomial in W_kappa.",
+      "scope": "parameters",
+      "source": {
+        "status": "SOURCE_BACKED_DEFINITION",
+        "package": "Arithmetic Self-Similar Calabi-Yau",
+        "version": "v0.02",
+        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
+        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
+        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/LaurentW.lean",
+        "blob": "ea6f3ae0b63967b8d9c52428cf825dc53821e781",
+        "theorems": [
+          "laurentW"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "RUNTIME_PARTIAL_REAL_SLICE",
+        "path": "data/system.json#mathematics.parameters.kappa",
+        "representation": "finite JavaScript number",
+        "implemented": true,
+        "compatibility": "Current runtime supports only the real finite-number slice embedded into the source/Lean complex family."
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_WITH_DOMAIN_RESTRICTION",
+        "allowedWording": [
+          "runtime kappa is a real-slice instance of the complex source parameter"
+        ],
+        "forbiddenWording": [
+          "runtime supports arbitrary complex kappa"
+        ]
+      },
+      "dependencies": [],
+      "limitations": [
+        "kappa=0 is source-legal and must not be excluded by a future schema unless explicitly scoped."
+      ],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "data/system.json",
+        "scene-spec.js"
+      ]
+    },
+    {
+      "id": "base.X0",
+      "claimName": "Base fiber X_0",
+      "mathematicalStatement": "X_0 = W_kappa^{-1}(lambda) ⊂ (C^×)^4.",
+      "scope": "base_fiber",
+      "source": {
+        "status": "SOURCE_BACKED_DEFINITION",
+        "package": "Arithmetic Self-Similar Calabi-Yau",
+        "version": "v0.02",
+        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
+        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
+        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/BaseFiber.lean",
+        "blob": "4561545d5a7443a9d307b9d6f6acc81aa02f9b8a",
+        "theorems": [
+          "baseFiber",
+          "mem_baseFiber_iff",
+          "baseFiber_eq_preimage_singleton"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "UNRESOLVED",
+        "path": "data/system.json#mathematics.baseHypersurface",
+        "representation": "symbolic level_set; W unresolved",
+        "implemented": false,
+        "compatibility": "Runtime records symbolic level-set metadata only."
+      },
+      "renderer": {
+        "status": "NOT_ADMITTED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_CONTRACT_NOT_RUNTIME",
+        "allowedWording": [
+          "X_0 is the W_kappa level fiber"
+        ],
+        "forbiddenWording": [
+          "X_0 is currently sampled or rendered"
+        ]
+      },
+      "dependencies": [
+        "ambient.torus4",
+        "function.W_kappa",
+        "parameter.lambda",
+        "parameter.kappa"
+      ],
+      "limitations": [],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "formal/SelfSimilarCY/BaseFiber.lean"
+      ]
+    },
+    {
+      "id": "map.P_D",
+      "claimName": "Coordinate-power map P_D",
+      "mathematicalStatement": "P_D(z1,z2,z3,z4)=(z1^D,z2^D,z3^D,z4^D), D≥2 in the source working regime.",
+      "scope": "ambient_map",
+      "source": {
+        "status": "SOURCE_BACKED_DEFINITION",
+        "package": "Arithmetic Self-Similar Calabi-Yau",
+        "version": "v0.02",
+        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
+        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
+        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/TorusCoordinatePower.lean",
+        "blob": "f58772332d30dbf68a0815691206e7de1c02f1eb",
+        "theorems": [
+          "torusCoordinatePower",
+          "torusCoordinatePower_toPoint4"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "RUNTIME_REPRESENTED",
+        "path": "data/system.json#mathematics.pullbackMap",
+        "representation": "coordinate_power, coordinateCount=4, exponentParameter=D",
+        "implemented": true,
+        "compatibility": "Runtime also imposes D≥2 and JavaScript safe-integer checks."
+      },
+      "renderer": {
+        "status": "RENDERED_STRUCTURAL_ONLY",
+        "implemented": true,
+        "evidenceClass": "structural_symbolic"
+      },
+      "admission": {
+        "status": "ADMITTED_STRUCTURAL",
+        "allowedWording": [
+          "coordinate-power map",
+          "structural pullback relation"
+        ],
+        "forbiddenWording": [
+          "rendered finite étale covering map",
+          "rendered geometric preimage"
+        ]
+      },
+      "dependencies": [
+        "ambient.torus4"
+      ],
+      "limitations": [
+        "Runtime graphics remain structural."
+      ],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "formal/SelfSimilarCY/TorusCoordinatePower.lean",
+        "data/system.json"
+      ]
+    },
+    {
+      "id": "tower.X_n",
+      "claimName": "Concrete pullback tower X_n",
+      "mathematicalStatement": "X_n=(P_D^n)^{-1}(X_0)=V_T(f_{D^n}), with X_{n+1}=P_D^{-1}(X_n).",
+      "scope": "tower",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau",
+        "version": "v0.02",
+        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
+        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
+        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/ConcretePullbackTower.lean",
+        "blob": "32a231cdcd50cbfbcc5f2cd5ce0f86588d2d9984",
+        "theorems": [
+          "concreteLevel",
+          "concreteLevel_zero",
+          "concreteLevel_succ"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "RUNTIME_STRUCTURAL_ONLY",
+        "path": "recursive-lazy-expansion.js",
+        "representation": "structural depth descriptors",
+        "implemented": true,
+        "compatibility": "Runtime levels denote the tower structurally but do not materialize Set Torus4 geometry."
+      },
+      "renderer": {
+        "status": "RENDERED_STRUCTURAL_ONLY",
+        "implemented": true,
+        "evidenceClass": "structural_symbolic"
+      },
+      "admission": {
+        "status": "ADMITTED_STRUCTURAL",
+        "allowedWording": [
+          "structural X_n pullback level"
+        ],
+        "forbiddenWording": [
+          "rendered concrete X_n variety",
+          "materialized geometric preimage"
+        ]
+      },
+      "dependencies": [
+        "base.X0",
+        "map.P_D"
+      ],
+      "limitations": [],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "formal/SelfSimilarCY/ConcretePullbackTower.lean"
+      ]
+    },
+    {
+      "id": "stationary.f_N",
+      "claimName": "Stationary Laurent family",
+      "mathematicalStatement": "f_N(z)=Σ_i z_i^N + kappa/(Π_i z_i)^N - lambda, with f_N(P_D z)=f_{DN}(z) and f_1=W_kappa-lambda.",
+      "scope": "tower",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau",
+        "version": "v0.02",
+        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
+        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
+        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/StationaryFamily.lean",
+        "blob": "aa80176d0ad05d18b8e39c426fded1e8b24eab8f",
+        "theorems": [
+          "stationaryLaurent",
+          "stationaryLaurent_one",
+          "stationaryLaurent_torusCoordinatePower"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_CONTRACT",
+        "allowedWording": [
+          "stationary Laurent identity is source-backed and Lean-formalized"
+        ],
+        "forbiddenWording": [
+          "runtime evaluates f_N"
+        ]
+      },
+      "dependencies": [
+        "function.W_kappa",
+        "map.P_D"
+      ],
+      "limitations": [],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "formal/SelfSimilarCY/StationaryFamily.lean"
+      ]
+    },
+    {
+      "id": "critical.locus",
+      "claimName": "Laurent critical locus equations",
+      "mathematicalStatement": "Critical points are diagonal, satisfy a^5=kappa, and have critical value 5a.",
+      "scope": "base_fiber",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/LaurentCritical.lean",
+        "blob": "caf9e0af928a76cb6bc14ab2d7d24c68a98b10d6",
+        "theorems": [
+          "isLaurentCritical_eq_diagonal",
+          "isLaurentCritical_pow_five_eq",
+          "laurentW_eq_five_mul_of_isLaurentCritical"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_THEOREM_PROVENANCE",
+        "allowedWording": [
+          "Lean-formalized critical-locus criterion"
+        ],
+        "forbiddenWording": [
+          "critical locus is rendered"
+        ]
+      },
+      "dependencies": [
+        "function.W_kappa"
+      ],
+      "limitations": [],
+      "provenanceRefs": [
+        "formal/SelfSimilarCY/LaurentCritical.lean"
+      ]
+    },
+    {
+      "id": "critical.discriminant",
+      "claimName": "Critical-value discriminant",
+      "mathematicalStatement": "For kappa≠0, a critical point lies on level lambda iff lambda^5=5^5 kappa; for kappa=0 there is no torus critical point.",
+      "scope": "base_fiber",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau",
+        "version": "v0.02",
+        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
+        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
+        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/LaurentCritical.lean",
+        "blob": "caf9e0af928a76cb6bc14ab2d7d24c68a98b10d6",
+        "theorems": [
+          "no_laurentCritical_zero",
+          "exists_critical_on_level_iff_discriminant",
+          "noCriticalPointOnBaseFiber"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_THEOREM_PROVENANCE",
+        "allowedWording": [
+          "singular source condition: kappa≠0 and lambda^5=5^5 kappa",
+          "critical-value discriminant criterion"
+        ],
+        "forbiddenWording": [
+          "lambda^5=5^5 kappa is an unconditional singular iff criterion over the entire parameter space"
+        ]
+      },
+      "dependencies": [
+        "critical.locus"
+      ],
+      "limitations": [
+        "The kappa=0 edge case must remain explicit."
+      ],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "formal/SelfSimilarCY/LaurentCritical.lean"
+      ]
+    },
+    {
+      "id": "regularity.dW",
+      "claimName": "Total differential regularity",
+      "mathematicalStatement": "On the source-compatible regular regime, the total complex differential dW is nonzero and surjective at base-fiber points.",
+      "scope": "local_analytic",
+      "source": {
+        "status": "SOURCE_COMPATIBLE",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/LaurentDifferential.lean",
+        "blob": "f3a27de774ecaa3b0e232f1fe7f0b06d381da55b",
+        "theorems": [
+          "laurentTotalDifferential_ne_zero_on_baseFiber_of_regular_regime",
+          "laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_THEOREM_PROVENANCE",
+        "allowedWording": [
+          "dW is Lean-formalized as surjective in the stated regular regime"
+        ],
+        "forbiddenWording": [
+          "therefore scheme smoothness is Lean-proved"
+        ]
+      },
+      "dependencies": [
+        "critical.discriminant"
+      ],
+      "limitations": [
+        "Differential regularity is not scheme smoothness."
+      ],
+      "provenanceRefs": [
+        "formal/SelfSimilarCY/LaurentDifferential.lean"
+      ]
+    },
+    {
+      "id": "regularity.local_ift",
+      "claimName": "Local analytic regular-level chart",
+      "mathematicalStatement": "Near a regular base-fiber point, the level is locally identified with the fixed first-coordinate slice {lambda}×ker(dW_z), with a local kernel parametrization.",
+      "scope": "local_analytic",
+      "source": {
+        "status": "DERIVED_FORMAL_BRIDGE",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/LaurentImplicit.lean",
+        "blob": "65a3315864533a5d016fee50ecb9ec0da0313828",
+        "theorems": [
+          "laurentRegularImplicitChart_fst_eq_lambda_iff",
+          "eventually_mem_regularImplicitChart_source_and_baseFiber_slice",
+          "eventually_regularLevel_reconstruct_from_kernelCoordinate",
+          "eventually_regularImplicitFunction_exists_baseFiber_lift"
+        ],
+        "theoremLevel": "F14-C + local kernel parametrization"
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_THEOREM_PROVENANCE",
+        "allowedWording": [
+          "local analytic level-set chart",
+          "local kernel parametrization"
+        ],
+        "forbiddenWording": [
+          "global product decomposition",
+          "scheme smoothness",
+          "smoothness of every X_n"
+        ]
+      },
+      "dependencies": [
+        "regularity.dW"
+      ],
+      "limitations": [
+        "Neighborhood-scoped only."
+      ],
+      "provenanceRefs": [
+        "docs/F14_ANALYTIC_REGULAR_LEVEL_FEASIBILITY_v0_01.md",
+        "formal/SelfSimilarCY/LaurentImplicit.lean"
+      ]
+    },
+    {
+      "id": "smoothness.source_scheme",
+      "claimName": "Source-level smoothness of X_0",
+      "mathematicalStatement": "Full source smooth regime: kappa=0 OR lambda^5≠5^5 kappa; singular source condition: kappa≠0 AND lambda^5=5^5 kappa.",
+      "scope": "base_fiber",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau",
+        "version": "v0.02",
+        "artifact": "Arithmetic_Self_Similar_Calabi_Yau_v0_02.tex",
+        "digest": "sha256:55d5305d4b0325b127ea2ae04ccc50c5126ae07b778ebd9106f61e5681404047",
+        "provenanceRef": "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)"
+      },
+      "lean": {
+        "status": "LEAN_PARTIAL_BRIDGE",
+        "module": [
+          "formal/SelfSimilarCY/LaurentCritical.lean",
+          "formal/SelfSimilarCY/LaurentDifferential.lean",
+          "formal/SelfSimilarCY/LaurentImplicit.lean"
+        ],
+        "blob": null,
+        "theorems": [
+          "critical/discriminant criterion",
+          "surjective dW",
+          "local analytic level-set chart"
+        ],
+        "theoremLevel": "does not include scheme smoothness"
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_SOURCE_ONLY_WITH_LEAN_PARTIAL",
+        "allowedWording": [
+          "source proves smoothness in the stated full smooth regime",
+          "Lean proves critical/differential/local-analytic bridges"
+        ],
+        "forbiddenWording": [
+          "Lean proves scheme-theoretic smoothness",
+          "principal regime equals all smooth fibers"
+        ]
+      },
+      "dependencies": [
+        "critical.discriminant",
+        "regularity.dW",
+        "regularity.local_ift"
+      ],
+      "limitations": [
+        "LEAN_SCHEME_SMOOTHNESS remains NOT ESTABLISHED."
+      ],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "docs/F14_ANALYTIC_REGULAR_LEVEL_FEASIBILITY_v0_01.md"
+      ]
+    },
+    {
+      "id": "connectedness",
+      "claimName": "Connectedness",
+      "mathematicalStatement": "Connectedness is source-proved with an external Oka-type toric Lefschetz input.",
+      "scope": "global_geometry",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory.",
+        "externalDependency": true,
+        "externalReference": "Oka toric Lefschetz input",
+        "externallyRevalidated": false
+      },
+      "lean": {
+        "status": "NOT_ESTABLISHED",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_SOURCE_ONLY",
+        "allowedWording": [
+          "source-proved connectedness with external theorem dependency"
+        ],
+        "forbiddenWording": [
+          "Lean-formalized connectedness",
+          "project-internal proof contains no external dependency"
+        ]
+      },
+      "dependencies": [],
+      "limitations": [
+        "External theorem dependency must remain visible."
+      ],
+      "provenanceRefs": [
+        "Thread 22 Gate 1 source/theorem recovery handoff"
+      ]
+    },
+    {
+      "id": "canonical_triviality",
+      "claimName": "Canonical triviality",
+      "mathematicalStatement": "The source package proves canonical triviality in the intended affine threefold sense.",
+      "scope": "global_geometry",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "NOT_ESTABLISHED",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_SOURCE_ONLY",
+        "allowedWording": [
+          "source-proved canonical triviality",
+          "affine Calabi–Yau only when the canonical-trivial convention is explicit"
+        ],
+        "forbiddenWording": [
+          "compact Calabi–Yau",
+          "projective Calabi–Yau",
+          "Lean-formalized canonical bundle triviality"
+        ]
+      },
+      "dependencies": [
+        "smoothness.source_scheme"
+      ],
+      "limitations": [
+        "Does not imply compactness, projectivity, simple connectedness, or log-Calabi–Yau."
+      ],
+      "provenanceRefs": [
+        "Gate 1C recovered source handoff (@繼續來源稽核 (1).md)",
+        "Thread 22 Gate 1 source/theorem recovery handoff"
+      ]
+    },
+    {
+      "id": "d4.numeric_expression",
+      "claimName": "D^4 runtime numeric expression",
+      "mathematicalStatement": "The runtime computes D^4 as numeric/organizational metadata.",
+      "scope": "runtime_metadata",
+      "source": {
+        "status": "NOT_REQUIRED",
+        "package": null,
+        "version": null,
+        "artifact": null,
+        "digest": null
+      },
+      "lean": {
+        "status": "NOT_REQUIRED",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "RUNTIME_REPRESENTED",
+        "path": "scene-spec.js#derived.sheetDegree",
+        "representation": "D ** 4",
+        "implemented": true,
+        "compatibility": "JavaScript safe-integer bounded"
+      },
+      "renderer": {
+        "status": "RENDERED_STRUCTURAL_ONLY",
+        "implemented": true,
+        "evidenceClass": "aggregate_organizational_metadata"
+      },
+      "admission": {
+        "status": "ADMITTED_RUNTIME_NUMERIC_ONLY",
+        "allowedWording": [
+          "D^4 runtime metadata",
+          "D^4 organizational multiplicity"
+        ],
+        "forbiddenWording": [
+          "D^4 map degree theorem",
+          "D^4 rendered sheets"
+        ]
+      },
+      "dependencies": [
+        "map.P_D"
+      ],
+      "limitations": [],
+      "provenanceRefs": [
+        "scene-spec.js",
+        "sheet-branch-organization.js"
+      ]
+    },
+    {
+      "id": "d4.kernel_cardinality",
+      "claimName": "D^4 kernel cardinality",
+      "mathematicalStatement": "For D≠0, the kernel of the torus coordinate-power homomorphism has cardinality D^4 and is multiplicatively equivalent to four copies of the D-th roots of unity.",
+      "scope": "ambient_map",
+      "source": {
+        "status": "SOURCE_COMPATIBLE",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/TorusPowerKernel.lean",
+        "blob": "2ebffc127658cd6bda8464425bac1154c4fbf8c1",
+        "theorems": [
+          "torusPowerKernelMulEquivRootsOfUnity",
+          "natCard_torusCoordinatePowerKernel"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "NOT_SEMANTICALLY_WIRED",
+        "path": "scene-spec.js#derived.sheetDegree",
+        "representation": "same numeric D^4 value only",
+        "implemented": false,
+        "compatibility": "Numeric equality does not create a theorem/runtime bridge."
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_THEOREM_PROVENANCE",
+        "allowedWording": [
+          "Lean-formalized kernel cardinality D^4"
+        ],
+        "forbiddenWording": [
+          "therefore map degree D^4",
+          "therefore D^4 geometric sheets"
+        ]
+      },
+      "dependencies": [
+        "map.P_D"
+      ],
+      "limitations": [
+        "Finite-set cardinality theorem only."
+      ],
+      "provenanceRefs": [
+        "formal/SelfSimilarCY/TorusPowerKernel.lean"
+      ]
+    },
+    {
+      "id": "d4.fiber_cardinality",
+      "claimName": "D^4 ambient torus fiber cardinality",
+      "mathematicalStatement": "For every D>0 and y∈Torus4, the ambient torus fiber P_D^{-1}(y) is finite with cardinality D^4.",
+      "scope": "ambient_map",
+      "source": {
+        "status": "SOURCE_COMPATIBLE",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "LEAN_FORMALIZED",
+        "module": "formal/SelfSimilarCY/TorusPowerFibers.lean",
+        "blob": "0df2e2aa373ef47653793bc2d0c3abcb79f1bd03",
+        "theorems": [
+          "torusCoordinatePower_surjective",
+          "finite_torusPowerFiber",
+          "natCard_torusPowerFiber"
+        ],
+        "theoremLevel": "exact"
+      },
+      "runtime": {
+        "status": "NOT_SEMANTICALLY_WIRED",
+        "path": "scene-spec.js#derived.sheetDegree",
+        "representation": "same numeric D^4 value only",
+        "implemented": false,
+        "compatibility": "No runtime fiber object exists."
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_THEOREM_PROVENANCE",
+        "allowedWording": [
+          "Lean-formalized ambient fiber cardinality D^4"
+        ],
+        "forbiddenWording": [
+          "map degree D^4",
+          "finite étale degree D^4",
+          "covering degree D^4",
+          "D^4 rendered sheets"
+        ]
+      },
+      "dependencies": [
+        "d4.kernel_cardinality"
+      ],
+      "limitations": [
+        "Ambient torus fiber theorem; not a theorem about rendered or restricted X_n sheets."
+      ],
+      "provenanceRefs": [
+        "formal/SelfSimilarCY/TorusPowerFibers.lean"
+      ]
+    },
+    {
+      "id": "d4.map_degree",
+      "claimName": "Algebraic map degree D^4",
+      "mathematicalStatement": "The parent source proves degree(P_D)=D^4 in its algebraic-geometric setting.",
+      "scope": "algebraic_geometry",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "NOT_ESTABLISHED",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": "Historical runtime names mapDegree/mapDegreePerStep reuse the D^4 numeric metadata but do not establish algebraic map degree."
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_SOURCE_ONLY",
+        "allowedWording": [
+          "source-proved algebraic map degree D^4"
+        ],
+        "forbiddenWording": [
+          "Lean-formalized map degree D^4",
+          "runtime mapDegree field proves degree",
+          "D^4 fiber cardinality is the map-degree theorem"
+        ]
+      },
+      "dependencies": [
+        "map.P_D"
+      ],
+      "limitations": [
+        "Must remain distinct from kernel/fiber cardinality."
+      ],
+      "provenanceRefs": [
+        "Thread 22 Gate 1 source/theorem recovery handoff"
+      ]
+    },
+    {
+      "id": "finite_etale",
+      "claimName": "Finite étale structure",
+      "mathematicalStatement": "The parent source proves the coordinate-power map and the admitted restricted tower maps finite étale in its stated regime.",
+      "scope": "algebraic_geometry",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "NOT_ESTABLISHED",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_SOURCE_ONLY",
+        "allowedWording": [
+          "source-proved finite étale structure"
+        ],
+        "forbiddenWording": [
+          "Lean-formalized finite étale",
+          "finite fibers imply finite étale",
+          "coveringStructureClaimed=true"
+        ]
+      },
+      "dependencies": [
+        "d4.map_degree"
+      ],
+      "limitations": [
+        "Not required for a first non-covering level-set renderer."
+      ],
+      "provenanceRefs": [
+        "Thread 22 Gate 1 source/theorem recovery handoff"
+      ]
+    },
+    {
+      "id": "deck_group",
+      "claimName": "Deck group / roots-of-unity structure",
+      "mathematicalStatement": "The parent source identifies the relevant deck group as a roots-of-unity product; current Lean proves the ambient kernel structure but not the full restricted deck-action theorem.",
+      "scope": "covering_structure",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "LEAN_PARTIAL_BRIDGE",
+        "module": "formal/SelfSimilarCY/TorusPowerKernel.lean",
+        "blob": "2ebffc127658cd6bda8464425bac1154c4fbf8c1",
+        "theorems": [
+          "torusPowerKernelMulEquivRootsOfUnity"
+        ],
+        "theoremLevel": "ambient kernel structure only"
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_SOURCE_ONLY_WITH_LEAN_PARTIAL",
+        "allowedWording": [
+          "ambient Lean kernel is μ_D^4-like via rootsOfUnity product",
+          "source-proved deck group"
+        ],
+        "forbiddenWording": [
+          "Lean proves restricted deck group action",
+          "deck transformations are rendered"
+        ]
+      },
+      "dependencies": [
+        "finite_etale",
+        "d4.kernel_cardinality"
+      ],
+      "limitations": [
+        "A covering/deck renderer should require a restricted action/torsor bridge."
+      ],
+      "provenanceRefs": [
+        "Thread 22 Gate 1 source/theorem recovery handoff",
+        "formal/SelfSimilarCY/TorusPowerKernel.lean"
+      ]
+    },
+    {
+      "id": "d2.numeric_expression",
+      "claimName": "D^2 runtime numeric expression",
+      "mathematicalStatement": "The runtime computes D^2 as numeric metadata.",
+      "scope": "runtime_metadata",
+      "source": {
+        "status": "NOT_REQUIRED",
+        "package": null,
+        "version": null,
+        "artifact": null,
+        "digest": null
+      },
+      "lean": {
+        "status": "NOT_REQUIRED",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "RUNTIME_REPRESENTED",
+        "path": "scene-spec.js#derived.metricScale",
+        "representation": "D ** 2",
+        "implemented": true,
+        "compatibility": "JavaScript safe-integer bounded"
+      },
+      "renderer": {
+        "status": "NOT_GEOMETRIC",
+        "implemented": false,
+        "evidenceClass": "numeric_metadata"
+      },
+      "admission": {
+        "status": "ADMITTED_RUNTIME_NUMERIC_ONLY",
+        "allowedWording": [
+          "D^2 runtime numeric metadata"
+        ],
+        "forbiddenWording": [
+          "geometric metric scaling is applied",
+          "camera zoom is the D^2 homothety"
+        ]
+      },
+      "dependencies": [
+        "map.P_D"
+      ],
+      "limitations": [],
+      "provenanceRefs": [
+        "scene-spec.js",
+        "zoom-semantics.js"
+      ]
+    },
+    {
+      "id": "d2.log_metric_theorem",
+      "claimName": "Logarithmic metric D^2 theorem",
+      "mathematicalStatement": "P_D^* g_log = D^2 g_log in the parent source.",
+      "scope": "metric_geometry",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "NOT_ESTABLISHED",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": "zoom-semantics.js",
+        "representation": "numeric source only; geometricZoomApplied=false",
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "ADMITTED_SOURCE_ONLY",
+        "allowedWording": [
+          "source-proved logarithmic metric D^2 theorem"
+        ],
+        "forbiddenWording": [
+          "Lean-formalized metric theorem",
+          "runtime numeric D^2 is the metric theorem",
+          "geometricZoomApplied=true"
+        ]
+      },
+      "dependencies": [
+        "map.P_D"
+      ],
+      "limitations": [
+        "Should become a prerequisite only when genuine geometric metric scaling is implemented."
+      ],
+      "provenanceRefs": [
+        "Thread 22 Gate 1 source/theorem recovery handoff",
+        "zoom-semantics.js"
+      ]
+    },
+    {
+      "id": "d_inverse.local_branch_scaling",
+      "claimName": "Local inverse-branch scaling semantics",
+      "mathematicalStatement": "No separate runtime/renderer contract is currently admitted for inverse local branch metric scaling.",
+      "scope": "metric_geometry",
+      "source": {
+        "status": "UNRESOLVED",
+        "package": null,
+        "version": null,
+        "artifact": null,
+        "digest": null
+      },
+      "lean": {
+        "status": "NOT_ESTABLISHED",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "NOT_IMPLEMENTED",
+        "path": null,
+        "representation": null,
+        "implemented": false,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "NOT_ADMITTED",
+        "allowedWording": [
+          "unresolved / not admitted"
+        ],
+        "forbiddenWording": [
+          "inverse branches are rendered at scale 1/D",
+          "camera scale implements local inverse-branch geometry"
+        ]
+      },
+      "dependencies": [
+        "d2.log_metric_theorem"
+      ],
+      "limitations": [
+        "Do not derive a renderer contract from the D^2 theorem without an explicit representation bridge."
+      ],
+      "provenanceRefs": []
+    },
+    {
+      "id": "render.geometry",
+      "claimName": "Concrete geometry rendered",
+      "mathematicalStatement": "Truth flag for an actual renderer of admitted concrete geometry.",
+      "scope": "renderer_truth",
+      "source": {
+        "status": "NOT_APPLICABLE",
+        "package": null,
+        "version": null,
+        "artifact": null,
+        "digest": null
+      },
+      "lean": {
+        "status": "NOT_APPLICABLE",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "FALSE",
+        "path": "base-renderer.js / recursive-lazy-expansion.js",
+        "representation": "geometryRendered=false",
+        "implemented": true,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "NOT_ADMITTED",
+        "allowedWording": [
+          "geometryRendered=false"
+        ],
+        "forbiddenWording": [
+          "concrete geometry is currently rendered"
+        ],
+        "transitionRequires": [
+          "concrete W runtime representation",
+          "actual admitted geometry sampler/renderer",
+          "claim provenance binding",
+          "geometry verifier"
+        ]
+      },
+      "dependencies": [
+        "function.W_kappa",
+        "base.X0"
+      ],
+      "limitations": [],
+      "provenanceRefs": [
+        "base-renderer.js",
+        "recursive-lazy-expansion.js"
+      ]
+    },
+    {
+      "id": "render.sheets",
+      "claimName": "Sheets materialized",
+      "mathematicalStatement": "Truth flag for actual, semantically defined preimage/sheet objects.",
+      "scope": "renderer_truth",
+      "source": {
+        "status": "NOT_APPLICABLE",
+        "package": null,
+        "version": null,
+        "artifact": null,
+        "digest": null
+      },
+      "lean": {
+        "status": "NOT_APPLICABLE",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "FALSE",
+        "path": "one-step-pullback.js / sheet-branch-organization.js",
+        "representation": "sheetsMaterialized=false",
+        "implemented": true,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "NOT_ADMITTED",
+        "allowedWording": [
+          "D^4 organization metadata; no sheets materialized"
+        ],
+        "forbiddenWording": [
+          "D^4 sheets exist because the fiber cardinality is D^4"
+        ],
+        "transitionRequires": [
+          "actual preimage/sheet objects",
+          "precise definition of one sheet",
+          "sheet-specific verifier"
+        ]
+      },
+      "dependencies": [
+        "d4.fiber_cardinality"
+      ],
+      "limitations": [],
+      "provenanceRefs": [
+        "one-step-pullback.js",
+        "sheet-branch-organization.js"
+      ]
+    },
+    {
+      "id": "render.covering",
+      "claimName": "Covering structure claimed",
+      "mathematicalStatement": "Truth flag for a runtime object that genuinely represents admitted covering/finite-étale structure.",
+      "scope": "renderer_truth",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "NOT_ESTABLISHED",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "FALSE",
+        "path": "sheet-branch-organization.js / structural-camera.js",
+        "representation": "coveringStructureClaimed=false",
+        "implemented": true,
+        "compatibility": null
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "NOT_ADMITTED",
+        "allowedWording": [
+          "coveringStructureClaimed=false"
+        ],
+        "forbiddenWording": [
+          "finite fibers imply runtime covering structure"
+        ],
+        "transitionRequires": [
+          "admitted covering/finite-étale theorem layer",
+          "runtime covering object",
+          "semantic verifier",
+          "wording separating mathematical covering from visual grouping"
+        ]
+      },
+      "dependencies": [
+        "finite_etale"
+      ],
+      "limitations": [],
+      "provenanceRefs": [
+        "sheet-branch-organization.js",
+        "structural-camera.js"
+      ]
+    },
+    {
+      "id": "render.geometric_zoom",
+      "claimName": "Geometric zoom applied",
+      "mathematicalStatement": "Truth flag for actual mathematical metric/scaling semantics.",
+      "scope": "renderer_truth",
+      "source": {
+        "status": "SOURCE_PROVED",
+        "package": "Arithmetic Self-Similar Calabi-Yau recovered parent theorem lineage",
+        "version": "final canonical closure lineage",
+        "artifact": "Gate 1D Geometry Theorem Ledger authority as recovered before F08–F14",
+        "digest": null,
+        "provenanceRef": "Thread 22 Gate 1 source/theorem recovery handoff",
+        "note": "Exact theorem-package digest is not duplicated in this repository contract; source authority is inherited from the completed Gate 1 lineage and must not be reconstructed from chat memory."
+      },
+      "lean": {
+        "status": "NOT_ESTABLISHED",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "FALSE",
+        "path": "zoom-semantics.js / structural-camera.js",
+        "representation": "geometricZoomApplied=false",
+        "implemented": true,
+        "compatibility": "Camera transforms are presentation-only."
+      },
+      "renderer": {
+        "status": "NOT_RENDERED",
+        "implemented": false,
+        "evidenceClass": "not_rendered"
+      },
+      "admission": {
+        "status": "NOT_ADMITTED",
+        "allowedWording": [
+          "camera zoom is presentation-only",
+          "geometricZoomApplied=false"
+        ],
+        "forbiddenWording": [
+          "camera zoom implements P_D^* g_log=D^2 g_log"
+        ],
+        "transitionRequires": [
+          "actual geometric metric/scaling semantics",
+          "provenance binding",
+          "metric/scaling verifier"
+        ]
+      },
+      "dependencies": [
+        "d2.log_metric_theorem"
+      ],
+      "limitations": [],
+      "provenanceRefs": [
+        "zoom-semantics.js",
+        "structural-camera.js"
+      ]
+    },
+    {
+      "id": "presentation.camera_zoom",
+      "claimName": "Camera zoom",
+      "mathematicalStatement": "Presentation-only viewport/camera transform, explicitly distinct from geometric metric scaling.",
+      "scope": "presentation",
+      "source": {
+        "status": "NOT_APPLICABLE",
+        "package": null,
+        "version": null,
+        "artifact": null,
+        "digest": null
+      },
+      "lean": {
+        "status": "NOT_APPLICABLE",
+        "module": null,
+        "blob": null,
+        "theorems": [],
+        "theoremLevel": null
+      },
+      "runtime": {
+        "status": "RUNTIME_REPRESENTED",
+        "path": "structural-camera.js",
+        "representation": "presentation camera transform",
+        "implemented": true,
+        "compatibility": "Not mathematical geometry."
+      },
+      "renderer": {
+        "status": "RENDERED_PRESENTATION_ONLY",
+        "implemented": true,
+        "evidenceClass": "presentation_only"
+      },
+      "admission": {
+        "status": "ADMITTED_PRESENTATION_ONLY",
+        "allowedWording": [
+          "camera zoom",
+          "presentation-only viewport transform"
+        ],
+        "forbiddenWording": [
+          "geometric zoom",
+          "metric homothety"
+        ]
+      },
+      "dependencies": [],
+      "limitations": [],
+      "provenanceRefs": [
+        "structural-camera.js"
+      ]
+    }
+  ]
+}
