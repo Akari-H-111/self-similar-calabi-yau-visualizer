@@ -256,6 +256,41 @@ theorem eventually_exists_baseFiber_lift_iff_regularImplicitChart_fst_eq
   rw [← hx]
   exact (laurentRegularImplicitChart_fst_eq_lambda_iff κ lambda z hz hreg x).symm
 
+/-- The regular implicit chart source is a neighborhood of the regular base point. -/
+theorem laurentRegularImplicitChart_source_mem_nhds
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    (laurentRegularImplicitChart κ lambda z hz hreg).source ∈ 𝓝 z.toPoint4 := by
+  have hmem :
+      z.toPoint4 ∈ (laurentRegularImplicitChart κ lambda z hz hreg).source := by
+    unfold laurentRegularImplicitChart
+    exact
+      laurentImplicitChart_base_mem_source κ z
+        (laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime hz hreg)
+  exact
+    (laurentRegularImplicitChart κ lambda z hz hreg).open_source.mem_nhds hmem
+
+/--
+Fully neighborhood-scoped F14-C statement: sufficiently near the regular base point,
+the point lies in the actual chart source, and the concrete base-fiber lift condition
+is equivalent to fixing the chart's complex coordinate at `lambda`.
+-/
+theorem eventually_mem_regularImplicitChart_source_and_baseFiber_slice
+    (κ lambda : ℂ) (z : Torus4)
+    (hz : z ∈ baseFiber κ lambda)
+    (hreg : κ = 0 ∨ lambda ^ 5 ≠ (5 : ℂ) ^ 5 * κ) :
+    ∀ᶠ x in 𝓝 z.toPoint4,
+      x ∈ (laurentRegularImplicitChart κ lambda z hz hreg).source ∧
+        ((∃ w : Torus4, w ∈ baseFiber κ lambda ∧ w.toPoint4 = x) ↔
+          (laurentRegularImplicitChart κ lambda z hz hreg x).fst = lambda) := by
+  filter_upwards
+    [laurentRegularImplicitChart_source_mem_nhds κ lambda z hz hreg,
+      eventually_exists_baseFiber_lift_iff_regularImplicitChart_fst_eq
+        κ lambda z hz hreg]
+      with x hxSource hxFiber
+  exact ⟨hxSource, hxFiber⟩
+
 /--
 Canonical implicit function at a regular concrete base-fiber point, obtained from
 the same sealed F13 surjectivity theorem as `laurentRegularImplicitChart`.
