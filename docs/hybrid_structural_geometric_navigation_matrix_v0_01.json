@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "thread": 26,
+  "milestone": "Hybrid Structural / Geometric Navigation",
+  "status": "implementation_candidate",
+  "canonicalParent": {
+    "commit": "a48664fb25ed5fe2a2b3ebcb0dfc217e3353df3c",
+    "tree": "00d88bdb116cb79bbad0a765ee7a8d51dd394b56",
+    "soleParent": "667c6d89b4b78fa08fa0f8de98c8e10a278a89e6"
+  },
+  "representationModes": ["structural", "geometric"],
+  "depthSemantics": {
+    "structuralRequestedDepthIndependent": true,
+    "structuralMaterializedDepthIndependent": true,
+    "geometricRenderedDepthIndependent": true,
+    "automaticDepthSynchronization": false,
+    "explicitSharedStageNavigationOnly": true
+  },
+  "correspondenceClasses": {
+    "A": {
+      "label": "canonical_mathematical_correspondence",
+      "admitted": ["tower stage index n", "X_n stage label", "shared coordinate-power stage / D provenance"]
+    },
+    "B": {
+      "label": "deterministic_implementation_correspondence",
+      "admitted": ["structural depth state from existing interaction DOM contract", "geometric depth/source/projection state from sealed Thread 25 runtime"]
+    },
+    "C": {
+      "label": "presentation_ui_only_correspondence",
+      "admitted": ["explicit navigation to already materialized same-index stage", "active representation context", "highlighting and point inspection"]
+    },
+    "D": {
+      "label": "unsupported_forbidden_correspondence",
+      "forbidden": [
+        "structural node = geometric point",
+        "structural branch = root tuple",
+        "root tuple = sheet identity",
+        "D^4 structural multiplicity = sheet count",
+        "projected visual location = source-object identity",
+        "projected overlap = source self-intersection",
+        "projected overlap = covering multiplicity",
+        "navigation or highlighting = geometric zoom",
+        "structural requestedDepth = geometric rendered depth"
+      ]
+    }
+  },
+  "hybridState": {
+    "representationMode": true,
+    "structuralRequestedDepth": true,
+    "structuralMaterializedDepth": true,
+    "structuralSelectedDepth": true,
+    "structuralFocusedDepth": true,
+    "geometricRenderedDepth": true,
+    "selectedStructuralObject": "structural_level_descriptor_only",
+    "selectedGeometricObject": "optional_finite_geometric_point",
+    "geometricAncestorX0Sample": true,
+    "geometricParentPoint": true,
+    "projectionState": true,
+    "navigationProvenance": true
+  },
+  "geometricSelection": {
+    "pointId": true,
+    "depth": true,
+    "parentPointId": true,
+    "ancestorX0SampleId": true,
+    "rootTuple": "enumeration_metadata_only",
+    "projectedOverlapCount": "projection_metadata_only",
+    "canonicalStructuralObjectCorrespondence": false
+  },
+  "materialization": {
+    "thread25PolicyPreserved": "exact_hard_cap",
+    "maxGeneratedPoints": 10000,
+    "canonicalGeometricDepthsAvailable": [0, 1],
+    "canonicalDepth0Count": 512,
+    "canonicalDepth1Count": 8192,
+    "canonicalDepth2CountIfRequested": 131072,
+    "beyondCap": "reject_without_partial_materialization",
+    "hybridRuntimeCallsGeometricGenerationApi": false
+  },
+  "protectedSemantics": {
+    "thread23ProjectionModified": false,
+    "thread25GeometricEngineModified": false,
+    "thread25GeometricRendererModified": false,
+    "structuralRecursionRedefined": false,
+    "structuralRendererRedefined": false
+  },
+  "truthFlags": {
+    "geometryRenderedInGeometricRepresentation": true,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  },
+  "verification": {
+    "machineVerifier": "verify_hybrid_navigation_v0_01.js",
+    "browserVerifier": "verify_hybrid_navigation_browser_v0_01.js",
+    "browserEvidenceArtifactPrefix": "thread26-hybrid-navigation-browser-evidence-"
+  }
+}
