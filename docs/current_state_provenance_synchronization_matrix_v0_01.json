@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "thread": "27R",
+  "milestone": "Current-State Geometry / Structural Provenance Synchronization",
+  "status": "implementation_candidate",
+  "canonicalParent": {
+    "commit": "2c33f20a508540c3f31ba2d058f3181cc173ef2e",
+    "tree": "59b45cc5659fcc7596aedaeb62af7206d6592012",
+    "soleParent": "410d421f9dd8af8d2c398c3650f1cd66b56d3463"
+  },
+  "findings": [
+    {
+      "id": "B4-current-global-truth-drift",
+      "class": "B4_semantic_regression",
+      "severity": "blocking_before_next_phase",
+      "finding": "Current public wording promoted the legacy schema-v1 structural-only state to a repository-global current claim after Threads 24-26 had admitted finite sampled geometry."
+    },
+    {
+      "id": "B2-publication-smoke-blind-spot",
+      "class": "B2_verifier_gap",
+      "severity": "blocking_before_next_phase",
+      "finding": "Publication smoke required a stale global no-geometry sentence while separately requiring the Thread 24-26 geometric artifacts."
+    },
+    {
+      "id": "B1-phase-local-matrix-status",
+      "class": "B1_documentation_metadata_drift",
+      "severity": "non_blocking_after_classification",
+      "finding": "Thread 22 and 23 matrices retain phase-local candidate wording and Thread 24 has no explicit status field; those historical artifact fields are not rewritten by this repair."
+    }
+  ],
+  "authorityContexts": {
+    "legacyStructural": {
+      "fixture": "data/system.json",
+      "schemaVersion": 1,
+      "WRepresentation": "unresolved",
+      "geometryScope": "structural_pipeline_only",
+      "globalCurrentAuthority": false
+    },
+    "admittedGeometric": {
+      "fixture": "data/system.v2.json",
+      "schemaVersion": 2,
+      "formulaId": "W_kappa_torus4_v1",
+      "baseView": "finite sampled projection of X_0",
+      "pullbackView": "finite sampled pullback of X_1",
+      "geometryRendered": true,
+      "globalCompletenessClaim": false
+    }
+  },
+  "truthBoundary": {
+    "geometryRenderedInGeometricRepresentation": true,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "completeGlobalHypersurfaceRendered": false
+  },
+  "materialization": {
+    "maxGeneratedPoints": 10000,
+    "canonicalDepth0Count": 512,
+    "canonicalDepth1Count": 8192,
+    "canonicalDepth2CountIfRequested": 131072,
+    "beyondCap": "reject_without_partial_materialization",
+    "hybridRuntimeCallsGeometricGenerationApi": false
+  },
+  "statusHygiene": {
+    "policy": "preserve_phase_local_historical_status_fields",
+    "thread22ObservedStatus": "AUTHORING CANDIDATE",
+    "thread23ObservedStatus": "IMPLEMENTED_CONTRACT_CANDIDATE",
+    "thread24ObservedStatusField": "absent",
+    "thread25ObservedStatus": "canonical_sealed",
+    "thread26ObservedStatus": "canonical_sealed",
+    "interpretation": "Thread 22-24 artifact-local status vocabulary records their authoring/implementation phase and is not rewritten retroactively. Current canonical adoption is evidenced by merged lineage, downstream consumption, exact-main CI, and later sealed contracts."
+  },
+  "modifiedPaths": [
+    "index.html",
+    "README.md",
+    ".github/workflows/formal-verification.yml",
+    "docs/CURRENT_STATE_PROVENANCE_SYNCHRONIZATION_v0_01.md",
+    "docs/current_state_provenance_synchronization_matrix_v0_01.json",
+    "verify_current_state_provenance_sync_v0_01.js"
+  ],
+  "protectedBlobs": {
+    "data/system.json": "f131c94d6c05a5537f6832a690e593a56fc3af7d",
+    "data/system.v2.json": "0d598560134e45bd3ed2edec62120fa45649883c",
+    "concrete-runtime-schema.js": "23cc1d78afa287162107a1b9e8742d74cbf09d0d",
+    "projection-slice-semantics.js": "96841a5ceeaebd09155d8ade7653057b76d65104",
+    "base-geometric-sampler.js": "da201c6d304c77001935763f53e26060a6599b01",
+    "base-geometric-renderer.js": "99e07043efb984dba340a44ebfa0efa61721d2da",
+    "geometric-pullback-engine.js": "7e7c634b1feedc045fe7a82d477621cb293a955d",
+    "geometric-pullback-runtime.js": "d9834da759b2485810cb73a9148d2bd87607751f",
+    "hybrid-navigation-semantics.js": "4d31cf1d78aec046ed15916e08a185a0b401c650",
+    "hybrid-navigation-runtime.js": "e97fc72cbf38f45bda1b017e2a517258016c1c7d",
+    "app.js": "4b5767b5f5fae9fac25d042e777b150a2ef92c38",
+    "formal/SelfSimilarCY/Torus4.lean": "53a8f04018b5f452b05f08c755c7d6ee99978275",
+    "formal/SelfSimilarCY/LaurentW.lean": "ea6f3ae0b63967b8d9c52428cf825dc53821e781",
+    "formal/SelfSimilarCY/BaseFiber.lean": "4561545d5a7443a9d307b9d6f6acc81aa02f9b8a",
+    "formal/SelfSimilarCY/ConcretePullbackTower.lean": "32a231cdcd50cbfbcc5f2cd5ce0f86588d2d9984"
+  },
+  "exitCriteria": [
+    "legacy structural state is explicitly scoped to schema v1",
+    "current finite sampled geometry is explicitly acknowledged",
+    "historical v1.0-rc1 wording remains historical rather than current-global",
+    "stale global no-geometry sentence is rejected by CI",
+    "Thread 25 cap/materialization contract remains unchanged",
+    "Thread 26 correspondence/truth boundary remains unchanged",
+    "protected runtime/formal blobs remain exact"
+  ]
+}
