@@ -33,7 +33,10 @@
     "explicitThread30RenderActionRemainsSoleScopedGenerationPath": true
   },
   "correspondence": {
-    "canonicalStageIndexClass": "A_canonical_mathematical_correspondence",
+    "canonicalStageIndexClassPolicy": "inherit_Thread26_selectedStructuralStage_class",
+    "supportedCanonicalStageIndexClass": "A_canonical_mathematical_correspondence",
+    "unsupportedCanonicalStageIndexClass": "D_unsupported_forbidden_correspondence",
+    "stageClassDelegatesToThread26": true,
     "scopedAncestorProvenanceClass": "B_deterministic_implementation_correspondence",
     "contextNavigationClass": "C_presentation_ui_only_correspondence",
     "forbiddenIdentityClass": "D_unsupported_forbidden_correspondence",
