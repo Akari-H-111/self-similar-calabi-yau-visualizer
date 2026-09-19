@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="geometric-pullback-renderer.css">
   <link rel="stylesheet" href="ancestor-scoped-pullback-visualization.css">
   <link rel="stylesheet" href="hybrid-navigation.css">
+  <link rel="stylesheet" href="hybrid-scoped-bridge.css">
   <script src="scene-spec.js" defer></script>
   <script src="base-renderer.js" defer></script>
   <script src="one-step-pullback.js" defer></script>
@@ -41,6 +42,8 @@
   <script src="app.js" defer></script>
   <script src="hybrid-navigation-semantics.js" defer></script>
   <script src="hybrid-navigation-runtime.js" defer></script>
+  <script src="hybrid-scoped-bridge-semantics.js" defer></script>
+  <script src="hybrid-scoped-bridge-runtime.js" defer></script>
 </head>
 <body>
   <main class="shell">
@@ -54,6 +57,7 @@
       <p class="boundary-note"><strong>Thread 24 geometric admission:</strong> The new independent panel below evaluates the admitted <code>W_kappa_torus4_v1</code>, deterministically constructs validated finite <code>X_0</code> samples, and renders only the sealed Thread 23 projection <code>(Re(z1), Im(z1))</code>. It does not materialize sheets, claim a covering, apply geometric zoom, or render any <code>X_n</code> with positive depth.</p>
       <p class="boundary-note"><strong>Thread 26 hybrid navigation:</strong> Structural and finite geometric representations now share an explicit navigation surface at the tower-stage level only. Structural depth and geometric rendered depth remain independent. No structural node is identified with a geometric point, no root tuple is promoted to a sheet, projected overlap does not identify source objects, and navigation remains distinct from geometric zoom.</p>
       <p class="boundary-note"><strong>Thread 30 ancestor-scoped geometry:</strong> A separate explicit-render panel now exposes bounded recursive pullbacks of one selected admitted <code>X_0</code> ancestor through scoped depth 3 under the unchanged 10,000-point cap. The scoped result is complete over that selected finite ancestor scope, not complete global <code>X_n</code>. Depth 4 is refused before recursive generation, with no partial marks. The panel reuses the Thread 25 renderer and Thread 23 projection and does not join the Thread 26 hybrid state machine.</p>
+      <p class="boundary-note"><strong>Thread 31 global / scoped bridge:</strong> A separate wrapper now offers explicit structural, global-geometric, and scoped-geometric navigation contexts. It reads the sealed Thread 26 and Thread 30 states without changing their authorities. Context switching does not generate scoped geometry and does not synchronize structural, global-geometric, or scoped-geometric depth.</p>
     </header>
 
     <section aria-labelledby="hybrid-navigation-title" id="hybrid-navigation" class="hybrid-navigation" data-state="loading" data-representation-mode="structural" data-sheets-materialized="false" data-covering-structure-claimed="false" data-geometric-zoom-applied="false">
@@ -78,11 +82,30 @@
         <button type="button" data-hybrid-action="structural-to-geometric" disabled>Locate geometric stage</button>
         <button type="button" data-hybrid-action="geometric-to-structural" disabled>Locate structural stage</button>
       </div>
+      <div id="hybrid-scoped-bridge" class="hybrid-scoped-bridge" data-state="loading" data-context-mode="structural" data-sheets-materialized="false" data-covering-structure-claimed="false" data-geometric-zoom-applied="false">
+        <p class="section-kicker">Thread 31 · global / scoped presentation bridge</p>
+        <div class="hybrid-scoped-bridge__toolbar" role="group" aria-label="Global and scoped navigation context">
+          <button type="button" data-thread31-context="structural" aria-pressed="true">Structural context</button>
+          <button type="button" data-thread31-context="global-geometric" aria-pressed="false">Global finite geometry</button>
+          <button type="button" data-thread31-context="scoped-geometric" aria-pressed="false">Ancestor-scoped geometry</button>
+        </div>
+        <div class="hybrid-scoped-bridge__state">
+          <p><strong>Bridge context:</strong> <span data-thread31-field="context">Loading…</span></p>
+          <p><strong>Thread 26 mode:</strong> <span data-thread31-field="thread26-mode">Loading…</span></p>
+          <p><strong>Structural depth:</strong> <span data-thread31-field="structural-depth">Loading…</span></p>
+          <p><strong>Global geometric depth:</strong> <span data-thread31-field="global-depth">Loading…</span></p>
+          <p><strong>Scoped depth:</strong> <span data-thread31-field="scoped-depth">Loading…</span></p>
+          <p><strong>Scoped ancestor:</strong> <span data-thread31-field="ancestor">Loading…</span></p>
+          <p><strong>Correspondence boundary:</strong> <span data-thread31-field="correspondence">Loading…</span></p>
+        </div>
+        <p class="structural-boundary-caption">Thread 31 context switching is presentation-only. Entering the scoped context does not activate <strong>Render selected scope</strong>, does not invoke pullback generation, and does not synchronize structural, global-geometric, or scoped-geometric depth. Selected ancestry remains deterministic provenance, not a connected-component or sheet identity.</p>
+      </div>
+
       <p id="hybrid-geometric-selection" class="hybrid-navigation__selection">No geometric point selected. Stage correspondence does not create point identity.</p>
       <p class="structural-boundary-caption">Representation switching, stage locating, selection, and highlighting are navigation/presentation operations only. They do not trigger geometric generation, do not bypass the exact 10,000-point cap, do not materialize sheets or covering structure, and do not set <code>geometricZoomApplied=true</code>.</p>
     </section>
 
-    <section aria-labelledby="structural-visualization-title" class="structural-section" data-hybrid-panel="structural" data-hybrid-active="true">
+    <section aria-labelledby="structural-visualization-title" class="structural-section" data-hybrid-panel="structural" data-hybrid-active="true" data-thread31-panel="structural" data-thread31-active="true">
       <div class="section-heading">
         <div>
           <p class="section-kicker">Interactive structure</p>
@@ -118,7 +141,7 @@
       <p id="structural-boundary-caption" class="structural-boundary-caption">Nodes denote finite structural level descriptors and arrows denote pullback relations already present in the runtime model. D⁴ badges denote exact aggregate structural organization multiplicity only. At D=2 this can communicate 16-fold structural organization with one badge per visible transition, not sixteen fake geometric sheets. Arithmetic markers are symbolic annotations with explicit evidence/provenance, not geometric arithmetic loci. Selection, focus, collapse, arithmetic overlay toggles, and camera state remain separate presentation/runtime domains. Camera scale is presentation-only viewport state.</p>
     </section>
 
-    <section aria-labelledby="base-geometric-label" class="base-geometric-section" data-hybrid-panel="geometric" data-hybrid-active="false">
+    <section aria-labelledby="base-geometric-label" class="base-geometric-section" data-hybrid-panel="geometric" data-hybrid-active="false" data-thread31-panel="global-geometric" data-thread31-active="false">
       <div class="section-heading">
         <div>
           <p class="section-kicker">Thread 24 · admitted base geometry</p>
@@ -132,7 +155,7 @@
       <p class="structural-boundary-caption">Each rendered mark means one validated finite sample <code>z ∈ X_0</code>, displayed at <code>(Re(z1), Im(z1))</code>. A finite sample is not the complete <code>X_0</code>; projection overlap is not a source self-intersection; two quadratic roots are not sheets; viewport fitting is presentation-only and is not D² metric scaling or geometric zoom.</p>
     </section>
 
-    <section aria-labelledby="geometric-pullback-label" class="geometric-pullback-section" data-hybrid-panel="geometric" data-hybrid-active="false">
+    <section aria-labelledby="geometric-pullback-label" class="geometric-pullback-section" data-hybrid-panel="geometric" data-hybrid-active="false" data-thread31-panel="global-geometric" data-thread31-active="false">
       <div class="section-heading">
         <div>
           <p class="section-kicker">Thread 25 · admitted finite pullback geometry</p>
@@ -152,7 +175,7 @@
       <p id="geometric-pullback-boundary" class="structural-boundary-caption">Each positive-depth mark is one finite deterministic geometric preimage point with an ancestor X_0 sample id, declared parent id, and root multi-index. Root tuples are enumeration indices, not global sheet identities. Projected overlap is not source self-intersection or covering multiplicity. The production hard cap rejects a complete next level before generation rather than rendering partial fibers.</p>
     </section>
 
-    <section aria-labelledby="ancestor-scoped-pullback-label" id="ancestor-scoped-pullback" class="ancestor-scoped-pullback-section">
+    <section aria-labelledby="ancestor-scoped-pullback-label" id="ancestor-scoped-pullback" class="ancestor-scoped-pullback-section" data-thread31-panel="scoped-geometric" data-thread31-active="false">
       <div class="section-heading">
         <div>
           <p class="section-kicker">Thread 30 · bounded ancestor-scoped geometry</p>
