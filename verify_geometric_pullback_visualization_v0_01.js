@@ -19,6 +19,7 @@ const baseView=require("./data/geometric-view.v1.json");
 const baseConfig=require("./data/base-geometric-render-config.v1.json");
 const pullbackView=require("./data/geometric-pullback-view.v1.json");
 const pullbackConfig=require("./data/geometric-pullback-config.v1.json");
+const pullbackMatrix=require("./docs/geometric_pullback_visualization_matrix_v0_01.json");
 
 const root=__dirname;
 function read(relativePath){return fs.readFileSync(path.join(root,relativePath),"utf8");}
@@ -35,6 +36,7 @@ assert.equal(pullbackConfig.materialization.canonicalRenderedDepth,1);
 assert.equal(pullbackConfig.truthFlags.sheetsMaterialized,false);
 assert.equal(pullbackConfig.truthFlags.coveringStructureClaimed,false);
 assert.equal(pullbackConfig.truthFlags.geometricZoomApplied,false);
+assert.equal(pullbackMatrix.status,"canonical_sealed");
 
 const viewBinding=GeometricPullbackViewSemantics.validateAgainstBaseView(pullbackView,baseView,scene,1);
 assert.equal(viewBinding.sourceObject,"X_1");
