@@ -1,0 +1,34 @@
+{
+  "contractVersion": 1,
+  "descriptorVersion": "v0.01",
+  "navigationId": "hybrid_navigation_ii_global_scoped_geometry_bridge_v1",
+  "defaultRepresentationMode": "structural",
+  "representationModes": ["structural", "global-geometric", "scoped-geometric"],
+  "dependencies": {
+    "thread26NavigationId": "hybrid_structural_geometric_navigation_v1",
+    "thread30Milestone": "Ancestor-Scoped Geometric Visualization",
+    "explicitScopedGenerationAuthority": "thread30_render_selected_scope_button"
+  },
+  "policies": {
+    "modeSwitchTriggersGlobalGeometricGeneration": false,
+    "modeSwitchTriggersScopedGeometricGeneration": false,
+    "structuralDepthControlsGlobalGeometricDepth": false,
+    "structuralDepthControlsScopedGeometricDepth": false,
+    "globalGeometricDepthControlsStructuralDepth": false,
+    "globalGeometricDepthControlsScopedGeometricDepth": false,
+    "scopedGeometricDepthControlsStructuralDepth": false,
+    "scopedGeometricDepthControlsGlobalGeometricDepth": false,
+    "structuralNodeDefinesGeometricPoint": false,
+    "structuralBranchDefinesRootTuple": false,
+    "selectedAncestorDefinesConnectedComponent": false,
+    "rootTupleDefinesSheetIdentity": false
+  },
+  "truthFlags": {
+    "completeGlobalHypersurfaceRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "analyticBranchClaimed": false,
+    "connectedComponentClaimed": false,
+    "geometricZoomApplied": false
+  }
+}
