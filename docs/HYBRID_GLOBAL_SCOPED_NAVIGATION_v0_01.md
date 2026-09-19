@@ -144,3 +144,7 @@ Thread 31 closes only after machine and Chromium verification show:
 10. PR-head CI, exact-main CI and Pages all succeed.
 
 A later seal changes metadata only.
+
+## Canonical closure
+
+The Thread 31 implementation was merged as `ce1317c3cc32fc7d8a3b9e4795949bea6680df96`, followed by the Class D repair `fde4f05270dbe3d5620dfe5b6cc630cc0f51deff` and its metadata-only seal `4aa6062d16e3340ed94248d65f2dd46ba626d973`. PR #46 was closed unmerged after the regression was found. The repair's PR-head run `35452523086` and exact-main run `35455412304` succeeded; the repair-seal exact-main run `35455874878` and Pages run `35455874404` also succeeded. This Thread 31 seal updates status metadata only. The selected-stage classification continues to delegate to Thread 26, including Class D when the corresponding global geometric stage is unavailable.
