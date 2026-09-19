@@ -363,10 +363,8 @@ jobs:
           grep -Fq 'The legacy schema-v1 structural pipeline remains non-geometric' /tmp/publication-index.html
           grep -Fq 'Threads 24–26 admit and render finite sampled geometry through schema v2' /tmp/publication-index.html
           grep -Fq 'schema-v2 geometric pipeline admits <code>W_kappa_torus4_v1</code>' /tmp/publication-index.html
-          if grep -Fq 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html; then
-            echo 'stale global geometry claim detected in index.html' >&2
-            exit 1
-          fi
+          grep -Fq '<strong>Historical v1.0-rc1 release boundary:</strong> Historical checkpoint wording: “No geometric Calabi–Yau hypersurface is currently rendered.”' /tmp/publication-index.html
+          test "$(grep -Fo 'No geometric Calabi–Yau hypersurface is currently rendered.' /tmp/publication-index.html | wc -l)" -eq 1
           grep -Fq 'D² runtime metadata' /tmp/publication-index.html
           grep -Fq 'D⁴ organization metadata' /tmp/publication-index.html
           grep -Fq 'Interactive pullback tower' /tmp/publication-index.html
