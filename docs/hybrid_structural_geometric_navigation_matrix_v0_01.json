@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "thread": 26,
   "milestone": "Hybrid Structural / Geometric Navigation",
-  "status": "implementation_candidate",
+  "status": "canonical_sealed",
   "canonicalParent": {
     "commit": "a48664fb25ed5fe2a2b3ebcb0dfc217e3353df3c",
     "tree": "00d88bdb116cb79bbad0a765ee7a8d51dd394b56",
