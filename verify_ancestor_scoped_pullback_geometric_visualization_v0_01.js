@@ -27,7 +27,7 @@ function gitBlobSha(relativePath){
 }
 
 assert.equal(matrix.thread,30);
-assert.equal(matrix.status,"implementation_candidate");
+assert.equal(matrix.status,"canonical_sealed");
 assert.equal(matrix.canonicalParent.commit,"3944d6d18ae0a0d7b55b6e1e9fe8a7653c21b37a");
 assert.equal(matrix.canonicalParent.tree,"705944b76b5c78aeb355b3029f945e2a55652399");
 assert.equal(thread29.status,"canonical_sealed");
