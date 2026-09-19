@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "thread": 28,
+  "milestone": "Ancestor-Scoped Pullback Feasibility / Semantics Contract",
+  "status": "implementation_candidate",
+  "decision": "ADMITTED_CANDIDATE",
+  "canonicalParent": {
+    "commit": "b3054826148f6f0c02091bbb800cfc2b3fc1db13",
+    "tree": "0165dda521f990f1a35526646f364d621bea1609",
+    "soleParent": "bc92912ad2011e563ca6b072492debe38f17a516"
+  },
+  "authority": {
+    "baseSample": "Thread 24 admitted ordered finite validated subset of X_0",
+    "pullbackEngine": "Thread 25 finite_sampled_geometric_pullback_v1",
+    "fiberCardinality": "positive-D Torus4 set-theoretic fiber has D^4 points",
+    "hybridBoundary": "Thread 26 stage-level correspondence only",
+    "newMathematicalTheoremRequired": false
+  },
+  "scope": {
+    "globalFiniteSeedSet": "the canonical Thread 24 ordered sample list S_0",
+    "selectedAncestorScope": "a nonempty duplicate-free ordered subsequence A of S_0 preserving canonical source order",
+    "ancestorScopedSeedSet": "S^A_0 = A",
+    "recurrence": "S^A_(n+1) is the union of the complete Thread 25 P_D point-fibers over every point of S^A_n",
+    "scopeComplete": "all selected ancestors are included and every materialized parent contributes its complete admitted D^4 point-fiber at every materialized step",
+    "globalComplete": false,
+    "connectedComponentClaim": false,
+    "sheetClaim": false,
+    "coveringClaim": false,
+    "analyticBranchClaim": false
+  },
+  "selection": {
+    "minimumAncestorCount": 1,
+    "maximumAncestorCount": "bounded by canonical S_0 size and exact requested-depth cap preflight",
+    "duplicatesAllowed": false,
+    "canonicalOrderPreserved": true,
+    "arbitraryNewX0PointsAllowed": false
+  },
+  "cardinality": {
+    "fiberCardinalityFormula": "D^4",
+    "scopedLevelFormula": "|S^A_n| = |A| * (D^4)^n",
+    "arithmeticRequirement": "overflow-safe exact integer arithmetic; no silent Number overflow",
+    "canonicalD": 2,
+    "canonicalFiberCardinality": 16,
+    "maxGeneratedPoints": 10000,
+    "oneAncestorCounts": {
+      "depth0": 1,
+      "depth1": 16,
+      "depth2": 256,
+      "depth3": 4096,
+      "depth4": 65536
+    },
+    "canonicalCapacityByDepth": {
+      "depth0MaxAncestorsFromAvailable512": 512,
+      "depth1MaxAncestorsFromAvailable512": 512,
+      "depth2MaxAncestors": 39,
+      "depth3MaxAncestors": 2,
+      "depth4MaxAncestors": 0
+    }
+  },
+  "preflight": {
+    "requiredBeforeGeneration": true,
+    "input": ["selectedAncestorCount", "D", "requestedScopedDepth", "maxGeneratedPoints"],
+    "requiredPointCountFormula": "|A| * (D^4)^requestedScopedDepth",
+    "admitWhen": "requiredPointCount <= maxGeneratedPoints",
+    "rejectWhen": "requiredPointCount > maxGeneratedPoints",
+    "overCapBehavior": "reject_before_invoking_pullback_generation",
+    "partialLevelAllowed": false,
+    "partialParentFiberAllowed": false,
+    "randomFallbackAllowed": false,
+    "deterministicTruncationAllowed": false
+  },
+  "identity": {
+    "modelPointIdPolicy": "reuse Thread 25 deterministic pointId construction for the same admitted ancestor and root path",
+    "scopeStatePolicy": "carry a separate scope identifier / selected-ancestor set in scoped runtime state",
+    "pointIdImpliesSheetIdentity": false,
+    "pointIdImpliesConnectedComponent": false,
+    "pointIdImpliesStructuralIdentity": false,
+    "pointIdImpliesCurrentGlobalMaterialization": false
+  },
+  "depthState": {
+    "requestedScopedDepthSeparate": true,
+    "materializedScopedDepthsSeparate": true,
+    "structuralRequestedDepthConsumed": false,
+    "globalGeometricRenderedDepthMutated": false,
+    "automaticDepthSynchronization": false
+  },
+  "verifiedFixtures": {
+    "oneAncestor": "depth 0/1/2/3 = 1/16/256/4096; depth 4 exact requirement 65536 and is rejected",
+    "twoAncestors": "depth 3 exact requirement 8192 and is admissible under the current cap",
+    "threeAncestors": "depth 3 exact requirement 12288 and is rejected by preflight",
+    "poisonParentLevel": "4096-parent next-level request raises materialization limit before any parent coordinate is inspected"
+  },
+  "truthFlags": {
+    "geometryRenderedByExistingThread25Engine": true,
+    "completeGlobalHypersurfaceRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false
+  },
+  "productionChangesAuthorizedByThread28": false,
+  "thread29AuthorizedOnlyAfterCanonicalSeal": true,
+  "protectedBlobs": {
+    "geometric-pullback-engine.js": "7e7c634b1feedc045fe7a82d477621cb293a955d",
+    "geometric-pullback-runtime.js": "d9834da759b2485810cb73a9148d2bd87607751f",
+    "verify_geometric_pullback_visualization_v0_01.js": "e9a23b54fa2b4b67e549adc6b043931fdad96cfa",
+    "docs/geometric_pullback_visualization_matrix_v0_01.json": "709d7f2bcfa78c4a762c5dbd17576001ba632f2e",
+    "data/geometric-pullback-config.v1.json": "e99d6eb2addafbb0423adaf3c9f54cd09e5fb072",
+    "data/geometric-pullback-view.v1.json": "02a3a2efe65e96cb81cf75ba4842e9a36ebfc438",
+    "base-geometric-sampler.js": "da201c6d304c77001935763f53e26060a6599b01",
+    "data/base-geometric-render-config.v1.json": "0e8a0cc0e08a617c7d0865f31a379587c43d0c36",
+    "data/system.v2.json": "0d598560134e45bd3ed2edec62120fa45649883c",
+    "hybrid-navigation-semantics.js": "4d31cf1d78aec046ed15916e08a185a0b401c650",
+    "docs/hybrid_structural_geometric_navigation_matrix_v0_01.json": "5c8d1b9f2adaaf77efb77ce06a776194ea0c4af7",
+    "docs/PLAN_self_similar_cy_visualizer_v0_03.md": "1796ac612d48523ef9751e859ef1bdb860faad20"
+  }
+}
