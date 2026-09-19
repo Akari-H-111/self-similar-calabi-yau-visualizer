@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "thread": "31R",
   "milestone": "Stage Correspondence Classification Repair",
-  "status": "implementation_candidate",
+  "status": "canonical_sealed",
   "canonicalParent": {
     "commit": "ce1317c3cc32fc7d8a3b9e4795949bea6680df96",
     "tree": "831f029af2bdfe0310f7e9cc084ff721c4e672c8",

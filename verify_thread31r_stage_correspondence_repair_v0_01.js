@@ -21,7 +21,7 @@ function gitBlobSha(relativePath){
 }
 
 assert.equal(repair.thread,"31R");
-assert.equal(repair.status,"implementation_candidate");
+assert.equal(repair.status,"canonical_sealed");
 assert.equal(repair.canonicalParent.commit,"ce1317c3cc32fc7d8a3b9e4795949bea6680df96");
 assert.equal(repair.abandonedSeal.pr,46);
 assert.equal(repair.abandonedSeal.merged,false);
