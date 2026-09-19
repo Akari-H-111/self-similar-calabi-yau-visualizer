@@ -12,3 +12,4 @@ import SelfSimilarCY.TorusPowerKernel
 import SelfSimilarCY.TorusPowerFibers
 import SelfSimilarCY.LaurentCritical
 import SelfSimilarCY.LaurentDifferential
+import SelfSimilarCY.LaurentImplicit

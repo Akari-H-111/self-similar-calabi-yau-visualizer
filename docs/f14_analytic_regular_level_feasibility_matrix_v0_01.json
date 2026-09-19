@@ -1,0 +1,292 @@
+{
+  "artifact": "F14 Analytic Regular-Level / Implicit-Function Bridge Feasibility Matrix",
+  "version": "v0.01",
+  "verdict": "PASS — Analytic local level-set bridge established",
+  "theoremLevel": "F14-C + local kernel parametrization",
+  "canonicalParent": {
+    "commit": "c64443eff3eae8853cbdcae972d7e6772c10f701",
+    "tree": "70b3687339b5b4a23ba28b2e35c04d6a4c2ea9c8",
+    "soleParent": "e2ecd34a1bdc0bc53a30eed64645b93fa7065f3f"
+  },
+  "branch": "formal-f14-analytic-regular-level-feasibility",
+  "implementationHead": {
+    "commit": "9069631bb2a4766a9e8a4c94a9056a51dd1ed1c8",
+    "tree": "12064de0b5eedfc7ac161a59ab66e4618d7b6169",
+    "laurentImplicitBlob": "65a3315864533a5d016fee50ecb9ec0da0313828"
+  },
+  "pinnedEnvironment": {
+    "lean": "leanprover/lean4:v4.34.0",
+    "mathlib": "7801e8406155c31b340d28e2762f754d02b5e9b0"
+  },
+  "sealedF13Blobs": {
+    "baseFiber": "4561545d5a7443a9d307b9d6f6acc81aa02f9b8a",
+    "laurentCritical": "caf9e0af928a76cb6bc14ab2d7d24c68a98b10d6",
+    "laurentDifferential": "f3a27de774ecaa3b0e232f1fe7f0b06d381da55b"
+  },
+  "provedInF14": [
+    "laurentWPoint_contDiffAt",
+    "laurentWPoint_hasStrictFDerivAt",
+    "laurentTotalDifferential_range_eq_top",
+    "laurentImplicitFunction",
+    "laurentImplicitChart",
+    "laurentImplicitChart_fst",
+    "laurentImplicitChart_base_mem_source",
+    "laurentImplicitChart_base_mem_target",
+    "laurentImplicitChart_apply_base",
+    "laurentImplicitFunction_apply_base",
+    "ambientTorusLocus",
+    "Torus4.toPoint4_mem_ambientTorusLocus",
+    "isOpen_ambientTorusLocus",
+    "ambientTorusLocus_mem_nhds",
+    "pointToTorus4",
+    "pointToTorus4_toPoint4",
+    "mem_ambientTorusLocus_iff_exists_toPoint4",
+    "eventually_laurentWPoint_eq_iff_exists_baseFiber_lift",
+    "laurentRegularImplicitChart",
+    "laurentRegularImplicitChart_fst",
+    "laurentRegularImplicitChart_fst_eq_lambda_iff",
+    "eventually_exists_baseFiber_lift_iff_regularImplicitChart_fst_eq",
+    "laurentRegularImplicitChart_source_mem_nhds",
+    "eventually_mem_regularImplicitChart_source_and_baseFiber_slice",
+    "laurentRegularImplicitFunction",
+    "laurentWPoint_eq_level_of_mem_baseFiber",
+    "eventually_laurentRegularImplicitFunction_reconstruct",
+    "eventually_regularLevel_reconstruct_from_kernelCoordinate",
+    "eventually_laurentWPoint_regularImplicitFunction_eq_level",
+    "tendsto_laurentRegularImplicitFunction_level",
+    "eventually_regularImplicitFunction_exists_baseFiber_lift"
+  ],
+  "reusedFromF13": [
+    "laurentWPoint",
+    "laurentTotalDifferential",
+    "laurentWPoint_toPoint4",
+    "laurentTotalDifferential_surjective_on_baseFiber",
+    "laurentTotalDifferential_surjective_on_baseFiber_of_regular_regime"
+  ],
+  "f13xEvidence": {
+    "branch": "formal-f13x-pre-f14-source-archaeology",
+    "finalHead": "c206809a708740d84d713eb28eb9fef8be42824a",
+    "probeCommit": "56672f6865a5ff97331c57b2abe9b01b31ea29b9",
+    "probeBlob": "66efbaab636840ffd3e57df2b10ea2fecfbc1e16",
+    "canonicalParent": false,
+    "provenanceQualification": "Run #167 succeeded as PR CI, but its job-step list had no dedicated direct-compile step for the probe file; F14 supplies direct module compile receipts."
+  },
+  "pinnedImplicitApi": [
+    "HasStrictFDerivAt.implicitFunction",
+    "HasStrictFDerivAt.implicitToOpenPartialHomeomorph",
+    "implicitToOpenPartialHomeomorph_fst",
+    "implicitToOpenPartialHomeomorph_self",
+    "mem_implicitToOpenPartialHomeomorph_source",
+    "mem_implicitToOpenPartialHomeomorph_target",
+    "map_implicitFunction_eq",
+    "implicitFunction_apply_image",
+    "eq_implicitFunction",
+    "tendsto_implicitFunction"
+  ],
+  "localScope": {
+    "globalEquality": false,
+    "chartSourceNeighborhood": true,
+    "baseFiberLiftIffFixedFirstCoordinate": true,
+    "kernelParametrization": true
+  },
+  "explicitlyNotProved": [
+    "global graph theorem",
+    "smooth-submanifold theorem",
+    "manifold IsSubmersionAt",
+    "scheme-theoretic smoothness",
+    "scheme Jacobian criterion",
+    "finite étale geometry",
+    "smoothness of every X_n",
+    "runtime concrete-geometry admission"
+  ],
+  "routeDecision": {
+    "ambientPoint4IFT": "USED / PASS",
+    "coordinateIsolation": "UNNECESSARY",
+    "logCoordinate": "UNNECESSARY",
+    "genericManifoldSubmersion": "UNNECESSARY"
+  },
+  "ciReceipts": [
+    {
+      "runNumber": 170,
+      "runId": 35414845546,
+      "head": "489b4b32b1d1a9003188a9f403c4bfc26c659b70",
+      "conclusion": "success",
+      "scope": "canonical IFT layer"
+    },
+    {
+      "runNumber": 172,
+      "runId": 35415366113,
+      "head": "d0465fa1b47101675d74d510bd196312d63095ea",
+      "conclusion": "success",
+      "scope": "ambient torus/local baseFiber slice"
+    },
+    {
+      "runNumber": 175,
+      "runId": 35416124656,
+      "head": "41c268b8c3480e405fe21fb471f389f18ec60431",
+      "conclusion": "success",
+      "scope": "kernel parametrization"
+    },
+    {
+      "runNumber": 176,
+      "runId": 35416369875,
+      "head": "9069631bb2a4766a9e8a4c94a9056a51dd1ed1c8",
+      "conclusion": "success",
+      "scope": "explicit chart-source neighborhood and local slice"
+    }
+  ],
+  "decisionMatrix": [
+    [
+      1,
+      "F13 canonical baseline still exact?",
+      "PASS"
+    ],
+    [
+      2,
+      "F13x feasibility evidence reproduced/understood?",
+      "PASS"
+    ],
+    [
+      3,
+      "pinned Lean/mathlib unchanged?",
+      "PASS"
+    ],
+    [
+      4,
+      "laurentWPoint ContDiffAt theorem formalized canonically?",
+      "PASS"
+    ],
+    [
+      5,
+      "HasStrictFDerivAt theorem uses sealed F13 differential?",
+      "PASS"
+    ],
+    [
+      6,
+      "no duplicate derivative representation introduced?",
+      "PASS"
+    ],
+    [
+      7,
+      "F13 surjectivity successfully converted to range = ⊤?",
+      "PASS"
+    ],
+    [
+      8,
+      "pinned HasStrictFDerivAt.implicitFunction instantiated?",
+      "PASS"
+    ],
+    [
+      9,
+      "pinned implicitToOpenPartialHomeomorph instantiated?",
+      "PASS"
+    ],
+    [
+      10,
+      "base point is in chart source?",
+      "PASS"
+    ],
+    [
+      11,
+      "(Wκ(z),0) is in chart target?",
+      "PASS"
+    ],
+    [
+      12,
+      "chart first coordinate formally equals Wκ?",
+      "PASS"
+    ],
+    [
+      13,
+      "local inverse/implicit-function equation formalized?",
+      "PASS"
+    ],
+    [
+      14,
+      "baseFiber representation bridge is sufficient?",
+      "PASS"
+    ],
+    [
+      15,
+      "local level-set identification proved?",
+      "PASS"
+    ],
+    [
+      16,
+      "local statement is correctly neighborhood-scoped?",
+      "PASS"
+    ],
+    [
+      17,
+      "coordinate-isolation fallback still unnecessary?",
+      "PASS"
+    ],
+    [
+      18,
+      "log-coordinate route still unnecessary?",
+      "PASS"
+    ],
+    [
+      19,
+      "generic manifold submersion route still unnecessary?",
+      "PASS"
+    ],
+    [
+      20,
+      "any new unsupported smoothness claim introduced?",
+      "PASS"
+    ],
+    [
+      21,
+      "any sealed F13 blob changed?",
+      "PASS"
+    ],
+    [
+      22,
+      "any runtime geometry truth flag changed?",
+      "PASS"
+    ],
+    [
+      23,
+      "no axiom/sorry/admit?",
+      "PASS"
+    ],
+    [
+      24,
+      "full lake build passes?",
+      "PASS"
+    ],
+    [
+      25,
+      "new module direct compile passes?",
+      "PASS"
+    ],
+    [
+      26,
+      "sealed-parent blob guard passes?",
+      "PASS"
+    ],
+    [
+      27,
+      "exact-head CI receipt exists?",
+      "PASS"
+    ],
+    [
+      28,
+      "theorem boundary documented?",
+      "PASS"
+    ],
+    [
+      29,
+      "F14 theorem level precisely classified?",
+      "PASS"
+    ],
+    [
+      30,
+      "safe to open next formal thread?",
+      "PASS"
+    ]
+  ],
+  "mergeRecommendation": "RECOMMEND CANONICAL MERGE after documentation-head CI; then verify exact-main CI.",
+  "recommendedNextFormalThread": "Separately scoped local-graph packaging and/or manifold/scheme smoothness bridge, without retroactively enlarging F14."
+}
