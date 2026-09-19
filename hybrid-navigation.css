@@ -1,0 +1,33 @@
+.hybrid-navigation {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+}
+.hybrid-navigation__toolbar,
+.hybrid-navigation__stage-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 0.75rem 0;
+}
+.hybrid-navigation__state {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.75rem 0;
+}
+.hybrid-navigation__state p,
+.hybrid-navigation__selection {
+  margin: 0;
+}
+[data-hybrid-panel][data-hybrid-active="true"] {
+  outline: 2px solid currentColor;
+  outline-offset: 0.3rem;
+}
+.geometric-pullback-mark[data-hybrid-selected="true"] {
+  stroke: currentColor;
+  stroke-width: 2.5;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-hybrid-panel] { scroll-behavior: auto; }
+}
