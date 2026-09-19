@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "thread": 29,
+  "milestone": "Ancestor-Scoped Pullback Runtime",
+  "status": "implementation_candidate",
+  "canonicalParent": {
+    "commit": "b186705ab0bd6090c9c6ab043b69cf91b692a34b",
+    "tree": "1b40f39b162eed7d0a01d5a23bd2300e941f7fa8",
+    "soleParent": "464885c92d25d5a474dfebd03ca89a7cf16bf8cc"
+  },
+  "authority": {
+    "thread28Status": "canonical_sealed",
+    "thread28Decision": "ADMITTED",
+    "pullbackEngine": "Thread 25 finite_sampled_geometric_pullback_v1",
+    "newRootEnumeratorIntroduced": false,
+    "newProjectionIntroduced": false,
+    "newMathematicalTheoremRequired": false
+  },
+  "runtime": {
+    "runtimeId": "ancestor_scoped_pullback_runtime_v1",
+    "runtimeVersion": "v0.01",
+    "selectionInput": "canonical Thread 24 sample ids only",
+    "selectionOrder": "canonical source order",
+    "scopeIdMeaning": "runtime/presentation scope provenance only",
+    "globalThread25StateMutated": false,
+    "structuralDepthConsumed": false
+  },
+  "preflight": {
+    "integerArithmetic": "BigInt",
+    "formula": "|A| * (D^4)^requestedScopedDepth",
+    "requiredBeforeGeneration": true,
+    "overCapBehavior": "reject_before_invoking_Thread25_generation",
+    "partialLevelAllowed": false,
+    "partialParentFiberAllowed": false,
+    "randomFallbackAllowed": false,
+    "deterministicTruncationAllowed": false
+  },
+  "canonicalBehavior": {
+    "D": 2,
+    "maxGeneratedPoints": 10000,
+    "oneAncestor": {
+      "depth0": 1,
+      "depth1": 16,
+      "depth2": 256,
+      "depth3": 4096,
+      "depth4": "65536_rejected"
+    },
+    "twoAncestorsDepth3": 8192,
+    "threeAncestorsDepth3": "12288_rejected"
+  },
+  "stateSeparation": {
+    "requestedScopedDepthSeparate": true,
+    "materializedScopedDepthsSeparate": true,
+    "globalGeometricRenderedDepthMutated": false,
+    "structuralRequestedDepthConsumed": false,
+    "automaticDepthSynchronization": false
+  },
+  "truthFlags": {
+    "scopeCompleteFiniteGeometry": true,
+    "completeGlobalHypersurfaceRendered": false,
+    "sheetsMaterialized": false,
+    "coveringStructureClaimed": false,
+    "geometricZoomApplied": false,
+    "connectedComponentClaimed": false,
+    "analyticBranchClaimed": false
+  },
+  "thread30AuthorizedOnlyAfterCanonicalSeal": true,
+  "protectedBlobs": {
+    "geometric-pullback-engine.js": "7e7c634b1feedc045fe7a82d477621cb293a955d",
+    "geometric-pullback-runtime.js": "d9834da759b2485810cb73a9148d2bd87607751f",
+    "geometric-pullback-fibers.js": "1285975c40c817793d8b29659373b3213bf2947f",
+    "base-geometric-sampler.js": "da201c6d304c77001935763f53e26060a6599b01",
+    "data/geometric-pullback-config.v1.json": "e99d6eb2addafbb0423adaf3c9f54cd09e5fb072",
+    "data/system.v2.json": "0d598560134e45bd3ed2edec62120fa45649883c",
+    "docs/ancestor_scoped_pullback_contract_matrix_v0_01.json": "40bf77c3a019816215ff81ecbdf6b679ab3896d9",
+    "verify_ancestor_scoped_pullback_contract_v0_01.js": "21f5133a28441f5b7ea0c449b6b25c3b36bf6bc5",
+    "hybrid-navigation-semantics.js": "4d31cf1d78aec046ed15916e08a185a0b401c650",
+    "hybrid-navigation-runtime.js": "e97fc72cbf38f45bda1b017e2a517258016c1c7d",
+    "docs/PLAN_self_similar_cy_visualizer_v0_03.md": "1796ac612d48523ef9751e859ef1bdb860faad20"
+  }
+}

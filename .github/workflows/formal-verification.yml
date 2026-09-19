@@ -220,6 +220,9 @@ jobs:
       - name: Verify Thread 28 ancestor-scoped pullback contract
         run: node verify_ancestor_scoped_pullback_contract_v0_01.js
 
+      - name: Verify Thread 29 ancestor-scoped pullback runtime
+        run: node verify_ancestor_scoped_pullback_runtime_v0_01.js
+
       - name: Check runtime source syntax
         run: |
           set -euo pipefail
@@ -280,6 +283,8 @@ jobs:
           node --check verify_hybrid_navigation_browser_v0_01.js
           node --check verify_current_state_provenance_sync_v0_01.js
           node --check verify_ancestor_scoped_pullback_contract_v0_01.js
+          node --check ancestor-scoped-pullback-runtime.js
+          node --check verify_ancestor_scoped_pullback_runtime_v0_01.js
           node --check app.js
 
   publication-static-smoke:
