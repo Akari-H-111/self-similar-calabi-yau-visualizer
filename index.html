@@ -6,6 +6,7 @@
   <title>Self-Similar Calabi–Yau Visualizer</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="base-geometric-renderer.css">
+  <link rel="stylesheet" href="geometric-pullback-renderer.css">
   <script src="scene-spec.js" defer></script>
   <script src="base-renderer.js" defer></script>
   <script src="one-step-pullback.js" defer></script>
@@ -27,6 +28,12 @@
   <script src="base-geometric-sampler.js" defer></script>
   <script src="base-geometric-renderer.js" defer></script>
   <script src="base-geometric-runtime.js" defer></script>
+  <script src="torus-power-evaluator.js" defer></script>
+  <script src="geometric-pullback-fibers.js" defer></script>
+  <script src="geometric-pullback-engine.js" defer></script>
+  <script src="geometric-pullback-view-semantics.js" defer></script>
+  <script src="geometric-pullback-renderer.js" defer></script>
+  <script src="geometric-pullback-runtime.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -89,6 +96,26 @@
       <div id="base-geometric-visualization" class="base-geometric-visualization" hidden></div>
       <p id="base-geometric-provenance" class="base-geometric-provenance"></p>
       <p class="structural-boundary-caption">Each rendered mark means one validated finite sample <code>z ∈ X_0</code>, displayed at <code>(Re(z1), Im(z1))</code>. A finite sample is not the complete <code>X_0</code>; projection overlap is not a source self-intersection; two quadratic roots are not sheets; viewport fitting is presentation-only and is not D² metric scaling or geometric zoom.</p>
+    </section>
+
+    <section aria-labelledby="geometric-pullback-label" class="geometric-pullback-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Thread 25 · admitted finite pullback geometry</p>
+          <h2 id="geometric-pullback-label">Finite sampled pullback of X_1 induced from admitted X_0 samples</h2>
+        </div>
+        <p class="section-note">This panel materializes complete coordinate-power point fibers over the admitted finite Thread 24 seed only. It does not render complete X_n, sheets, covering charts, branch loci, or geometric zoom. Structural navigation remains independent.</p>
+      </div>
+      <div class="geometric-pullback-toolbar">
+        <label for="geometric-pullback-depth">Geometric depth</label>
+        <select id="geometric-pullback-depth" disabled aria-describedby="geometric-pullback-boundary">
+          <option>Loading…</option>
+        </select>
+      </div>
+      <p id="geometric-pullback-status" class="geometric-pullback-status" data-state="loading">Loading deterministic finite pullback geometry…</p>
+      <div id="geometric-pullback-visualization" class="geometric-pullback-visualization" hidden></div>
+      <p id="geometric-pullback-provenance" class="geometric-pullback-provenance"></p>
+      <p id="geometric-pullback-boundary" class="structural-boundary-caption">Each positive-depth mark is one finite deterministic geometric preimage point with an ancestor X_0 sample id, declared parent id, and root multi-index. Root tuples are enumeration indices, not global sheet identities. Projected overlap is not source self-intersection or covering multiplicity. The production hard cap rejects a complete next level before generation rather than rendering partial fibers.</p>
     </section>
 
     <section aria-labelledby="current-state-title" class="primary-section">
