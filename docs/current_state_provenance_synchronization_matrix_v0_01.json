@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "thread": "27R",
   "milestone": "Current-State Geometry / Structural Provenance Synchronization",
-  "status": "implementation_candidate",
+  "status": "canonical_sealed",
   "canonicalParent": {
     "commit": "2c33f20a508540c3f31ba2d058f3181cc173ef2e",
     "tree": "59b45cc5659fcc7596aedaeb62af7206d6592012",

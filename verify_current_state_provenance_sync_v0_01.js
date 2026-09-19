@@ -33,7 +33,7 @@ const workflow = read(".github/workflows/formal-verification.yml");
 const human = read("docs/CURRENT_STATE_PROVENANCE_SYNCHRONIZATION_v0_01.md");
 
 assert.equal(matrix.thread, "27R");
-assert.equal(matrix.status, "implementation_candidate");
+assert.equal(matrix.status, "canonical_sealed");
 assert.equal(matrix.canonicalParent.commit, "2c33f20a508540c3f31ba2d058f3181cc173ef2e");
 assert.equal(matrix.canonicalParent.tree, "59b45cc5659fcc7596aedaeb62af7206d6592012");
 
