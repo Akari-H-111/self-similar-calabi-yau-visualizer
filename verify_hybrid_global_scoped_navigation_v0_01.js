@@ -231,6 +231,8 @@ assert.equal(matrix.correspondence.unsupportedCanonicalStageIndexClass,HybridSco
 assert.equal(matrix.generationBoundary.contextSwitchTriggersScopedGeneration,false);
 assert.equal(matrix.generationBoundary.thread31CallsThread29Generation,false);
 assert.equal(matrix.generationBoundary.thread31CallsThread25Generation,false);
+assert.equal(matrix.presentationAdapter.admittedAncestorSelectorMayChange,true);
+assert.equal(matrix.presentationAdapter.generationPathMayNotChange,true);
 assert.equal(matrix.truthFlags.sheetsMaterialized,false);
 assert.equal(matrix.truthFlags.coveringStructureClaimed,false);
 assert.equal(matrix.truthFlags.geometricZoomApplied,false);
@@ -242,6 +244,6 @@ for(const [relativePath,expected] of Object.entries(matrix.protectedBlobs)){
 
 console.log("Thread 31 hybrid global/scoped bridge verifier: PASS");
 console.log("contexts: structural / global-geometric / scoped-geometric");
-console.log("Thread 26 and Thread 30 authorities remain byte-identical");
+console.log("Thread 26 and Thread 30 generation authorities remain unchanged");
 console.log("structural, global-geometric, and scoped-geometric depths remain independent");
 console.log("context switching does not trigger scoped generation");

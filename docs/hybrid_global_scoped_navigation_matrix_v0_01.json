@@ -16,6 +16,11 @@
     "thread26SemanticsModified": false,
     "thread30GenerationSemanticsModified": false
   },
+  "presentationAdapter": {
+    "admittedAncestorSelectorMayChange": true,
+    "generationPathMayNotChange": true,
+    "reason": "Search and filtering are presentation controls; admitted-scope validation, explicit render, and zero-partial over-cap refusal remain required."
+  },
   "depthIndependence": {
     "structuralRequestedDepthSeparate": true,
     "structuralMaterializedDepthSeparate": true,
@@ -56,7 +61,6 @@
     "hybrid-navigation-semantics.js": "4d31cf1d78aec046ed15916e08a185a0b401c650",
     "hybrid-navigation-runtime.js": "e97fc72cbf38f45bda1b017e2a517258016c1c7d",
     "data/hybrid-navigation.v1.json": "bd594dc507b91a23fc0d402e4c9f36b1c627b9c8",
-    "ancestor-scoped-pullback-visualization-runtime.js": "90d9b563b1735f8227441849374aa0e487525d4d",
     "docs/ancestor_scoped_pullback_geometric_visualization_matrix_v0_01.json": "ac8b0e1ec481ecd5f0c72d5faa2f4d3be6e875d9",
     "ancestor-scoped-pullback-runtime.js": "b95931eb6c4609d1111a9557b9c2fd90b969a713",
     "geometric-pullback-runtime.js": "d9834da759b2485810cb73a9148d2bd87607751f",

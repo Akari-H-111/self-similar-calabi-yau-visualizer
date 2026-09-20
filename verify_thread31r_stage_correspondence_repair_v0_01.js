@@ -130,8 +130,10 @@ assert.equal(repair.preserved.contextSwitchTriggersScopedGeneration,false);
 assert.equal(repair.preserved.sheetsMaterialized,false);
 assert.equal(repair.preserved.coveringStructureClaimed,false);
 assert.equal(repair.preserved.geometricZoomApplied,false);
+assert.equal(repair.presentationAdapter.admittedAncestorSelectorMayChange,true);
+assert.equal(repair.presentationAdapter.generationPathMayNotChange,true);
 
 console.log("Thread 31R stage correspondence classification repair verifier: PASS");
 console.log("selected structural stage 0 with global [0,1] -> Class A");
 console.log("selected structural stage 2 with global [0,1] -> Class D");
-console.log("Thread 26 / Thread 30 / pullback / projection authorities remain protected");
+console.log("Thread 26 / Thread 30 generation, pullback, and projection authorities remain protected");

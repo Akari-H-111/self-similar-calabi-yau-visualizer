@@ -65,6 +65,8 @@ async function snapshot(page){
     await page.waitForFunction(()=>document.querySelector("#system-status")?.dataset.state==="ready",null,{timeout:20000});
     await page.waitForFunction(()=>document.querySelector("#base-geometric-status")?.dataset.state==="ready",null,{timeout:20000});
     await page.waitForFunction(()=>document.querySelector("#geometric-pullback-status")?.dataset.state==="ready",null,{timeout:20000});
+    await page.locator('[data-ui-mode="expert"]').click();
+    await page.locator("#expert-workbench").waitFor({state:"visible"});
 
     assert.equal(await page.locator("#structural-visualization").isVisible(),true);
     assert.equal(await page.locator("#base-geometric-visualization").isVisible(),true);

@@ -1,0 +1,27 @@
+/* Lazy Three.js presentation camera; it never denotes geometric rendering. */
+.presentation-camera { max-width: 900px; margin: 0 0 3rem; padding: clamp(1rem, 4vw, 2rem); border: 1px solid #cddaf1; border-radius: 1.5rem; background: #fff; box-shadow: 0 18px 50px rgb(32 58 116 / 10%); }
+.presentation-camera__heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+.presentation-camera__heading h2 { margin: 0; }
+.presentation-camera__boundary { max-width: 31rem; margin: 0; color: #40506d; font-size: 0.9rem; }
+.presentation-camera__stage { display: grid; height: clamp(220px, 38vw, 390px); margin: 1rem 0; overflow: hidden; border-radius: 1rem; background: #f4f8ff; touch-action: none; }
+.presentation-camera__stage::before { content: "3D presentation loads when you enter this camera or choose Start 3D presentation."; align-self: center; justify-self: center; max-width: 28rem; padding: 1rem; color: #40506d; text-align: center; }
+.presentation-camera[data-state="loading"] .presentation-camera__stage::before { content: "Loading the presentation camera…"; }
+.presentation-camera[data-state="ready"] .presentation-camera__stage::before { content: none; }
+.presentation-camera canvas { display: none; width: 100%; height: 100%; outline: none; }
+.presentation-camera[data-state="ready"] canvas { z-index: 1; display: block; }
+.presentation-camera__controls { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.presentation-camera__controls button { min-height: 2.65rem; border: 0; border-radius: 999px; padding: 0.65rem 1rem; background: #edf1f8; color: #172033; font: inherit; font-weight: 800; cursor: pointer; }
+.presentation-camera__controls button:first-child { background: #1f6fff; color: #fff; }
+.presentation-camera__controls button:focus-visible { outline: 0.2rem solid #ff8a2a; outline-offset: 0.18rem; }
+.presentation-camera__status, .presentation-camera__help { margin: 0.8rem 0 0; color: #40506d; font-size: 0.9rem; }
+.presentation-camera__help { margin-top: 0.35rem; }
+.presentation-camera[data-mode="simple"] .presentation-camera__expert { display: none; }
+.presentation-camera[data-mode="expert"] .presentation-camera__simple-help { display: none; }
+@media (prefers-reduced-motion: reduce) { .presentation-camera * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+@media (max-width: 760px) {
+  .presentation-camera { padding: 1rem; border-radius: 1.15rem; }
+  .presentation-camera__heading { display: block; }
+  .presentation-camera__boundary { margin-top: 0.55rem; }
+  .presentation-camera__stage { height: 250px; }
+  .presentation-camera__controls button { flex: 1 1 100%; }
+}

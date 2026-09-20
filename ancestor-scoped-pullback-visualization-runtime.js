@@ -5,6 +5,8 @@
   const visualizationElement=document.querySelector("#ancestor-scoped-pullback-visualization");
   const provenanceElement=document.querySelector("#ancestor-scoped-pullback-provenance");
   const ancestorSelect=document.querySelector("#ancestor-scoped-pullback-ancestor");
+  const ancestorSearch=document.querySelector("#ancestor-scoped-pullback-ancestor-search");
+  const ancestorResults=document.querySelector("#ancestor-scoped-pullback-results");
   const depthSelect=document.querySelector("#ancestor-scoped-pullback-depth");
   const renderButton=document.querySelector("#ancestor-scoped-pullback-render");
   const selectedOutput=document.querySelector("#ancestor-scoped-pullback-selected");
@@ -74,6 +76,36 @@
     selectedOutput.textContent=ancestorSelect.value||"—";
   }
 
+  function renderAncestorMatches(state) {
+    const query=ancestorSearch.value.trim().toLowerCase();
+    const matches=state.sampleModel.samples.filter((sample)=>sample.sampleId.toLowerCase().includes(query)).slice(0,24);
+    ancestorResults.replaceChildren();
+    for(const sample of matches) {
+      const candidate=document.createElement("button");
+      candidate.type="button";
+      candidate.setAttribute("role","option");
+      candidate.dataset.ancestorId=sample.sampleId;
+      candidate.setAttribute("aria-selected",String(sample.sampleId===ancestorSelect.value));
+      candidate.textContent=sample.sampleId;
+      ancestorResults.appendChild(candidate);
+    }
+    ancestorResults.hidden=matches.length===0;
+    ancestorSearch.setAttribute("aria-expanded",String(matches.length>0));
+    ancestorResults.dataset.matchCount=String(matches.length);
+    ancestorResults.dataset.totalAdmittedCount=String(state.sampleModel.sampleCount);
+  }
+
+  function chooseAncestor(state,ancestorId) {
+    if(!state.admittedAncestorIds.has(ancestorId)) {
+      throw new Error("Selected ancestor is not in the admitted X_0 scope.");
+    }
+    ancestorSelect.value=ancestorId;
+    ancestorSearch.value=ancestorId;
+    updateSelectedOutput();
+    renderAncestorMatches(state);
+    ancestorSelect.dispatchEvent(new Event("change"));
+  }
+
   function setFailure(message) {
     resetVisualizationDatasets(null,false,null);
     visualizationElement.dataset.state="error";
@@ -81,12 +113,16 @@
     statusElement.textContent="Ancestor-scoped geometry unavailable: "+message;
     provenanceElement.textContent="No substitute or partial scoped geometry was generated.";
     ancestorSelect.disabled=true;
+    ancestorSearch.disabled=true;
     depthSelect.disabled=true;
     renderButton.disabled=true;
   }
 
   function renderSelectedScope(state) {
     const selectedAncestorId=ancestorSelect.value;
+    if(!state.admittedAncestorIds.has(selectedAncestorId)) {
+      throw new Error("Selected ancestor is not in the admitted X_0 scope.");
+    }
     const requestedScopedDepth=Number(depthSelect.value);
     updateSelectedOutput();
     const D=state.scene.mathematics.parameters.D;
@@ -179,13 +215,6 @@
       const sampleModel=globalObject.BaseGeometricSampler.generateSamples(scene,baseConfig);
       if(sampleModel.sampleCount===0) throw new Error("Canonical Thread 24 sample model is empty.");
 
-      ancestorSelect.innerHTML="";
-      for(const sample of sampleModel.samples) {
-        const option=document.createElement("option");
-        option.value=sample.sampleId;
-        option.textContent=sample.sampleId;
-        ancestorSelect.appendChild(option);
-      }
       depthSelect.innerHTML="";
       for(let depth=0;depth<=4;depth+=1) {
         const option=document.createElement("option");
@@ -194,13 +223,15 @@
         depthSelect.appendChild(option);
       }
       ancestorSelect.value=sampleModel.samples[0].sampleId;
+      ancestorSearch.value=ancestorSelect.value;
       depthSelect.value="3";
       updateSelectedOutput();
 
-      const state={scene,baseView,baseConfig,pullbackView,pullbackConfig,sampleModel,scopedState:null,projected:null,lastPreflight:null,selectedAncestorId:null,requestedScopedDepth:null};
+      const state={scene,baseView,baseConfig,pullbackView,pullbackConfig,sampleModel,admittedAncestorIds:new Set(sampleModel.samples.map((sample)=>sample.sampleId)),scopedState:null,projected:null,lastPreflight:null,selectedAncestorId:null,requestedScopedDepth:null};
       resetVisualizationDatasets(null,false,null);
       visualizationElement.hidden=true;
       ancestorSelect.disabled=false;
+      ancestorSearch.disabled=false;
       depthSelect.disabled=false;
       renderButton.disabled=false;
       statusElement.dataset.state="ready";
@@ -209,8 +240,27 @@
       provenanceElement.textContent=
         "No ancestor-scoped recursive geometry has been generated yet. The global Thread 24/25 panels above remain independent.";
       inspectMark(null);
+      renderAncestorMatches(state);
 
       ancestorSelect.addEventListener("change",updateSelectedOutput);
+      ancestorSearch.addEventListener("input",()=>renderAncestorMatches(state));
+      ancestorSearch.addEventListener("focus",()=>renderAncestorMatches(state));
+      ancestorSearch.addEventListener("keydown",(event)=>{
+        if(event.key==="Escape") {
+          ancestorResults.hidden=true;
+          ancestorSearch.setAttribute("aria-expanded","false");
+        } else if(event.key==="ArrowDown") {
+          const first=ancestorResults.querySelector("button");
+          if(first) { event.preventDefault(); first.focus(); }
+        } else if(event.key==="Enter" && state.admittedAncestorIds.has(ancestorSearch.value.trim())) {
+          event.preventDefault();
+          chooseAncestor(state,ancestorSearch.value.trim());
+        }
+      });
+      ancestorResults.addEventListener("click",(event)=>{
+        const candidate=event.target.closest?.("button[data-ancestor-id]");
+        if(candidate&&ancestorResults.contains(candidate)) chooseAncestor(state,candidate.dataset.ancestorId);
+      });
       renderButton.addEventListener("click",()=>{
         try { renderSelectedScope(state); }
         catch(error) {

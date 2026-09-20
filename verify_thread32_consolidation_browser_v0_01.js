@@ -60,25 +60,21 @@ async function checkFirstVisit(page, engine, viewport) {
   await waitForReady(page);
 
   const result = await page.evaluate(() => {
-    const cards = [...document.querySelectorAll(".representation-overview article")].map((card) => {
-      const box = card.getBoundingClientRect();
-      return { top: Math.round(box.top), left: Math.round(box.left), width: Math.round(box.width) };
-    });
-    const hero = document.querySelector(".hero").getBoundingClientRect();
-    const controls = document.querySelector("#hybrid-navigation").getBoundingClientRect();
+    const hero = document.querySelector(".mode-hero").getBoundingClientRect();
+    const controls = document.querySelector("#simple-exploration").getBoundingClientRect();
     return {
       heroHeight: Math.round(hero.height),
       controlsTop: Math.round(controls.top),
-      cards,
-      historicalDetailsOpen: document.querySelector(".historical-context").open,
-      primaryContext: document.querySelector("[data-thread31-context][aria-pressed=true]")?.dataset.thread31Context,
+      simpleVisible: !document.querySelector("#simple-exploration").hidden,
+      expertHidden: document.querySelector("#expert-workbench").hidden,
+      canvasReady: Boolean(document.querySelector("#simple-canvas svg")),
       horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
     };
   });
 
-  assert.equal(result.cards.length, 3, engine + " must expose all three representation summaries.");
-  assert.equal(result.historicalDetailsOpen, false, engine + " must not expand historical provenance by default.");
-  assert.equal(result.primaryContext, "structural", engine + " must begin in structural context.");
+  assert.equal(result.simpleVisible, true, engine + " must begin in simple mode.");
+  assert.equal(result.expertHidden, true, engine + " must keep research controls out of simple mode.");
+  assert.equal(result.canvasReady, true, engine + " must show the simple structural canvas.");
   assert.equal(result.horizontalOverflow, false, engine + " must not introduce page-level horizontal overflow at " + viewport.width + "px.");
   const practicalScanLimit = viewport.width <= 760 ? 1750 : 1000;
   assert.ok(result.controlsTop < practicalScanLimit, engine + " must expose the primary controls within the practical scan range.");
@@ -87,6 +83,16 @@ async function checkFirstVisit(page, engine, viewport) {
 }
 
 async function checkKeyboardAndContexts(page) {
+  const grow = page.locator("#simple-grow");
+  await grow.focus();
+  await page.keyboard.press("Enter");
+  assert.equal(await page.locator("#simple-layer-count").textContent(), "Layer 1");
+  await page.locator("#simple-reset").focus();
+  await page.keyboard.press("Enter");
+  assert.equal(await page.locator("#simple-layer-count").textContent(), "Layer 0");
+  await page.locator('[data-ui-mode="expert"]').focus();
+  await page.keyboard.press("Enter");
+  await page.locator("#expert-workbench").waitFor({ state: "visible" });
   const historySummary = page.locator(".historical-context summary");
   await historySummary.focus();
   await page.keyboard.press("Enter");

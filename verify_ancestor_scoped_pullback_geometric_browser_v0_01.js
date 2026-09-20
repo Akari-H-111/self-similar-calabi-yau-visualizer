@@ -36,6 +36,11 @@ function createStaticServer(){
 }
 function listen(server){return new Promise((resolve,reject)=>{server.once("error",reject);server.listen(0,"127.0.0.1",()=>resolve(server.address()));});}
 function close(server){return new Promise((resolve)=>server.close(()=>resolve()));}
+async function chooseAncestor(page,ancestorId){
+  const search=page.locator("#ancestor-scoped-pullback-ancestor-search");
+  await search.fill(ancestorId);
+  await page.getByRole("option",{name:ancestorId,exact:true}).click();
+}
 
 (async()=>{
   const consoleErrors=[],pageErrors=[];
@@ -52,11 +57,15 @@ function close(server){return new Promise((resolve)=>server.close(()=>resolve())
     assert.ok(response&&response.ok());
     await page.waitForFunction(()=>document.querySelector("#geometric-pullback-status")?.dataset.state==="ready",null,{timeout:30000});
     await page.waitForFunction(()=>document.querySelector("#ancestor-scoped-pullback-status")?.dataset.state==="ready",null,{timeout:30000});
+    await page.locator('[data-ui-mode="expert"]').click();
+    await page.locator("#expert-workbench").waitFor({state:"visible"});
 
     const scoped="#ancestor-scoped-pullback-visualization";
     assert.equal(await page.locator(scoped+" .geometric-pullback-mark").count(),0);
     assert.equal(await page.locator(scoped+" svg").count(),0);
-    assert.equal(await page.locator("#ancestor-scoped-pullback-ancestor option").count(),512);
+    assert.equal(await page.locator("#ancestor-scoped-pullback-ancestor option").count(),0);
+    assert.equal(await page.locator("#ancestor-scoped-pullback-results").getAttribute("data-total-admitted-count"),"512");
+    assert.ok(await page.locator("#ancestor-scoped-pullback-results button").count()<=24);
     assert.equal(await page.locator("#ancestor-scoped-pullback-depth option").count(),5);
 
     const globalBefore=await page.evaluate(()=>({
@@ -67,12 +76,14 @@ function close(server){return new Promise((resolve)=>server.close(()=>resolve())
     assert.deepEqual(globalBefore,{depth:1,globalDepth1:8192,structuralRequestedDepthConsumed:false});
     assert.equal(await page.locator("#geometric-pullback-visualization .geometric-pullback-mark").count(),8192);
 
-    const ancestor0=await page.locator("#ancestor-scoped-pullback-ancestor option").nth(0).getAttribute("value");
-    const ancestor1=await page.locator("#ancestor-scoped-pullback-ancestor option").nth(1).getAttribute("value");
+    const [ancestor0,ancestor1]=await page.evaluate(()=>window.Thread30AncestorScopedVisualizationState.sampleModel.samples.slice(0,2).map((sample)=>sample.sampleId));
     assert.ok(ancestor0&&ancestor1&&ancestor0!==ancestor1);
+    await page.locator("#ancestor-scoped-pullback-ancestor-search").fill("not-an-admitted-ancestor");
+    assert.equal(await page.locator("#ancestor-scoped-pullback-results button").count(),0);
+    assert.equal(await page.locator("#ancestor-scoped-pullback-ancestor").inputValue(),ancestor0,"filtering cannot replace the admitted selection");
 
     await page.selectOption("#ancestor-scoped-pullback-depth","0");
-    await page.selectOption("#ancestor-scoped-pullback-ancestor",ancestor0);
+    await chooseAncestor(page,ancestor0);
     assert.equal(await page.locator(scoped+" .geometric-pullback-mark").count(),0,"selector changes alone must not generate scoped geometry");
 
     const counts={};
@@ -114,7 +125,7 @@ function close(server){return new Promise((resolve)=>server.close(()=>resolve())
     assert.equal(await page.locator('[data-scoped-inspector-field="root"]').textContent(),firstAttrs.root);
     assert.equal(await page.locator('[data-scoped-inspector-field="overlap"]').textContent(),firstAttrs.overlap);
 
-    await page.selectOption("#ancestor-scoped-pullback-ancestor",ancestor1);
+    await chooseAncestor(page,ancestor1);
     await page.selectOption("#ancestor-scoped-pullback-depth","1");
     assert.equal(await page.locator(scoped+" .geometric-pullback-mark").count(),4096,"changing controls must preserve the last explicit render until the next render action");
     assert.equal(await page.locator(scoped).getAttribute("data-selected-ancestor-id"),ancestor0);
@@ -126,7 +137,7 @@ function close(server){return new Promise((resolve)=>server.close(()=>resolve())
     );
     assert.equal(await page.locator(scoped+" .geometric-pullback-mark").count(),16);
 
-    await page.selectOption("#ancestor-scoped-pullback-ancestor",ancestor0);
+    await chooseAncestor(page,ancestor0);
     await page.selectOption("#ancestor-scoped-pullback-depth","4");
     await page.click("#ancestor-scoped-pullback-render");
     await page.waitForFunction(()=>document.querySelector("#ancestor-scoped-pullback-visualization")?.dataset.state==="over-cap",null,{timeout:30000});

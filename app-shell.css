@@ -1,0 +1,55 @@
+/* App shell hierarchy; research controls remain available in Expert mode. */
+@media (prefers-color-scheme: light) {
+  body { background: #f7f9ff; color: #172033; }
+}
+
+.mode-hero { max-width: 900px; margin-bottom: 1.25rem; }
+.mode-bar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 2rem;
+  padding: 0.35rem;
+  border: 1px solid #d8dfef;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgb(32 58 116 / 8%);
+}
+.mode-bar__label { padding: 0 0.55rem; font-size: 0.85rem; font-weight: 750; }
+.mode-bar button {
+  min-height: 2.65rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.mode-bar button[aria-pressed="true"] { background: #1f6fff; color: #fff; }
+.mode-bar button:focus-visible { outline: 0.2rem solid #ff8a2a; outline-offset: 0.18rem; }
+#expert-workbench > .hero { padding-top: 1rem; }
+.representation-advanced,
+.reference-panel {
+  margin-top: 1rem;
+  border: 1px solid color-mix(in srgb, CanvasText 22%, transparent);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, Canvas 97%, CanvasText 3%);
+}
+.representation-advanced > summary,
+.reference-panel > summary {
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  font-weight: 750;
+}
+.representation-advanced > :not(summary),
+.reference-panel > :not(summary) { margin-inline: 1rem; }
+.reference-panel > section { margin-bottom: 1rem; }
+
+@media (max-width: 760px) {
+  .mode-bar { border-radius: 1rem; }
+  .mode-bar__label { width: 100%; padding: 0.25rem 0.55rem; }
+  .mode-bar button { flex: 1 1 9rem; }
+}

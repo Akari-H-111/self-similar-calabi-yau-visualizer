@@ -15,6 +15,19 @@ const arithmeticOverlayControlsElement = document.querySelector("#arithmetic-ove
 const structuralVisualizationElement = document.querySelector("#structural-visualization");
 const arithmeticOverlayElement = document.querySelector("#arithmetic-overlays");
 const expositionElement = document.querySelector("#exposition-layer");
+const expertWorkbenchElement = document.querySelector("#expert-workbench");
+const simpleExplorationElement = document.querySelector("#simple-exploration");
+const simpleCanvasElement = document.querySelector("#simple-canvas");
+const simpleGrowElement = document.querySelector("#simple-grow");
+const simpleResetElement = document.querySelector("#simple-reset");
+const simpleLayerCountElement = document.querySelector("#simple-layer-count");
+const simpleFeedbackElement = document.querySelector("#simple-feedback");
+const modeControls = Array.from(document.querySelectorAll("[data-ui-mode]"));
+const presentationCameraElement = document.querySelector("#structural-3d-presentation");
+const presentationCameraStatusElement = document.querySelector("[data-presentation-camera-status]");
+
+const SIMPLE_MAX_DEPTH = 4;
+const UI_MODE_STORAGE_KEY = "self-similar-cy-ui-mode";
 
 const initialArithmeticOverlayRequest = Object.freeze([
   ArithmeticOverlays.OVERLAY_IDS.COORDINATE_CHANNELS,
@@ -44,6 +57,83 @@ let infiniteNavigationRenderState = null;
 let arithmeticOverlayPresentationState = initialArithmeticOverlayRequest;
 const activeCameraPointers = new Map();
 let cameraGesture = null;
+let uiMode = "simple";
+let presentationCameraLoadPromise = null;
+
+function loadPresentationCamera() {
+  if (!presentationCameraElement) return Promise.resolve(null);
+  if (window.Structural3DPresentation?.instance) return Promise.resolve(window.Structural3DPresentation.instance);
+  if (presentationCameraLoadPromise) return presentationCameraLoadPromise;
+  presentationCameraElement.dataset.state = "loading";
+  presentationCameraStatusElement.textContent = "Loading the presentation-only 3D camera…";
+  presentationCameraLoadPromise = import("./structural-3d-presentation.js")
+    .then(({ initializeStructural3DPresentation }) => initializeStructural3DPresentation(presentationCameraElement))
+    .catch((error) => {
+      presentationCameraElement.dataset.state = "error";
+      presentationCameraStatusElement.textContent = "The optional 3D presentation camera could not load. Structural and geometric controls remain available.";
+      console.error("Failed to load the optional presentation camera:", error);
+      throw error;
+    });
+  return presentationCameraLoadPromise;
+}
+
+function observePresentationCameraEntry() {
+  if (!presentationCameraElement || !("IntersectionObserver" in window)) return;
+  const observer = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.35)) return;
+    observer.disconnect();
+    loadPresentationCamera().catch(() => {});
+  }, { threshold: [0.35] });
+  observer.observe(presentationCameraElement);
+}
+
+function readUiModePreference() {
+  try {
+    return localStorage.getItem(UI_MODE_STORAGE_KEY) === "expert" ? "expert" : "simple";
+  } catch (_) {
+    return "simple";
+  }
+}
+
+function setUiMode(mode, { persist = true } = {}) {
+  uiMode = mode === "expert" ? "expert" : "simple";
+  simpleExplorationElement.hidden = uiMode !== "simple";
+  expertWorkbenchElement.hidden = uiMode !== "expert";
+  for (const control of modeControls) {
+    control.setAttribute("aria-pressed", String(control.dataset.uiMode === uiMode));
+  }
+  if (persist) {
+    try { localStorage.setItem(UI_MODE_STORAGE_KEY, uiMode); } catch (_) { /* Preference is optional. */ }
+  }
+  window.dispatchEvent(new CustomEvent("ui-presentation-mode", { detail: uiMode }));
+}
+
+function syncSimpleCanvas() {
+  if (!interactionModel) return;
+  const source = getStructuralSurface();
+  simpleCanvasElement.replaceChildren();
+  if (source) {
+    const preview = source.cloneNode(true);
+    preview.setAttribute("aria-hidden", "true");
+    simpleCanvasElement.append(preview);
+  }
+  const depth = interactionModel.presentation.visibleDepth;
+  simpleLayerCountElement.value = `Layer ${String(depth)}`;
+  simpleLayerCountElement.textContent = `Layer ${String(depth)}`;
+  simpleGrowElement.disabled = depth >= SIMPLE_MAX_DEPTH;
+  simpleFeedbackElement.textContent = depth >= SIMPLE_MAX_DEPTH
+    ? "This little experiment is as big as it gets. Start over, or use Expert mode for the precise controls."
+    : depth === 0
+      ? "Ready to grow layer 1."
+      : `You made layer ${String(depth)}. What might the next layer look like?`;
+}
+
+function resetSimpleExploration() {
+  if (!canonicalScene || !baseModel || !pullbackModel) return;
+  interactionModel = InteractivePullbackTower.createInteractivePullbackTowerModel(canonicalScene, baseModel, pullbackModel);
+  structuralCameraModel = null;
+  renderInteractionState(0);
+}
 
 function displayScene(scene) {
   const parameters = scene.mathematics.parameters;
@@ -314,6 +404,9 @@ function renderInteractionState(anchorDepth = undefined) {
     structuralPresentationOptions
   );
   StructuralVisualization.renderStructuralVisualization(structuralVisualizationModel, structuralVisualizationElement);
+  // Read-only handoff to the 3D presentation adapter. It carries no geometric runtime state.
+  window.__structuralPresentationModel = structuralVisualizationModel;
+  window.dispatchEvent(new CustomEvent("structural-presentation-model", { detail: structuralVisualizationModel }));
   reconcileStructuralCamera(StructuralVisualization.createStructuralLayoutDescriptor(structuralVisualizationModel));
   InfiniteNavigationRenderer.applyRendererStateToTarget(infiniteNavigationRenderState, structuralVisualizationElement);
 
@@ -322,6 +415,7 @@ function renderInteractionState(anchorDepth = undefined) {
     structuralVisualizationElement
   );
   renderArithmeticOverlayPresentation(scene, recursiveModel, zoomModel, organizationModel);
+  syncSimpleCanvas();
 
   statusElement.dataset.state = "ready";
   statusElement.textContent = InfiniteNavigationRenderer.createInteractionAnnouncement(
@@ -650,6 +744,23 @@ async function loadSystemConfiguration() {
 }
 
 interactionElement.addEventListener("click", handleInteractionClick);
+presentationCameraElement?.addEventListener("click", (event) => {
+  const action = event.target.closest?.("[data-presentation-camera-action]")?.dataset.presentationCameraAction;
+  if (action === "activate") loadPresentationCamera().catch(() => {});
+});
+for (const control of modeControls) {
+  control.addEventListener("click", () => setUiMode(control.dataset.uiMode));
+}
+simpleGrowElement.addEventListener("click", () => {
+  if (!interactionModel || interactionModel.presentation.visibleDepth >= SIMPLE_MAX_DEPTH) return;
+  try {
+    applyInteraction("expand-or-reveal");
+  } catch (error) {
+    console.error("Simple exploration transition rejected:", error);
+    simpleFeedbackElement.textContent = `That layer could not be made: ${error.message}`;
+  }
+});
+simpleResetElement.addEventListener("click", resetSimpleExploration);
 structuralCameraControlsElement.addEventListener("click", handleCameraControlClick);
 arithmeticOverlayControlsElement.addEventListener("change", handleArithmeticOverlayToggle);
 structuralVisualizationElement.addEventListener("wheel", handleStructuralCameraWheel, { passive: false });
@@ -657,4 +768,6 @@ structuralVisualizationElement.addEventListener("pointerdown", handleStructuralC
 structuralVisualizationElement.addEventListener("pointermove", handleStructuralCameraPointerMove);
 structuralVisualizationElement.addEventListener("pointerup", handleStructuralCameraPointerEnd);
 structuralVisualizationElement.addEventListener("pointercancel", handleStructuralCameraPointerEnd);
+setUiMode(readUiModePreference(), { persist: false });
+observePresentationCameraEntry();
 loadSystemConfiguration();

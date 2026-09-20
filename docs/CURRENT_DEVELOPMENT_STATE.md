@@ -4,7 +4,7 @@ This page describes the current `main` application after the Thread 31R repair a
 
 ## Try the visualizer
 
-Open the [public visualizer](https://akari-h-111.github.io/self-similar-calabi-yau-visualizer/). For a local checkout, run `python3 -m http.server 8000` at the repository root and open `http://127.0.0.1:8000/`. The app is static HTML, CSS, and vanilla JavaScript; a local HTTP server is needed for its JSON requests. Use the three-context selector near the top to choose a view.
+Open the [public visualizer](https://akari-h-111.github.io/self-similar-calabi-yau-visualizer/). For a local checkout, run `python3 -m http.server 8000` at the repository root and open `http://127.0.0.1:8000/`. The app is static HTML, CSS, and vanilla JavaScript; a local HTTP server is needed for its JSON requests. The default **Simple mode** is a capped four-layer structural playground: grow a layer, see the model change, and reset. It does not generate ancestor-scoped geometry. **Expert mode** exposes the three-representation selector, camera, overlays, finite geometric views, scoped controls, provenance, and diagnostics; switching representations changes presentation only and preserves independent structural/global/scoped depth state. The optional Three.js presentation camera is dynamically imported only when its region is entered or the visitor starts it; its WebGPURenderer keeps the existing WebGL2 fallback and OrbitControls, and it never invokes a geometric runtime.
 
 ## What each view means
 
@@ -15,6 +15,8 @@ Open the [public visualizer](https://akari-h-111.github.io/self-similar-calabi-y
 | Ancestor-scoped geometry | Select one admitted `X₀` ancestor and explicitly press **Render selected scope** for an under-cap depth; inspect point ancestry. | Complete pullback over that selected finite ancestor scope, not over global `Xₙ`. One seed reaches depth 3 under the cap; depth 4 is refused before partial generation. |
 
 The structural, global geometric, and scoped depth controls are independent. Switching contexts does not request new geometry. Stage correspondence is Class A only when Thread 26 already has a materialized global geometric stage for the selected structural depth; otherwise it is Class D. The wrapper delegates that verdict to Thread 26.
+
+Simple mode is deliberately not a free geometry editor: its diagram is structural, not a point cloud, covering, sheet, or complete global hypersurface. `W_kappa_torus4_v1` remains the fixed admitted evaluator in the separate schema-v2 pipeline. A genuinely adjustable `W`, `κ`, or `λ`, and genuinely free global geometry, remain future work rather than capabilities of this UI.
 
 ## Evidence boundary
 

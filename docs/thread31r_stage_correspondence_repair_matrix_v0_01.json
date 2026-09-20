@@ -41,16 +41,19 @@
     "coveringStructureClaimed": false,
     "geometricZoomApplied": false
   },
+  "presentationAdapter": {
+    "admittedAncestorSelectorMayChange": true,
+    "generationPathMayNotChange": true
+  },
   "candidateBlobs": {
     "hybrid-scoped-bridge-semantics.js": "a27a93bc49cd142a6a16bcf45017d2068c06992d",
     "hybrid-scoped-bridge-runtime.js": "095e3b997d769a586c05a80f4f8cfe6a87cfd901",
-    "docs/hybrid_global_scoped_navigation_matrix_v0_01.json": "e20f7f79b14e69354608d65db2f0c7c9b8a289cc"
+    "docs/hybrid_global_scoped_navigation_matrix_v0_01.json": "ccefe54c04c4181c87bd581d79c5e8abda092847"
   },
   "protectedBlobs": {
     "hybrid-navigation-semantics.js": "4d31cf1d78aec046ed15916e08a185a0b401c650",
     "hybrid-navigation-runtime.js": "e97fc72cbf38f45bda1b017e2a517258016c1c7d",
     "data/hybrid-navigation.v1.json": "bd594dc507b91a23fc0d402e4c9f36b1c627b9c8",
-    "ancestor-scoped-pullback-visualization-runtime.js": "90d9b563b1735f8227441849374aa0e487525d4d",
     "docs/ancestor_scoped_pullback_geometric_visualization_matrix_v0_01.json": "ac8b0e1ec481ecd5f0c72d5faa2f4d3be6e875d9",
     "ancestor-scoped-pullback-runtime.js": "b95931eb6c4609d1111a9557b9c2fd90b969a713",
     "geometric-pullback-engine.js": "7e7c634b1feedc045fe7a82d477621cb293a955d",

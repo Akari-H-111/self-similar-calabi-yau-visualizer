@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="ancestor-scoped-pullback-visualization.css">
   <link rel="stylesheet" href="hybrid-navigation.css">
   <link rel="stylesheet" href="hybrid-scoped-bridge.css">
-  <link rel="stylesheet" href="thread32-presentation.css">
+  <link rel="stylesheet" href="app-shell.css">
+  <link rel="stylesheet" href="exploration-controls.css">
+  <link rel="stylesheet" href="presentation-camera.css">
   <script src="scene-spec.js" defer></script>
   <script src="base-renderer.js" defer></script>
   <script src="one-step-pullback.js" defer></script>
@@ -48,6 +50,61 @@
 </head>
 <body>
   <main class="shell">
+    <header class="mode-hero">
+      <div class="mode-bar" role="group" aria-label="Interface mode">
+        <span class="mode-bar__label">Choose how to explore</span>
+        <button type="button" data-ui-mode="simple" aria-pressed="true">Simple mode</button>
+        <button type="button" data-ui-mode="expert" aria-pressed="false">Expert mode</button>
+      </div>
+      <p class="eyebrow">Pattern playground</p>
+      <h1>Make the pattern grow</h1>
+      <p class="lede">Press the bright button once. Watch a new layer appear. You can always start over.</p>
+    </header>
+
+    <section id="simple-exploration" class="simple-exploration" aria-labelledby="simple-exploration-title">
+      <div class="simple-exploration__heading">
+        <div>
+          <p class="section-kicker">A small, safe experiment</p>
+          <h2 id="simple-exploration-title">Grow the next layer</h2>
+        </div>
+        <output id="simple-layer-count" class="simple-layer-count" for="simple-grow">Layer 0</output>
+      </div>
+      <div id="simple-canvas" class="simple-canvas" role="img" aria-label="A structural pattern diagram. It is a model, not a complete geometric shape.">
+        <p>Getting the pattern ready…</p>
+      </div>
+      <div class="simple-exploration__actions">
+        <button type="button" id="simple-grow" class="simple-grow">Grow the next layer</button>
+        <button type="button" id="simple-reset" class="simple-reset">Start over</button>
+      </div>
+      <p id="simple-feedback" class="simple-feedback">Ready to try layer 1.</p>
+      <details class="simple-exploration__learn-more">
+        <summary>What am I looking at?</summary>
+        <p>This is a small structural pattern model. It helps us follow a rule one layer at a time; it is not a complete global geometric shape. Expert mode keeps the exact samples, scope controls, evidence, and limits separate.</p>
+      </details>
+    </section>
+
+    <section id="structural-3d-presentation" class="presentation-camera" data-state="idle" data-mode="simple" aria-labelledby="presentation-camera-title">
+      <div class="presentation-camera__heading">
+        <div>
+          <p class="section-kicker">Presentation camera</p>
+          <h2 id="presentation-camera-title">Turn the structural tower</h2>
+        </div>
+        <p class="presentation-camera__boundary">3D layout of existing structural descriptors and pullback relations only. It is not geometry, points, sheets, a covering, or a global hypersurface.</p>
+      </div>
+      <div class="presentation-camera__stage">
+        <canvas aria-label="Rotatable three-dimensional presentation of the structural pullback tower. Structural descriptors and relations only."></canvas>
+      </div>
+      <div class="presentation-camera__controls" role="group" aria-label="Presentation camera controls">
+        <button type="button" data-presentation-camera-action="activate">Start 3D presentation</button>
+        <button type="button" class="presentation-camera__expert" data-presentation-camera-action="projection">Toggle projection</button>
+        <button type="button" class="presentation-camera__expert" data-presentation-camera-action="save">Save camera pose</button>
+        <button type="button" class="presentation-camera__expert" data-presentation-camera-action="restore">Restore saved pose</button>
+      </div>
+      <p data-presentation-camera-status class="presentation-camera__status">The presentation-only 3D camera has not loaded yet.</p>
+      <p class="presentation-camera__help"><span class="presentation-camera__simple-help">Drag to rotate; use two fingers to zoom. </span><span class="presentation-camera__expert">Expert: drag to orbit, right-drag or two-finger drag to pan, wheel/pinch to dolly; use the buttons with keyboard. Camera state is presentation-only.</span></p>
+    </section>
+
+    <div id="expert-workbench" hidden>
     <header class="hero">
       <p class="eyebrow">Current main · research visualization</p>
       <h1>Self-Similar Calabi–Yau Visualizer</h1>
@@ -92,48 +149,53 @@
     <section aria-labelledby="hybrid-navigation-title" id="hybrid-navigation" class="hybrid-navigation" data-state="loading" data-representation-mode="structural" data-sheets-materialized="false" data-covering-structure-claimed="false" data-geometric-zoom-applied="false">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">Representation and scope</p>
-          <h2 id="hybrid-navigation-title">Choose a view</h2>
+          <p class="section-kicker">Representation boundary</p>
+          <h2 id="hybrid-navigation-title">Choose one representation</h2>
         </div>
-        <p class="section-note">Switching view changes presentation context only. It never creates geometry, synchronizes depths, or identifies structural descriptors with sampled points.</p>
+        <p class="section-note">Choose the representation first. Switching it changes presentation/navigation only: it never creates geometry, synchronizes depths, or identifies structural descriptors with sampled points.</p>
       </div>
       <div id="hybrid-scoped-bridge" class="hybrid-scoped-bridge" data-state="loading" data-context-mode="structural" data-sheets-materialized="false" data-covering-structure-claimed="false" data-geometric-zoom-applied="false">
-        <p class="section-kicker">Primary context</p>
-        <div class="hybrid-scoped-bridge__toolbar" role="group" aria-label="Global and scoped navigation context">
-          <button type="button" data-thread31-context="structural" aria-pressed="true">Structural context</button>
-          <button type="button" data-thread31-context="global-geometric" aria-pressed="false">Global finite geometry</button>
-          <button type="button" data-thread31-context="scoped-geometric" aria-pressed="false">Ancestor-scoped geometry</button>
-        </div>
-        <div class="hybrid-scoped-bridge__state">
-          <p><strong>Bridge context:</strong> <span data-thread31-field="context">Loading…</span></p>
-          <p><strong>Thread 26 mode:</strong> <span data-thread31-field="thread26-mode">Loading…</span></p>
-          <p><strong>Structural depth:</strong> <span data-thread31-field="structural-depth">Loading…</span></p>
-          <p><strong>Global geometric depth:</strong> <span data-thread31-field="global-depth">Loading…</span></p>
-          <p><strong>Scoped depth:</strong> <span data-thread31-field="scoped-depth">Loading…</span></p>
-          <p><strong>Scoped ancestor:</strong> <span data-thread31-field="ancestor">Loading…</span></p>
-          <p><strong>Correspondence boundary:</strong> <span data-thread31-field="correspondence">Loading…</span></p>
+        <p class="section-kicker">Primary representation selector</p>
+        <div class="hybrid-scoped-bridge__toolbar" role="group" aria-label="Representation selector">
+          <button type="button" data-thread31-context="structural" aria-pressed="true">Structural model</button>
+          <button type="button" data-thread31-context="global-geometric" aria-pressed="false">Global finite sample</button>
+          <button type="button" data-thread31-context="scoped-geometric" aria-pressed="false">Ancestor-scoped pullback</button>
         </div>
         <p class="structural-boundary-caption">Thread 31 context switching is presentation-only. Entering the scoped context does not activate <strong>Render selected scope</strong>, does not invoke pullback generation, and does not synchronize structural, global-geometric, or scoped-geometric depth. Selected ancestry remains deterministic provenance, not a connected-component or sheet identity.</p>
+        <details class="representation-advanced">
+          <summary>Advanced / provenance: independent depths and correspondence</summary>
+          <div class="hybrid-scoped-bridge__state">
+            <p><strong>Bridge context:</strong> <span data-thread31-field="context">Loading…</span></p>
+            <p><strong>Thread 26 mode:</strong> <span data-thread31-field="thread26-mode">Loading…</span></p>
+            <p><strong>Structural depth:</strong> <span data-thread31-field="structural-depth">Loading…</span></p>
+            <p><strong>Global geometric depth:</strong> <span data-thread31-field="global-depth">Loading…</span></p>
+            <p><strong>Scoped depth:</strong> <span data-thread31-field="scoped-depth">Loading…</span></p>
+            <p><strong>Scoped ancestor:</strong> <span data-thread31-field="ancestor">Loading…</span></p>
+            <p><strong>Correspondence boundary:</strong> <span data-thread31-field="correspondence">Loading…</span></p>
+          </div>
+        </details>
       </div>
 
-      <p class="hybrid-navigation__advanced-label">Shared-stage navigation · advanced · Hybrid structural / geometric navigation · global / scoped presentation bridge</p>
-      <div class="hybrid-navigation__toolbar" role="group" aria-label="Representation mode">
-        <button type="button" data-hybrid-mode="structural" aria-pressed="true">Structural</button>
-        <button type="button" data-hybrid-mode="geometric" aria-pressed="false">Global finite geometry</button>
-      </div>
-      <div class="hybrid-navigation__state">
-        <p><strong>Representation:</strong> <span data-hybrid-field="representation">Loading…</span></p>
-        <p><strong>Structural depth:</strong> <span data-hybrid-field="structural-depth">Loading…</span></p>
-        <p><strong>Geometric depth:</strong> <span data-hybrid-field="geometric-depth">Loading…</span></p>
-        <p><strong>Correspondence:</strong> <span data-hybrid-field="correspondence">Loading…</span></p>
-      </div>
-      <div class="hybrid-navigation__stage-actions" role="group" aria-label="Explicit same-stage navigation">
-        <button type="button" data-hybrid-action="structural-to-geometric" disabled>Locate geometric stage</button>
-        <button type="button" data-hybrid-action="geometric-to-structural" disabled>Locate structural stage</button>
-      </div>
-
-      <p id="hybrid-geometric-selection" class="hybrid-navigation__selection">No geometric point selected. Stage correspondence does not create point identity.</p>
-      <p class="structural-boundary-caption">Representation switching, stage locating, selection, and highlighting are navigation/presentation operations only. They do not trigger geometric generation, do not bypass the exact 10,000-point cap, do not materialize sheets or covering structure, and do not set <code>geometricZoomApplied=true</code>.</p>
+      <details class="representation-advanced">
+        <summary>Advanced: same-stage locator and implementation state</summary>
+        <p class="hybrid-navigation__advanced-label">This legacy stage locator is diagnostic navigation only; it does not replace the primary representation selector above.</p>
+        <div class="hybrid-navigation__toolbar" role="group" aria-label="Advanced same-stage representation mode">
+          <button type="button" data-hybrid-mode="structural" aria-pressed="true">Structural stage</button>
+          <button type="button" data-hybrid-mode="geometric" aria-pressed="false">Global finite stage</button>
+        </div>
+        <div class="hybrid-navigation__state">
+          <p><strong>Representation:</strong> <span data-hybrid-field="representation">Loading…</span></p>
+          <p><strong>Structural depth:</strong> <span data-hybrid-field="structural-depth">Loading…</span></p>
+          <p><strong>Geometric depth:</strong> <span data-hybrid-field="geometric-depth">Loading…</span></p>
+          <p><strong>Correspondence:</strong> <span data-hybrid-field="correspondence">Loading…</span></p>
+        </div>
+        <div class="hybrid-navigation__stage-actions" role="group" aria-label="Explicit same-stage navigation">
+          <button type="button" data-hybrid-action="structural-to-geometric" disabled>Locate geometric stage</button>
+          <button type="button" data-hybrid-action="geometric-to-structural" disabled>Locate structural stage</button>
+        </div>
+        <p id="hybrid-geometric-selection" class="hybrid-navigation__selection">No geometric point selected. Stage correspondence does not create point identity.</p>
+        <p class="structural-boundary-caption">Representation switching, stage locating, selection, and highlighting are navigation/presentation operations only. They do not trigger geometric generation, do not bypass the exact 10,000-point cap, do not materialize sheets or covering structure, and do not set <code>geometricZoomApplied=true</code>.</p>
+      </details>
     </section>
 
     <section aria-labelledby="structural-visualization-title" class="structural-section" data-hybrid-panel="structural" data-hybrid-active="true" data-thread31-panel="structural" data-thread31-active="true">
@@ -215,11 +277,12 @@
         <p class="section-note">This separate panel renders the complete recursive pullback of the selected finite ancestor scope through an admitted scoped depth. It is not the complete global <code>X_n</code>, and it does not reinterpret the global Thread 24/25 panels.</p>
       </div>
       <div class="ancestor-scoped-pullback-toolbar">
-        <label for="ancestor-scoped-pullback-ancestor">Selected admitted X_0 ancestor
-          <select id="ancestor-scoped-pullback-ancestor" disabled aria-describedby="ancestor-scoped-pullback-boundary">
-            <option>Loading…</option>
-          </select>
+        <label for="ancestor-scoped-pullback-ancestor-search">Selected admitted X_0 ancestor
+          <input id="ancestor-scoped-pullback-ancestor-search" type="search" disabled autocomplete="off" aria-autocomplete="list" aria-controls="ancestor-scoped-pullback-results" aria-describedby="ancestor-scoped-pullback-search-help ancestor-scoped-pullback-boundary" placeholder="Search admitted ancestor id">
+          <input id="ancestor-scoped-pullback-ancestor" type="hidden" value="">
         </label>
+        <p id="ancestor-scoped-pullback-search-help" class="ancestor-scoped-pullback-search-help">Search by id, then choose one of the admitted results. Only admitted ancestors can be selected.</p>
+        <div id="ancestor-scoped-pullback-results" class="ancestor-scoped-pullback-results" role="listbox" aria-label="Matching admitted ancestors" hidden></div>
         <label for="ancestor-scoped-pullback-depth">Scoped depth
           <select id="ancestor-scoped-pullback-depth" disabled aria-describedby="ancestor-scoped-pullback-boundary">
             <option>Loading…</option>
@@ -265,7 +328,9 @@
       </div>
     </section>
 
-    <section aria-labelledby="legend-title">
+    <details class="reference-panel">
+      <summary>How to read evidence labels</summary>
+      <section aria-labelledby="legend-title">
       <div class="section-heading"><div><p class="section-kicker">Evidence vocabulary</p><h2 id="legend-title">How to read the interface</h2></div><p class="section-note">These labels describe evidence or representation status. They are not interchangeable. Thread 20 also records the admitted visual classes in <code>docs/visual_provenance_matrix_self_similar_cy_visualizer_v0_21.json</code>.</p></div>
       <dl class="legend-grid">
         <div><dt><span class="semantic-chip" data-semantic-category="formalized">Lean formalized</span></dt><dd>A definition or theorem is present in the sealed Lean core.</dd></div>
@@ -276,7 +341,8 @@
         <div><dt><span class="semantic-chip" data-semantic-category="not-materialized">Not materialized</span></dt><dd>A possible structural referent is not instantiated as sheets, fibers, covering geometry, or other concrete objects.</dd></div>
         <div><dt><span class="semantic-chip" data-semantic-category="engineering">Engineering</span></dt><dd>An implementation, representation-safety, CI, performance, or viewport statement rather than a mathematical theorem.</dd></div>
       </dl>
-    </section>
+      </section>
+    </details>
 
     <section aria-labelledby="provenance-title">
       <div class="section-heading"><div><p class="section-kicker">Scope and provenance</p><h2 id="provenance-title">What is established here?</h2></div></div>
@@ -308,6 +374,7 @@
         <section aria-labelledby="scene-specification-title"><h2 id="scene-specification-title">Canonical scene specification</h2><dl id="system-data" class="system-data" hidden><div><dt>Project</dt><dd id="project-value"></dd></div><div><dt>Version</dt><dd id="version-value"></dd></div><div><dt>Schema version</dt><dd id="schema-version-value"></dd></div><div><dt>D</dt><dd id="d-value"></dd></div><div><dt>λ</dt><dd id="lambda-value"></dd></div><div><dt>κ</dt><dd id="kappa-value"></dd></div><div><dt>Canonical requested depth</dt><dd id="depth-value"></dd></div><div><dt>D² runtime metadata</dt><dd id="metric-scale-value"></dd></div><div><dt>D⁴ organization metadata</dt><dd id="sheet-degree-value"></dd></div><div><dt>W representation</dt><dd id="w-status-value"></dd></div></dl></section>
       </div>
     </details>
+    </div>
   </main>
 </body>
 </html>

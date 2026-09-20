@@ -77,9 +77,11 @@ async function snapshot(page) {
     assert.ok(response && response.ok());
     await page.waitForFunction(() => document.querySelector("#system-status")?.dataset.state === "ready", null, {timeout:15000});
     await page.waitForFunction(() => document.querySelector("#base-geometric-status")?.dataset.state === "ready", null, {timeout:15000});
+    await page.locator('[data-ui-mode="expert"]').click();
+    await page.locator("#expert-workbench").waitFor({state:"visible"});
 
     assert.equal(await page.locator("#structural-visualization").isVisible(), true);
-    assert.equal(await page.locator("svg.structural-visualization__surface").count(), 1);
+    assert.equal(await page.locator("#expert-workbench svg.structural-visualization__surface").count(), 1);
     assert.equal(await page.locator("#base-geometric-visualization").isVisible(), true);
     assert.equal(await page.locator("svg.base-geometric-renderer__surface").count(), 1);
     assert.equal((await page.locator("#base-geometric-label").textContent() || "").trim(), "Sampled projection of X_0 onto the z_1 complex plane");

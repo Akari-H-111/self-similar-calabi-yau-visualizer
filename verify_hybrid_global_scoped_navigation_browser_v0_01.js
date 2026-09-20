@@ -40,6 +40,11 @@ function createStaticServer(){
 }
 function listen(server){return new Promise((resolve,reject)=>{server.once("error",reject);server.listen(0,"127.0.0.1",()=>resolve(server.address()));});}
 function close(server){return new Promise((resolve)=>server.close(()=>resolve()));}
+async function chooseAncestor(page,ancestorId){
+  const search=page.locator("#ancestor-scoped-pullback-ancestor-search");
+  await search.fill(ancestorId);
+  await page.getByRole("option",{name:ancestorId,exact:true}).click();
+}
 
 async function bridgeState(page){
   return page.evaluate(()=>{
@@ -85,6 +90,8 @@ async function bridgeState(page){
     await page.waitForFunction(()=>document.querySelector("#hybrid-navigation")?.dataset.state==="ready",null,{timeout:30000});
     await page.waitForFunction(()=>document.querySelector("#ancestor-scoped-pullback-status")?.dataset.state==="ready",null,{timeout:30000});
     await page.waitForFunction(()=>document.querySelector("#hybrid-scoped-bridge")?.dataset.state==="ready",null,{timeout:30000});
+    await page.locator('[data-ui-mode="expert"]').click();
+    await page.locator("#expert-workbench").waitFor({state:"visible"});
 
     const scopedViz="#ancestor-scoped-pullback-visualization";
     let initial=await bridgeState(page);
@@ -125,10 +132,9 @@ async function bridgeState(page){
     const noHiddenGeneration=await page.evaluate(()=>window.Thread30AncestorScopedVisualizationState.scopedState===null);
     assert.equal(noHiddenGeneration,true);
 
-    const ancestor0=await page.locator("#ancestor-scoped-pullback-ancestor option").nth(0).getAttribute("value");
-    const ancestor1=await page.locator("#ancestor-scoped-pullback-ancestor option").nth(1).getAttribute("value");
+    const [ancestor0,ancestor1]=await page.evaluate(()=>window.Thread30AncestorScopedVisualizationState.sampleModel.samples.slice(0,2).map((sample)=>sample.sampleId));
     assert.ok(ancestor0&&ancestor1&&ancestor0!==ancestor1);
-    await page.selectOption("#ancestor-scoped-pullback-ancestor",ancestor0);
+    await chooseAncestor(page,ancestor0);
     await page.selectOption("#ancestor-scoped-pullback-depth","2");
     await page.waitForFunction(()=>document.querySelector("#hybrid-scoped-bridge")?.dataset.scopedRequestedDepth==="2");
     current=await bridgeState(page);
@@ -148,7 +154,7 @@ async function bridgeState(page){
     assert.equal(current.globalDepth,1);
     assert.equal(await page.locator(scopedViz+" .geometric-pullback-mark").count(),256);
 
-    await page.selectOption("#ancestor-scoped-pullback-ancestor",ancestor1);
+    await chooseAncestor(page,ancestor1);
     await page.selectOption("#ancestor-scoped-pullback-depth","3");
     await page.waitForFunction(()=>document.querySelector("#hybrid-scoped-bridge")?.dataset.scopedRequestedDepth==="3");
     current=await bridgeState(page);

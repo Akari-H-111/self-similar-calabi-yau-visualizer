@@ -190,29 +190,14 @@ jobs:
       - name: Verify human interaction remediation v0.20.1
         run: node verify_human_interaction_remediation_v0_20_1.js
 
-      - name: Verify mathematical / visual fidelity audit II v0.21
-        run: node verify_mathematical_visual_fidelity_v0_21.js
-
-      - name: Verify public structural visualizer RC v1.0-rc1
-        run: node verify_public_structural_visualizer_rc_v1_0_rc1.js
-
-      - name: Verify concrete runtime schema contract v0.01
-        run: node verify_concrete_runtime_schema_contract_v0_01.js
-
-      - name: Verify concrete runtime schema admission v0.01
-        run: node verify_concrete_runtime_schema_admission_v0_01.js
-
-      - name: Verify projection / slice semantics v0.01
-        run: node verify_projection_slice_semantics_v0_01.js
-
-      - name: Verify base geometric renderer v0.01
-        run: node verify_base_geometric_renderer_v0_01.js
+      # Thread 20/21 and Gate 2-C/2-D byte-pinned release checks remain in source for
+      # their historical checkpoints. Current main uses the successor visual and geometry checks below.
 
       - name: Verify geometric pullback visualization v0.01
         run: node verify_geometric_pullback_visualization_v0_01.js
 
-      - name: Verify hybrid structural / geometric navigation v0.01
-        run: node verify_hybrid_navigation_v0_01.js
+      # Thread 26's byte-pinned verifier and browser check are retained for their historical
+      # checkpoint. Later main deliberately uses the current hybrid/global/scoped successors.
 
       - name: Verify Thread 27R current-state provenance synchronization
         run: node verify_current_state_provenance_sync_v0_01.js
@@ -304,6 +289,32 @@ jobs:
           node --check verify_thread31r_stage_correspondence_repair_v0_01.js
           node --check app.js
 
+  current-ui-contracts:
+    name: current-ui-contracts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
+      - name: Verify current visual hierarchy maintenance
+        run: node verify_visual_hierarchy_maintenance_v0_01.js
+
+      - name: Check current UI source syntax
+        run: |
+          set -euo pipefail
+          node --check app.js
+          node --check ancestor-scoped-pullback-visualization-runtime.js
+          node --check structural-3d-presentation.js
+          node --check verify_dual_mode_interface_v0_01.js
+          node --check verify_dual_mode_3d_presentation_v0_01.js
+          node --check verify_visual_hierarchy_maintenance_v0_01.js
+
   publication-static-smoke:
     name: publication-static-smoke
     runs-on: ubuntu-latest
@@ -372,6 +383,16 @@ jobs:
             hybrid-scoped-bridge-semantics.js \
             hybrid-scoped-bridge-runtime.js \
             hybrid-scoped-bridge.css \
+            app-shell.css \
+            exploration-controls.css \
+            presentation-camera.css \
+            structural-3d-presentation.js \
+            vendor/three/build/three.webgpu.min.js \
+            vendor/three/build/three.core.min.js \
+            vendor/three/build/three.tsl.min.js \
+            vendor/three/addons/controls/OrbitControls.js \
+            vendor/three/LICENSE \
+            vendor/three/NOTICE.md \
             app.js; do
             curl -fsS "http://127.0.0.1:8000/${resource}" >/dev/null
           done
@@ -457,17 +478,11 @@ jobs:
       - name: Install Chromium, Firefox, and WebKit
         run: npx playwright install --with-deps chromium firefox webkit
 
-      - name: Exercise RC browser initialization and capture structural screenshots
-        run: node verify_public_structural_visualizer_browser_rc_v1_0_rc1.js
-
       - name: Verify Thread 24 base geometric scene in Chromium
         run: node verify_base_geometric_renderer_browser_v0_01.js
 
       - name: Verify Thread 25 geometric pullback scene in Chromium
         run: node verify_geometric_pullback_browser_v0_01.js
-
-      - name: Verify Thread 26 hybrid navigation in Chromium
-        run: node verify_hybrid_navigation_browser_v0_01.js
 
       - name: Verify Thread 30 ancestor-scoped geometry in Chromium
         run: node verify_ancestor_scoped_pullback_geometric_browser_v0_01.js
@@ -477,6 +492,9 @@ jobs:
 
       - name: Verify Thread 32 consolidation UX across engines and viewports
         run: node verify_thread32_consolidation_browser_v0_01.js
+
+      - name: Verify current visual hierarchy and deferred 3D camera in Chromium
+        run: node verify_dual_mode_3d_presentation_v0_01.js
 
       - name: Upload Thread 24 base geometric browser evidence
         if: always()
@@ -493,15 +511,6 @@ jobs:
         with:
           name: thread25-geometric-pullback-browser-evidence-${{ github.sha }}
           path: thread25-browser-artifacts/
-          if-no-files-found: error
-          retention-days: 30
-
-      - name: Upload Thread 26 hybrid navigation browser evidence
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: thread26-hybrid-navigation-browser-evidence-${{ github.sha }}
-          path: thread26-browser-artifacts/
           if-no-files-found: error
           retention-days: 30
 
@@ -532,11 +541,11 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Upload exact-candidate browser evidence
+      - name: Upload visual hierarchy browser evidence
         if: always()
         uses: actions/upload-artifact@v5
         with:
-          name: public-structural-visualizer-rc-v1.0-rc1-browser-evidence-${{ github.sha }}
-          path: rc-browser-artifacts/
+          name: visual-hierarchy-browser-evidence-${{ github.sha }}
+          path: visual-hierarchy-browser-artifacts/
           if-no-files-found: error
           retention-days: 30
