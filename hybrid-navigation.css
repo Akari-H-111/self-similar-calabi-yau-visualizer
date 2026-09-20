@@ -1,8 +1,9 @@
 .hybrid-navigation {
   margin: 1.5rem 0;
-  padding: 1rem;
-  border: 1px solid currentColor;
-  border-radius: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid color-mix(in srgb, currentColor 38%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, Canvas 98%, CanvasText 2%);
 }
 .hybrid-navigation__toolbar,
 .hybrid-navigation__stage-actions {
@@ -20,6 +21,33 @@
 .hybrid-navigation__selection {
   margin: 0;
 }
+.hybrid-navigation__advanced-label {
+  margin: 1.15rem 0 0.35rem;
+  color: color-mix(in srgb, CanvasText 72%, transparent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.hybrid-navigation__toolbar button,
+.hybrid-navigation__stage-actions button {
+  min-height: 2.5rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid currentColor;
+  border-radius: 0.65rem;
+  background: Canvas;
+  color: CanvasText;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.hybrid-navigation__toolbar button[aria-pressed="true"] {
+  border-width: 3px;
+}
+.hybrid-navigation__toolbar button:disabled,
+.hybrid-navigation__stage-actions button:disabled { cursor: not-allowed; opacity: 0.5; }
+.hybrid-navigation__toolbar button:focus-visible,
+.hybrid-navigation__stage-actions button:focus-visible { outline: 0.18rem solid currentColor; outline-offset: 0.2rem; }
 [data-hybrid-panel][data-hybrid-active="true"] {
   outline: 2px solid currentColor;
   outline-offset: 0.3rem;
@@ -30,4 +58,8 @@
 }
 @media (prefers-reduced-motion: reduce) {
   [data-hybrid-panel] { scroll-behavior: auto; }
+}
+@media (forced-colors: active) {
+  .hybrid-navigation__toolbar button:disabled,
+  .hybrid-navigation__stage-actions button:disabled { opacity: 1; border-style: dashed; }
 }

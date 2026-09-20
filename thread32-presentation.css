@@ -1,0 +1,61 @@
+/* Thread 32 presentation layer: current-state hierarchy without changing sealed styles. */
+@media (prefers-color-scheme: light) {
+  body { background: #fbfcff; }
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  margin: 1.25rem 0 1.5rem;
+  font-weight: 700;
+}
+.hero-actions a { color: inherit; text-underline-offset: 0.18em; }
+.hero-actions .primary-link {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  text-decoration: none;
+}
+.hero-actions a:focus-visible,
+.historical-context summary:focus-visible {
+  outline: 0.18rem solid currentColor;
+  outline-offset: 0.2rem;
+}
+.representation-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+.representation-overview article {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, CanvasText 17%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, Canvas 97%, CanvasText 3%);
+}
+.representation-overview .section-kicker { margin-bottom: 0.35rem; }
+.representation-overview h2 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+.representation-overview p:last-child { margin-bottom: 0; font-size: 0.92rem; }
+.hero-boundary {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-left: 0.25rem solid currentColor;
+  background: color-mix(in srgb, Canvas 96%, CanvasText 4%);
+}
+.historical-context {
+  margin-top: 1rem;
+  border: 1px solid color-mix(in srgb, CanvasText 22%, transparent);
+  border-radius: 0.85rem;
+}
+.historical-context summary { cursor: pointer; padding: 0.85rem 1rem; font-weight: 750; }
+.historical-context__content { padding: 0 1rem 1rem; }
+code { overflow-wrap: anywhere; }
+
+@media (max-width: 760px) {
+  .representation-overview { grid-template-columns: 1fr; }
+  .hero-actions { align-items: stretch; }
+  .hero-actions .primary-link { text-align: center; }
+}

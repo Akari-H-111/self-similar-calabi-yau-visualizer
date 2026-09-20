@@ -475,6 +475,9 @@ jobs:
       - name: Verify Thread 31 hybrid global / scoped navigation in Chromium
         run: node verify_hybrid_global_scoped_navigation_browser_v0_01.js
 
+      - name: Verify Thread 32 consolidation UX across engines and viewports
+        run: node verify_thread32_consolidation_browser_v0_01.js
+
       - name: Upload Thread 24 base geometric browser evidence
         if: always()
         uses: actions/upload-artifact@v5
@@ -517,6 +520,15 @@ jobs:
         with:
           name: thread31-hybrid-global-scoped-browser-evidence-${{ github.sha }}
           path: thread31-browser-artifacts/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload Thread 32 consolidation browser evidence
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: thread32-consolidation-browser-evidence-${{ github.sha }}
+          path: thread32-browser-artifacts/
           if-no-files-found: error
           retention-days: 30
 

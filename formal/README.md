@@ -1,10 +1,45 @@
-# Formal Verification
+# Formal verification
 
-Status: **formal-v0.04 / Thread F04 — Pullback Tower (passed / sealed)**
+This is the current landing page for the isolated Lean 4 + Lake + mathlib layer of the Self-Similar Calabi–Yau Visualizer. It describes the source currently imported by `SelfSimilarCY.lean`; the F01–F04 narrative retained below is a sealed historical record, not the current module index.
 
-This directory is the isolated Lean 4 + Lake + mathlib verification layer for the Self-Similar Calabi–Yau Visualizer.
+## Current status
 
-F01 remains sealed as the reproducible toolchain bootstrap. F02 remains sealed as the unique canonical definition of the four-coordinate power map. F03 remains sealed as the function-iteration theorem. F04 adds only an abstract set-theoretic preimage tower on top of those sealed dependencies.
+The aggregate imports 15 project modules, from the environment bootstrap through coordinate powers, torus/Laurent constructions, critical and differential identities, finite ambient-torus fiber cardinalities, and local implicit-function charts. The source-derived [module status matrix](MODULE_STATUS.md) records every module’s direct imports, principal definitions/theorems, authority, and boundary.
+
+Lean establishes only the exact statements found in those modules. A green formal job does not prove the JavaScript visualizer, all project mathematics, a complete global hypersurface, or a browser/UI behavior.
+
+### Formalized in the current source
+
+- Four-coordinate power and iteration identities.
+- Abstract and concrete set-theoretic pullback recurrences.
+- `Torus4`, torus-coordinate power, the Laurent expression, and base-fiber definitions.
+- Critical-point algebra, a total complex Fréchet differential, and regular-regime surjectivity statements.
+- Positive-exponent ambient-torus fiber finiteness and exact finite-set cardinality `D ^ 4`.
+- The exact local, neighborhood-scoped implicit-function and regular-level statements in `LaurentImplicit`.
+
+### Explicitly outside the current formal claim
+
+- Full algebraic-geometric smoothness, scheme-theoretic Jacobian criteria, finite étale structure, deck action, or genuine map/covering degree.
+- Canonical triviality, Oka-type connectedness, a global hypersurface theorem, or a complete renderer theorem.
+- Structural nodes as geometric points, finite sampled levels as complete global levels, or root tuples as sheets.
+- Browser, accessibility, camera, or presentation correctness.
+
+The formal `D ^ 4` finite-set cardinality result is not a license to describe runtime structural multiplicity as genuine sheets, a covering degree, or a finite étale theorem.
+
+## Reproduce current formal verification
+
+```bash
+cd formal
+lake build
+lake env lean SelfSimilarCY.lean
+rg -n -e '(^|[^[:alnum:]_])(axiom|sorry|admit)([^[:alnum:]_]|$)' SelfSimilarCY --glob '*.lean'
+```
+
+Inspect any source-scan match. Project Lean proof sources must not use `axiom`, `sorry`, or `admit` to close a goal, and `lake update` is not a routine repair because the toolchain and lock are part of the reproducible authority.
+
+## Historical F04 record
+
+The following F04 status and chronology are preserved as the historical milestone narrative. Its scope must not be mistaken for the present source-tree inventory.
 
 ## Pinned environment
 
