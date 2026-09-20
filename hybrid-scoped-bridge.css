@@ -1,7 +1,9 @@
 .hybrid-scoped-bridge {
-  margin-top: 1rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  margin-top: 0.25rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, currentColor 26%, transparent);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, Canvas 95%, CanvasText 5%);
 }
 .hybrid-scoped-bridge__toolbar {
   display: flex;
@@ -17,6 +19,23 @@
 .hybrid-scoped-bridge__state p {
   margin: 0;
 }
+.hybrid-scoped-bridge__toolbar button {
+  min-height: 2.7rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid currentColor;
+  border-radius: 0.65rem;
+  background: Canvas;
+  color: CanvasText;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+.hybrid-scoped-bridge__toolbar button[aria-pressed="true"] {
+  border-width: 3px;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.hybrid-scoped-bridge__toolbar button:focus-visible { outline: 0.18rem solid currentColor; outline-offset: 0.2rem; }
 [data-thread31-panel][data-thread31-active="true"] {
   outline: 3px solid currentColor;
   outline-offset: 0.4rem;
@@ -28,4 +47,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   [data-thread31-panel] { scroll-behavior: auto; }
+}
+@media (forced-colors: active) {
+  .hybrid-scoped-bridge__toolbar button[aria-pressed="true"] { border-style: double; }
 }
