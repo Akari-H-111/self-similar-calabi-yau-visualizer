@@ -2,6 +2,23 @@
 
 This page describes the current `main` application after the Thread 31R repair and Thread 31 seal. It is the active entrypoint for visitors and developers. The root README records the byte-pinned historical `v1.0-rc1` structural release candidate; the immutable `v0.13` publication checkpoint is older still. A release tag describes its exact historical commit, not all later features on `main`.
 
+## Local geometry-exploration candidate
+
+The page now opens with the `Geometry Exploration Engine v1`, a local
+post-release candidate documented in [Geometry Exploration Engine v1](GEOMETRY_EXPLORATION_ENGINE_v1.md). It consumes the already-admitted schema-v2
+`W_kappa_torus4_v1` evaluator and does **not** alter the historical structural
+pipeline. Its default display is a declared two-real-parameter subfamily of
+`X_0`, followed by an explicit ambient-coordinate projection to `R^3`; it is
+not a 3D embedding of the six-real-dimensional `X_0` or a complete
+Calabi–Yau. Other modes separately label a phase display embedding, a finite
+validated sample cloud, and a non-geometric structural pullback display.
+
+The new renderer has a WebGPU-first / WebGL2-fallback implementation, bounded
+cache and resolution policy, cancellation token, visible load/error states,
+and no external image/model/texture asset. Its quadratic root labels are not
+sheets or covering branches. It must remain distinct from the finite global
+and ancestor-scoped evidence below.
+
 ## Try the visualizer
 
 Open the [public visualizer](https://akari-h-111.github.io/self-similar-calabi-yau-visualizer/). For a local checkout, run `python3 -m http.server 8000` at the repository root and open `http://127.0.0.1:8000/`. The app is static HTML, CSS, and vanilla JavaScript; a local HTTP server is needed for its JSON requests. The default **Simple mode** is a capped four-layer structural playground: grow a layer, see the model change, and reset. It does not generate ancestor-scoped geometry. **Expert mode** exposes the three-representation selector, camera, overlays, finite geometric views, scoped controls, provenance, and diagnostics; switching representations changes presentation only and preserves independent structural/global/scoped depth state. The optional Three.js presentation camera is dynamically imported only when its region is entered or the visitor starts it; its WebGPURenderer keeps the existing WebGL2 fallback and OrbitControls, and it never invokes a geometric runtime.

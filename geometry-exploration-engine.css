@@ -1,0 +1,41 @@
+:root { --void: #030614; --ink: #eaf0ff; --muted: #aeb9d4; --line: rgba(155, 182, 255, .22); --aqua: #42f5d1; --violet: #c77dff; }
+
+.geometry-explorer {
+  position: relative; isolation: isolate; width: 100vw; margin-left: calc(50% - 50vw); min-height: 100svh; color: var(--ink); background:
+    radial-gradient(circle at 78% 18%, rgba(89, 73, 212, .25), transparent 36rem),
+    radial-gradient(circle at 12% 85%, rgba(24, 181, 174, .18), transparent 36rem), var(--void);
+  padding: clamp(1rem, 3vw, 3rem); display: grid; grid-template-columns: minmax(15rem, 23rem) minmax(0, 1fr); grid-template-rows: auto 1fr auto; gap: 1rem; overflow: hidden;
+}
+.geometry-explorer::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .38; z-index: -1; background-image: linear-gradient(rgba(134,160,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(134,160,255,.045) 1px, transparent 1px); background-size: 52px 52px; mask-image: linear-gradient(to bottom, black, transparent 80%); }
+.geometry-explorer__masthead { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: end; gap: 2rem; }
+.geometry-explorer__masthead h1 { margin: .15rem 0; max-width: 18ch; font: 600 clamp(2rem, 5vw, 5.2rem)/.94 ui-serif, Georgia, serif; letter-spacing: -.055em; }
+.geometry-explorer__masthead p { max-width: 60ch; color: var(--muted); margin: .6rem 0 0; line-height: 1.55; }
+.geometry-explorer__eyebrow { font: 700 .74rem/1 ui-sans-serif, system-ui, sans-serif; text-transform: uppercase; letter-spacing: .18em; color: var(--aqua); }
+.geometry-explorer__badges { display: flex; flex-wrap: wrap; justify-content: end; gap: .5rem; font: 600 .72rem/1 ui-sans-serif, system-ui, sans-serif; text-transform: uppercase; letter-spacing: .08em; }
+.geometry-explorer__badges span { border: 1px solid var(--line); border-radius: 999px; padding: .52rem .72rem; background: rgba(11,16,40,.52); }
+.geometry-explorer__modes, .geometry-explorer__inspector { align-self: start; border: 1px solid var(--line); border-radius: 1.15rem; background: rgba(10,14,35,.72); backdrop-filter: blur(20px); box-shadow: 0 1rem 4rem rgba(0,0,0,.22); }
+.geometry-explorer__modes { padding: 1rem; display: grid; gap: .75rem; }
+.geometry-explorer__modes h2, .geometry-explorer__inspector h2 { font: 650 1rem/1.2 ui-sans-serif, system-ui, sans-serif; margin: 0; }
+.geometry-mode { width: 100%; text-align: left; display: grid; gap: .2rem; border: 1px solid transparent; background: transparent; color: var(--ink); border-radius: .75rem; padding: .8rem; cursor: pointer; font: 650 .92rem/1.15 ui-sans-serif, system-ui, sans-serif; }
+.geometry-mode span { color: var(--muted); font: 400 .78rem/1.35 ui-sans-serif, system-ui, sans-serif; }
+.geometry-mode:hover, .geometry-mode:focus-visible, .geometry-mode[aria-pressed="true"] { border-color: rgba(103, 240, 213, .75); background: linear-gradient(120deg, rgba(56, 229, 193, .16), rgba(125, 89, 235, .15)); outline: none; }
+.geometry-explorer__stage { position: relative; min-height: min(63svh, 52rem); overflow: hidden; border: 1px solid rgba(142, 177, 255, .32); border-radius: 1.35rem; background: radial-gradient(circle at 50% 35%, #101b4a, #030614 70%); box-shadow: inset 0 0 7rem rgba(37, 78, 187, .22), 0 1rem 3rem rgba(0,0,0,.25); }
+.geometry-explorer__stage canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; }
+.geometry-explorer__stage canvas:active { cursor: grabbing; }
+.geometry-explorer__stage::after { content: "DRAG · ORBIT    SCROLL · ZOOM"; position: absolute; bottom: 1rem; right: 1.2rem; color: rgba(218,229,255,.6); font: 700 .62rem/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: .14em; pointer-events: none; }
+.geometry-explorer__inspector { grid-column: 1 / -1; padding: 1rem; display: grid; grid-template-columns: minmax(16rem, .65fr) minmax(17rem, 1fr) minmax(14rem, .55fr); gap: 1rem; }
+.geometry-explorer__inspector p { color: var(--muted); font: .81rem/1.55 ui-sans-serif, system-ui, sans-serif; margin: .45rem 0 0; }
+.geometry-explorer__inspector strong { color: var(--ink); }
+.geometry-explorer__inspector code { color: #aaf4e3; font-size: .9em; }
+.geometry-explorer__parameters { display: grid; gap: .7rem; align-content: start; }
+.geometry-explorer__parameters label { display: grid; grid-template-columns: 1fr auto; gap: .28rem .5rem; color: var(--muted); font: .78rem/1.1 ui-sans-serif, system-ui, sans-serif; }
+.geometry-explorer__parameters input { grid-column: 1 / -1; accent-color: var(--aqua); }
+.geometry-explorer__parameters output { color: var(--aqua); font-variant-numeric: tabular-nums; }
+.geometry-explorer__action { align-self: end; justify-self: start; border: 1px solid var(--line); border-radius: .55rem; color: var(--ink); background: #121a3d; padding: .58rem .8rem; cursor: pointer; }
+.geometry-explorer__status { border-left: 2px solid var(--aqua); padding-left: .75rem; }
+.geometry-explorer[data-state="generating"] .geometry-explorer__status::after { content: ""; display: inline-block; width: .55rem; height: .55rem; border: 2px solid var(--aqua); border-left-color: transparent; border-radius: 50%; vertical-align: -.08rem; margin-left: .5rem; animation: geometry-spin .8s linear infinite; }
+.geometry-explorer[data-state="error"] .geometry-explorer__status { border-color: #ff7a98; color: #ffd9e2; }
+@keyframes geometry-spin { to { transform: rotate(1turn); } }
+@media (max-width: 820px) { .geometry-explorer { grid-template-columns: 1fr; padding: 1rem; } .geometry-explorer__masthead { align-items: start; display: block; } .geometry-explorer__badges { justify-content: start; margin-top: 1rem; } .geometry-explorer__stage { min-height: 53svh; } .geometry-explorer__inspector { grid-template-columns: 1fr; } .geometry-explorer__modes { grid-template-columns: 1fr 1fr; } .geometry-explorer__modes h2 { grid-column: 1 / -1; } }
+@media (max-width: 520px) { .geometry-explorer__modes { grid-template-columns: 1fr; } .geometry-explorer__masthead h1 { font-size: 2.6rem; } }
+@media (prefers-reduced-motion: reduce) { .geometry-explorer[data-state="generating"] .geometry-explorer__status::after { animation: none; } }

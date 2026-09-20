@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="app-shell.css">
   <link rel="stylesheet" href="exploration-controls.css">
   <link rel="stylesheet" href="presentation-camera.css">
+  <link rel="stylesheet" href="geometry-exploration-engine.css">
   <script src="scene-spec.js" defer></script>
   <script src="base-renderer.js" defer></script>
   <script src="one-step-pullback.js" defer></script>
@@ -47,9 +48,38 @@
   <script src="hybrid-navigation-runtime.js" defer></script>
   <script src="hybrid-scoped-bridge-semantics.js" defer></script>
   <script src="hybrid-scoped-bridge-runtime.js" defer></script>
+  <script src="geometry-exploration-math.js" defer></script>
+  <script type="module" src="geometry-exploration-engine.js"></script>
 </head>
 <body>
   <main class="shell">
+    <section id="geometry-explorer" class="geometry-explorer" data-state="loading" aria-labelledby="geometry-explorer-title">
+      <header class="geometry-explorer__masthead">
+        <div>
+          <p class="geometry-explorer__eyebrow">Wκ torus⁴ · research-honest rendering</p>
+          <h1 id="geometry-explorer-title">See the map.<br>Not a made-up box.</h1>
+          <p>An immersive renderer for explicitly declared lower-dimensional views of <code>X₀ = Wκ⁻¹(λ)</code>. It never embeds the full six-real-dimensional object in 3D.</p>
+        </div>
+        <div class="geometry-explorer__badges" aria-label="Renderer facts"><span>WebGPU / WebGL2</span><span>formula-bound</span><span>no sheet claim</span></div>
+      </header>
+      <nav class="geometry-explorer__modes" aria-label="Geometric display mode">
+        <h2>Choose a declared view</h2>
+        <button type="button" class="geometry-mode" data-geometry-mode="slice" aria-pressed="true">Declared parameter subfamily <span>A two-parameter construction in X₀, ambient-projected to R³.</span></button>
+        <button type="button" class="geometry-mode" data-geometry-mode="phase" aria-pressed="false">Phase / torus display <span>Finite samples encoded by phases; the torus is a display device.</span></button>
+        <button type="button" class="geometry-mode" data-geometry-mode="cloud" aria-pressed="false">Finite validated sample cloud <span>Accepted deterministic X₀ samples under an explicit projection.</span></button>
+        <button type="button" class="geometry-mode" data-geometry-mode="structural" aria-pressed="false">Structural pullback <span>Relations only—no geometric coordinates or topology.</span></button>
+      </nav>
+      <div class="geometry-explorer__stage" aria-label="Interactive three dimensional research visualization"><canvas aria-label="Drag to orbit the active declared mathematical display."></canvas></div>
+      <aside class="geometry-explorer__inspector" aria-label="Mathematical meaning and controls">
+        <div><h2>What is on screen</h2><p data-geometry-detail>Loading the declared rendering contract…</p></div>
+        <div class="geometry-explorer__parameters">
+          <label>λ (runtime real slice; −4 to 4)<output data-geometry-output="lambda">1</output><input data-geometry-parameter="lambda" type="range" min="-4" max="4" step="0.25" value="1"></label>
+          <label>κ (nonzero UI range; 0.1 to 3)<output data-geometry-output="kappa">1</output><input data-geometry-parameter="kappa" type="range" min="0.1" max="3" step="0.1" value="1"></label>
+          <label>surface resolution (declared subfamily only)<output data-geometry-output="resolution">64</output><input data-geometry-parameter="resolution" type="range" min="24" max="112" step="8" value="64"></label>
+        </div>
+        <div><h2>Engine status</h2><p class="geometry-explorer__status" data-geometry-status aria-live="polite">Initializing…</p><button class="geometry-explorer__action" type="button" data-geometry-action="reset">Reset view</button></div>
+      </aside>
+    </section>
     <header class="mode-hero">
       <div class="mode-bar" role="group" aria-label="Interface mode">
         <span class="mode-bar__label">Choose how to explore</span>

@@ -3,6 +3,8 @@ formal/.lake/
 
 # Local verification output; CI uploads these separately.
 *-browser-artifacts/
+geometry-explorer-browser.png
+geometry-explorer-mobile.png
 node_modules/
 npm-debug.log*
 .DS_Store
