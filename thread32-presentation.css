@@ -52,6 +52,7 @@
 }
 .historical-context summary { cursor: pointer; padding: 0.85rem 1rem; font-weight: 750; }
 .historical-context__content { padding: 0 1rem 1rem; }
+code { overflow-wrap: anywhere; }
 
 @media (max-width: 760px) {
   .representation-overview { grid-template-columns: 1fr; }
