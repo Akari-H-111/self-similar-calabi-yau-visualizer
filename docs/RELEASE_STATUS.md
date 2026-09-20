@@ -16,9 +16,9 @@ This page distinguishes immutable publication objects from the current developme
 | Checkpoint | Exact commit | GitHub object status | Scope boundary |
 | --- | --- | --- | --- |
 | `v0.13` | `e83ed17a5ce8e45e67ef326042a21ec51ba24222` | Existing tag and published GitHub Release. | Historical publication checkpoint. |
-| `v1.0-rc1` | `f1228b270517f95984baf12678fa9bdd2be83fa9` | Release-control action tracked by [Issue #17](https://github.com/Akari-H-111/self-similar-calabi-yau-visualizer/issues/17); tag and prerelease must target this exact commit. | Historical structural visualizer release candidate: symbolic graphics, unresolved `W`, no concrete hypersurface, sheets, or covering claim. |
+| `v1.0-rc1` | `f1228b270517f95984baf12678fa9bdd2be83fa9` | Published GitHub prerelease at [v1.0-rc1](https://github.com/Akari-H-111/self-similar-calabi-yau-visualizer/releases/tag/v1.0-rc1); annotated tag dereferences to this exact commit. Issue #17 is closed. | Historical structural visualizer release candidate: symbolic graphics, unresolved `W`, no concrete hypersurface, sheets, or covering claim. |
 
-`v1.0-rc1` is not a label for the later sampled/global/scoped features now present on `main`. A release-control operation must create no source commit and must preserve the structural-only boundary in the release notes.
+`v1.0-rc1` is not a label for the later sampled/global/scoped features now present on `main`. Its publication created no source commit and preserves the structural-only boundary in the release notes.
 
 ## Publication checks
 

@@ -20,7 +20,7 @@ Status: **open audit; implementation and final evidence pending**. This is a cur
 | Formal truth | `formal/README.md` ends at F04, while the aggregator imports 15 modules through `LaurentImplicit`. | Audit actual modules and update the formal landing page without editing proofs or dependency pins. |
 | CI truth | Four jobs already separate formal, runtime, static publication, and browser evidence, but the workflow has many historical steps. | Add navigation and limited orchestration comments; preserve every historical check and exact-SHA evidence. |
 | Repository hygiene | Root contains 84 files outside docs, including 39 verifiers and two benchmarks; paths are referenced by HTML, CI, and historical blob pins. | Index the tree and ignore generated local artifacts. Do not mass-move sealed files. |
-| Release truth | GitHub has only `v0.13` release/tag. Issue #17 identifies the exact historical `v1.0-rc1` commit and publication conditions. | Verify and complete that historical release separately from the current main development state. Do not invent a current version. |
+| Release truth | GitHub has `v0.13` plus the historical `v1.0-rc1` prerelease. The latter is an annotated tag dereferencing to `f1228b270517f95984baf12678fa9bdd2be83fa9`. | Keep that historical release separate from current main development state. Do not invent a current version. |
 
 ## Invariant carried into Audit III
 
@@ -33,7 +33,7 @@ If an upstream canonical layer already computes a semantic verdict, every downst
 - [ ] The 10,000-point preflight cap and no-partial-result refusal remain visible and verified.
 - [ ] Structural nodes, projected overlaps, root tuples, and sampled points are not promoted to identities, sheets, or global completeness.
 - [ ] Current formal module matrix, direct compilation, and source placeholder scan are complete.
-- [ ] Historical release objects point to the historical commit; current main is described as development.
+- [x] Historical release objects point to the historical commit; current main is described as development.
 - [ ] Browser state, keyboard, viewport, zoom, contrast, and reduced-motion checks pass.
 - [ ] All canonical verifier jobs, static publication smoke, and exact-SHA Pages pass on the final tree.
 
