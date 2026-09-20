@@ -1,6 +1,6 @@
 # Audit III — final consolidation
 
-Status: **open audit; implementation and final evidence pending**. This is a current audit record, not a retroactive change to any sealed milestone.
+Status: **passed — final consolidation audit**. This records the audit conclusion for the Thread 32 implementation commit; it does not retroactively change any sealed milestone.
 
 ## Opening identity
 
@@ -9,6 +9,8 @@ Status: **open audit; implementation and final evidence pending**. This is a cur
 - Thread 31R seal: PR #48, single-parent main commit `4aa6062d16e3340ed94248d65f2dd46ba626d973`.
 - Thread 31 seal: PR #49, single-parent main commit `34cd6e627d58e85b478d66d3bd517ad35d800948`, tree `b3676f0605bed8c3cd6a6e71766762b922588707`.
 - Exact-main Formal Verification `35456364132`: all four jobs passed. Exact-SHA Pages `35456363327`: passed.
+- Thread 32 implementation: PR #50, single-parent main commit `8faebc90a392aac5945394f904609346d9a601bb`, parent `34cd6e627d58e85b478d66d3bd517ad35d800948`.
+- Exact-main Formal Verification `35489166480`: formal-lean, runtime-contracts, publication-static-smoke, and browser-rc passed. Exact-SHA Pages `35489165982`: passed.
 
 ## Findings and work boundary
 
@@ -28,13 +30,13 @@ If an upstream canonical layer already computes a semantic verdict, every downst
 
 ## Exit checklist
 
-- [ ] Current-state UI and documentation agree with the runtime's separate structural, global finite-sample, and ancestor-scoped contexts.
-- [ ] Scope generation remains explicit; context switching preserves independent depths and does not generate geometry.
-- [ ] The 10,000-point preflight cap and no-partial-result refusal remain visible and verified.
-- [ ] Structural nodes, projected overlaps, root tuples, and sampled points are not promoted to identities, sheets, or global completeness.
-- [ ] Current formal module matrix, direct compilation, and source placeholder scan are complete.
+- [x] Current-state UI and documentation agree with the runtime's separate structural, global finite-sample, and ancestor-scoped contexts.
+- [x] Scope generation remains explicit; context switching preserves independent depths and does not generate geometry.
+- [x] The 10,000-point preflight cap and no-partial-result refusal remain visible and verified.
+- [x] Structural nodes, projected overlaps, root tuples, and sampled points are not promoted to identities, sheets, or global completeness.
+- [x] Current formal module matrix, direct compilation, and source placeholder scan are complete.
 - [x] Historical release objects point to the historical commit; current main is described as development.
-- [ ] Browser state, keyboard, viewport, zoom, contrast, and reduced-motion checks pass.
-- [ ] All canonical verifier jobs, static publication smoke, and exact-SHA Pages pass on the final tree.
+- [x] Browser state, keyboard, viewport, zoom, contrast, and reduced-motion checks pass within the tested automated scope.
+- [x] All canonical verifier jobs, static publication smoke, and exact-SHA Pages pass on the audited implementation tree.
 
-Audit III does not grant a mathematical theorem or certify assistive technology. Thread 33 is a public preview/checkpoint decision after this checklist closes, not a feature-development mandate.
+Audit III does not grant a mathematical theorem or certify assistive technology. Thread 33 remains a public preview/checkpoint decision after this checklist; no new preview version is assigned by this audit.
