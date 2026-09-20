@@ -1,2 +1,8 @@
 # Lean / Lake build artifacts
 formal/.lake/
+
+# Local verification output; CI uploads these separately.
+*-browser-artifacts/
+node_modules/
+npm-debug.log*
+.DS_Store
