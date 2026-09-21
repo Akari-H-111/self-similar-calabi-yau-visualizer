@@ -1,6 +1,6 @@
 # Self-Similar Calabi–Yau Visualizer
 
-**Current version:** v1.0-rc1 — Public Structural Visualizer Release Candidate
+**Current version:** v1.1.0-rc1 — Formula-Bound Geometry Explorer Release Candidate
 
 **Sealed provenance baseline:** v0.21 — Mathematical / Visual Fidelity Audit II
 
@@ -10,9 +10,9 @@
 
 **Runtime scene contract:** v0.12
 
-This repository is a static HTML/CSS/vanilla-JavaScript structural visualizer for the coordinate-power pullback system. v0.21 adds a durable visual provenance matrix and a presentation-only provenance adapter that labels admitted graphical classes without changing sealed mathematical/runtime authority. v0.20 adds a presentation-only visual-semantics and accessibility audit above v0.19, including deterministic DOM focus restoration after virtualized interaction rerenders, bounded textual semantics for omitted render-window gaps, browser-zoom-safe camera input policy, single-live-region announcement discipline, forced-colors hooks, and narrow-viewport structural-canvas readability. v0.19 adds a presentation-only infinite-navigation rendering engine above the sealed semantic recursion: deterministic viewport/render-window virtualization, overscan, floating-origin deep-depth handling, bounded presentation-slot recycling, and a bounded recomputable virtual-layout cache. The v0.18 arithmetic graphics, v0.17 D⁴ branch graphics, v0.16 camera, and v0.15 interaction semantics remain beneath that adapter.
+This repository is a static HTML/CSS/vanilla-JavaScript visualizer for the coordinate-power pullback system. It preserves the historical structural visualizer and its sealed provenance layers, and adds a formula-bound, finite geometry explorer. v0.21 adds a durable visual provenance matrix and a presentation-only provenance adapter that labels admitted graphical classes without changing sealed mathematical/runtime authority. v0.20 adds a presentation-only visual-semantics and accessibility audit above v0.19, including deterministic DOM focus restoration after virtualized interaction rerenders, bounded textual semantics for omitted render-window gaps, browser-zoom-safe camera input policy, single-live-region announcement discipline, forced-colors hooks, and narrow-viewport structural-canvas readability. v0.19 adds a presentation-only infinite-navigation rendering engine above the sealed semantic recursion: deterministic viewport/render-window virtualization, overscan, floating-origin deep-depth handling, bounded presentation-slot recycling, and a bounded recomputable virtual-layout cache. The v0.18 arithmetic graphics, v0.17 D⁴ branch graphics, v0.16 camera, and v0.15 interaction semantics remain beneath that adapter.
 
-The interface is **structural, not geometric**. It does not implement a concrete `W`, a Calabi–Yau hypersurface, genuine sheets, covering geometry, or geometric zoom.
+The historical structural interface remains **structural, not geometric**. The current formula-bound explorer renders only explicitly declared finite slices and finite local inverse-branch evidence; it never renders a complete Calabi–Yau threefold, genuine sheets, covering geometry, or geometric zoom.
 
 The evidence rule remains:
 
@@ -27,6 +27,30 @@ runtime representation
 The v0.11 claim-discipline vocabulary remains binding: **D² and D⁴ explicitly as runtime/organization metadata**. Exact parent-project mathematical artifacts remain **not source-verified in this thread**, so unavailable parent results are not promoted.
 
 D⁴ runtime organization metadata is **not a map-degree theorem** in the current sealed formal scope. Benchmark horizons are **not mathematical limits**, and JavaScript safe-integer checks are **representation-safety / engineering constraints** rather than mathematical theorems.
+
+## v1.1.0-rc1 formula-bound geometry explorer release candidate
+
+v1.1.0-rc1 is the current public release candidate. Simple mode retains the
+Laurent default and adds **Show the colourful quintic**, a reversible entry to
+the canonical Fermat cross-section `Z0=1`, `z3=z4=-1`,
+`z1^5+z2^5=1`. Its 25 phase-labelled patches are finite sampled patches of a
+declared two-real-dimensional cross-section, projected to
+`(Re z1, Im z1, Re z2)`; they are not sheets, covering branches, or the full
+real-six-dimensional quintic threefold.
+
+The reviewed Fermat demonstration source is `fermat-k0-0-t12-x7`. One explicit
+**Magnify this patch · compare X1 with X0** action produces a cap-checked
+`9×9=81` paired local inverse-branch comparison for one root tuple, then opens
+the normalized local-log view. The aqua parent wireframe and violet child
+surface share a presentation-only opacity cross-fade and tangent-frame camera
+fit. The displayed relation is finite local inverse-branch evidence only:
+neither global self-similarity, a fractal boundary, metric zoom, complete `X0`,
+nor complete global `Xn` is claimed.
+
+The release contains deterministic local replay, browser/fallback checks,
+focused 390px and keyboard coverage, and a browser-derived demo GIF. A green
+Lean build remains evidence only for its listed formal modules; it does not
+prove this renderer or the broader geometry.
 
 ## v1.0-rc1 public structural visualizer release candidate
 
