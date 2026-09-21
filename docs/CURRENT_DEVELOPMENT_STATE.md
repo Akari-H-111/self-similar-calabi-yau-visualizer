@@ -1,6 +1,17 @@
 # Current development state
 
-This page describes the source state of this local checkout after the Thread 31R repair and Thread 31 seal. It is a development entrypoint, **not evidence that the public GitHub Pages deployment has this source**: compare the deployed commit and Pages run before making a public claim. The root README records the byte-pinned historical `v1.0-rc1` structural release candidate; the immutable `v0.13` publication checkpoint is older still. A release tag describes its exact historical commit, not all later features on `main`.
+This page describes the source state of this local checkout after the Thread 31R repair and Thread 31 seal. It is a development entrypoint, **not evidence that the public GitHub Pages deployment has this source**: compare the deployed commit and Pages run before making a public claim. The root README records the current release candidate alongside the historical `v1.0-rc1` structural boundary; the immutable `v0.13` publication checkpoint is older still. A release tag describes its exact historical commit, not all later features on `main`.
+
+## Current v1.1.0-rc1 release-candidate boundary
+
+`v1.1.0-rc1` is the current formula-bound geometry explorer release candidate,
+separate from the historical structural-only `v1.0-rc1`. Its public content is
+the exact tag-bound `main` commit and its corresponding Pages build; GitHub
+Release metadata, not this development page, records the release object. The
+candidate adds a finite Fermat cross-section entry and a reviewed 81-pair local
+inverse-branch comparison, while retaining the false flags for global
+self-similarity, fractal boundary, complete `X0`, complete global `Xn`, and
+geometric zoom. It does not revise historical publication records.
 
 ## Current geometry exploration and v1 candidate history
 

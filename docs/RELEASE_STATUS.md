@@ -17,8 +17,13 @@ This page distinguishes immutable publication objects from the current developme
 | --- | --- | --- | --- |
 | `v0.13` | `e83ed17a5ce8e45e67ef326042a21ec51ba24222` | Existing tag and published GitHub Release. | Historical publication checkpoint. |
 | `v1.0-rc1` | `f1228b270517f95984baf12678fa9bdd2be83fa9` | Published GitHub prerelease at [v1.0-rc1](https://github.com/Akari-H-111/self-similar-calabi-yau-visualizer/releases/tag/v1.0-rc1); annotated tag dereferences to this exact commit. Issue #17 is closed. | Historical structural visualizer release candidate: symbolic graphics, unresolved `W`, no concrete hypersurface, sheets, or covering claim. |
+| `v1.1.0-rc1` | Tag-bound current-main commit; inspect the linked release for its exact object ID. | Formula-bound geometry explorer prerelease at [v1.1.0-rc1](https://github.com/Akari-H-111/self-similar-calabi-yau-visualizer/releases/tag/v1.1.0-rc1). | Finite declared slices and one reviewed local inverse-branch comparison; no complete threefold/global pullback, sheet/covering, fractal, metric-zoom, or global-self-similarity claim. |
 
 `v1.0-rc1` is not a label for the later sampled/global/scoped features now present on `main`. Its publication created no source commit and preserves the structural-only boundary in the release notes.
+
+`v1.1.0-rc1` is a new prerelease publication object. It does not retitle or
+expand either historical checkpoint; its exact tag, release notes, exact-main
+CI, and Pages build are the verification route for its formula-bound content.
 
 ## Publication checks
 
