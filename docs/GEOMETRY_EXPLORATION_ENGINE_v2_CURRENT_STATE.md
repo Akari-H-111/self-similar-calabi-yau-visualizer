@@ -2,6 +2,45 @@
 
 Status: local implementation, not a historical release object. This page describes current source behavior and its verification boundary. Simple and Expert mode use one geometry explorer instance with different controls.
 
+## Adjustable declared slices and local comparison
+
+Simple mode now selects one of four small, declared presets: three bounded
+`W_kappa_torus4_v1` Laurent slices (Balanced torus, Open wings, and Near
+critical) and the canonical Fermat quintic cross-section. The registry has
+exactly two adapters, not an arbitrary equation language or a second renderer.
+The Laurent adapter retains the old default source records, IDs, residuals,
+root labels, four complex coordinates, and local continuation behavior.
+
+The Fermat preset declares `Z0^5+Z1^5+Z2^5+Z3^5+Z4^5=0`, fixes `Z0=1` and
+`z3=z4=-1`, and thus renders `z1^5+z2^5=1`. It retains each source record as
+`(z1,z2,-1,-1)` and assembles 25 stable `(k1,k2)` Hanson phase patches before
+triangulation only after a numerical quintic-residual check. Its displayed
+axes are `(Re z1, Im z1, Re z2)`, with `Im z2` and the fixed coordinates
+omitted. It is a finite 3D projection of a two-real-dimensional cross-section
+of the real-six-dimensional threefold, never the full threefold.
+
+Every selectable preset names a deterministic nonzero demonstration source.
+Fermat freezes `fermat-k0-0-t12-x7` at radius 4, so its reviewed local request
+has `9×9=81` paired samples. **Show the colourful quintic** is a Simple-mode
+entry point above the reversible selector: it restores `xiWindow=1.2`, mounts
+the 25-patch surface, and fits only the visual camera. It never generates a
+child. **Magnify this patch · compare X1 with X0** explicitly requests the
+Fermat local `X1=P_D^-1(X0)` patch and enters the normalized local-log view;
+raw projected coordinates remain a secondary diagnostic. The parent is an aqua
+wireframe with paired vertices and the child a violet translucent surface with
+paired vertices. Their native cross-fade changes material opacity only; a
+central finite-difference tangent frame supplies a presentation-only face-on
+camera fit when nondegenerate. The shared generator preflights with BigInt,
+keeps one explicit root tuple, verifies `P_D(child)≈parent` and inherited
+equation residuals, and reports the normalized local-log error. A zero,
+ambiguous, discontinuous, residual-failing, or over-cap source creates zero
+children and leaves the current valid source geometry visible. Fermat's 25
+phase-related `X0` patches are distinct from a generated `X1` child; the
+child is not described as another phase patch. The normalized comparison is a
+paired display overlay; raw side-by-side projections remain an alternate
+state. Neither state claims global self-similarity, a fractal boundary, or
+metric zoom.
+
 ## First-visit finite view
 
 Simple mode opens a fixed, regular-parameter **declared two-real-parameter

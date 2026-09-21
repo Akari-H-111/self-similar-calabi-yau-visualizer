@@ -57,8 +57,16 @@
 .simple-geometry-guide button:hover, .simple-geometry-guide button:focus-visible { outline: 0; border-color: var(--aqua); background: #22386f; }
 .simple-geometry-guide button:disabled { cursor: not-allowed; opacity: .55; }
 .simple-geometry-guide .simple-geometry-guide__next { border-color: #6df5d9; background: #38d6b6; color: #021412; }
+.simple-geometry-guide .simple-geometry-guide__featured { justify-self: start; border-color: #ffe38a; background: linear-gradient(105deg, #ffdc70, #d789ff); color: #160c2b; box-shadow: 0 .45rem 1.5rem rgba(215, 137, 255, .26); }
 .simple-geometry-guide__status { font-size: .85rem; font-weight: 750; color: #aaf4e3 !important; }
 .simple-geometry-guide__qualification { font-size: .82rem; font-weight: 700; color: #cdd9ff !important; }
+.simple-geometry-guide__control { display: grid; gap: .35rem; width: min(25rem, 100%); color: #d9e4ff; font: 700 .84rem/1.2 ui-sans-serif, system-ui, sans-serif; }
+.simple-geometry-guide__control select { min-height: 2rem; color: #101938; background: #f5f7ff; border: 1px solid rgba(207,224,255,.5); border-radius: .4rem; font: inherit; }
+.simple-geometry-guide__control input { accent-color: var(--aqua); }
+.simple-geometry-guide__comparison { display: grid; gap: .4rem; padding: .75rem .85rem; border: 1px solid rgba(133, 221, 232, .38); border-radius: .8rem; background: rgba(8, 26, 52, .58); }
+.simple-geometry-guide__comparison[hidden] { display: none; }
+.simple-geometry-guide__comparison strong:first-child { color: var(--aqua); }
+.simple-geometry-guide__comparison strong:last-child { color: var(--violet); }
 .simple-geometry-guide__boundary, .simple-geometry-guide__selection { font-size: .82rem; color: #b9c8e8 !important; }
 .simple-geometry-guide__error { border: 1px solid rgba(255, 122, 152, .72); border-radius: .75rem; padding: .72rem .85rem; color: #ffd9e2 !important; background: rgba(110, 16, 45, .35); font-weight: 700; }
 .geometry-explorer[data-presentation-mode="simple"] .geometry-explorer__stage { grid-column: 1; min-height: min(55svh, 34rem); }

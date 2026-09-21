@@ -23,6 +23,22 @@ rejected without child samples. Its quadratic root labels are not sheets or
 covering branches. It must remain distinct from the finite global and
 ancestor-scoped evidence below.
 
+The current local source-slice selector has four presets backed by two concrete
+adapters: three bounded Laurent configurations and a canonical Fermat quintic
+cross-section. The latter fixes `Z0=1`, `z3=z4=-1`, so its full source records
+are `(z1,z2,-1,-1)` on `z1^5+z2^5=1`; its 25 `(k1,k2)` phase patches are
+source-labelled finite cross-section patches, not sheets or the whole
+threefold. Every preset has a deterministic local inverse-branch replay
+sample. Simple mode keeps its Laurent default but offers **Show the colourful
+quintic**, which restores the reviewed `xiWindow=1.2`, mounts the Fermat
+surface, and fits only the presentation camera; it does not make a pullback.
+The fixed Fermat demonstration source is `fermat-k0-0-t12-x7`, with radius 4
+and 81 paired samples. **Magnify this patch · compare X1 with X0** explicitly
+generates that local branch and opens the normalized local-log overlay directly;
+raw coordinates remain a secondary diagnostic. A slice change clears the
+comparison and never generates pullback geometry. These finite local comparisons
+do not establish global self-similarity, a fractal boundary, or metric zoom.
+
 ## Try the visualizer
 
 Open the [public visualizer](https://akari-h-111.github.io/self-similar-calabi-yau-visualizer/). For a local checkout, run `python3 -m http.server 8000` at the repository root and open `http://127.0.0.1:8000/`. The app is static HTML, CSS, and vanilla JavaScript; a local HTTP server is needed for its JSON requests. The default **Simple mode** starts with a finite mesh of a declared two-real-parameter `X₀` slice, explicitly projected to `R³`. Selecting one validated vertex computes one cap-checked `9×9` local patch and a single `D=2` inverse branch (81 paired parent/child records), with a separate local-log comparison. Drag, wheel/pinch, +/−, and fit controls operate the visual camera only. **Expert mode** exposes the formula parameters, view selector, finite scope controls, provenance, diagnostics, historical finite-fibre paths, structural SVG playground, and optional structural 3D descriptor camera. Neither mode presents a complete global object.
