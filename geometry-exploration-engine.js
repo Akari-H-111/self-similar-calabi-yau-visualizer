@@ -395,7 +395,10 @@ class GeometryExplorer {
     if (simpleError) { simpleError.textContent = `Rendering unavailable: ${text}`; simpleError.hidden = false; }
     if (caption) caption.textContent = "The 3D view was not generated.";
     if (simpleStatus) simpleStatus.textContent = "No substitute graphic is shown.";
-    console.error("Geometry explorer:", error);
+    // A missing GPU backend is an expected capability refusal on some browsers;
+    // the visible in-page alert is the user-facing diagnostic.  Keep developer
+    // context without turning a valid fallback path into a console error.
+    console.warn("Geometry explorer:", error);
   }
 
   rebuild() {
