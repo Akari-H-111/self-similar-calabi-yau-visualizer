@@ -198,7 +198,6 @@ jobs:
           node verify_geometry_exploration_engine_v1.js
           node verify_geometry_exploration_contract_v2.js
           node verify_local_branch_geometry_view_v1.js
-          node verify_geometry_exploration_fallback_browser_v1.js
 
       # Thread 26's byte-pinned verifier and browser check are retained for their historical
       # checkpoint. Later main deliberately uses the current hybrid/global/scoped successors.
@@ -513,7 +512,9 @@ jobs:
         run: node verify_dual_mode_3d_presentation_v0_01.js
 
       - name: Verify current geometry explorer interactions in Chromium
-        run: node verify_geometry_exploration_engine_browser_v1.js
+        run: |
+          node verify_geometry_exploration_engine_browser_v1.js
+          node verify_geometry_exploration_fallback_browser_v1.js
 
       - name: Upload Thread 24 base geometric browser evidence
         if: always()
