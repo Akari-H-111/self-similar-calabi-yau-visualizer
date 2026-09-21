@@ -2,7 +2,7 @@ import * as THREE from "./vendor/three/build/three.webgpu.min.js";
 import { OrbitControls } from "./vendor/three/addons/controls/OrbitControls.js";
 
 const CACHE_LIMIT = 8;
-const DEFAULTS = Object.freeze({ lambda: 1, kappa: 1, resolution: 64, D: 2, depth: 1 });
+const DEFAULTS = Object.freeze({ lambda: 1, kappa: 1, r1: 1, r2: 1, c3Magnitude: 1, c3Argument: 0, xiWindow: 1.2, resolution: 64, D: 2, depth: 1 });
 
 function byId(id) { return document.getElementById(id); }
 function phaseColor(value) { return new THREE.Color().setHSL(0.68 - value * 0.58, 0.9, 0.58); }
@@ -48,6 +48,9 @@ class GeometryExplorer {
     this.cache = new Map();
     this.group = null;
     this.parameters = { ...DEFAULTS };
+    this.lastAcceptedSliceParameters = { ...this.parameters };
+    this.slicePresetId = "laurent-balanced";
+    this.presetParameters = new Map(Object.entries(window.SlicePresetRegistry?.PRESETS || {}).map(([id, value]) => [id, { ...value.parameters }]));
     this.parameterText = { lambda: "1", kappa: "1" };
     this.scope = "finite-seed";
     this.localFit = false;
@@ -55,6 +58,9 @@ class GeometryExplorer {
     this.sliceRecord = null;
     this.selectedSliceVertex = null;
     this.localComparison = "raw_projected_patches";
+    this.localComparisonOpacity = 50;
+    this.localComparisonMaterials = [];
+    this.pendingFeaturedFermatFit = false;
     this.sceneData = null;
     this.config = null;
     this.ready = false;
@@ -119,6 +125,36 @@ class GeometryExplorer {
     if (name === "lambda" || name === "kappa") this.parameterText[name] = String(value);
     const output = this.root.querySelector(`[data-geometry-output='${name}']`);
     if (output) output.textContent = String(value);
+    const simpleInput = this.root.querySelector(`[data-slice-control='${name}']`);
+    if (simpleInput) simpleInput.value = String(value);
+  }
+
+  applySlicePreset(id) {
+    const Registry = window.SlicePresetRegistry, selected = Registry?.PRESETS[id];
+    if (!selected) return;
+    if (this.slicePresetId) this.presetParameters.set(this.slicePresetId, { ...this.parameters });
+    this.slicePresetId = id;
+    const presetSelect = this.root.querySelector("[data-slice-preset]");
+    if (presetSelect) presetSelect.value = id;
+    const values = this.presetParameters.get(id) || { ...selected.parameters };
+    this.parameters = { ...this.parameters, ...values };
+    for (const [name, value] of Object.entries(values)) this.setInput(name, value);
+    this.parameterText.lambda = String(this.parameters.lambda);
+    this.parameterText.kappa = String(this.parameters.kappa);
+    this.selectedSliceVertex = null; this.localComparison = "raw_projected_patches"; this.mode = "slice"; this.cache.clear();
+    const selection = this.root.querySelector("[data-simple-geometry-selection]");
+    if (selection) selection.textContent = "Preparing the preset's deterministic eligible sample; no previous patch selection is reused.";
+    const boundary = this.root.querySelector("[data-simple-geometry-boundary]");
+    if (boundary) boundary.textContent = "This is a finite 3D projection of a declared 2D slice. It is not the full six-real-dimensional Calabi–Yau. " + Registry.describeBoundary(id, this.parameters);
+    if (this.ready) this.rebuild();
+  }
+
+  showFermatPreset() {
+    const preset = window.SlicePresetRegistry?.PRESETS["fermat-quintic"];
+    if (!preset) return;
+    this.presetParameters.set("fermat-quintic", { ...preset.parameters, xiWindow: 1.2 });
+    this.pendingFeaturedFermatFit = true;
+    this.applySlicePreset("fermat-quintic");
   }
 
   applyUiMode(mode, { rebuild = true } = {}) {
@@ -158,6 +194,13 @@ class GeometryExplorer {
     this.camera.position.copy(this.initialCameraPosition);
     this.controls.target.set(0, 0, 0);
     this.controls.update();
+    this.render();
+  }
+
+  setLocalComparisonOpacity(value) {
+    this.localComparisonOpacity = bounded(Number(value), 0, 100);
+    this.root.querySelector("[data-local-comparison-opacity]").value = String(this.localComparisonOpacity);
+    this.localComparisonMaterials.forEach(({ material, endpoint, baseOpacity }) => { material.opacity = baseOpacity * (endpoint === "parent" ? (100 - this.localComparisonOpacity) / 100 : this.localComparisonOpacity / 100); });
     this.render();
   }
 
@@ -211,8 +254,14 @@ class GeometryExplorer {
       if (name === "lambda" || name === "kappa") this.parameterText[name] = input.value;
       const output = this.root.querySelector("[data-geometry-output='" + name + "']");
       if (output) output.textContent = String(this.parameters[name]);
+      this.presetParameters.set(this.slicePresetId, { ...this.parameters });
       this.rebuild();
     }));
+    this.root.querySelector("[data-slice-preset]")?.addEventListener("change", (event) => this.applySlicePreset(event.target.value));
+    this.root.querySelectorAll("[data-slice-control]").forEach((input) => input.addEventListener("input", () => {
+      const name = input.dataset.sliceControl; this.parameters[name] = Number(input.value); this.presetParameters.set(this.slicePresetId, { ...this.parameters }); this.cache.clear(); this.rebuild();
+    }));
+    this.root.querySelector("[data-local-comparison-opacity]")?.addEventListener("input", (event) => this.setLocalComparisonOpacity(event.target.value));
     this.root.querySelector("[data-geometry-scope]").addEventListener("change", (event) => { this.scope = event.target.value; this.rebuild(); });
     this.root.querySelector("[data-geometry-ancestor]").addEventListener("change", () => this.rebuild());
     this.root.querySelector("[data-geometry-local-fit]").addEventListener("change", (event) => { this.localFit = event.target.checked; this.rebuild(); });
@@ -230,9 +279,10 @@ class GeometryExplorer {
     this.root.querySelector("[data-geometry-action='reset']")?.addEventListener("click", () => this.fitCamera());
     this.root.querySelectorAll("[data-simple-geometry-action]").forEach((button) => button.addEventListener("click", () => {
       const action = button.dataset.simpleGeometryAction;
-      if (action === "explore" && this.mode === "slice") {
+      if (action === "fermat") this.showFermatPreset();
+      else if (action === "explore" && this.mode === "slice") {
         this.mode = "localpatch";
-        this.localComparison = "raw_projected_patches";
+        this.localComparison = this.sliceRecord?.formulaId === "fermat_quintic_cross_section_v1" ? "normalized_log_comparison" : "raw_projected_patches";
         this.rebuild();
       } else if (action === "comparison" && this.mode === "localpatch") {
         this.localComparison = this.localComparison === "raw_projected_patches" ? "normalized_log_comparison" : "raw_projected_patches";
@@ -355,7 +405,7 @@ class GeometryExplorer {
     this.selectedSliceVertex = { branch, vertexIndex, id: record.id };
     this.drawSliceSelection();
     const target = this.root.querySelector("[data-simple-geometry-selection]");
-    if (target) target.textContent = `Selected validated X₀ vertex ${record.id}. Press Explore this patch to compute one local P_${this.parameters.D} inverse branch.`;
+    if (target) target.textContent = `${this.sliceRecord?.formulaId === "fermat_quintic_cross_section_v1" ? "Selected validated Fermat source vertex" : "Selected validated X₀ vertex"} ${record.id}. Press See the rule repeat to compute one local P_${this.parameters.D} inverse branch; an ineligible point is never silently replaced.`;
     this.updateSimpleGuide(this.sliceRecord);
   }
 
@@ -379,6 +429,7 @@ class GeometryExplorer {
   }
 
   cacheKey() { return [this.mode, this.parameters.lambda, this.parameters.kappa, this.parameters.resolution,
+    this.slicePresetId, this.parameters.r1, this.parameters.r2, this.parameters.c3Magnitude, this.parameters.c3Argument, this.parameters.xiWindow,
     this.parameters.D, this.parameters.depth, this.scope, this.root.querySelector("[data-geometry-ancestor]").value,
     this.selectedSliceVertex?.branch ?? "", this.selectedSliceVertex?.vertexIndex ?? "", this.localComparison].join(":"); }
   setState(state, text) { this.root.dataset.state = state; this.status.textContent = text; }
@@ -401,6 +452,18 @@ class GeometryExplorer {
     console.warn("Geometry explorer:", error);
   }
 
+  refuseSliceChange(error) {
+    this.parameters = { ...this.lastAcceptedSliceParameters };
+    for (const [name, value] of Object.entries(this.parameters)) this.setInput(name, value);
+    this.presetParameters.set(this.slicePresetId, { ...this.parameters });
+    this.mode = "slice"; this.localComparison = "raw_projected_patches";
+    if (!this.sliceRecord) return this.fail("Declared geometry generation failed. No unrelated procedural fallback was substituted.", error);
+    this.mount(this.sliceRecord);
+    this.setState("refused", `Requested slice change refused: ${error.message}. The last valid slice remains visible; no pullback was generated.`);
+    const simpleError = this.root.querySelector("[data-simple-geometry-error]");
+    if (simpleError) { simpleError.textContent = `Slice change refused: ${error.message}. The last valid slice remains visible.`; simpleError.hidden = false; }
+  }
+
   rebuild() {
     if (!this.ready) return;
     const token = ++this.job, key = this.cacheKey();
@@ -412,7 +475,10 @@ class GeometryExplorer {
         if (!this.cache.has(key)) { this.cache.set(key, record); if (this.cache.size > CACHE_LIMIT) this.cache.delete(this.cache.keys().next().value); }
         if (token !== this.job) return;
         this.mount(record);
-      } catch (error) { this.fail("Declared geometry generation failed. No unrelated procedural fallback was substituted.", error); }
+      } catch (error) {
+        if (this.mode === "slice" || this.mode === "localpatch") this.refuseSliceChange(error);
+        else this.fail("Declared geometry generation failed. No unrelated procedural fallback was substituted.", error);
+      }
     });
   }
 
@@ -420,13 +486,16 @@ class GeometryExplorer {
     const MathView = window.GeometryExplorationMath;
     if (!MathView) throw new Error("GeometryExplorationMath is unavailable.");
     const scene = this.sceneWithParameters();
-    if (this.mode === "slice") return MathView.declaredSlice(scene, { thetaSegments: this.parameters.resolution, phiSegments: Math.max(24, Math.round(this.parameters.resolution * 0.72)) });
+    const Registry = window.SlicePresetRegistry;
+    if (!Registry) throw new Error("SlicePresetRegistry is unavailable.");
+    if (this.mode === "slice") return Registry.generateSlice(scene, this.slicePresetId, this.parameters);
     if (this.mode === "localpatch") {
-      const slice = this.sliceRecord || MathView.declaredSlice(scene, { thetaSegments: this.parameters.resolution, phiSegments: Math.max(24, Math.round(this.parameters.resolution * 0.72)) });
+      const slice = this.sliceRecord || Registry.generateSlice(scene, this.slicePresetId, this.parameters);
       const phiRow = slice.phiSegments + 1;
-      const fallback = { branch: 0, vertexIndex: Math.floor(slice.thetaSegments / 2) * phiRow + Math.max(4, Math.min(slice.phiSegments - 4, Math.round(slice.phiSegments * 0.22))) };
+      const demo = slice.demonstrationSourceId && slice.sourceRecords.find((record) => record.id === slice.demonstrationSourceId);
+      const fallback = demo ? { branch: demo.branch, vertexIndex: demo.i * phiRow + demo.j } : { branch: 0, vertexIndex: Math.floor(slice.thetaSegments / 2) * phiRow + Math.max(4, Math.min(slice.phiSegments - 4, Math.round(slice.phiSegments * 0.22))) };
       const selected = this.selectedSliceVertex || fallback;
-      return window.GeometryExplorationContract.createLocalBranchPatch(scene, slice, this.pullbackConfig, { ...selected, radius: 4, D: this.parameters.D, depth: 1, rootMultiIndex: [0, 0, 0, 0] });
+      return Registry.generateLocalPatch(scene, slice, { ...selected, radius: slice.formulaId === "fermat_quintic_cross_section_v1" ? slice.demonstrationRadius || 4 : 4, D: this.parameters.D, depth: 1, rootMultiIndex: [0, 0, 0, 0] }, { cap: this.pullbackConfig.materialization.maxGeneratedPoints, powerResidualTolerance: this.pullbackConfig.powerResidualTolerance });
     }
     if (this.mode === "phase") return MathView.torusEmbedding(scene, this.config);
     if (this.mode === "cloud") return MathView.finiteSampleCloud(scene, this.config);
@@ -436,17 +505,27 @@ class GeometryExplorer {
   }
 
   mount(record) {
-    if (this.group) { this.scene.remove(this.group); dispose(this.group); }
-    this.group = new THREE.Group();
-    this.activePointCloud = null;
-    this.activePointGeometry = null;
-    this.selectionMarker = null;
+    const refused = record.kind === "pullback_preflight_refusal" || record.kind === "local_branch_patch_refusal";
+    if (!refused) {
+      if (this.group) { this.scene.remove(this.group); dispose(this.group); }
+      this.group = new THREE.Group();
+      this.activePointCloud = null;
+      this.activePointGeometry = null;
+      this.selectionMarker = null;
+    }
     this.currentRecord = record;
     this.displayNormalizationFactor = null;
-    if (record.kind === "declared_parameter_subfamily") this.mountSlice(record);
-    else if (record.kind === "local_inverse_branch_patch") this.mountLocalPatch(record);
-    else if (record.kind !== "pullback_preflight_refusal") this.mountPoints(record);
-    this.scene.add(this.group);
+    if (!refused) {
+      if (record.kind === "declared_parameter_subfamily") this.mountSlice(record);
+      else if (record.kind === "local_inverse_branch_patch") this.mountLocalPatch(record);
+      else this.mountPoints(record);
+      this.scene.add(this.group);
+      if (record.kind === "declared_parameter_subfamily") this.lastAcceptedSliceParameters = { ...this.parameters };
+      if (record.kind === "declared_parameter_subfamily" && record.formulaId === "fermat_quintic_cross_section_v1" && this.pendingFeaturedFermatFit) {
+        this.pendingFeaturedFermatFit = false;
+        this.fitCamera();
+      }
+    }
     const detail = this.describe(record);
     this.detail.innerHTML = detail;
     this.root.dataset.mode = this.mode;
@@ -466,11 +545,11 @@ class GeometryExplorer {
     }
     const flags = record.truthFlags || window.GeometryExplorationContract.viewFlags(record.kind);
     for (const [name, value] of Object.entries(flags)) this.root.dataset[name] = String(value);
-    const d = window.GeometryExplorationContract.discriminant(this.parameterText.lambda, this.parameterText.kappa);
+    const d = record.formulaId === "fermat_quintic_cross_section_v1" ? { status: "declared canonical cross-section" } : window.GeometryExplorationContract.discriminant(this.parameterText.lambda, this.parameterText.kappa);
     this.root.dataset.discriminant = d.status;
     const simpleQualification = this.root.querySelector("[data-simple-geometry-qualification]");
-    if (simpleQualification) simpleQualification.textContent = `Parameter status: ${d.status}. This exact-input discriminant check does not prove smoothness or Calabi–Yau properties.`;
-    this.root.querySelector("[data-geometry-discriminant]").textContent = `Discriminant: ${d.status} for the exact displayed decimal inputs. Source criterion: κ≠0 and λ⁵=5⁵κ. The renderer evaluates binary64 approximations. This is a parameter check, not a renderer proof of smoothness or Calabi–Yau status.`;
+    if (simpleQualification) simpleQualification.textContent = record.formulaId === "fermat_quintic_cross_section_v1" ? "Parameter status: declared canonical cross-section. Numerical residuals do not prove smoothness or Calabi–Yau properties." : `Parameter status: ${d.status}. This exact-input discriminant check does not prove smoothness or Calabi–Yau properties.`;
+    this.root.querySelector("[data-geometry-discriminant]").textContent = record.formulaId === "fermat_quintic_cross_section_v1" ? "Fermat boundary: the shown 25 phase-related patches satisfy the declared affine cross-section z1⁵+z2⁵=1 numerically; this is not the full quintic threefold." : `Discriminant: ${d.status} for the exact displayed decimal inputs. Source criterion: κ≠0 and λ⁵=5⁵κ. The renderer evaluates binary64 approximations. This is a parameter check, not a renderer proof of smoothness or Calabi–Yau status.`;
     this.root.querySelector("[data-geometry-truth]").textContent = `View: ${record.kind}; complete X₀=false; complete global Xₙ=false; finite sample=${flags.finiteSample}; two-parameter slice=${flags.twoParameterSlice}; projection=${flags.projectionApplied}; fractal boundary=false; geometric zoom=false.`;
     const normalization = record.kind === "local_inverse_branch_patch" ? (this.localComparison === "normalized_log_comparison" ? "local_log_recenter_normalization" : "raw_projected_panel_fit") :
       record.kind === "pullback_preflight_refusal" || record.kind === "local_branch_patch_refusal" ? "none" :
@@ -482,7 +561,6 @@ class GeometryExplorer {
     this.root.dataset.metricScaleD2Metadata = String(this.parameters.D ** 2);
     this.root.dataset.inverseBranchScaling = inverseBranchScaling;
     this.root.dataset.localChartNormalization = record.kind === "local_inverse_branch_patch" && this.localComparison === "normalized_log_comparison" ? "true" : "false";
-    const refused = record.kind === "pullback_preflight_refusal" || record.kind === "local_branch_patch_refusal";
     this.setState(refused ? "refused" : "ready",
       refused ? record.reason : `${this.backend} · ${record.kind === "declared_parameter_subfamily" ? "two declared root-labelled parameter surfaces" : String(record.pointCount ?? record.points?.length ?? 0) + " finite points"} · cache ${this.cache.size}/${CACHE_LIMIT}.`);
     this.canvas.hidden = false;
@@ -498,26 +576,33 @@ class GeometryExplorer {
     const explore = this.root.querySelector("[data-simple-geometry-action='explore']");
     const comparison = this.root.querySelector("[data-simple-geometry-action='comparison']");
     const surface = this.root.querySelector("[data-simple-geometry-action='surface']");
-    if (!caption || !status || !explore || !comparison || !surface) return;
+    const localGuide = this.root.querySelector("[data-simple-geometry-comparison]");
+    const evidence = this.root.querySelector("[data-local-comparison-evidence]");
+    if (!caption || !status || !explore || !comparison || !surface || !localGuide || !evidence) return;
     if (record.kind === "local_branch_patch_refusal") {
       caption.textContent = `This local patch was not generated: ${record.reason}`;
       status.textContent = "Choose another visible surface vertex, or return to the sampled surface.";
-      explore.hidden = true; comparison.hidden = true; surface.hidden = false;
+      explore.hidden = true; comparison.hidden = true; surface.hidden = false; localGuide.hidden = true;
       return;
     }
     if (record.kind === "declared_parameter_subfamily") {
       const selected = this.selectedSliceVertex;
-      caption.textContent = `A 3D view of a sampled X₀ slice at λ=${this.parameters.lambda}, κ=${this.parameters.kappa}; π=(Re z₁, Im z₁, Re z₄). ${record.branches[0].records.length * 2} validated mesh vertices; selected ${selected ? selected.id : "a default interior vertex"}.`;
+      caption.textContent = record.formulaId === "fermat_quintic_cross_section_v1"
+        ? `A 3D projection of the canonical Fermat quintic 2D cross-section: Z₀=1, z₃=z₄=−1, so z₁⁵+z₂⁵=1. All 25 phase-related patches are shown; selected ${selected ? selected.id : "a deterministic eligible sample"}.`
+        : `A 3D view of a sampled X₀ slice at λ=${this.parameters.lambda}, κ=${this.parameters.kappa}; π=(Re z₁, Im z₁, Re z₄). ${record.branches[0].records.length * 2} validated mesh vertices; selected ${selected ? selected.id : "a default interior vertex"}.`;
       status.textContent = `Visual camera · ${Number(this.root.dataset.cameraScale).toFixed(1)}× · click or use arrows to choose a local patch.`;
-      explore.hidden = false; explore.disabled = false; explore.textContent = "Explore this patch";
-      comparison.hidden = true; surface.hidden = true;
+      const fermat = record.formulaId === "fermat_quintic_cross_section_v1";
+      explore.hidden = false; explore.disabled = false; explore.textContent = fermat ? "Magnify this patch · compare X1 with X0" : "See the rule repeat";
+      comparison.hidden = true; surface.hidden = true; localGuide.hidden = true;
       return;
     }
     if (record.kind === "local_inverse_branch_patch") {
-      caption.textContent = `${this.localComparison === "normalized_log_comparison" ? "Normalized local-log panels" : "Raw projected panels"}: left aqua is the X₀ parent patch; right violet is one X₁ inverse branch. ${record.pointCount} paired samples · D=${record.D} · root tuple (${record.rootMultiIndex.join(", ")}) · comparison error ${record.maxLocalScaleError.toExponential(2)}.`;
+      const normalized = this.localComparison === "normalized_log_comparison";
+      caption.textContent = `${normalized ? "Normalized local-log paired overlay" : "Raw projected panels"}: child X₁ --P_D--> parent X₀. ${record.pointCount} paired samples · D=${record.D} · root tuple (${record.rootMultiIndex.join(", ")}) · comparison error ${record.maxLocalScaleError.toExponential(2)}. ${normalized ? "After recentering this local log chart and multiplying child offsets by D, the paired samples coincide within the displayed error." : "This is the raw projected diagnostic view."}`;
       status.textContent = `Visual camera · ${Number(this.root.dataset.cameraScale).toFixed(1)}× · ${this.localComparison === "raw_projected_patches" ? "raw projected parent and child patches" : "recentered local-log comparison; child offsets multiplied by D"}.`;
-      explore.hidden = true; comparison.hidden = false; surface.hidden = false;
-      comparison.textContent = this.localComparison === "raw_projected_patches" ? "Show local comparison" : "Show raw projections";
+      explore.hidden = true; comparison.hidden = false; surface.hidden = false; localGuide.hidden = false;
+      comparison.textContent = normalized ? "Show raw coordinates" : "Return to comparison";
+      evidence.textContent = `Map direction: child X₁ --P_${record.D}--> parent X₀ · ${record.pointCount} paired samples · root tuple (${record.rootMultiIndex.join(", ")}) · comparison error ${record.maxLocalScaleError.toExponential(2)}.`;
       return;
     }
   }
@@ -536,10 +621,13 @@ class GeometryExplorer {
     });
     const row = record.phiSegments + 1;
     if (!this.selectedSliceVertex || !record.branches[this.selectedSliceVertex.branch]?.records[this.selectedSliceVertex.vertexIndex]) {
-      const branch = 0, vertexIndex = Math.floor(record.thetaSegments / 2) * row + Math.max(4, Math.min(record.phiSegments - 4, Math.round(record.phiSegments * 0.22)));
+      const demo = record.demonstrationSourceId && record.sourceRecords?.find((item) => item.id === record.demonstrationSourceId);
+      const branch = demo?.branch ?? 0, vertexIndex = demo ? demo.i * row + demo.j : Math.floor(record.thetaSegments / 2) * row + Math.max(4, Math.min(record.phiSegments - 4, Math.round(record.phiSegments * 0.22)));
       this.selectedSliceVertex = { branch, vertexIndex, id: record.branches[branch].records[vertexIndex]?.id };
     }
     this.drawSliceSelection();
+    const selection = this.root.querySelector("[data-simple-geometry-selection]");
+    if (selection && this.selectedSliceVertex) selection.textContent = `Selected validated ${record.formulaId === "fermat_quintic_cross_section_v1" ? "Fermat source" : "X₀"} vertex ${this.selectedSliceVertex.id}. Press ${record.formulaId === "fermat_quintic_cross_section_v1" ? "Magnify this patch" : "See the rule repeat"} to compute one local inverse branch.`;
   }
 
   mountLocalPatch(record) {
@@ -547,18 +635,44 @@ class GeometryExplorer {
     const parentPositions = record.parentPoints.flatMap((point) => normalized ? point.normalizedLocalPosition : point.rawPosition);
     const childPositions = record.children.flatMap((point) => normalized ? point.normalizedLocalPosition : point.rawPosition);
     const combined = [...parentPositions, ...childPositions];
-    const scale = renderFit([combined], 2.25);
+    const scale = renderFit([combined], 2.25, [0, 0, 0], normalized);
     this.displayNormalizationFactor = scale;
-    const makePatch = (positions, color, shift) => {
-      const geometry = positionGeometry(positions, new Array(positions.length / 3).fill(color === 0x42f5d1 ? 0.35 : 0.78), scale);
+    this.localComparisonMaterials = [];
+    const makePatch = (positions, color, endpoint, shift) => {
+      const geometry = positionGeometry(positions, new Array(positions.length / 3).fill(.5), scale);
       geometry.setIndex(new THREE.BufferAttribute(record.indices, 1)); geometry.computeVertexNormals();
-      const mesh = new THREE.Mesh(geometry, new THREE.MeshPhysicalMaterial({ color, vertexColors: true, side: THREE.DoubleSide, roughness: .28, metalness: .12, transmission: .05, transparent: true, opacity: .82 }));
+      const meshMaterial = new THREE.MeshPhysicalMaterial({ color, vertexColors: false, wireframe: normalized && endpoint === "parent", side: THREE.DoubleSide, roughness: .28, metalness: .12, transmission: endpoint === "child" ? .18 : 0, transparent: true, opacity: .82, depthWrite: false });
+      const mesh = new THREE.Mesh(geometry, meshMaterial);
       mesh.position.x = shift; this.group.add(mesh);
-      const dots = new THREE.Points(geometry.clone(), new THREE.PointsMaterial({ color, size: .09, transparent: true, opacity: .9, sizeAttenuation: true, depthWrite: false }));
+      const dotsMaterial = new THREE.PointsMaterial({ color, size: .12, transparent: true, opacity: .96, sizeAttenuation: true, depthWrite: false });
+      const dots = new THREE.Points(geometry.clone(), dotsMaterial);
       dots.position.x = shift; this.group.add(dots);
+      this.localComparisonMaterials.push({ material: meshMaterial, endpoint, baseOpacity: .82 }, { material: dotsMaterial, endpoint, baseOpacity: .96 });
     };
-    makePatch(parentPositions, 0x42f5d1, -3.2);
-    makePatch(childPositions, 0xc77dff, 3.2);
+    makePatch(parentPositions, 0x42f5d1, "parent", normalized ? 0 : -3.2);
+    makePatch(childPositions, 0xc77dff, "child", normalized ? 0 : 3.2);
+    this.setLocalComparisonOpacity(this.localComparisonOpacity);
+    if (normalized) this.fitLocalComparisonCamera(record, parentPositions, scale);
+  }
+
+  fitLocalComparisonCamera(record, positions, scale) {
+    const center = Math.floor(record.side / 2) * record.side + Math.floor(record.side / 2);
+    const point = (index) => new THREE.Vector3(positions[index * 3] * scale, positions[index * 3 + 1] * scale, positions[index * 3 + 2] * scale);
+    const u = point(center + 1).sub(point(center - 1));
+    const v = point(center + record.side).sub(point(center - record.side));
+    const normal = u.clone().cross(v);
+    if (u.lengthSq() < 1e-12 || v.lengthSq() < 1e-12 || normal.lengthSq() < 1e-12) {
+      this.root.dataset.localComparisonCamera = "safe_existing_pose";
+      return;
+    }
+    const extent = Math.max(...positions.map((value) => Math.abs(value * scale)), 1);
+    const distance = bounded(extent / Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2)) * 1.15, this.controls.minDistance, this.controls.maxDistance);
+    this.camera.up.copy(u.normalize());
+    this.controls.target.set(0, 0, 0);
+    this.camera.position.copy(normal.normalize().multiplyScalar(distance));
+    this.camera.lookAt(this.controls.target);
+    this.controls.update();
+    this.root.dataset.localComparisonCamera = "central_tangent_fit";
   }
 
   mountPoints(record) {
@@ -594,9 +708,11 @@ class GeometryExplorer {
 
   describe(record) {
     const base = `<strong>Formula binding:</strong> <code>W_kappa_torus4_v1</code>, with runtime λ=${this.parameters.lambda}, κ=${this.parameters.kappa} embedded as real complex values. `;
+    const fermat = record.formulaId === "fermat_quintic_cross_section_v1";
+    if (fermat && record.kind === "declared_parameter_subfamily") return `<strong>Canonical Fermat quintic cross-section.</strong> <code>Z0^5+Z1^5+Z2^5+Z3^5+Z4^5=0</code>; set Z0=1 and z3=z4=−1, giving <code>z1^5+z2^5=1</code>. Every record retains (z1,z2,−1,−1); 25 labelled phase patches use the Hanson parameterization and project to π=(Re z1, Im z1, Re z2). This is a finite 3D projection of a two-real-dimensional slice, not the six-real-dimensional threefold. Max residual: ${record.maxResidual.toExponential(2)}.`;
     if (record.kind === "declared_parameter_subfamily") return base + `<strong>Declared parameter subfamily.</strong> Set z₁=eⁱθ, z₂=eⁱφ, z₃=1 and solve z₄²−(λ−z₁−z₂−1)z₄+κ/(z₁z₂)=0 for each (θ,φ)∈S¹×S¹. The rendered coordinates are π=(Re z₁, Im z₁, Re z₄), followed by a uniform display fit. z₃ is fixed; z₂ remains only as φ, and Im z₄ is omitted from the axes. Color is phase(z₄), an auxiliary domain-color encoding. The two colours are ordered quadratic-root labels only—not sheets, covering branches, components, or global topology. Max floating residual: ${record.maxResidual.toExponential(2)}.`;
     if (record.kind === "local_branch_patch_refusal") return `<strong>Local patch request refused before child generation.</strong> ${record.reason} The requested sampled contour is not treated as a geometric boundary.`;
-    if (record.kind === "local_inverse_branch_patch") return base + `<strong>Local inverse-branch patch.</strong> ${record.pointCount} source points from ${record.sourcePatchId} and the selected root tuple (${record.rootMultiIndex.join(",")}) are compared under P<sub>${record.D}</sub>. The local-log comparison reports max D(w′−w′₀)−(w−w₀) error ${record.maxLocalScaleError.toExponential(2)}. Raw 3D panels remain projections; normalized panels are display coordinates, not a global metric theorem. Max power residual ${record.maxParentResidualMagnitude.toExponential(2)}; max inherited W residual ${record.maxMembershipResidualMagnitude.toExponential(2)}.`;
+    if (record.kind === "local_inverse_branch_patch") return (fermat ? `<strong>Fermat local inverse-branch comparison.</strong> The child is in <code>X1=P_D⁻¹(X0)</code>, not another phase patch of the original slice. ` : base) + `${record.pointCount} source points from ${record.sourcePatchId} and the selected root tuple (${record.rootMultiIndex.join(",")}) are compared under P<sub>${record.D}</sub>. The local-log comparison reports max D(w′−w′₀)−(w−w₀) error ${record.maxLocalScaleError.toExponential(2)}. Raw 3D panels remain projections; normalized panels are display coordinates, not a global metric theorem. Max power residual ${record.maxParentResidualMagnitude.toExponential(2)}; max inherited equation residual ${record.maxMembershipResidualMagnitude.toExponential(2)}.`;
     if (record.kind === "phase_torus_display_embedding") return base + `<strong>Finite validated sample display embedding.</strong> ${record.sampleModel.sampleCount} deterministic X₀ samples are encoded by arg(z₁), arg(z₂), and clipped log|z₃| in a display torus. The torus is not X₀; periodic seam/overlap and density are display effects. Each point retains finite numerical membership only, never completeness.`;
     if (record.kind === "finite_validated_sample_cloud") return base + `<strong>Finite validated sample cloud.</strong> Each point is one deterministic accepted X₀ sample projected by π=(Re z₁, Im z₁, Re z₄), then uniformly display-fitted. Im z₄, z₂, and z₃ are discarded; projected overlap neither identifies source points nor establishes topology.`;
     if (record.kind === "pullback_preflight_refusal") return `<strong>Request refused before pullback generation.</strong> ${record.reason} Source: ${record.sourceSamplerId}; map: ${record.mapId}; D=${record.D}; n=${record.depth}; scope=${record.scope}.`;

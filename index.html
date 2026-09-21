@@ -49,6 +49,7 @@
   <script src="hybrid-scoped-bridge-semantics.js" defer></script>
   <script src="hybrid-scoped-bridge-runtime.js" defer></script>
   <script src="geometry-exploration-math.js" defer></script>
+  <script src="slice-preset-registry.js" defer></script>
   <script src="geometry-exploration-contract.js" defer></script>
   <script type="module" src="geometry-exploration-engine.js"></script>
 </head>
@@ -76,25 +77,46 @@
         <p data-simple-geometry-caption>Preparing a sampled local slice of X₀…</p>
         <p class="simple-geometry-guide__error" data-simple-geometry-error hidden role="alert"></p>
         <p class="simple-geometry-guide__qualification" data-simple-geometry-qualification>Checking the displayed parameter status…</p>
+        <button type="button" class="simple-geometry-guide__featured" data-simple-geometry-action="fermat">Show the colourful quintic</button>
+        <label class="simple-geometry-guide__control">Slice preset
+          <select data-slice-preset aria-label="Slice preset">
+            <option value="laurent-balanced">Current family — Balanced torus</option>
+            <option value="laurent-open-wings">Current family — Open wings</option>
+            <option value="laurent-near-critical">Current family — Near critical</option>
+            <option value="fermat-quintic">Familiar quintic — 25 phase patches</option>
+          </select>
+        </label>
+        <label class="simple-geometry-guide__control">Fermat ξ window <input data-slice-control="xiWindow" type="range" min="0.2" max="2" step="0.1" value="1.2"></label>
         <div class="simple-geometry-guide__actions" role="group" aria-label="Local geometry controls">
-          <button type="button" class="simple-geometry-guide__next" data-simple-geometry-action="explore">Explore this patch</button>
-          <button type="button" data-simple-geometry-action="comparison" hidden>Show local comparison</button>
+          <button type="button" class="simple-geometry-guide__next" data-simple-geometry-action="explore">See the rule repeat</button>
+          <button type="button" data-simple-geometry-action="comparison" hidden>Show raw coordinates</button>
           <button type="button" data-simple-geometry-action="surface" hidden>Return to surface</button>
           <button type="button" data-simple-geometry-action="zoom-in" aria-label="Zoom visual camera in">+</button>
           <button type="button" data-simple-geometry-action="zoom-out" aria-label="Zoom visual camera out">−</button>
           <button type="button" data-simple-geometry-action="fit">Fit view</button>
         </div>
+        <div class="simple-geometry-guide__comparison" data-simple-geometry-comparison hidden>
+          <p><strong data-local-comparison-parent>parent X₀</strong> ↔ <strong data-local-comparison-child>recentered D × child X₁</strong></p>
+          <label class="simple-geometry-guide__control">Parent ↔ child cross-fade <input data-local-comparison-opacity type="range" min="0" max="100" step="1" value="50" aria-label="Cross-fade parent X0 and recentered child X1"></label>
+          <p data-local-comparison-evidence></p>
+          <p>Finite local inverse-branch evidence; not global self-similarity or metric zoom.</p>
+        </div>
         <p class="simple-geometry-guide__status" data-simple-geometry-status>Visual camera · 1.0×</p>
-        <p class="simple-geometry-guide__boundary">Finite 3D projection, not the whole X₀. Camera controls only change the view.</p>
+        <p class="simple-geometry-guide__boundary" data-simple-geometry-boundary>This is a finite 3D projection of a declared 2D slice. It is not the full six-real-dimensional Calabi–Yau.</p>
         <p class="simple-geometry-guide__selection" data-simple-geometry-selection>Click the shaded surface, or focus it and use arrow keys, to choose a validated local vertex.</p>
       </section>
       <div class="geometry-explorer__stage" aria-label="Interactive three dimensional research visualization"><canvas tabindex="0" aria-label="Drag to orbit the active declared mathematical display. Scroll or pinch for visual camera zoom only. In the sampled surface, use arrow keys to select a neighboring validated vertex."></canvas></div>
       <aside class="geometry-explorer__inspector" aria-label="Mathematical meaning and controls">
         <div><h2>What is on screen</h2><p data-geometry-detail>Loading the declared rendering contract…</p><p data-geometry-discriminant>Checking parameter discriminant…</p><p data-geometry-truth>View classification pending.</p><details class="geometry-explorer__point-inspector" data-geometry-point-inspector hidden><summary>Inspect one computed point</summary><label>Point index <input data-geometry-point-index type="number" min="0" step="1" value="0"></label><p data-geometry-point-evidence></p></details></div>
         <div class="geometry-explorer__parameters">
-          <label>λ (runtime real slice; −4 to 4)<output data-geometry-output="lambda">1</output><input data-geometry-parameter="lambda" type="range" min="-4" max="4" step="0.25" value="1"></label>
+          <label>λ (bounded runtime real slice; −3 to 3)<output data-geometry-output="lambda">1</output><input data-geometry-parameter="lambda" type="range" min="-3" max="3" step="0.25" value="1"></label>
           <label>κ (nonzero real UI range; 0.01 to 3)<output data-geometry-output="kappa">1</output><input data-geometry-parameter="kappa" type="range" min="0.01" max="3" step="any" value="1"></label>
           <label>surface resolution (declared subfamily only)<output data-geometry-output="resolution">64</output><input data-geometry-parameter="resolution" type="range" min="24" max="112" step="8" value="64"></label>
+          <label>r₁ (Laurent only)<output data-geometry-output="r1">1</output><input data-geometry-parameter="r1" type="range" min="0.25" max="2.5" step="0.05" value="1"></label>
+          <label>r₂ (Laurent only)<output data-geometry-output="r2">1</output><input data-geometry-parameter="r2" type="range" min="0.25" max="2.5" step="0.05" value="1"></label>
+          <label>|c₃| (Laurent only)<output data-geometry-output="c3Magnitude">1</output><input data-geometry-parameter="c3Magnitude" type="range" min="0.25" max="2.5" step="0.05" value="1"></label>
+          <label>arg(c₃) (Laurent only)<output data-geometry-output="c3Argument">0</output><input data-geometry-parameter="c3Argument" type="range" min="-3.14159" max="3.14159" step="0.05" value="0"></label>
+          <label>Fermat ξ window<output data-geometry-output="xiWindow">1.2</output><input data-geometry-parameter="xiWindow" type="range" min="0.2" max="2" step="0.1" value="1.2"></label>
           <button class="geometry-explorer__action" type="button" data-geometry-action="singular">Set exact decimal singular witness (λ=2, κ=0.01024)</button>
           <fieldset class="geometry-explorer__pullback-controls"><legend>Finite pullback request</legend>
             <label>D (coordinate power)<output data-geometry-output="D">2</output><input data-geometry-parameter="D" type="range" min="2" max="4" step="1" value="2"></label>
