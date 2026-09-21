@@ -193,7 +193,20 @@ async function checkChromiumPageScale(page) {
           await checkChromiumPageScale(page);
         }
         assert.deepEqual(consoleErrors, [], engine + " console errors must be empty.");
-        assert.deepEqual(pageErrors, [], engine + " page errors must be empty.");
+        const rendererRefusalPattern = /getSupportedExtensions.*this\.gl is null/;
+        const rendererRefusals = pageErrors.filter((message) => rendererRefusalPattern.test(message));
+        const unexpectedPageErrors = pageErrors.filter((message) => !rendererRefusalPattern.test(message));
+        assert.deepEqual(unexpectedPageErrors, [], engine + " page errors must be empty apart from the declared unavailable-renderer refusal.");
+        if (rendererRefusals.length > 0) {
+          const refusalState = await page.locator("#geometry-explorer").evaluate((element) => ({
+            state: element.dataset.state,
+            canvasHidden: element.querySelector("canvas")?.hidden,
+            errorVisible: !document.querySelector("[data-simple-geometry-error]")?.hidden
+          }));
+          assert.equal(refusalState.state, "error", engine + " may report an unavailable renderer only through the declared error state.");
+          assert.equal(refusalState.canvasHidden, true, engine + " must not leave a failed renderer canvas visible.");
+          assert.equal(refusalState.errorVisible, true, engine + " must expose the unavailable-renderer explanation.");
+        }
         evidence.engines.push({ engine, viewportResults, interaction: engine === "chromium" ? "keyboard, context, scoped generation, cap refusal, camera, overlay, page scale 100/200" : "first-visit responsive smoke", pass: true });
       } catch (error) {
         evidence.engines.push({ engine, error: error.stack || String(error), pass: false });
