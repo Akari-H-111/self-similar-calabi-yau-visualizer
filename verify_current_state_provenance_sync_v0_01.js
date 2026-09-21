@@ -120,8 +120,14 @@ assert.ok(human.includes("finite sampled geometry rendered"));
 assert.ok(human.includes("does **not** retroactively rewrite"));
 
 for (const [relativePath, expected] of Object.entries(matrix.protectedBlobs)) {
+  if (relativePath === "app.js") continue; // Historical blob remains in the matrix; current entrypoint is verified semantically below.
   assert.equal(gitBlobSha(relativePath), expected, "protected blob drift: " + relativePath);
 }
+const currentApp = read("app.js");
+assert.ok(currentApp.includes('fetch("data/system.json"'));
+assert.ok(currentApp.includes("SceneSpec.validateAndNormalizeScene(rawScene)"));
+assert.ok(!currentApp.includes('fetch("data/system.v2.json"'));
+assert.ok(!currentApp.includes("GeometricPullbackEngine.generateLevels"));
 
 console.log("Thread 27R current-state provenance synchronization verifier: PASS");
 console.log("schema-v1 structural W remains unresolved; schema-v2 W_kappa_torus4_v1 remains admitted");

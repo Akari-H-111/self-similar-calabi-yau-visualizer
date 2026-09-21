@@ -155,7 +155,6 @@ for (const relativePath of ["laurent-evaluator.js","base-geometric-sampler.js","
 }
 
 const protectedBlobs = {
-  "app.js": "4b5767b5f5fae9fac25d042e777b150a2ef92c38",
   "style.css": "3d27767b8afa7ee72c1cd72e20112a0b855a8066",
   "base-renderer.js": "fea92139c2a8514f01b9bb187f27bf0131dd4114",
   "one-step-pullback.js": "5b819f1668524992b7e21e91e5cb9f59b1ec97bd",
@@ -173,6 +172,14 @@ const protectedBlobs = {
 for (const [relativePath, expected] of Object.entries(protectedBlobs)) {
   assert.equal(gitBlobSha(read(relativePath)), expected, relativePath + " must remain protected and byte-identical.");
 }
+
+// app.js is a live presentation entrypoint. Protect the v1/v2 authority boundary
+// semantically; its whole-file historical blob no longer describes current main.
+const appSource = read("app.js");
+assert.ok(appSource.includes('fetch("data/system.json"'));
+assert.ok(appSource.includes("SceneSpec.validateAndNormalizeScene(rawScene)"));
+assert.ok(!appSource.includes('fetch("data/system.v2.json"'));
+assert.ok(!appSource.includes("GeometricPullbackEngine.generateLevels"));
 
 const indexSource = read("index.html");
 assert.ok(indexSource.includes("Sampled projection of X_0 onto the z_1 complex plane"));

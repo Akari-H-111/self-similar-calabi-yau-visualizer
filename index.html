@@ -49,6 +49,7 @@
   <script src="hybrid-scoped-bridge-semantics.js" defer></script>
   <script src="hybrid-scoped-bridge-runtime.js" defer></script>
   <script src="geometry-exploration-math.js" defer></script>
+  <script src="geometry-exploration-contract.js" defer></script>
   <script type="module" src="geometry-exploration-engine.js"></script>
 </head>
 <body>
@@ -67,17 +68,43 @@
         <button type="button" class="geometry-mode" data-geometry-mode="slice" aria-pressed="true">Declared parameter subfamily <span>A two-parameter construction in X₀, ambient-projected to R³.</span></button>
         <button type="button" class="geometry-mode" data-geometry-mode="phase" aria-pressed="false">Phase / torus display <span>Finite samples encoded by phases; the torus is a display device.</span></button>
         <button type="button" class="geometry-mode" data-geometry-mode="cloud" aria-pressed="false">Finite validated sample cloud <span>Accepted deterministic X₀ samples under an explicit projection.</span></button>
-        <button type="button" class="geometry-mode" data-geometry-mode="structural" aria-pressed="false">Structural pullback <span>Relations only—no geometric coordinates or topology.</span></button>
+        <button type="button" class="geometry-mode" data-geometry-mode="pullback" aria-pressed="false">Finite pullback projection <span>Computed P<sub>D</sub> fibers over a finite X₀ seed or one selected ancestor.</span></button>
       </nav>
-      <div class="geometry-explorer__stage" aria-label="Interactive three dimensional research visualization"><canvas aria-label="Drag to orbit the active declared mathematical display."></canvas></div>
+      <section class="simple-geometry-guide" aria-label="Guided local geometry exploration">
+        <p class="section-kicker">Finite view of a Calabi–Yau family</p>
+        <h2>Choose a patch. See its rule repeat.</h2>
+        <p data-simple-geometry-caption>Preparing a sampled local slice of X₀…</p>
+        <p class="simple-geometry-guide__error" data-simple-geometry-error hidden role="alert"></p>
+        <p class="simple-geometry-guide__qualification" data-simple-geometry-qualification>Checking the displayed parameter status…</p>
+        <div class="simple-geometry-guide__actions" role="group" aria-label="Local geometry controls">
+          <button type="button" class="simple-geometry-guide__next" data-simple-geometry-action="explore">Explore this patch</button>
+          <button type="button" data-simple-geometry-action="comparison" hidden>Show local comparison</button>
+          <button type="button" data-simple-geometry-action="surface" hidden>Return to surface</button>
+          <button type="button" data-simple-geometry-action="zoom-in" aria-label="Zoom visual camera in">+</button>
+          <button type="button" data-simple-geometry-action="zoom-out" aria-label="Zoom visual camera out">−</button>
+          <button type="button" data-simple-geometry-action="fit">Fit view</button>
+        </div>
+        <p class="simple-geometry-guide__status" data-simple-geometry-status>Visual camera · 1.0×</p>
+        <p class="simple-geometry-guide__boundary">Finite 3D projection, not the whole X₀. Camera controls only change the view.</p>
+        <p class="simple-geometry-guide__selection" data-simple-geometry-selection>Click the shaded surface, or focus it and use arrow keys, to choose a validated local vertex.</p>
+      </section>
+      <div class="geometry-explorer__stage" aria-label="Interactive three dimensional research visualization"><canvas tabindex="0" aria-label="Drag to orbit the active declared mathematical display. Scroll or pinch for visual camera zoom only. In the sampled surface, use arrow keys to select a neighboring validated vertex."></canvas></div>
       <aside class="geometry-explorer__inspector" aria-label="Mathematical meaning and controls">
-        <div><h2>What is on screen</h2><p data-geometry-detail>Loading the declared rendering contract…</p></div>
+        <div><h2>What is on screen</h2><p data-geometry-detail>Loading the declared rendering contract…</p><p data-geometry-discriminant>Checking parameter discriminant…</p><p data-geometry-truth>View classification pending.</p><details class="geometry-explorer__point-inspector" data-geometry-point-inspector hidden><summary>Inspect one computed point</summary><label>Point index <input data-geometry-point-index type="number" min="0" step="1" value="0"></label><p data-geometry-point-evidence></p></details></div>
         <div class="geometry-explorer__parameters">
           <label>λ (runtime real slice; −4 to 4)<output data-geometry-output="lambda">1</output><input data-geometry-parameter="lambda" type="range" min="-4" max="4" step="0.25" value="1"></label>
-          <label>κ (nonzero UI range; 0.1 to 3)<output data-geometry-output="kappa">1</output><input data-geometry-parameter="kappa" type="range" min="0.1" max="3" step="0.1" value="1"></label>
+          <label>κ (nonzero real UI range; 0.01 to 3)<output data-geometry-output="kappa">1</output><input data-geometry-parameter="kappa" type="range" min="0.01" max="3" step="any" value="1"></label>
           <label>surface resolution (declared subfamily only)<output data-geometry-output="resolution">64</output><input data-geometry-parameter="resolution" type="range" min="24" max="112" step="8" value="64"></label>
+          <button class="geometry-explorer__action" type="button" data-geometry-action="singular">Set exact decimal singular witness (λ=2, κ=0.01024)</button>
+          <fieldset class="geometry-explorer__pullback-controls"><legend>Finite pullback request</legend>
+            <label>D (coordinate power)<output data-geometry-output="D">2</output><input data-geometry-parameter="D" type="range" min="2" max="4" step="1" value="2"></label>
+            <label>depth n<output data-geometry-output="depth">1</output><input data-geometry-parameter="depth" type="range" min="0" max="4" step="1" value="1"></label>
+            <label>scope<select data-geometry-scope><option value="finite-seed">all 512 finite seed samples</option><option value="one-ancestor">one selected ancestor</option></select></label>
+            <label>ancestor<select data-geometry-ancestor></select></label>
+            <label class="geometry-explorer__check"><input type="checkbox" data-geometry-local-fit> Recenter and normalize the selected ancestor projection (display only)</label>
+          </fieldset>
         </div>
-        <div><h2>Engine status</h2><p class="geometry-explorer__status" data-geometry-status aria-live="polite">Initializing…</p><button class="geometry-explorer__action" type="button" data-geometry-action="reset">Reset view</button></div>
+        <div><h2>Engine status</h2><p class="geometry-explorer__status" data-geometry-status>Initializing…</p><p data-geometry-scale>Visual camera only. Display normalization is separate from D² metric metadata and inverse branch scaling.</p><button class="geometry-explorer__action" type="button" data-geometry-action="reset">Reset visual camera</button></div>
       </aside>
     </section>
     <header class="mode-hero">
@@ -86,9 +113,9 @@
         <button type="button" data-ui-mode="simple" aria-pressed="true">Simple mode</button>
         <button type="button" data-ui-mode="expert" aria-pressed="false">Expert mode</button>
       </div>
-      <p class="eyebrow">Pattern playground</p>
-      <h1>Make the pattern grow</h1>
-      <p class="lede">Press the bright button once. Watch a new layer appear. You can always start over.</p>
+      <p class="eyebrow">Finite local geometry</p>
+      <h1>Choose a patch. Compare one inverse branch.</h1>
+      <p class="lede">Select a shaded sample, explore its bounded pullback, then return to the surface whenever you like.</p>
     </header>
 
     <section id="simple-exploration" class="simple-exploration" aria-labelledby="simple-exploration-title">
@@ -141,7 +168,7 @@
       <p class="lede">Explore a structural pullback model, admitted finite sampled geometry, and an explicitly generated ancestor-scoped pullback—without treating any visualization as a global hypersurface theorem.</p>
       <div class="hero-actions" aria-label="Visualizer entry points">
         <a class="primary-link" href="#hybrid-navigation">Choose a representation</a>
-        <a href="docs/CURRENT_DEVELOPMENT_STATE.md">Read the current-state boundary</a>
+        <a href="current-state.html">Read the current-state boundary</a>
       </div>
       <div class="representation-overview" aria-label="Representation overview">
         <article>

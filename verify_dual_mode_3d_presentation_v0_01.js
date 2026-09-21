@@ -41,6 +41,7 @@ function serve() {
     }));
     assert.equal(deferred.state, "idle");
     assert.equal(deferred.moduleRequested, false, "3D module must not be requested before entering or starting the camera.");
+    assert.equal(await page.locator("#structural-3d-presentation").isHidden(), true, "Simple mode must keep the structural presentation camera out of the first-visit flow.");
     const idleCanvas = await page.locator("#structural-3d-presentation canvas").evaluate((canvas) => getComputedStyle(canvas).display);
     assert.equal(idleCanvas, "none", "The idle camera must show its loading guidance rather than a blank canvas.");
     const firstVisualScreenshot = "visual-hierarchy-first-390.png";
@@ -48,6 +49,8 @@ function serve() {
     const entryPage = await browser.newPage({ viewport: { width: 390, height: 500 } });
     entryPage.on("pageerror", (error) => errors.push(error.message));
     await entryPage.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: "domcontentloaded" });
+    await entryPage.locator('[data-ui-mode="expert"]').click();
+    await entryPage.locator("#structural-3d-presentation").waitFor({ state: "visible" });
     await entryPage.locator("#structural-3d-presentation").scrollIntoViewIfNeeded();
     await entryPage.waitForFunction(() => document.querySelector("#structural-3d-presentation")?.dataset.state === "ready", null, { timeout: 10000 });
     const enteredCamera = await entryPage.evaluate(() => ({
@@ -56,6 +59,8 @@ function serve() {
     }));
     assert.deepEqual(enteredCamera, { state: "ready", moduleRequested: true }, "Entering the camera region must load the optional 3D module.");
     await entryPage.close();
+    await page.locator('[data-ui-mode="expert"]').click();
+    await page.locator("#structural-3d-presentation").waitFor({ state: "visible" });
     await page.locator('[data-presentation-camera-action="activate"]').focus();
     await page.keyboard.press("Enter");
     try {
@@ -65,9 +70,7 @@ function serve() {
       throw error;
     }
     const simple = await page.locator("#structural-3d-presentation").evaluate((element) => ({ mode: element.dataset.mode, renderer: element.dataset.renderer, geometry: element.dataset.geometryRendered, reducedMotion: element.dataset.reducedMotion, canvas: element.querySelector("canvas")?.getBoundingClientRect().height }));
-    assert.equal(simple.mode, "simple"); assert.ok(simple.renderer === "WebGPU" || simple.renderer === "WebGL2 fallback"); assert.equal(simple.geometry, "false"); assert.equal(simple.reducedMotion, "true"); assert.ok(simple.canvas >= 200);
-    await page.locator('[data-ui-mode="expert"]').click();
-    await page.locator("#structural-3d-presentation").waitFor({ state: "visible" });
+    assert.equal(simple.mode, "expert"); assert.ok(simple.renderer === "WebGPU" || simple.renderer === "WebGL2 fallback"); assert.equal(simple.geometry, "false"); assert.equal(simple.reducedMotion, "true"); assert.ok(simple.canvas >= 200);
     assert.equal(await page.locator("#structural-3d-presentation").getAttribute("data-mode"), "expert");
     assert.equal(await page.locator('[data-presentation-camera-action="save"]').isVisible(), true);
     await page.locator('[data-presentation-camera-action="save"]').click();

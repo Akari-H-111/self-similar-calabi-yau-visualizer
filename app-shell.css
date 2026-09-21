@@ -53,3 +53,14 @@
   .mode-bar__label { width: 100%; padding: 0.25rem 0.55rem; }
   .mode-bar button { flex: 1 1 9rem; }
 }
+
+/* The Simple card repeats the title and essential boundary.  On a phone, keep
+   the mode choice but give the actual finite view the first screen instead of
+   stacking two introductions above it. */
+@media (max-width: 520px) {
+  .mode-hero { margin-bottom: .75rem; }
+  .mode-hero > .eyebrow,
+  .mode-hero > h1,
+  .mode-hero > .lede { display: none; }
+  .mode-bar { margin-bottom: 0; }
+}

@@ -58,23 +58,30 @@ async function checkFirstVisit(page, engine, viewport) {
   const response = await page.goto(page.context()._thread32BaseUrl, { waitUntil: "domcontentloaded" });
   assert.ok(response?.ok(), engine + " root navigation must succeed.");
   await waitForReady(page);
+  await page.waitForFunction(() => document.querySelector("#geometry-explorer")?.dataset.state === "ready", null, { timeout: 30000 });
 
   const result = await page.evaluate(() => {
     const hero = document.querySelector(".mode-hero").getBoundingClientRect();
-    const controls = document.querySelector("#simple-exploration").getBoundingClientRect();
+    const controls = document.querySelector("#geometry-explorer").getBoundingClientRect();
     return {
       heroHeight: Math.round(hero.height),
       controlsTop: Math.round(controls.top),
-      simpleVisible: !document.querySelector("#simple-exploration").hidden,
+      simpleVisible: document.querySelector("#geometry-explorer")?.dataset.presentationMode === "simple",
       expertHidden: document.querySelector("#expert-workbench").hidden,
-      canvasReady: Boolean(document.querySelector("#simple-canvas svg")),
+      canvasReady: !document.querySelector("#geometry-explorer canvas").hidden,
+      sampledVertexCount: document.querySelector("#geometry-explorer")?.dataset.pointCount,
+      geometryMode: document.querySelector("#geometry-explorer")?.dataset.mode,
+      structuralCameraHidden: document.querySelector("#structural-3d-presentation").hidden,
       horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
     };
   });
 
   assert.equal(result.simpleVisible, true, engine + " must begin in simple mode.");
   assert.equal(result.expertHidden, true, engine + " must keep research controls out of simple mode.");
-  assert.equal(result.canvasReady, true, engine + " must show the simple structural canvas.");
+  assert.equal(result.canvasReady, true, engine + " must show the simple computed canvas.");
+  assert.equal(result.geometryMode, "slice", engine + " must begin with the declared sampled X_0 slice.");
+  assert.ok(Number(result.sampledVertexCount) > 1000, engine + " must expose a nontrivial sampled surface on first visit.");
+  assert.equal(result.structuralCameraHidden, true, engine + " must keep the structural presentation camera out of Simple mode.");
   assert.equal(result.horizontalOverflow, false, engine + " must not introduce page-level horizontal overflow at " + viewport.width + "px.");
   const practicalScanLimit = viewport.width <= 760 ? 1750 : 1000;
   assert.ok(result.controlsTop < practicalScanLimit, engine + " must expose the primary controls within the practical scan range.");
@@ -83,13 +90,13 @@ async function checkFirstVisit(page, engine, viewport) {
 }
 
 async function checkKeyboardAndContexts(page) {
-  const grow = page.locator("#simple-grow");
-  await grow.focus();
+  const explore = page.locator("[data-simple-geometry-action='explore']");
+  await explore.focus();
   await page.keyboard.press("Enter");
-  assert.equal(await page.locator("#simple-layer-count").textContent(), "Layer 1");
-  await page.locator("#simple-reset").focus();
+  await page.waitForFunction(() => document.querySelector("#geometry-explorer")?.dataset.mode === "localpatch" && document.querySelector("#geometry-explorer")?.dataset.pointCount === "81");
+  await page.locator("[data-simple-geometry-action='surface']").focus();
   await page.keyboard.press("Enter");
-  assert.equal(await page.locator("#simple-layer-count").textContent(), "Layer 0");
+  await page.waitForFunction(() => document.querySelector("#geometry-explorer")?.dataset.mode === "slice");
   await page.locator('[data-ui-mode="expert"]').focus();
   await page.keyboard.press("Enter");
   await page.locator("#expert-workbench").waitFor({ state: "visible" });

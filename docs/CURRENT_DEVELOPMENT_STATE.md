@@ -1,11 +1,12 @@
 # Current development state
 
-This page describes the current `main` application after the Thread 31R repair and Thread 31 seal. It is the active entrypoint for visitors and developers. The root README records the byte-pinned historical `v1.0-rc1` structural release candidate; the immutable `v0.13` publication checkpoint is older still. A release tag describes its exact historical commit, not all later features on `main`.
+This page describes the source state of this local checkout after the Thread 31R repair and Thread 31 seal. It is a development entrypoint, **not evidence that the public GitHub Pages deployment has this source**: compare the deployed commit and Pages run before making a public claim. The root README records the byte-pinned historical `v1.0-rc1` structural release candidate; the immutable `v0.13` publication checkpoint is older still. A release tag describes its exact historical commit, not all later features on `main`.
 
-## Local geometry-exploration candidate
+## Current geometry exploration and v1 candidate history
 
-The page now opens with the `Geometry Exploration Engine v1`, a local
-post-release candidate documented in [Geometry Exploration Engine v1](GEOMETRY_EXPLORATION_ENGINE_v1.md). It consumes the already-admitted schema-v2
+The current post-release explorer contract is [Geometry Exploration Engine v2 current state](GEOMETRY_EXPLORATION_ENGINE_v2_CURRENT_STATE.md). Its [migration note](GEOMETRY_EXPLORATION_ENGINE_v2_MIGRATION.md) records the transition from the v1 candidate below. The v1 document remains a snapshot of that earlier candidate.
+
+The first post-release explorer was `Geometry Exploration Engine v1`, documented in [Geometry Exploration Engine v1](GEOMETRY_EXPLORATION_ENGINE_v1.md). Its formula-bound modes remain in the current explorer, which consumes the already-admitted schema-v2
 `W_kappa_torus4_v1` evaluator and does **not** alter the historical structural
 pipeline. Its default display is a declared two-real-parameter subfamily of
 `X_0`, followed by an explicit ambient-coordinate projection to `R^3`; it is
@@ -13,15 +14,18 @@ not a 3D embedding of the six-real-dimensional `X_0` or a complete
 Calabi–Yau. Other modes separately label a phase display embedding, a finite
 validated sample cloud, and a non-geometric structural pullback display.
 
-The new renderer has a WebGPU-first / WebGL2-fallback implementation, bounded
+The renderer has a WebGPU-first / WebGL2-fallback implementation, bounded
 cache and resolution policy, cancellation token, visible load/error states,
-and no external image/model/texture asset. Its quadratic root labels are not
-sheets or covering branches. It must remain distinct from the finite global
-and ancestor-scoped evidence below.
+and no external image/model/texture asset. A local patch is now anchored at
+the selected source root and only admitted when nearest-root continuation is
+path-consistent throughout the bounded patch; a path-dependent patch is
+rejected without child samples. Its quadratic root labels are not sheets or
+covering branches. It must remain distinct from the finite global and
+ancestor-scoped evidence below.
 
 ## Try the visualizer
 
-Open the [public visualizer](https://akari-h-111.github.io/self-similar-calabi-yau-visualizer/). For a local checkout, run `python3 -m http.server 8000` at the repository root and open `http://127.0.0.1:8000/`. The app is static HTML, CSS, and vanilla JavaScript; a local HTTP server is needed for its JSON requests. The default **Simple mode** is a capped four-layer structural playground: grow a layer, see the model change, and reset. It does not generate ancestor-scoped geometry. **Expert mode** exposes the three-representation selector, camera, overlays, finite geometric views, scoped controls, provenance, and diagnostics; switching representations changes presentation only and preserves independent structural/global/scoped depth state. The optional Three.js presentation camera is dynamically imported only when its region is entered or the visitor starts it; its WebGPURenderer keeps the existing WebGL2 fallback and OrbitControls, and it never invokes a geometric runtime.
+Open the [public visualizer](https://akari-h-111.github.io/self-similar-calabi-yau-visualizer/). For a local checkout, run `python3 -m http.server 8000` at the repository root and open `http://127.0.0.1:8000/`. The app is static HTML, CSS, and vanilla JavaScript; a local HTTP server is needed for its JSON requests. The default **Simple mode** starts with a finite mesh of a declared two-real-parameter `X₀` slice, explicitly projected to `R³`. Selecting one validated vertex computes one cap-checked `9×9` local patch and a single `D=2` inverse branch (81 paired parent/child records), with a separate local-log comparison. Drag, wheel/pinch, +/−, and fit controls operate the visual camera only. **Expert mode** exposes the formula parameters, view selector, finite scope controls, provenance, diagnostics, historical finite-fibre paths, structural SVG playground, and optional structural 3D descriptor camera. Neither mode presents a complete global object.
 
 ## What each view means
 
@@ -33,7 +37,7 @@ Open the [public visualizer](https://akari-h-111.github.io/self-similar-calabi-y
 
 The structural, global geometric, and scoped depth controls are independent. Switching contexts does not request new geometry. Stage correspondence is Class A only when Thread 26 already has a materialized global geometric stage for the selected structural depth; otherwise it is Class D. The wrapper delegates that verdict to Thread 26.
 
-Simple mode is deliberately not a free geometry editor: its diagram is structural, not a point cloud, covering, sheet, or complete global hypersurface. `W_kappa_torus4_v1` remains the fixed admitted evaluator in the separate schema-v2 pipeline. A genuinely adjustable `W`, `κ`, or `λ`, and genuinely free global geometry, remain future work rather than capabilities of this UI.
+Simple mode is deliberately not a free geometry editor: it is a declared sampled slice plus one finite, explicitly chosen local inverse branch. Its side-by-side normalized display uses a local logarithmic coordinate relation and does not claim an intrinsic edge, fractal boundary, global geometric self-similarity, or metric zoom. `W_kappa_torus4_v1` remains the fixed admitted evaluator in the schema-v2 pipeline. Expert mode adjusts real-slice `κ` and `λ`, plus finite pullback `D` and depth; an arbitrary `W`, arbitrary complex parameters, and complete global geometry remain unavailable.
 
 ## Evidence boundary
 

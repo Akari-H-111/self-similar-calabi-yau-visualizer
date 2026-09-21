@@ -16,6 +16,7 @@ const structuralVisualizationElement = document.querySelector("#structural-visua
 const arithmeticOverlayElement = document.querySelector("#arithmetic-overlays");
 const expositionElement = document.querySelector("#exposition-layer");
 const expertWorkbenchElement = document.querySelector("#expert-workbench");
+const geometryExplorerElement = document.querySelector("#geometry-explorer");
 const simpleExplorationElement = document.querySelector("#simple-exploration");
 const simpleCanvasElement = document.querySelector("#simple-canvas");
 const simpleGrowElement = document.querySelector("#simple-grow");
@@ -97,8 +98,10 @@ function readUiModePreference() {
 
 function setUiMode(mode, { persist = true } = {}) {
   uiMode = mode === "expert" ? "expert" : "simple";
-  simpleExplorationElement.hidden = uiMode !== "simple";
+  simpleExplorationElement.hidden = uiMode !== "expert";
   expertWorkbenchElement.hidden = uiMode !== "expert";
+  presentationCameraElement.hidden = uiMode !== "expert";
+  if (geometryExplorerElement) geometryExplorerElement.dataset.presentationMode = uiMode;
   for (const control of modeControls) {
     control.setAttribute("aria-pressed", String(control.dataset.uiMode === uiMode));
   }
@@ -769,5 +772,9 @@ structuralVisualizationElement.addEventListener("pointermove", handleStructuralC
 structuralVisualizationElement.addEventListener("pointerup", handleStructuralCameraPointerEnd);
 structuralVisualizationElement.addEventListener("pointercancel", handleStructuralCameraPointerEnd);
 setUiMode(readUiModePreference(), { persist: false });
+// The original structural playground and its optional 3D descriptor layout are
+// retained for research inspection, but no longer compete with the finite
+// computed view on the first visitor screen.
+expertWorkbenchElement.append(simpleExplorationElement, presentationCameraElement);
 observePresentationCameraEntry();
 loadSystemConfiguration();

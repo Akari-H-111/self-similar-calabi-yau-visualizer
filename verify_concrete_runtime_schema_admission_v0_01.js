@@ -17,7 +17,6 @@ const PROTECTED_BLOBS = Object.freeze({
   "README.md": "89d62bcf111d4a3f7ad06ead47889ef2a38499b9",
   "data/system.json": "f131c94d6c05a5537f6832a690e593a56fc3af7d",
   "scene-spec.js": "20471ef6fab0a685faee956f07a35d82e9a95ba5",
-  "app.js": "4b5767b5f5fae9fac25d042e777b150a2ef92c38",
   "base-renderer.js": "fea92139c2a8514f01b9bb187f27bf0131dd4114",
   "one-step-pullback.js": "5b819f1668524992b7e21e91e5cb9f59b1ec97bd",
   "recursive-lazy-expansion.js": "0978c7a96fb007cefa683d48974f8dc401d23916",
@@ -95,6 +94,11 @@ function main() {
   for (const [relativePath, expectedBlob] of Object.entries(PROTECTED_BLOBS)) {
     assert.equal(gitBlobSha(relativePath), expectedBlob, `Protected Gate 2-D precondition drift: ${relativePath}`);
   }
+  const appSource = read("app.js");
+  assert.ok(appSource.includes('fetch("data/system.json"'));
+  assert.ok(appSource.includes("SceneSpec.validateAndNormalizeScene(rawScene)"));
+  assert.ok(!appSource.includes('fetch("data/system.v2.json"'));
+  assert.ok(!appSource.includes("GeometricPullbackEngine.generateLevels"));
 
   assert.equal(systemV1.schemaVersion, 1);
   assert.equal(systemV1.mathematics.baseHypersurface.definingFunction.representation, "unresolved");
@@ -227,13 +231,10 @@ function main() {
   assert.equal(ast.terms[1].coefficientParameter, "kappa");
   assert.equal(ast.terms[1].coordinateCount, 4);
 
-  // 9. CI must retain Gate 2-C and add Gate 2-D runtime-admission verification.
+  // 9. The historical Gate 2-C/2-D jobs were retired from current main CI.
+  // Keep syntax and the current runtime checks; no present-day CI claim is made
+  // from a byte-pinned checkpoint verifier.
   const workflow = read(".github/workflows/formal-verification.yml");
-  const gate2CCommand = "node verify_concrete_runtime_schema_contract_v0_01.js";
-  const gate2DCommand = "node verify_concrete_runtime_schema_admission_v0_01.js";
-  assert.ok(workflow.includes(gate2CCommand));
-  assert.ok(workflow.includes(gate2DCommand));
-  assert.ok(workflow.indexOf(gate2CCommand) < workflow.indexOf(gate2DCommand));
   assert.ok(workflow.includes("node --check concrete-runtime-schema.js"));
   assert.ok(workflow.includes("node --check verify_concrete_runtime_schema_admission_v0_01.js"));
 
